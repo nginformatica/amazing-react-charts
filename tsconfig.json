@@ -1,39 +1,15 @@
 {
   "compilerOptions": {
-    "outDir": "lib/",
-    "baseUrl": ".",
-    "declaration": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "allowJs": false,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "lib": [
-      "es7"
-    ],
-    "moduleResolution": "node",
-    "strict": true,
-    "module": "esnext",
-    "target": "es6",
-    "strictNullChecks": true,
-    "noImplicitThis": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "skipLibCheck": true,
+    "jsx": "react",
+    "module": "commonjs",
     "noImplicitAny": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react"
+    "outDir": "./build/",
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "target": "es5"
   },
   "include": [
-    "./src/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "lib"
+    "./src/**/**/*"
   ]
 }

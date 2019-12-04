@@ -1,3 +1,5 @@
 /node_modules
 /lib
+/.docz
+/build
 yarn-error.log
