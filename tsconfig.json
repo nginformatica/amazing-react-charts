@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "outDir": "lib/",
+    "baseUrl": ".",
+    "declaration": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "lib": [
+      "es7"
+    ],
+    "moduleResolution": "node",
+    "strict": true,
+    "module": "esnext",
+    "target": "es6",
+    "strictNullChecks": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react"
+  },
+  "include": [
+    "./src/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib"
+  ]
+}

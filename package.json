@@ -1,20 +1,35 @@
 {
-  "name": "keepfy-react-charts",
+  "name": "@keepfy/react-charts",
   "version": "0.1.0",
-  "private": true,
+  "description": "A react charts package based in echarts",
+  "main": "lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "types": "./lib/index.d.ts",
+  "typescript": {
+    "definition": "./lib/index.d.ts"
+  },
+  "author": "Leonardo Filipe Rigon",
+  "license": "MIT",
+  "keywords": [
+    "keepfy"
+  ],
+  "scripts": {
+    "start": "tsc && react-scripts start",
+    "build": "tsc && react-scripts build",
+    "lint": "eslint 'src/**/*.ts?(x)'",
+    "prepare": "rm -rf ./lib/* && yarn lint && yarn build"
+  },
   "dependencies": {
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-scripts": "3.2.0"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+  "devDependencies": {
+    "@types/react": "16.9.14",
+    "eslint": "6.7.2",
+    "eslint-config-keepfy": "7.0.0",
+    "eslint-plugin-import": "2.18.2",
+    "typescript": "3.7.3"
   },
   "browserslist": {
     "production": [
