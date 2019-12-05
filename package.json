@@ -17,18 +17,21 @@
     "serve": "docz build && docz serve"
   },
   "dependencies": {
-    "date-fns": "2.4.1",
     "docz": "2.1.1",
     "react": "16.12.0",
     "react-dom": "16.12.0"
   },
   "devDependencies": {
+    "date-fns": "2.4.1",
+    "@types/echarts": "4.4.1",
+    "@types/ramda": "0.26.36",
     "@types/react": "16.9.14",
     "echarts": "4.5.0",
     "echarts-for-react": "2.0.15-beta.1",
     "eslint": "6.7.2",
     "eslint-config-keepfy": "7.0.0",
-    "eslint-plugin-import": "2.18.2"
+    "eslint-plugin-import": "2.18.2",
+    "ramda": "0.26.1"
   },
   "browserslist": {
     "production": [

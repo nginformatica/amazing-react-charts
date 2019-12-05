@@ -9,9 +9,33 @@ import { Playground } from 'docz'
 # Keepfy React Charts
 
 ## Demo
-<Playground style={ { padding: '10px', backgroundColor: 'silver' } }>
+<Playground>
+    <AreaChart 
+        color='#74007c'
+        xType='time'
+        yType='time'
+        tooltip={ { label: 'Data', result: 'MTBF' } }
+        data={ 
+            [ 
+                { label: '2019-01-01', result: 1 }, 
+                { label: '2019-02-01', result: 4 },
+                { label: '2019-03-01', result: 3 }, 
+                { label: '2019-04-01', result: 2 },
+                { label: '2019-05-01', result: 4 },
+                { label: '2019-06-01', result: 5 },
+                { label: '2019-07-01', result: 3 },
+                { label: '2019-08-01', result: 7 },
+                { label: '2019-09-01', result: 8 },
+                { label: '2019-10-01', result: 9 },
+            ] 
+        }
+    />
+</Playground>
+
+<Playground>
     <AreaChart 
         xType='time'
+        tooltip={ { label: 'Data', result: 'O.S. em aberto' } }
         color='#E65100'
         data={ 
             [ 
@@ -27,26 +51,26 @@ import { Playground } from 'docz'
                 { label: '2019-09-10', result: 9 },
                 { label: '2019-09-11', result: 12 },
                 { label: '2019-09-12', result: 22 },
-                { label: '2019-09-13', result: 4 },
+                { label: '2019-09-13', result: 20 },
                 { label: '2019-09-14', result: 32 },
-                { label: '2019-09-15', result: 1 },
-                { label: '2019-09-16', result: 0 },
-                { label: '2019-09-17', result: 1 }, 
-                { label: '2019-09-18', result: 4 },
-                { label: '2019-09-19', result: 3 }, 
-                { label: '2019-09-20', result: 2 },
-                { label: '2019-09-21', result: 4 },
-                { label: '2019-09-22', result: 5 },
-                { label: '2019-09-23', result: 3 },
-                { label: '2019-09-24', result: 7 },
-                { label: '2019-09-25', result: 8 },
-                { label: '2019-09-26', result: 9 },
+                { label: '2019-09-15', result: 10 },
+                { label: '2019-09-16', result: 15 },
+                { label: '2019-09-17', result: 10 }, 
+                { label: '2019-09-18', result: 40 },
+                { label: '2019-09-19', result: 30 }, 
+                { label: '2019-09-20', result: 30 },
+                { label: '2019-09-21', result: 45 },
+                { label: '2019-09-22', result: 25 },
+                { label: '2019-09-23', result: 30 },
+                { label: '2019-09-24', result: 17 },
+                { label: '2019-09-25', result: 18 },
+                { label: '2019-09-26', result: 19 },
                 { label: '2019-09-27', result: 12 },
                 { label: '2019-09-28', result: 22 },
-                { label: '2019-09-29', result: 4 },
-                { label: '2019-09-30', result: 32 },
-   
+                { label: '2019-09-29', result: 14 },
+                { label: '2019-09-30', result: 15 },
             ] 
         }
     />
 </Playground>
+
