@@ -1,0 +1,30 @@
+---
+name: Keepfy Bar Chart
+route: /barchart
+---
+
+import BarChart from '../core/BarChart'
+import { Playground } from 'docz'
+
+# Bar Chart Example
+
+## Demo
+<Playground>
+    <BarChart 
+        color='#74007c'
+        data={ 
+            [ 
+                { label: '2019-01-01', result: 1 }, 
+                { label: '2019-02-01', result: 4 },
+                { label: '2019-03-01', result: 3 }, 
+                { label: '2019-04-01', result: 2 },
+                { label: '2019-05-01', result: 4 },
+                { label: '2019-06-01', result: 5 },
+                { label: '2019-07-01', result: 3 },
+                { label: '2019-08-01', result: 7 },
+                { label: '2019-09-01', result: 8 },
+                { label: '2019-10-01', result: 9 },
+            ] 
+        }
+    />
+</Playground>
