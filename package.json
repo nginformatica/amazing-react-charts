@@ -2,16 +2,14 @@
   "name": "@keepfy/react-charts",
   "version": "0.1.0",
   "description": "A react charts package based in echarts",
-  "main": "lib/index.js",
-  "typings": "./lib/index.d.ts",
-  "types": "./lib/index.d.ts",
-  "typescript": {
-    "definition": "./lib/index.d.ts"
-  },
   "author": "Leonardo Filipe Rigon",
   "license": "MIT",
+  "main": "build/index.ts",
+  "types": "build/types.d.ts",
   "keywords": [
-    "keepfy"
+    "keepfy",
+    "charts",
+    "echarts"
   ],
   "scripts": {
     "start": "docz dev",
@@ -19,12 +17,15 @@
     "serve": "docz build && docz serve"
   },
   "dependencies": {
+    "date-fns": "2.4.1",
     "docz": "2.1.1",
     "react": "16.12.0",
     "react-dom": "16.12.0"
   },
   "devDependencies": {
     "@types/react": "16.9.14",
+    "echarts": "4.5.0",
+    "echarts-for-react": "2.0.15-beta.1",
     "eslint": "6.7.2",
     "eslint-config-keepfy": "7.0.0",
     "eslint-plugin-import": "2.18.2"
