@@ -4,7 +4,7 @@ import { format, parse } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import { takeLast } from 'ramda'
 
-interface IProps {
+export interface IProps {
     data: TData[]
     tooltip?: TTooltip
     color?: string
@@ -12,11 +12,11 @@ interface IProps {
     yType?: 'time' | 'value'
 }
 
-type TTooltip = { label: string, result: string }
+export type TTooltip = { label: string, result: string }
 
-type TData = { label: string, result: number }
+export type TData = { label: string, result: number }
 
-type TSeries = {
+export type TSeries = {
     name?: string
     yAxisIndex?: number
     label?: TLabelProps
@@ -26,11 +26,11 @@ type TSeries = {
     data: number[] | string[] | Date[]
 }
 
-type TLabelProps = {
+export type TLabelProps = {
     normal?: TNormalProps
 }
 
-type TNormalProps = {
+export type TNormalProps = {
     show: boolean,
     position?: 'top' | 'bottom' | 'left' | 'right' | [number, number]
     fontSize?: number
@@ -38,11 +38,11 @@ type TNormalProps = {
     distance?: number
 }
 
-type TGridProps = {
+export type TGridProps = {
     show: boolean
 }
 
-type TAxisLabel = {
+export type TAxisLabel = {
     // TODO: Type formatter correctly
     formatter?: any
     textStyle?: React.CSSProperties
@@ -60,7 +60,7 @@ type TSplitLineProps = {
     }
 }
 
-type TAxisProps = {
+export type TAxisProps = {
     name?: string
     type?: 'category' | 'value' | 'time'
     boundaryGap?: boolean
@@ -71,14 +71,14 @@ type TAxisProps = {
     splitLine?: TSplitLineProps
 }
 
-interface IOptions {
+export interface IOptions {
     series: TSeries[]
     xAxis: TAxisProps
     yAxis: TAxisProps
     grid?: TGridProps
 }
 
-type TTooltipProps = {
+export type TTooltipProps = {
     // TODO: Type formatter correctly
     formatter: any
     trigger?: 'axis'
@@ -107,7 +107,7 @@ export const timeConvert = (value: number) => {
 const AreaChart = (props: IProps) => {
     const { data, xType, color, tooltip: tooltipProps, yType } = props
 
-    const yData = props.data.map(item => item.result)
+    const yData = data.map(item => item.result)
     const xData = xType === 'time'
         ? data.map(item => toDate(item.label))
         : data.map(item => item.label)
@@ -124,17 +124,14 @@ const AreaChart = (props: IProps) => {
         ]
     }
 
-
     const tooltip: TTooltipProps = {
         formatter: formatSingleTooltip,
         trigger: 'axis',
         textStyle: { fontSize: 11.5 }
     }
 
-
     const options: IOptions = {
         series: [{
-            name: 'costs',
             type: 'line',
             data: yData,
             label: {
