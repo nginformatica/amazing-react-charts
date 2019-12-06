@@ -9,7 +9,7 @@ export interface IProps {
     lineMarkValue?: number
     lineMarkColor?: string
     lineMakeName?: string
-    yComplement?: string
+    yComplement?: string | 'money'
     tooltipComplement?: string
     tooltip?: TTooltip
     color?: string
@@ -19,7 +19,10 @@ export interface IProps {
 
 export type TTooltip = {
     label: string,
-    result: string,
+    result?: string,
+    topResult?: string,
+    bottomResult?: string,
+    lineResult?: string 
     complement?: string
 }
 
@@ -120,23 +123,26 @@ export type TAxisLineProps = {
 
 export type TAxisTickProps = {
     show?: boolean
+    alignWithLabel?: boolean
+    interval: number
 }
 
 export interface IOptions {
+    color?: string[]
+    grid?: TGridProps
+    legend?: TLegendProps
     series: TSeries[]
     xAxis: TAxisProps
     yAxis: TAxisProps
-    grid?: TGridProps
-    legend?: TLegendProps
 }
 
 export type TLegendProps = {
-    x: 'center' | 'bottom',
-    y: 'center' | 'bottom',
-    icon: 'line' | 'rect'
-    top: number
+    x?: 'center' | 'bottom',
+    y?: 'center' | 'bottom',
+    icon?: 'line' | 'rect'
+    top?: number
     data: string[],
-    itemGap: number
+    itemGap?: number
 }
 
 export type TTooltipProps = {
@@ -149,8 +155,8 @@ export type TTooltipProps = {
 
 export const toDate = (text: string) => parse(text, 'yyyy-MM-dd', new Date())
 
-export const formatTime = (text: string) =>
-    format(new Date(text), 'dd MMM', { locale: ptBR })
+export const formatTime = (text: string, dateFormat: string) =>
+    format(new Date(text), dateFormat, { locale: ptBR })
 
 export const formatTooltip = (text: string) =>
     format(new Date(text), 'dd/MM/yyyy')
@@ -270,7 +276,7 @@ const AreaChart = (props: IProps) => {
             axisLabel: {
                 formatter:
                     (item: string) => xType === 'time'
-                        ? formatTime(item)
+                        ? formatTime(item, 'dd MMM')
                         : item,
                 rotate: xData.length >= 24 ? 45 : 0,
                 interval: 0,

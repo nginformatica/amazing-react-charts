@@ -2397,6 +2397,11 @@ braces@^3.0.1, braces@~3.0.2:
   dependencies:
     fill-range "^7.0.1"
 
+brazilian-values@0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/brazilian-values/-/brazilian-values-0.7.0.tgz#afac15478afdf13641aa111993a167350c17ecc5"
+  integrity sha512-sGP7WV2V1bezg3mtSF690nLE2Ooqwbrf+hdiDfP65UWIoB9nV9ENPyc9rct4yBuyXDhB+NmZYckCQbs8RI5GLw==
+
 brorand@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/brorand/-/brorand-1.1.0.tgz#12c25efe40a45e3c323eb8675a0a0ce57b22371f"

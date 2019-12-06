@@ -6,10 +6,10 @@ interface IBarChartProps extends IProps {
     xComplement?: string
 }
 
-const BarChart = (props: IBarChartProps) => {
+const HorizontalBarChart = (props: IBarChartProps) => {
     const { data, color, xComplement, tooltip: tooltipProps } = props
-    const yData = data.map(item => item.result)
-    const xData = data.map(item => item.label)
+    const xData = data.map(item => item.result)
+    const yData = data.map(item => item.label)
     const backgroundBar = data.map(() => 100)
 
     const formatTooltip = (chartValues: any) => {
@@ -48,7 +48,7 @@ const BarChart = (props: IBarChartProps) => {
             },
             {
                 xAxisIndex: 0,
-                data: yData,
+                data: xData,
                 type: 'bar',
                 barWidth: 12,
                 itemStyle: {
@@ -69,7 +69,7 @@ const BarChart = (props: IBarChartProps) => {
         ],
         xAxis: {
             type: 'value',
-            data: yData,
+            data: xData,
             axisTick: {
                 show: false
             },
@@ -85,7 +85,7 @@ const BarChart = (props: IBarChartProps) => {
             }
         },
         yAxis: {
-            data: xData,
+            data: yData,
             type: 'category',
             axisLine: {
                 show: false
@@ -104,14 +104,15 @@ const BarChart = (props: IBarChartProps) => {
         }
     }
 
-    return (<ReactEcharts
-        option={
-            tooltipProps
-                ? { ...options, tooltip }
-                : options
-        }
-    />
+    return (
+        <ReactEcharts
+            option={
+                tooltipProps
+                    ? { ...options, tooltip }
+                    : options
+            }
+        />
     )
 }
 
-export default BarChart
+export default HorizontalBarChart
