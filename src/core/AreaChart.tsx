@@ -6,13 +6,22 @@ import { takeLast } from 'ramda'
 
 export interface IProps {
     data: TData[]
+    lineMarkValue?: number
+    lineMarkColor?: string
+    lineMakeName?: string
+    yComplement?: string
+    tooltipComplement?: string
     tooltip?: TTooltip
     color?: string
     xType?: 'time' | 'category'
     yType?: 'time' | 'value'
 }
 
-export type TTooltip = { label: string, result: string }
+export type TTooltip = {
+    label: string,
+    result: string,
+    complement?: string
+}
 
 export type TData = { label: string, result: number }
 
@@ -31,6 +40,10 @@ export type TSeries = {
     emphasis?: TNormalProps
     stack?: string
     silent?: boolean
+    showAllSymbol?: boolean | 'auto'
+    symbolSize?: number
+    showSymbol?: boolean,
+    hoverAnimation?: boolean,
     type: 'line' | 'bar'
     data: number[] | string[] | Date[]
 }
@@ -114,6 +127,16 @@ export interface IOptions {
     xAxis: TAxisProps
     yAxis: TAxisProps
     grid?: TGridProps
+    legend?: TLegendProps
+}
+
+export type TLegendProps = {
+    x: 'center' | 'bottom',
+    y: 'center' | 'bottom',
+    icon: 'line' | 'rect'
+    top: number
+    data: string[],
+    itemGap: number
 }
 
 export type TTooltipProps = {
@@ -126,7 +149,7 @@ export type TTooltipProps = {
 
 export const toDate = (text: string) => parse(text, 'yyyy-MM-dd', new Date())
 
-export const formatLabel = (text: string) =>
+export const formatTime = (text: string) =>
     format(new Date(text), 'dd MMM', { locale: ptBR })
 
 export const formatTooltip = (text: string) =>
@@ -142,26 +165,51 @@ export const timeConvert = (value: number) => {
         : Math.round(value) + ':00'
 }
 
-export const truncateText = (text: string) =>	
-	 text.length > 8 ? text.slice(0, 5) + '...' : text
+export const truncateText = (text: string) =>
+    text.length > 8 ? text.slice(0, 5) + '...' : text
 
 const AreaChart = (props: IProps) => {
-    const { data, xType, color, tooltip: tooltipProps, yType } = props
+    const {
+        data,
+        xType,
+        color,
+        tooltip: tooltipProps,
+        yType,
+        lineMarkValue,
+        lineMarkColor,
+        lineMakeName,
+        tooltipComplement,
+        yComplement,
+    } = props
 
+    const markLine = lineMarkValue && data.map(() => lineMarkValue)
     const yData = data.map(item => item.result)
     const xData = xType === 'time'
         ? data.map(item => toDate(item.label))
         : data.map(item => item.label)
 
+    const formatLabel = (chartValues: any) => {
+        const { data } = chartValues
+
+        return (yComplement
+            ? data + yComplement
+            : yType === 'time'
+                ? timeConvert(Number(data))
+                : data
+        )
+    }
+
     //TODO: Type formatSingleTootltip correctly
     const formatSingleTooltip = (chartValues: any) => {
         const { label, result } = tooltipProps
         const { axisValueLabel, data } = chartValues[0]
-        const values = yType === 'time' ? timeConvert(data) + 'h' : data 
+        const complement = tooltipComplement ? tooltipComplement : ''
+        const values = yType === 'time' ? timeConvert(data) + 'h' : data
 
         return [
             `${label}: ${formatTooltip(axisValueLabel)} <br>` +
-            `${result}: ${values} <br>`
+            `${result}: ${values} <br>` +
+            complement
         ]
     }
 
@@ -176,13 +224,12 @@ const AreaChart = (props: IProps) => {
             type: 'line',
             data: yData,
             label: {
-                normal: {
-                    show: true,
-                    position: 'top',
-                    fontSize: 11.5,
-                    color: 'black',
-                    distance: 1.1
-                }
+                formatter: formatLabel,
+                show: true,
+                position: 'top',
+                fontSize: 11.5,
+                color: 'black',
+                distance: 1.1
             },
             lineStyle: {
                 color: color || 'blue'
@@ -190,8 +237,24 @@ const AreaChart = (props: IProps) => {
             areaStyle: {
                 color: color || 'blue',
                 opacity: 0.2
+            },
+            itemStyle: {
+                color: color
             }
-        }],
+        },
+        {
+            name: lineMakeName,
+            symbolSize: 0,
+            showSymbol: false,
+            hoverAnimation: false,
+            type: 'line',
+            data: markLine,
+            lineStyle: {
+                color: lineMarkColor
+            },
+        }
+        ],
+
         xAxis: {
             type: 'category',
             boundaryGap: false,
@@ -206,7 +269,9 @@ const AreaChart = (props: IProps) => {
             },
             axisLabel: {
                 formatter:
-                    (item: string) => xType === 'time' ? formatLabel(item) : item,
+                    (item: string) => xType === 'time'
+                        ? formatTime(item)
+                        : item,
                 rotate: xData.length >= 24 ? 45 : 0,
                 interval: 0,
                 textStyle: {
@@ -225,13 +290,23 @@ const AreaChart = (props: IProps) => {
             },
             axisLabel: {
                 formatter:
-                    (item: number) => yType === 'time' ? timeConvert(item) + 'h' : item,
+                    (item: number) => yType === 'time'
+                        ? timeConvert(item) + 'h'
+                        : item + (yComplement || ''),
                 textStyle: {
                     fontSize: 11.5
                 }
             }
         },
-        grid: { show: true }
+        grid: { show: true },
+        legend: {
+            x: 'center',
+            y: 'bottom',
+            icon: 'line',
+            top: 260,
+            data: [lineMakeName],
+            itemGap: 30
+        }
     }
 
     return (

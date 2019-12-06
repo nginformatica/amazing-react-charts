@@ -3,26 +3,24 @@ import ReactEcharts from 'echarts-for-react'
 import { IProps, IOptions, truncateText, TTooltipProps } from './AreaChart'
 
 interface IBarChartProps extends IProps {
-    percentValue?: boolean
+    xComplement?: string
 }
 
 const BarChart = (props: IBarChartProps) => {
-    const { data, color, percentValue, tooltip: tooltipProps } = props
+    const { data, color, xComplement, tooltip: tooltipProps } = props
     const yData = data.map(item => item.result)
     const xData = data.map(item => item.label)
     const backgroundBar = data.map(() => 100)
 
-    const formatTooltip = (chartValues:any) => {
+    const formatTooltip = (chartValues: any) => {
         const { label, result } = tooltipProps
         const { name, data } = chartValues
-        const value = percentValue ? data + '%' : data
-        
+        const value = xComplement ? data + xComplement : data
+
         return [
             `${label}: ${name} <br>` +
             `${result}: ${value} <br>`
         ]
-
-        console.log(name, data)
     }
 
     const tooltip: TTooltipProps = {
@@ -60,7 +58,7 @@ const BarChart = (props: IBarChartProps) => {
                     }
                 },
                 label: {
-                    formatter: percentValue ? '{c}%' : '{c}',
+                    formatter: xComplement ? `{c}${xComplement}` : '{c}',
                     position: 'insideRight',
                     fontSize: 11,
                     fontWeight: 400,
