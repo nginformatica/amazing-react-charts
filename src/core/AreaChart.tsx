@@ -18,36 +18,64 @@ export type TData = { label: string, result: number }
 
 export type TSeries = {
     name?: string
+    xAxisIndex?: number
     yAxisIndex?: number
     label?: TLabelProps
     areaStyle?: React.CSSProperties
     lineStyle?: React.CSSProperties
+    barGap?: string
+    barCategoryGap?: string
+    animation?: boolean
+    itemStyle?: TLabelProps
+    barWidth?: number | string
+    emphasis?: TNormalProps
+    stack?: string
+    silent?: boolean
     type: 'line' | 'bar'
     data: number[] | string[] | Date[]
 }
 
 export type TLabelProps = {
     normal?: TNormalProps
+    opacity?: number
+    color?: string
+    formatter?: any
+    show?: boolean,
+    position?: 'top' | 'bottom' | 'left' | 'right' | 'rightInside' | [number, number] | any
+    fontSize?: number
+    fontWeight?: number
+    distance?: number
+    borderColor?: string
+    barBorderRadius?: number
+    itemStyle?: TLabelProps
 }
 
 export type TNormalProps = {
-    show: boolean,
-    position?: 'top' | 'bottom' | 'left' | 'right' | [number, number]
+    formatter?: any
+    show?: boolean,
+    position?: 'top' | 'bottom' | 'left' | 'right' | 'rightInside' | [number, number] | any
     fontSize?: number
+    fontWeight?: number
     color?: string
     distance?: number
+    borderColor?: string
+    barBorderRadius?: number
+    opacity?: number
+    itemStyle?: TLabelProps
 }
 
 export type TGridProps = {
     show: boolean
 }
 
-export type TAxisLabel = {
+export type TAxisLabelProps = {
     // TODO: Type formatter correctly
     formatter?: any
     textStyle?: React.CSSProperties
     interval?: number | 'auto'
     rotate?: number
+    show?: boolean
+    inside?: boolean
 }
 
 type TSplitLineProps = {
@@ -65,10 +93,20 @@ export type TAxisProps = {
     type?: 'category' | 'value' | 'time'
     boundaryGap?: boolean
     data?: number[] | string[] | Date[]
-    axisLabel?: TAxisLabel
     gridIndex?: number
     showGrid?: boolean
     splitLine?: TSplitLineProps
+    axisLabel?: TAxisLabelProps
+    axisLine?: TAxisLineProps
+    axisTick?: TAxisTickProps
+}
+
+export type TAxisLineProps = {
+    show?: boolean
+}
+
+export type TAxisTickProps = {
+    show?: boolean
 }
 
 export interface IOptions {
@@ -103,6 +141,9 @@ export const timeConvert = (value: number) => {
         ? Math.round(value) + ':' + formatedMinutes
         : Math.round(value) + ':00'
 }
+
+export const truncateText = (text: string) =>	
+	 text.length > 8 ? text.slice(0, 5) + '...' : text
 
 const AreaChart = (props: IProps) => {
     const { data, xType, color, tooltip: tooltipProps, yType } = props

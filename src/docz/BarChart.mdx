@@ -10,20 +10,22 @@ import { Playground } from 'docz'
 
 ## Demo
 <Playground>
-    <BarChart 
-        color='#74007c'
+    <BarChart
+        percentValue
+        color='#8BC34A'
+        tooltip={ { label: 'Equipamento', result: 'Confiabilidade' } }
         data={ 
             [ 
-                { label: '2019-01-01', result: 1 }, 
-                { label: '2019-02-01', result: 4 },
-                { label: '2019-03-01', result: 3 }, 
-                { label: '2019-04-01', result: 2 },
-                { label: '2019-05-01', result: 4 },
-                { label: '2019-06-01', result: 5 },
-                { label: '2019-07-01', result: 3 },
-                { label: '2019-08-01', result: 7 },
-                { label: '2019-09-01', result: 8 },
-                { label: '2019-10-01', result: 9 },
+                { label: 'equipment 01', result: 10 }, 
+                { label: 'equipment 02', result: 40 },
+                { label: 'equipment 03', result: 30 }, 
+                { label: 'equipment 04', result: 20 },
+                { label: 'equipment 05', result: 40 },
+                { label: 'equipment 06', result: 50 },
+                { label: 'equipment 07', result: 1 },
+                { label: 'equipment 08', result: 70 },
+                { label: 'equipment 09', result: 80 },
+                { label: 'equipment 10', result: 99 }
             ] 
         }
     />
