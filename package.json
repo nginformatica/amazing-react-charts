@@ -4,7 +4,7 @@
   "description": "A react charts package based in echarts",
   "author": "Leonardo Filipe Rigon",
   "license": "MIT",
-  "main": "build/index.ts",
+  "main": "build/index.js",
   "types": "build/types.d.ts",
   "keywords": [
     "keepfy",
@@ -12,7 +12,8 @@
     "echarts"
   ],
   "scripts": {
-    "start": "docz dev",
+    "start": "tsc && docz dev",
+    "build:ts": "tsc --emitDeclarationOnly",
     "build": "docz build",
     "serve": "docz build && docz serve"
   },

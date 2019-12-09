@@ -1,9 +1,9 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { IDefaultChartProps,
-    IOptions,
+    TOptionsProps,
     TTooltipProps,
-    TData,
+    TEntryDataTuples,
     TAxisProps,
     TZoomProps,
     TDataTooltip
@@ -12,7 +12,7 @@ import { formatToBRL } from 'brazilian-values'
 import { mountMessage, formatTime, truncateText, toDate } from './auxiliarFunctions'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
-    data: [TData[], TData[]] | [TData[], TData[], TData[]]
+    data: TEntryDataTuples
     sumDataValues?: boolean
     colors?: [string, string] | [string, string, string]
     secondYAxisType?: 'percent' | string
@@ -101,7 +101,7 @@ const StackedBarChart = (props: IProps) => {
         ]
         : []
 
-    const options: IOptions = {
+    const options: TOptionsProps = {
         color: colors,
         series: [
             {

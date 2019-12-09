@@ -29,6 +29,10 @@ export type TEntryData = {
     result: number 
 }
 
+export type TEntryDataTuples = 
+    | [TEntryData[], TEntryData[]]
+    | [TEntryData[], TEntryData[], TEntryData[]]
+
 export type TSeries = {
     name?: string
     xAxisIndex?: number
@@ -167,7 +171,7 @@ export type TAxisTickProps = {
     interval?: number
 }
 
-export type IOptionsProps = {
+export type TOptionsProps = {
     color?: string[]
     grid?: TGridProps
     legend?: TLegendProps
@@ -259,7 +263,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         textStyle: { fontSize: 11.5 }
     }
 
-    const options: IOptionsProps = {
+    const options: TOptionsProps = {
         series: [{
             type: 'line',
             data: yData,

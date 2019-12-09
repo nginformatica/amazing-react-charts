@@ -1,6 +1,11 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { IDefaultChartProps, IOptions, TTooltipProps, TDataTooltip } from './AreaChart'
+import { 
+    IDefaultChartProps, 
+    TOptionsProps, 
+    TTooltipProps, 
+    TDataTooltip 
+} from './AreaChart'
 import { truncateText } from './auxiliarFunctions'
 
 interface IProps extends IDefaultChartProps {
@@ -29,7 +34,7 @@ const HorizontalBarChart = (props: IProps) => {
         textStyle: { fontSize: 11.5 }
     }
 
-    const options: IOptions = {
+    const options: TOptionsProps = {
         series: [
             {
                 barGap: '-100%',
