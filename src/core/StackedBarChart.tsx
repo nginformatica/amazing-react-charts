@@ -7,14 +7,15 @@ import {
     truncateText, 
     TData, 
     formatTime, 
-    toDate, 
-    TTooltip
+    toDate,
+    TAxisProps
 } from './AreaChart'
 import { formatToBRL } from 'brazilian-values'
 
-interface IStackedChartProps extends Omit<IProps, 'data'> {
+export interface IStackedChartProps extends Omit<IProps, 'data'> {
     data: [TData[], TData[]] | [TData[], TData[], TData[]]
     colors?: [string, string] | [string, string, string]
+    secondYAxisType?: 'percent' | string 
 }
 
 type TDataTooltip = {
@@ -36,6 +37,7 @@ const StackedBarChart = (props: IStackedChartProps) => {
         colors,
         xType,
         yComplement,
+        secondYAxisType
     } = props
     const { label, bottomResult, topResult, lineResult } = tooltipProps
 
@@ -60,20 +62,33 @@ const StackedBarChart = (props: IStackedChartProps) => {
             return [labelResult + tooltipBody ]
         }
 
-
+    const secondYAxis: TAxisProps = secondYAxisType === 'percent' && { 
+        type: 'value',
+        min: 0,
+        max: 100,
+        position: 'right',
+        axisLine: {
+            lineStyle: { color: colors[2] }
+        },
+        axisLabel: {
+            formatter: '{value} %',
+            color: colors[2]
+        }
+    }
+         
     const options: IOptions = {
         color: colors,
         series: [
             {
-                name: bottomResult,
-                type: 'bar',
-                data: yBottomData,
-                stack: 'stacked'
-            },
-            {
                 name: topResult,
                 type: 'bar',
                 data: yTopData,
+                stack: 'stacked'
+            },
+            {
+                name: bottomResult,
+                type: 'bar',
+                data: yBottomData,
                 stack: 'stacked'
             },
             {
@@ -98,7 +113,7 @@ const StackedBarChart = (props: IStackedChartProps) => {
                 interval: 0
             }
         },
-        yAxis: {
+        yAxis: [{
             type: 'value',
             axisLabel: {
                 formatter: (item: string) => yComplement === 'money'
@@ -108,6 +123,8 @@ const StackedBarChart = (props: IStackedChartProps) => {
                 interval: 0
             }
         },
+        secondYAxis
+    ],
         legend: {
 			x: 'center',
 			y: 'bottom',

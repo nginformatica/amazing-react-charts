@@ -86,12 +86,14 @@ export type TGridProps = {
 
 export type TAxisLabelProps = {
     // TODO: Type formatter correctly
+    type?: 'value' | 'category' | 'time' | 'log'
     formatter?: any
     textStyle?: React.CSSProperties
     interval?: number | 'auto'
     rotate?: number
     show?: boolean
     inside?: boolean
+    color?: string | string[]
 }
 
 type TSplitLineProps = {
@@ -106,15 +108,18 @@ type TSplitLineProps = {
 
 export type TAxisProps = {
     name?: string
-    type?: 'category' | 'value' | 'time'
+    type?: 'category' | 'value' | 'time' | 'log'
     boundaryGap?: boolean
     data?: number[] | string[] | Date[]
     gridIndex?: number
     showGrid?: boolean
     splitLine?: TSplitLineProps
     axisLabel?: TAxisLabelProps
-    axisLine?: TAxisLineProps
     axisTick?: TAxisTickProps
+    min?: number
+    max?: number
+    position?: 'right' | 'left'
+    axisLine?: TSplitLineProps
 }
 
 export type TAxisLineProps = {
@@ -132,8 +137,8 @@ export interface IOptions {
     grid?: TGridProps
     legend?: TLegendProps
     series: TSeries[]
-    xAxis: TAxisProps
-    yAxis: TAxisProps
+    xAxis: TAxisProps | TAxisProps[]
+    yAxis: TAxisProps | TAxisProps[]
 }
 
 export type TLegendProps = {
