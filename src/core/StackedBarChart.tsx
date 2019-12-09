@@ -1,6 +1,6 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { IProps,
+import { IDefaultChartProps,
     IOptions,
     TTooltipProps,
     TData,
@@ -11,14 +11,14 @@ import { IProps,
 import { formatToBRL } from 'brazilian-values'
 import { mountMessage, formatTime, truncateText, toDate } from './auxiliarFunctions'
 
-export interface IStackedChartProps extends Omit<IProps, 'data'> {
+interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: [TData[], TData[]] | [TData[], TData[], TData[]]
     sumDataValues?: boolean
     colors?: [string, string] | [string, string, string]
     secondYAxisType?: 'percent' | string
 }
 
-const StackedBarChart = (props: IStackedChartProps) => {
+const StackedBarChart = (props: IProps) => {
     const {
         tooltip: tooltipProps,
         data,
@@ -46,7 +46,8 @@ const StackedBarChart = (props: IStackedChartProps) => {
 
         const tooltipBody =
             values.map((value: TDataTooltip) =>
-                mountMessage(value,
+                mountMessage(
+                    value,
                     yComplement,
                     secondYAxisType,
                     stackedValues,

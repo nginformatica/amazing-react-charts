@@ -2,20 +2,20 @@ import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { toDate, timeConvert, formatTooltip, formatTime } from './auxiliarFunctions'
 
-export interface IProps {
-    data: TData[]
+export interface IDefaultChartProps {
+    data: TEntryData[]
     lineMarkValue?: number
     lineMarkColor?: string
     lineMakeName?: string
     yComplement?: string | 'money'
     tooltipComplement?: string
-    tooltip?: TTooltip
+    tooltip?: TTooltipEntryProps
     color?: string
     xType?: 'time' | 'category'
     yType?: 'time' | 'value'
 }
 
-export type TTooltip = {
+export type TTooltipEntryProps = {
     label: string,
     result?: string,
     topResult?: string,
@@ -24,7 +24,10 @@ export type TTooltip = {
     complement?: string
 }
 
-export type TData = { label: string, result: number }
+export type TEntryData = { 
+    label: string, 
+    result: number 
+}
 
 export type TSeries = {
     name?: string
@@ -49,13 +52,46 @@ export type TSeries = {
     data: number[] | string[] | Date[]
 }
 
+type TFormatterReturn = 
+    | string[]
+    | string 
+    | number
+
+type TFormatterEntry = 
+    | string 
+    | number 
+    | TDataTooltip 
+    | TDataTooltip[]
+
+export type TFormatterType = string | ((item: TFormatterEntry) => TFormatterReturn)
+
+export type TPositionType = 
+    | 'top' 
+    | 'bottom' 
+    | 'left' 
+    | 'right' 
+    | 'insideRight'
+    | 'insideLeft' 
+    | [number, number]
+
+export type TChartType = 
+    | 'time'
+    | 'category'
+    | 'value'
+    | 'log'
+
+export type TLineStyleType =
+    | 'solid' 
+    | 'dashed' 
+    | 'dotted'
+    
 export type TLabelProps = {
     normal?: TNormalProps
     opacity?: number
     color?: string
-    formatter?: string | ((item: string | number) => string)
+    formatter?: TFormatterType
     show?: boolean,
-    position?: 'top' | 'bottom' | 'left' | 'right' | 'rightInside' | [number, number] | any
+    position?: TPositionType
     fontSize?: number
     fontWeight?: number
     distance?: number
@@ -65,9 +101,9 @@ export type TLabelProps = {
 }
 
 export type TNormalProps = {
-    formatter?: string | ((item: string | number) => string)
+    formatter?: TFormatterType
     show?: boolean,
-    position?: 'top' | 'bottom' | 'left' | 'right' | 'rightInside' | [number, number]
+    position?: TPositionType
     fontSize?: number
     fontWeight?: number
     color?: string
@@ -83,8 +119,8 @@ export type TGridProps = {
 }
 
 export type TAxisLabelProps = {
-    type?: 'value' | 'category' | 'time' | 'log'
-    formatter?: string | ((item: string | number) => string | string[])
+    type?: TChartType
+    formatter?: TFormatterType
     textStyle?: React.CSSProperties
     interval?: number | 'auto'
     rotate?: number
@@ -101,13 +137,13 @@ type TSplitLineProps = {
         color?: string | string[]
         width?: number
         opacity?: number
-        type?: 'solid' | 'dashed' | 'dotted'
+        type?: TLineStyleType
     }
 }
 
 export type TAxisProps = {
     name?: string
-    type?: 'category' | 'value' | 'time' | 'log'
+    type?: TChartType
     boundaryGap?: boolean
     data?: number[] | string[] | Date[]
     gridIndex?: number
@@ -117,7 +153,7 @@ export type TAxisProps = {
     axisTick?: TAxisTickProps
     min?: number
     max?: number
-    position?: 'right' | 'left'
+    position?: TPositionType
     axisLine?: TSplitLineProps
 }
 
@@ -131,7 +167,7 @@ export type TAxisTickProps = {
     interval?: number
 }
 
-export interface IOptions {
+export type IOptionsProps = {
     color?: string[]
     grid?: TGridProps
     legend?: TLegendProps
@@ -159,7 +195,7 @@ export type TLegendProps = {
 }
 
 export type TTooltipProps = {
-    formatter: string | ((item: any) => string | string[])
+    formatter: TFormatterType
     trigger?: 'axis'
     textStyle?: React.CSSProperties
 }
@@ -173,8 +209,7 @@ export type TDataTooltip = {
     axisValueLabel?: string
 }
 
-
-const AreaChart = (props: IProps) => {
+const AreaChart = (props: IDefaultChartProps) => {
     const {
         data,
         xType,
@@ -194,8 +229,8 @@ const AreaChart = (props: IProps) => {
         ? data.map(item => toDate(item.label))
         : data.map(item => item.label)
 
-    const formatLabel = (chartValues: any) => {
-        const { data, dataIndex } = chartValues
+    const formatLabel = (chartValues: TDataTooltip) => {
+        const { data } = chartValues
         
         return (yComplement
             ? data + yComplement
@@ -205,7 +240,6 @@ const AreaChart = (props: IProps) => {
         )
     }
 
-    //TODO: Type formatSingleTootltip correctly
     const formatSingleTooltip = (chartValues: TDataTooltip[]) => {
         const { label, result } = tooltipProps
         const { axisValueLabel, data } = chartValues[0]
@@ -225,7 +259,7 @@ const AreaChart = (props: IProps) => {
         textStyle: { fontSize: 11.5 }
     }
 
-    const options: IOptions = {
+    const options: IOptionsProps = {
         series: [{
             type: 'line',
             data: yData,

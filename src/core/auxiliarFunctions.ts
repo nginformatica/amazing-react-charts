@@ -2,6 +2,7 @@ import { formatToBRL } from "brazilian-values"
 import { parse, format } from "date-fns"
 import { takeLast } from "ramda"
 import { ptBR } from "date-fns/locale"
+import { TDataTooltip } from "./AreaChart"
 
 export const takeComplement = (data: string | number, complement: string) =>
     complement === 'money'
@@ -21,7 +22,7 @@ export const moneyPercent = (
 }
 
 export const mountMessage = (
-    value: any,
+    value: TDataTooltip,
     complement: string,
     axisType: string,
     stackedValues: number,
@@ -29,7 +30,7 @@ export const mountMessage = (
 ) =>
     complement === 'money' && value.seriesType !== 'line'
         ? value.marker + value.seriesName + ': ' + (
-            moneyPercent(value.data, stackedValues, sumDataValues)
+            moneyPercent(value.data as number, stackedValues, sumDataValues)
         )
         : axisType === 'percent'
             ? value.marker + value.seriesName + ': ' + value.data + '% <br>'
