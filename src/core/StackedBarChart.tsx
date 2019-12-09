@@ -17,7 +17,17 @@ interface IStackedChartProps extends Omit<IProps, 'data'> {
     colors?: [string, string] | [string, string, string]
 }
 
-const tooltipDefault = { data: 0, marker: '' }
+type TDataTooltip = {
+    name?: string
+    marker: string
+    seriesName: string
+    data: number | string
+}
+
+const mountMessage = (value: TDataTooltip, complement: string) => 
+    complement === 'money' 
+        ? value.marker + value.seriesName + ': ' + formatToBRL(value.data) + '<br>'
+        : value.marker + value.seriesName + ': ' + value.data + complement + '<br>'
 
 const StackedBarChart = (props: IStackedChartProps) => {
     const {
@@ -37,21 +47,17 @@ const StackedBarChart = (props: IStackedChartProps) => {
         ? bottomData.map(item => toDate(item.label))
         : bottomData.map(item => item.label)
 
-        const formatTooltip = (values: any) => {
-            const { data: botValue, marker: botMarker } = values[0] ? values[0] : tooltipDefault
-            const botToopTip = botMarker + bottomResult + ': ' + formatToBRL(botValue) + '<br>'
-            
-            const { data: topValue, marker: topMarker } = values[1] ? values[1] : tooltipDefault
-            const topToopTip = topMarker + topResult + ': ' + formatToBRL(topValue) + '<br>'
-            
-            const { data: lineValue, marker: lineMarker } = values[2] ? values[2] : tooltipDefault
-            const lineToopTip = lineMarker + lineResult + ': ' + formatToBRL(lineValue) + '<br>'
-            
-            const labelResult =  xType === 'time' 
-                ? label + ':' + formatTime(values[0].name, 'MMMM yyyy') + '<br>' 
-                : label + ':' + values[0].name + '<br>' 
+        const formatTooltip = (values: TDataTooltip[]) => {
+            const tooltipBody = 
+                values.map(
+                    (value: TDataTooltip) => mountMessage(value, yComplement)
+                ).join(' ')
                 
-            return [labelResult + botToopTip + topToopTip + lineToopTip]
+            const labelResult =  xType === 'time' 
+                ? label + ': ' + formatTime(values[0].name, 'MMMM yyyy') + '<br>' 
+                : label + ': ' + values[0].name + '<br>' 
+                
+            return [labelResult + tooltipBody ]
         }
 
 
