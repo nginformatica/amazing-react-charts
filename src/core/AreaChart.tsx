@@ -129,7 +129,7 @@ export type TAxisLineProps = {
 export type TAxisTickProps = {
     show?: boolean
     alignWithLabel?: boolean
-    interval: number
+    interval?: number
 }
 
 export interface IOptions {
@@ -137,9 +137,18 @@ export interface IOptions {
     grid?: TGridProps
     legend?: TLegendProps
     series: TSeries[]
+    dataZoom?: TZoomProps[] 
     xAxis: TAxisProps | TAxisProps[]
     yAxis: TAxisProps | TAxisProps[]
 }
+
+export type TZoomProps = {
+        bottom?: number
+        show?: boolean
+        zoomLock?: boolean
+        type: 'inside' | 'slider',
+        endValue: number | Date | string
+    }
 
 export type TLegendProps = {
     x?: 'center' | 'bottom',
@@ -175,8 +184,11 @@ export const timeConvert = (value: number) => {
         : Math.round(value) + ':00'
 }
 
-export const truncateText = (text: string) =>
-    text.length > 8 ? text.slice(0, 5) + '...' : text
+export const truncateText = (text: string, listSize?: number) => {
+    const wordSize = listSize && listSize > 10 ? 8 : 12 
+
+    return text.length > wordSize ? text.slice(0, wordSize-3) + '...' : text
+}
 
 const AreaChart = (props: IProps) => {
     const {

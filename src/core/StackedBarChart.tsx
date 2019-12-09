@@ -8,7 +8,8 @@ import {
     TData,
     formatTime,
     toDate,
-    TAxisProps
+    TAxisProps,
+    TZoomProps
 } from './AreaChart'
 import { formatToBRL } from 'brazilian-values'
 
@@ -33,13 +34,13 @@ export const takeComplement = (data: string | number, complement: string) =>
         : ': ' + data + complement + '<br>'
 
 const moneyPercent = (
-    value: number, 
-    valueTotal: number, 
+    value: number,
+    valueTotal: number,
     sumDataValues?: boolean
 ) => {
     const percent = value !== 0 ? (value * (100 / valueTotal)).toFixed(2) : 0
 
-    return sumDataValues 
+    return sumDataValues
         ? formatToBRL(value) + ' (' + percent + '%) <br>'
         : formatToBRL(value) + '<br>'
 }
@@ -52,13 +53,12 @@ export const mountMessage = (
     sumDataValues: boolean
 ) =>
     complement === 'money' && value.seriesType !== 'line'
-        ? value.marker + value.seriesName + ': ' + ( 
+        ? value.marker + value.seriesName + ': ' + (
             moneyPercent(value.data, stackedValues, sumDataValues)
-        ) 
+        )
         : axisType === 'percent'
             ? value.marker + value.seriesName + ': ' + value.data + '% <br>'
             : value.marker + value.seriesName + takeComplement(value.data, complement)
-
 
 
 const StackedBarChart = (props: IStackedChartProps) => {
@@ -89,10 +89,10 @@ const StackedBarChart = (props: IStackedChartProps) => {
 
         const tooltipBody =
             values.map((value: TDataTooltip) =>
-                mountMessage(value, 
-                    yComplement, 
-                    secondYAxisType, 
-                    stackedValues, 
+                mountMessage(value,
+                    yComplement,
+                    secondYAxisType,
+                    stackedValues,
                     sumDataValues
                 )
             ).join(' ')
@@ -101,12 +101,11 @@ const StackedBarChart = (props: IStackedChartProps) => {
             ? label + ': ' + formatTime(values[0].name, 'MMMM yyyy') + '<br>'
             : label + ': ' + values[0].name + '<br>'
 
-        const tooltipFooter = sumDataValues && values.length === 3 
+        const tooltipFooter = sumDataValues && values.length === 3
             ? complement + ': ' + formatToBRL(stackedValues)
             : ''
 
         return [labelResult + tooltipBody + tooltipFooter]
-
     }
 
     const secondYAxis: TAxisProps = secondYAxisType === 'percent'
@@ -123,10 +122,26 @@ const StackedBarChart = (props: IStackedChartProps) => {
                 color: colors[2]
             },
             splitLine: {
-				show: false
-			}
+                show: false
+            }
         }
         : {}
+
+    const scrollable: TZoomProps[] = xData.length > 20
+        ? [
+            {
+                type: 'inside',
+                endValue: xData[17],
+                zoomLock: true
+            }, {
+                bottom: 250,
+                show: true,
+                zoomLock: true,
+                type: 'slider',
+                endValue: xData[17]
+            }
+        ]
+        : []
 
     const options: IOptions = {
         color: colors,
@@ -158,14 +173,18 @@ const StackedBarChart = (props: IStackedChartProps) => {
             axisLabel: {
                 formatter: (item: string) => xType === 'time'
                     ? formatTime(item, 'MMM/yy')
-                    : truncateText(item),
-                textStyle: { fontSize: 11.5 },
+                    : truncateText(item, xData.length),
+                textStyle: { fontSize: xData.length > 14 ? 10 : 11.5 },
                 interval: 0
             },
             splitLine: {
                 show: true,
                 alignWithLabel: true
-			}
+            },
+            axisTick: {
+                show: true,
+                alignWithLabel: true
+            }
         },
         yAxis: [{
             min: 0,
@@ -182,8 +201,8 @@ const StackedBarChart = (props: IStackedChartProps) => {
             splitLine: {
                 show: true
             }
-        }, 
-        secondYAxis
+        },
+            secondYAxis
         ],
         legend: {
             x: 'center',
@@ -191,7 +210,8 @@ const StackedBarChart = (props: IStackedChartProps) => {
             top: 260,
             data: [topResult, bottomResult, lineResult],
             itemGap: 30
-        }
+        },
+        dataZoom: scrollable
     }
 
     const tooltip: TTooltipProps = {
