@@ -13,6 +13,7 @@ export interface IDefaultChartProps {
     color?: string
     xType?: 'time' | 'category'
     yType?: 'time' | 'value'
+    barWidth?: number
 }
 
 export type TTooltipEntryProps = {
@@ -248,7 +249,9 @@ const AreaChart = (props: IDefaultChartProps) => {
         const { label, result } = tooltipProps
         const { axisValueLabel, data } = chartValues[0]
         const complement = tooltipComplement ? tooltipComplement : ''
-        const values = yType === 'time' ? timeConvert(data as number) + 'h' : data
+        const values = yType === 'time' 
+            ? timeConvert(data as number) + 'h' 
+            : data + (yComplement || '')
 
         return [
             `${label}: ${formatTooltip(axisValueLabel)} <br>` +

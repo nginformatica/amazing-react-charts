@@ -1,0 +1,21 @@
+---
+name: Vertical bar charts
+route: vertical-bar-charts
+---
+
+import VerticalBarChart from '../core/VerticalBarChart'
+import { Playground } from 'docz'
+
+# Stacked bar chart example
+<Playground>
+    <VerticalBarChart
+        color='green'
+        xType='time'
+        barWidth={ 100 }
+        yComplement='%'
+        tooltip={ { label: 'Data', result: 'Disponibilidade' } }
+        data={[
+            { label: '2019-01-01', result: 50 } 
+        ]} 
+    />
+</Playground>
