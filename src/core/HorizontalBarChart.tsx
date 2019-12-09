@@ -1,6 +1,7 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { IProps, IOptions, truncateText, TTooltipProps } from './AreaChart'
+import { IProps, IOptions, TTooltipProps } from './AreaChart'
+import { truncateText } from './auxiliarFunctions'
 
 interface IBarChartProps extends IProps {
     xComplement?: string

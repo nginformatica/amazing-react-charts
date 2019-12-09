@@ -1,8 +1,6 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { format, parse } from 'date-fns'
-import ptBR from 'date-fns/locale/pt-BR'
-import { takeLast } from 'ramda'
+import { toDate, timeConvert, formatTooltip, formatTime } from './auxiliarFunctions'
 
 export interface IProps {
     data: TData[]
@@ -93,6 +91,7 @@ export type TAxisLabelProps = {
     show?: boolean
     inside?: boolean
     color?: string | string[]
+    margin?: number
 }
 
 type TSplitLineProps = {
@@ -165,30 +164,15 @@ export type TTooltipProps = {
     textStyle?: React.CSSProperties
 }
 
-
-export const toDate = (text: string) => parse(text, 'yyyy-MM-dd', new Date())
-
-export const formatTime = (text: string, dateFormat: string) =>
-    format(new Date(text), dateFormat, { locale: ptBR })
-
-export const formatTooltip = (text: string) =>
-    format(new Date(text), 'dd/MM/yyyy')
-
-export const timeConvert = (value: number) => {
-    const seconds = Math.round((value % 1) * 3600)
-    const minutes = Math.trunc(seconds / 60)
-    const formatedMinutes = takeLast(2, '0' + minutes)
-
-    return minutes > 0
-        ? Math.round(value) + ':' + formatedMinutes
-        : Math.round(value) + ':00'
+export type TDataTooltip = {
+    name?: string
+    marker?: string
+    seriesName?: string
+    data?: number | string
+    seriesType?: string
+    axisValueLabel?: string
 }
 
-export const truncateText = (text: string, listSize?: number) => {
-    const wordSize = listSize && listSize > 10 ? 8 : 12 
-
-    return text.length > wordSize ? text.slice(0, wordSize-3) + '...' : text
-}
 
 const AreaChart = (props: IProps) => {
     const {
@@ -211,8 +195,8 @@ const AreaChart = (props: IProps) => {
         : data.map(item => item.label)
 
     const formatLabel = (chartValues: any) => {
-        const { data } = chartValues
-
+        const { data, dataIndex } = chartValues
+        
         return (yComplement
             ? data + yComplement
             : yType === 'time'
@@ -222,11 +206,11 @@ const AreaChart = (props: IProps) => {
     }
 
     //TODO: Type formatSingleTootltip correctly
-    const formatSingleTooltip = (chartValues: any) => {
+    const formatSingleTooltip = (chartValues: TDataTooltip[]) => {
         const { label, result } = tooltipProps
         const { axisValueLabel, data } = chartValues[0]
         const complement = tooltipComplement ? tooltipComplement : ''
-        const values = yType === 'time' ? timeConvert(data) + 'h' : data
+        const values = yType === 'time' ? timeConvert(data as number) + 'h' : data
 
         return [
             `${label}: ${formatTooltip(axisValueLabel)} <br>` +
@@ -273,7 +257,7 @@ const AreaChart = (props: IProps) => {
             data: markLine,
             lineStyle: {
                 color: lineMarkColor
-            },
+            }
         }
         ],
 
@@ -311,6 +295,7 @@ const AreaChart = (props: IProps) => {
                 }
             },
             axisLabel: {
+                margin: yType === 'time' ? 14 : 10,
                 formatter:
                     (item: number) => yType === 'time'
                         ? timeConvert(item) + 'h'

@@ -1,17 +1,15 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import {
-    IProps,
+import { IProps,
     IOptions,
     TTooltipProps,
-    truncateText,
     TData,
-    formatTime,
-    toDate,
     TAxisProps,
-    TZoomProps
+    TZoomProps,
+    TDataTooltip
 } from './AreaChart'
 import { formatToBRL } from 'brazilian-values'
+import { mountMessage, formatTime, truncateText, toDate } from './auxiliarFunctions'
 
 export interface IStackedChartProps extends Omit<IProps, 'data'> {
     data: [TData[], TData[]] | [TData[], TData[], TData[]]
@@ -19,47 +17,6 @@ export interface IStackedChartProps extends Omit<IProps, 'data'> {
     colors?: [string, string] | [string, string, string]
     secondYAxisType?: 'percent' | string
 }
-
-type TDataTooltip = {
-    name?: string
-    marker: string
-    seriesName: string
-    data: number | string
-    seriesType: string
-}
-
-export const takeComplement = (data: string | number, complement: string) =>
-    complement === 'money'
-        ? ': ' + formatToBRL(data) + '<br>'
-        : ': ' + data + complement + '<br>'
-
-const moneyPercent = (
-    value: number,
-    valueTotal: number,
-    sumDataValues?: boolean
-) => {
-    const percent = value !== 0 ? (value * (100 / valueTotal)).toFixed(2) : 0
-
-    return sumDataValues
-        ? formatToBRL(value) + ' (' + percent + '%) <br>'
-        : formatToBRL(value) + '<br>'
-}
-
-export const mountMessage = (
-    value: any,
-    complement: string,
-    axisType: string,
-    stackedValues: number,
-    sumDataValues: boolean
-) =>
-    complement === 'money' && value.seriesType !== 'line'
-        ? value.marker + value.seriesName + ': ' + (
-            moneyPercent(value.data, stackedValues, sumDataValues)
-        )
-        : axisType === 'percent'
-            ? value.marker + value.seriesName + ': ' + value.data + '% <br>'
-            : value.marker + value.seriesName + takeComplement(value.data, complement)
-
 
 const StackedBarChart = (props: IStackedChartProps) => {
     const {
