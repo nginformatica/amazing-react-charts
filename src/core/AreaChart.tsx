@@ -55,7 +55,7 @@ export type TLabelProps = {
     normal?: TNormalProps
     opacity?: number
     color?: string
-    formatter?: any
+    formatter?: string | ((item: string | number) => string)
     show?: boolean,
     position?: 'top' | 'bottom' | 'left' | 'right' | 'rightInside' | [number, number] | any
     fontSize?: number
@@ -67,9 +67,9 @@ export type TLabelProps = {
 }
 
 export type TNormalProps = {
-    formatter?: any
+    formatter?: string | ((item: string | number) => string)
     show?: boolean,
-    position?: 'top' | 'bottom' | 'left' | 'right' | 'rightInside' | [number, number] | any
+    position?: 'top' | 'bottom' | 'left' | 'right' | 'rightInside' | [number, number]
     fontSize?: number
     fontWeight?: number
     color?: string
@@ -85,9 +85,8 @@ export type TGridProps = {
 }
 
 export type TAxisLabelProps = {
-    // TODO: Type formatter correctly
     type?: 'value' | 'category' | 'time' | 'log'
-    formatter?: any
+    formatter?: string | ((item: string | number) => string | string[])
     textStyle?: React.CSSProperties
     interval?: number | 'auto'
     rotate?: number
@@ -98,6 +97,7 @@ export type TAxisLabelProps = {
 
 type TSplitLineProps = {
     show?: boolean
+    alignWithLabel?: boolean
     lineStyle?: {
         color?: string | string[]
         width?: number
@@ -151,8 +151,7 @@ export type TLegendProps = {
 }
 
 export type TTooltipProps = {
-    // TODO: Type formatter correctly
-    formatter: any
+    formatter: string | ((item: any) => string | string[])
     trigger?: 'axis'
     textStyle?: React.CSSProperties
 }

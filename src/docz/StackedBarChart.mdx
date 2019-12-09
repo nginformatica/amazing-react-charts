@@ -16,7 +16,7 @@ import { Playground } from 'docz'
             label: 'Período', 
             topResult: 'Preventivas',
             bottomResult: 'Corretivas',
-            lineResult: 'Total' 
+            lineResult: 'Total'
             } }
         data={ 
             [
@@ -51,6 +51,7 @@ import { Playground } from 'docz'
 
 <Playground>
     <StackedBarChart
+        sumDataValues
         yComplement='money'
         colors={ ['#487086', '#87C4CB', '#E97551'] }
         secondYAxisType='percent'
@@ -58,7 +59,8 @@ import { Playground } from 'docz'
             label: 'Equipamento', 
             topResult: 'Aquisição',
             bottomResult: 'Manutenção',
-            lineResult: 'Custo % acumulado' 
+            lineResult: 'Custo % acumulado',
+            complement: 'Custo total'
             } }
         data={ 
             [
