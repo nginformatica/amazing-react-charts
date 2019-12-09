@@ -14,8 +14,9 @@
   "scripts": {
     "start": "tsc && docz dev",
     "build:ts": "tsc --emitDeclarationOnly",
-    "build": "docz build && yarn build:ts",
-    "serve": "docz build && docz serve"
+    "build": "yarn build:ts && docz build ",
+    "serve": "docz build && docz serve",
+    "build:prod": "gatsby build"
   },
   "dependencies": {
     "docz": "2.1.1",
