@@ -6,7 +6,8 @@ import { IDefaultChartProps,
     TEntryDataTuples,
     TAxisProps,
     TZoomProps,
-    TDataTooltip
+    TDataTooltip,
+    TEntryData
 } from './AreaChart'
 import { formatToBRL } from 'brazilian-values'
 import { mountMessage, formatTime, truncateText, toDate } from './auxiliarFunctions'
@@ -32,12 +33,12 @@ const StackedBarChart = (props: IProps) => {
     const { label, bottomResult, topResult, lineResult, complement } = tooltipProps
 
     const [bottomData, topData, lineData = []] = data
-    const yBottomData = bottomData.map(item => item.result)
-    const yTopData = topData.map(item => item.result)
-    const yLineData = lineData.map(item => item.result)
+    const yBottomData = bottomData.map((item: TEntryData) => item.result)
+    const yTopData = topData.map((item: TEntryData)  => item.result)
+    const yLineData = lineData.map((item: TEntryData)  => item.result)
     const xData = xType === 'time'
-        ? bottomData.map(item => toDate(item.label))
-        : bottomData.map(item => item.label)
+        ? bottomData.map((item:TEntryData) => toDate(item.label))
+        : bottomData.map((item:TEntryData) => item.label)
 
     const formatTooltip = (values: TDataTooltip[]) => {
         const valueBot = values[0] ? Number(values[0].data) : 0

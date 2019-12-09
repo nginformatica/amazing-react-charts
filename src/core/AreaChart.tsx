@@ -228,10 +228,10 @@ const AreaChart = (props: IDefaultChartProps) => {
     } = props
 
     const markLine = lineMarkValue && data.map(() => lineMarkValue)
-    const yData = data.map(item => item.result)
+    const yData = data.map((item: TEntryData) => item.result)
     const xData = xType === 'time'
-        ? data.map(item => toDate(item.label))
-        : data.map(item => item.label)
+        ? data.map((item: TEntryData) => toDate(item.label))
+        : data.map((item: TEntryData) => item.label)
 
     const formatLabel = (chartValues: TDataTooltip) => {
         const { data } = chartValues

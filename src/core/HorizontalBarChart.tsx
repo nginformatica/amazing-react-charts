@@ -4,7 +4,8 @@ import {
     IDefaultChartProps, 
     TOptionsProps, 
     TTooltipProps, 
-    TDataTooltip 
+    TDataTooltip, 
+    TEntryData
 } from './AreaChart'
 import { truncateText } from './auxiliarFunctions'
 
@@ -14,8 +15,8 @@ interface IProps extends IDefaultChartProps {
 
 const HorizontalBarChart = (props: IProps) => {
     const { data, color, xComplement, tooltip: tooltipProps } = props
-    const xData = data.map(item => item.result)
-    const yData = data.map(item => item.label)
+    const xData = data.map((item: TEntryData) => item.result)
+    const yData = data.map((item: TEntryData)=> item.label)
     const backgroundBar = data.map(() => 100)
 
     const formatTooltip = (chartValues: TDataTooltip) => {
