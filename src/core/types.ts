@@ -50,6 +50,7 @@ export type TSeries = {
     symbolSize?: number
     showSymbol?: boolean
     hoverAnimation?: boolean
+    barMaxWidth?: number | string
     type: 'line' | 'bar'
     data: number[] | string[] | Date[]
 }

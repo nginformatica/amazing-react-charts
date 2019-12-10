@@ -8,6 +8,7 @@ import {
     TTooltipProps
 } from './types'
 import { truncateText } from './auxiliarFunctions'
+import { reverse } from 'ramda'
 
 interface IProps extends IDefaultChartProps {
     xComplement?: string
@@ -15,8 +16,8 @@ interface IProps extends IDefaultChartProps {
 
 const HorizontalBarChart = (props: IProps) => {
     const { data, color, xComplement, tooltip: tooltipProps } = props
-    const xData = data.map((item: TEntryData) => item.result)
-    const yData = data.map((item: TEntryData) => item.label)
+    const xData = reverse(data.map((item: TEntryData) => item.result))
+    const yData = reverse(data.map((item: TEntryData) => item.label))
     const backgroundBar = data.map(() => 100)
 
     const formatTooltip = (chartValues: TDataTooltip) => {
@@ -42,7 +43,8 @@ const HorizontalBarChart = (props: IProps) => {
                 xAxisIndex: 0,
                 type: 'bar',
                 animation: false,
-                barWidth: 12,
+                barWidth: '70%',
+                barMaxWidth: 25,
                 silent: true,
                 data: backgroundBar,
                 itemStyle: {
@@ -57,7 +59,8 @@ const HorizontalBarChart = (props: IProps) => {
                 xAxisIndex: 0,
                 data: xData,
                 type: 'bar',
-                barWidth: 12,
+                barWidth: '70%',
+                barMaxWidth: 25,
                 itemStyle: {
                     normal: {
                         color: color,
