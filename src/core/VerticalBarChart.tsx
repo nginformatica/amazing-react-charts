@@ -18,12 +18,13 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         yType,
         tooltip: tooltipProps,
         tooltipComplement,
-        barWidth
+        barWidth,
+        dateFormat
     } = props
 
     const yData = data.map((item: TEntryData) => item.result)
     const xData = xType === 'time'
-        ? data.map((item: TEntryData) => toDate(item.label))
+        ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
         : data.map((item: TEntryData) => item.label)
 
     const formatLabel = (chartValues: TDataTooltip) => {

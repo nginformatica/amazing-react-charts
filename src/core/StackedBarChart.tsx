@@ -28,7 +28,8 @@ const StackedBarChart = (props: IProps) => {
         xType,
         yComplement,
         secondYAxisType,
-        sumDataValues
+        sumDataValues,
+        dateFormat
     } = props
 
     const { label, bottomResult, topResult, lineResult, complement } = tooltipProps
@@ -38,7 +39,7 @@ const StackedBarChart = (props: IProps) => {
     const yTopData = topData.map((item: TEntryData) => item.result)
     const yLineData = lineData.map((item: TEntryData) => item.result)
     const xData = xType === 'time'
-        ? bottomData.map((item: TEntryData) => toDate(item.label))
+        ? bottomData.map((item: TEntryData) => toDate(item.label, dateFormat))
         : bottomData.map((item: TEntryData) => item.label)
 
     const formatTooltip = (values: TDataTooltip[]) => {

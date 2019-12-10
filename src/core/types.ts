@@ -10,6 +10,7 @@ export interface IDefaultChartProps {
     xType?: 'time' | 'category'
     yType?: 'time' | 'value'
     barWidth?: number
+    dateFormat?: string
 }
 
 export type TTooltipEntryProps = {

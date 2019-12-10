@@ -38,22 +38,27 @@ export const mountMessage = (
                 takeComplement(value.data, complement)
             )
 
-export const toDate = (text: string) => parse(text, 'yyyy-MM-dd', new Date())
+export const toDate = (text: string, format?: string) => 
+    parse(text, format ? format : 'yyyy-MM-dd', new Date())  
 
 export const formatTime = (text: string, dateFormat: string) =>
     format(new Date(text), dateFormat, { locale: ptBR })
 
-export const formatTooltip = (text: string) =>
-    format(new Date(text), 'dd/MM/yyyy')
+export const formatTooltip = (text: string, dateFormat?: string) =>
+    format(
+        new Date(text), 
+        dateFormat ? 'MMMM/yyyy' : 'dd/MM/yyyy', 
+        { locale: ptBR }
+    )
 
 export const timeConvert = (value: number) => {
-    const seconds = Math.round((value % 1) * 3600)
+    const seconds = Math.round((value % 1) * 3600)    
     const minutes = Math.trunc(seconds / 60)
     const formatedMinutes = takeLast(2, '0' + minutes)
 
     return minutes > 0
-        ? Math.round(value) + ':' + formatedMinutes
-        : Math.round(value) + ':00'
+        ? Math.floor(value) + ':' + formatedMinutes
+        : Math.floor(value) + ':00'
 }
 
 export const truncateText = (text: string, listSize?: number) => {

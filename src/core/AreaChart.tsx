@@ -20,24 +20,24 @@ const AreaChart = (props: IDefaultChartProps) => {
         lineMarkColor,
         lineMakeName,
         tooltipComplement,
-        yComplement
+        yComplement,
+        dateFormat
     } = props
 
     const markLine = lineMarkValue && data.map(() => lineMarkValue)
     const yData = data.map((item: TEntryData) => item.result)
     const xData = xType === 'time'
-        ? data.map((item: TEntryData) => toDate(item.label))
+        ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
         : data.map((item: TEntryData) => item.label)
 
     const formatLabel = (chartValues: TDataTooltip) => {
         const { data } = chartValues
 
-        return (yComplement
-            ? data + yComplement
+        return yComplement
+            ? Number(data).toFixed(2) + yComplement
             : yType === 'time'
                 ? timeConvert(Number(data))
                 : data
-        )
     }
 
     const formatSingleTooltip = (chartValues: TDataTooltip[]) => {
@@ -49,7 +49,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             : data + (yComplement || '')
 
         return [
-            `${label}: ${formatTooltip(axisValueLabel)} <br>` +
+            `${label}: ${formatTooltip(axisValueLabel, dateFormat)} <br>` +
             `${result}: ${values} <br>` +
             complement
         ]
@@ -112,7 +112,10 @@ const AreaChart = (props: IDefaultChartProps) => {
             axisLabel: {
                 formatter:
                     (item: string) => xType === 'time'
-                        ? formatTime(item, 'dd MMM')
+                        ? formatTime(
+                            item, 
+                            dateFormat === 'yyyy-MM' ? 'MMM/yyyy' : 'dd MMM'
+                        )
                         : item,
                 rotate: xData.length >= 24 ? 45 : 0,
                 interval: 0,
