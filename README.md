@@ -4,15 +4,11 @@ route: /
 layout: 'fullpage'
 ---
 
-<h1 align="center">NAME</h1>
+<h1 align="center">Keepfy React Charts</h1>
 
 <div align="center">
 
 [React](http://facebook.github.io/react/) UI toolkit for the web.
-
-[![npm package](https://img.shields.io/npm/v/flipper-ui/latest.svg)](https://www.npmjs.com/package/flipper-ui)
-[![npm downloads](https://img.shields.io/npm/dm/flipper-ui.svg)](https://www.npmjs.com/package/flipper-ui)
-[![Dependencies](https://img.shields.io/david/nginformatica/flipper-ui.svg?style=flat-square)](https://david-dm.org/nginformatica/flipper-ui)
 
 </div>
 
@@ -37,7 +33,7 @@ Name is avaliable as an npm package.
 Here is a quick example to get you started, **it's all you need**:
 
 ```ts
-import VerticalBarChart from 'name'
+import VerticalBarChart from '@keepfy/react-charts'
 
 <VerticalBarChart
     color='green'
@@ -62,7 +58,7 @@ import VerticalBarChart from 'name'
 To run the demo:
 
 ```sh
-git clone git@github.com:name
+git clone https://github.com/keepfy/keepfy-react-charts.git
 
 yarn && yarn start
 ```

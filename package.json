@@ -17,7 +17,7 @@
     "build:ts": "tsc --emitDeclarationOnly",
     "build": "yarn build:ts && docz build ",
     "serve": "docz build && docz serve",
-    "build:prod": "gatsby build"
+    "prepack": "yarn build"
   },
   "dependencies": {
     "docz": "2.1.1",

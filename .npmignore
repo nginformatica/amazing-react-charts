@@ -1,9 +1,12 @@
 .vscode/
 .docz/
-.public/
+public/
 .idea/
+docs/
+doczrc.js
 .eslintignore
 .eslintrc.json
 tsconfig.json
 yarn.lock
 yarn-error.log
+*.tgz
