@@ -1,6 +1,6 @@
 {
   "name": "@keepfy/react-charts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A react charts package based in echarts",
   "author": "Leonardo Filipe Rigon",
   "license": "MIT",
@@ -17,6 +17,7 @@
     "build:ts": "tsc --emitDeclarationOnly",
     "build": "yarn build:ts && docz build ",
     "serve": "docz build && docz serve",
+    "lint": "eslint 'src/**/*.ts?(x)'",
     "prepack": "yarn build"
   },
   "dependencies": {

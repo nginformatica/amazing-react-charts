@@ -2,12 +2,12 @@ import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
     IDefaultChartProps,
-    TOptionsProps,
-    TEntryData,
     TDataTooltip,
+    TEntryData,
+    TOptionsProps,
     TTooltipProps
-} from './AreaChart'
-import { toDate, formatTime, timeConvert, formatTooltip } from './auxiliarFunctions'
+} from './types'
+import { formatTime, formatTooltip, timeConvert, toDate } from './auxiliarFunctions'
 
 const VerticalBarChart = (props: IDefaultChartProps) => {
     const {
@@ -41,8 +41,8 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         const { label, result } = tooltipProps
         const { axisValueLabel, data } = chartValues[0]
         const complement = tooltipComplement ? tooltipComplement : ''
-        const values = yType === 'time' 
-            ? timeConvert(data as number) + 'h' 
+        const values = yType === 'time'
+            ? timeConvert(data as number) + 'h'
             : data + (yComplement || '')
 
         return [
@@ -71,7 +71,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
                 fontSize: 11.5,
                 color: 'black',
                 distance: 1.1
-            },
+            }
         }],
         xAxis: {
             type: 'category',

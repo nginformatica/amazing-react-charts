@@ -1,8 +1,8 @@
-import { formatToBRL } from "brazilian-values"
-import { parse, format } from "date-fns"
-import { takeLast } from "ramda"
-import { ptBR } from "date-fns/locale"
-import { TDataTooltip } from "./AreaChart"
+import { formatToBRL } from 'brazilian-values'
+import { format, parse } from 'date-fns'
+import { takeLast } from 'ramda'
+import { ptBR } from 'date-fns/locale'
+import { TDataTooltip } from './types'
 
 export const takeComplement = (data: string | number, complement: string) =>
     complement === 'money'

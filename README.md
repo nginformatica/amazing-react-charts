@@ -1,9 +1,3 @@
----
-name: Readme
-route: /
-layout: 'fullpage'
----
-
 <h1 align="center">Keepfy React Charts</h1>
 
 <div align="center">
@@ -12,20 +6,21 @@ layout: 'fullpage'
 
 </div>
 
-A simple library to handling and create awesome canvas charts. 
+A simple library to create and handling awesome canvas charts. 
+
 This package is based on echarts and echarts-for-react wrapper.
 
 ## Installation
 
-Name is avaliable as an npm package.
+Keepfy React Charts is avaliable as an npm package.
 
 ```
     // with npm 
-    npm install --save name 
+    npm install --save @keepfy/react-charts 
 
 
     //with yarn 
-    yarn add
+    yarn add @keepfy/react-charts 
 ```
 
 ## Usage

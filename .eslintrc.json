@@ -3,5 +3,8 @@
     "extends": [
       "keepfy",
       "plugin:import/typescript"
-    ]
+    ],
+    "rules": {
+      "no-magic-numbers": "off"
+    }
 }

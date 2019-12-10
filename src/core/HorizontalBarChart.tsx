@@ -1,12 +1,12 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { 
-    IDefaultChartProps, 
-    TOptionsProps, 
-    TTooltipProps, 
-    TDataTooltip, 
-    TEntryData
-} from './AreaChart'
+import {
+    IDefaultChartProps,
+    TDataTooltip,
+    TEntryData,
+    TOptionsProps,
+    TTooltipProps
+} from './types'
 import { truncateText } from './auxiliarFunctions'
 
 interface IProps extends IDefaultChartProps {
@@ -16,7 +16,7 @@ interface IProps extends IDefaultChartProps {
 const HorizontalBarChart = (props: IProps) => {
     const { data, color, xComplement, tooltip: tooltipProps } = props
     const xData = data.map((item: TEntryData) => item.result)
-    const yData = data.map((item: TEntryData)=> item.label)
+    const yData = data.map((item: TEntryData) => item.label)
     const backgroundBar = data.map(() => 100)
 
     const formatTooltip = (chartValues: TDataTooltip) => {
