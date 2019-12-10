@@ -17,10 +17,10 @@ interface IProps extends IDefaultChartProps {
 }
 
 const HorizontalBarChart = (props: IProps) => {
-    const { 
-        data, 
-        color, 
-        xComplement, 
+    const {
+        data,
+        color,
+        xComplement,
         tooltip: tooltipProps,
         marginLeft,
         marginRight

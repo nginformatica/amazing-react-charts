@@ -120,7 +120,7 @@ export type TNormalProps = {
 export type TGridProps = {
     show?: boolean
     right?: string | number
-    left: string | number
+    left?: string | number
 }
 
 export type TAxisLabelProps = {

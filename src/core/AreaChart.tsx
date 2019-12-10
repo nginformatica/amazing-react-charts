@@ -113,7 +113,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 formatter:
                     (item: string) => xType === 'time'
                         ? formatTime(
-                            item, 
+                            item,
                             dateFormat === 'yyyy-MM' ? 'MMM/yyyy' : 'dd MMM'
                         )
                         : item,
