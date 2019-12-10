@@ -5,7 +5,8 @@
   "author": "Leonardo Filipe Rigon",
   "license": "MIT",
   "main": "build/index.js",
-  "types": "build/types.d.ts",
+  "types": "build/index.d.ts",
+  "typings": "build/index.d.ts",
   "keywords": [
     "keepfy",
     "charts",

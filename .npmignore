@@ -1,6 +1,7 @@
 .vscode/
+.docz/
+.public/
 .idea/
-src/
 .eslintignore
 .eslintrc.json
 tsconfig.json
