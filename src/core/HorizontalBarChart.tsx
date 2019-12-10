@@ -12,10 +12,19 @@ import { reverse } from 'ramda'
 
 interface IProps extends IDefaultChartProps {
     xComplement?: string
+    marginLeft?: string | number
+    marginRight?: string | number
 }
 
 const HorizontalBarChart = (props: IProps) => {
-    const { data, color, xComplement, tooltip: tooltipProps } = props
+    const { 
+        data, 
+        color, 
+        xComplement, 
+        tooltip: tooltipProps,
+        marginLeft,
+        marginRight
+    } = props
     const xData = reverse(data.map((item: TEntryData) => item.result))
     const yData = reverse(data.map((item: TEntryData) => item.label))
     const backgroundBar = data.map(() => 100)
@@ -37,6 +46,10 @@ const HorizontalBarChart = (props: IProps) => {
     }
 
     const options: TOptionsProps = {
+        grid: {
+            left: marginLeft || '14%',
+            right: marginRight || '14%'
+        },
         series: [
             {
                 barGap: '-100%',
