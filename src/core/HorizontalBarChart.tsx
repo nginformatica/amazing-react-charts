@@ -7,7 +7,7 @@ import {
     TOptionsProps,
     TTooltipProps
 } from './types'
-import { truncateText, truncateLabel } from './auxiliarFunctions'
+import { truncateLabel } from './auxiliarFunctions'
 import { reverse } from 'ramda'
 
 interface IProps extends IDefaultChartProps {

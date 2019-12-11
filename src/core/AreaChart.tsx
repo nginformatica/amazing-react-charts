@@ -1,6 +1,12 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { formatTime, formatTooltip, timeConvert, toDate, getDomain } from './auxiliarFunctions'
+import { 
+    formatTime, 
+    formatTooltip, 
+    getDomain, 
+    timeConvert, 
+    toDate 
+} from './auxiliarFunctions'
 import {
     IDefaultChartProps,
     TDataTooltip,
@@ -144,7 +150,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 textStyle: {
                     fontSize: 11.5
                 }
-            },
+            }
         },
         grid: { ...gridProps, show: true },
         legend: {

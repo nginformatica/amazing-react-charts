@@ -57,7 +57,7 @@ export type TSeries = {
 }
 
 export type TDomainValues = {
-    min: number,
+    min: number
     max: number
 }
 
@@ -185,7 +185,7 @@ export type TAxisTickProps = {
 
 export type TOptionsProps = {
     color?: string[]
-    grid?: TGridProps | any
+    grid?: TGridProps
     legend?: TLegendProps
     series: TSeries[]
     dataZoom?: TZoomProps[]
