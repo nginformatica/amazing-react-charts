@@ -84,7 +84,7 @@ export const getDomain = (item: TDomainValues) => {
             return (item.max + (100 - (item.max % 100)))
         case (item.max >= 95):
             return (item.max + (60 - (item.max % 60)))
-        case (item.max >= 50):
+        case (item.max >= 60):
             return (item.max + (50 - (item.max % 50)))
         case (item.max >= 50):
             return (item.max + (40 - (item.max % 40)))
