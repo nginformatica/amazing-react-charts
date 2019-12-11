@@ -142,7 +142,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 }
             },
             axisLabel: {
-                margin: yType === 'time' ? 14 : 10,
+                margin: yType === 'time' ? 16 : 14,
                 formatter:
                     (item: number) => yType === 'time'
                         ? timeConvert(item) + 'h'
