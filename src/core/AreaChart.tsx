@@ -1,11 +1,11 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { 
-    formatTime, 
-    formatTooltip, 
-    getDomain, 
-    timeConvert, 
-    toDate 
+import {
+    formatTime,
+    formatTooltip,
+    getDomain,
+    timeConvert,
+    toDate
 } from './auxiliarFunctions'
 import {
     IDefaultChartProps,
