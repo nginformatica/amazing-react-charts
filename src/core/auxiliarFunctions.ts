@@ -2,7 +2,7 @@ import { formatToBRL } from 'brazilian-values'
 import { format, parse } from 'date-fns'
 import { takeLast } from 'ramda'
 import { ptBR } from 'date-fns/locale'
-import { TDataTooltip } from './types'
+import { TDataTooltip, TDomainValues } from './types'
 
 export const takeComplement = (data: string | number, complement: string) =>
     complement === 'money'
@@ -66,3 +66,13 @@ export const truncateText = (text: string, listSize?: number) => {
 
     return text.length > wordSize ? text.slice(0, wordSize - 3) + '...' : text
 }
+
+export const truncateLabel = (text: string) => 
+    text.length > 8 ? text.slice(0, 5) + '...' : text
+
+export const getDomain = (item: TDomainValues) =>
+    item.max >= 5 
+        ? item.max >= 30 
+            ? (item.max + (10-(item.max % 10))) 
+            : (item.max + (5-(item.max % 5))) 
+        : (item.max + (3-(item.max % 5))) 

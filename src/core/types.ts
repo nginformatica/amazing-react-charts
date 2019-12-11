@@ -11,6 +11,7 @@ export interface IDefaultChartProps {
     yType?: 'time' | 'value'
     barWidth?: number
     dateFormat?: string
+    grid?: TGridProps
 }
 
 export type TTooltipEntryProps = {
@@ -55,6 +56,11 @@ export type TSeries = {
     data: number[] | string[] | Date[]
 }
 
+export type TDomainValues = {
+    min: number,
+    max: number
+}
+
 type TFormatterReturn =
     | string[]
     | string
@@ -63,6 +69,7 @@ type TFormatterReturn =
 type TFormatterEntry =
     | string
     | number
+    | TDomainValues
     | TDataTooltip
     | TDataTooltip[]
 
@@ -121,6 +128,9 @@ export type TGridProps = {
     show?: boolean
     right?: string | number
     left?: string | number
+    top?: string | number
+    bottom?: string | number
+    height?: string | number
 }
 
 export type TAxisLabelProps = {
@@ -157,9 +167,10 @@ export type TAxisProps = {
     axisLabel?: TAxisLabelProps
     axisTick?: TAxisTickProps
     min?: number
-    max?: number
+    max?: number | string | TFormatterType
     position?: TPositionType
     axisLine?: TSplitLineProps
+    interval?: number | string
 }
 
 export type TAxisLineProps = {
@@ -174,7 +185,7 @@ export type TAxisTickProps = {
 
 export type TOptionsProps = {
     color?: string[]
-    grid?: TGridProps
+    grid?: TGridProps | any
     legend?: TLegendProps
     series: TSeries[]
     dataZoom?: TZoomProps[]

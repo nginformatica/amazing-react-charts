@@ -29,7 +29,8 @@ const StackedBarChart = (props: IProps) => {
         yComplement,
         secondYAxisType,
         sumDataValues,
-        dateFormat
+        dateFormat,
+        grid: gridProps
     } = props
 
     const { label, bottomResult, topResult, lineResult, complement } = tooltipProps
@@ -105,6 +106,7 @@ const StackedBarChart = (props: IProps) => {
         : []
 
     const options: TOptionsProps = {
+        grid: gridProps,
         color: colors,
         series: [
             {

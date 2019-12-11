@@ -19,7 +19,8 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         tooltip: tooltipProps,
         tooltipComplement,
         barWidth,
-        dateFormat
+        dateFormat,
+        grid: gridProps
     } = props
 
     const yData = data.map((item: TEntryData) => item.result)
@@ -60,6 +61,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
     }
 
     const options: TOptionsProps = {
+        grid: gridProps,
         color: [color],
         series: [{
             barWidth: barWidth,

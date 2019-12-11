@@ -7,7 +7,7 @@ import {
     TOptionsProps,
     TTooltipProps
 } from './types'
-import { truncateText } from './auxiliarFunctions'
+import { truncateText, truncateLabel } from './auxiliarFunctions'
 import { reverse } from 'ramda'
 
 interface IProps extends IDefaultChartProps {
@@ -22,8 +22,7 @@ const HorizontalBarChart = (props: IProps) => {
         color,
         xComplement,
         tooltip: tooltipProps,
-        marginLeft,
-        marginRight
+        grid: gridProps
     } = props
     const xData = reverse(data.map((item: TEntryData) => item.result))
     const yData = reverse(data.map((item: TEntryData) => item.label))
@@ -46,18 +45,15 @@ const HorizontalBarChart = (props: IProps) => {
     }
 
     const options: TOptionsProps = {
-        grid: {
-            left: marginLeft || '14%',
-            right: marginRight || '14%'
-        },
+        grid: gridProps,
         series: [
             {
                 barGap: '-100%',
                 xAxisIndex: 0,
                 type: 'bar',
                 animation: false,
-                barWidth: '70%',
-                barMaxWidth: 25,
+                barWidth: '80%',
+                barMaxWidth: 20,
                 silent: true,
                 data: backgroundBar,
                 itemStyle: {
@@ -72,8 +68,8 @@ const HorizontalBarChart = (props: IProps) => {
                 xAxisIndex: 0,
                 data: xData,
                 type: 'bar',
-                barWidth: '70%',
-                barMaxWidth: 25,
+                barWidth: '80%',
+                barMaxWidth: 20,
                 itemStyle: {
                     normal: {
                         color: color,
@@ -114,7 +110,7 @@ const HorizontalBarChart = (props: IProps) => {
                 show: false
             },
             axisLabel: {
-                formatter: truncateText,
+                formatter: truncateLabel,
                 interval: 0
             },
             axisTick: {

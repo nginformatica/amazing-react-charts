@@ -1,6 +1,6 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { formatTime, formatTooltip, timeConvert, toDate } from './auxiliarFunctions'
+import { formatTime, formatTooltip, timeConvert, toDate, getDomain } from './auxiliarFunctions'
 import {
     IDefaultChartProps,
     TDataTooltip,
@@ -21,7 +21,8 @@ const AreaChart = (props: IDefaultChartProps) => {
         lineMakeName,
         tooltipComplement,
         yComplement,
-        dateFormat
+        dateFormat,
+        grid: gridProps
     } = props
 
     const markLine = lineMarkValue && data.map(() => lineMarkValue)
@@ -125,6 +126,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             }
         },
         yAxis: {
+            max: getDomain,
             type: 'value',
             splitLine: {
                 show: true,
@@ -142,9 +144,9 @@ const AreaChart = (props: IDefaultChartProps) => {
                 textStyle: {
                     fontSize: 11.5
                 }
-            }
+            },
         },
-        grid: { show: true },
+        grid: { ...gridProps, show: true },
         legend: {
             x: 'center',
             y: 'bottom',
