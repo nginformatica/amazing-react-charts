@@ -1,6 +1,7 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
+    fixedDomain,
     formatTime,
     formatTooltip,
     getDomain,
@@ -133,7 +134,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             }
         },
         yAxis: {
-            max: getDomain,
+            max: lineMarkValue ? fixedDomain : getDomain,
             type: 'value',
             splitLine: {
                 show: true,

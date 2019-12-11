@@ -70,9 +70,36 @@ export const truncateText = (text: string, listSize?: number) => {
 export const truncateLabel = (text: string) =>
     text.length > 8 ? text.slice(0, 5) + '...' : text
 
-export const getDomain = (item: TDomainValues) =>
-    item.max >= 5
-        ? item.max >= 30
-            ? (item.max + (10-(item.max % 10)))
-            : (item.max + (5-(item.max % 5)))
-        : (item.max + (3-(item.max % 5)))
+export const getDomain = (item: TDomainValues) => {
+    switch (true) {
+        case (item.max >= 2500):
+            return (item.max + (item.max * 20) / 100)
+        case (item.max >= 2000):
+            return (item.max + (400 - (item.max % 400)))
+        case (item.max >= 1500):
+            return (item.max + (300 - (item.max % 300)))
+        case (item.max >= 1000):
+            return (item.max + (200 - (item.max % 200)))
+        case (item.max >= 400):
+            return (item.max + (100 - (item.max % 100)))
+        case (item.max >= 95):
+            return (item.max + (60 - (item.max % 60)))
+        case (item.max >= 50):
+            return (item.max + (50 - (item.max % 50)))
+        case (item.max >= 50):
+            return (item.max + (40 - (item.max % 40)))
+        case (item.max >= 40):
+            return (item.max + (30 - (item.max % 30)))
+        case (item.max >= 30):
+            return (item.max + (20 - (item.max % 20)))
+        case (item.max >= 20):
+            return (item.max + (10 - (item.max % 10)))
+        case (item.max >= 2):
+            return (item.max + (5 - (item.max % 5)))
+        default:
+            return (item.max + (3 - (item.max % 3)))
+    }
+}
+
+export const fixedDomain = (item: TDomainValues) =>
+    item.max >= 90 ? 100 : getDomain(item)
