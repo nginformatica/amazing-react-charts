@@ -28,7 +28,8 @@ const AreaChart = (props: IDefaultChartProps) => {
         tooltipComplement,
         yComplement,
         dateFormat,
-        grid: gridProps
+        grid: gridProps,
+        width
     } = props
 
     const markLine = lineMarkValue && data.map(() => lineMarkValue)
@@ -121,7 +122,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                     (item: string) => xType === 'time'
                         ? formatTime(
                             item,
-                            dateFormat === 'yyyy-MM' ? 'MMM/yyyy' : 'dd MMM'
+                            dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd MMM'
                         )
                         : item,
                 rotate: xData.length >= 24 ? 45 : 0,
@@ -165,6 +166,7 @@ const AreaChart = (props: IDefaultChartProps) => {
 
     return (
         <ReactEcharts
+            opts={ { width: width } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }

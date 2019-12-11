@@ -47,7 +47,7 @@ export const formatTime = (text: string, dateFormat: string) =>
 export const formatTooltip = (text: string, dateFormat?: string) =>
     format(
         new Date(text),
-        dateFormat ? 'MMMM/yyyy' : 'dd/MM/yyyy',
+        dateFormat ? 'MMMM yyyy' : 'dd/MM/yyyy',
         { locale: ptBR }
     )
 

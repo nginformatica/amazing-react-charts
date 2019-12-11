@@ -12,7 +12,14 @@ export interface IDefaultChartProps {
     barWidth?: number
     dateFormat?: string
     grid?: TGridProps
+    width?: TWidthProps
 }
+
+export type TWidthProps =
+    | number
+    | null
+    | undefined
+    | 'auto'
 
 export type TTooltipEntryProps = {
     label: string

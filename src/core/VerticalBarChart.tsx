@@ -20,7 +20,8 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         tooltipComplement,
         barWidth,
         dateFormat,
-        grid: gridProps
+        grid: gridProps,
+        width
     } = props
 
     const yData = data.map((item: TEntryData) => item.result)
@@ -125,6 +126,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
 
     return (
         <ReactEcharts
+            opts={ { width: width } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }

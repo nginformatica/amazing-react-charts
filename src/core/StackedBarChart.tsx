@@ -30,7 +30,8 @@ const StackedBarChart = (props: IProps) => {
         secondYAxisType,
         sumDataValues,
         dateFormat,
-        grid: gridProps
+        grid: gridProps,
+        width
     } = props
 
     const { label, bottomResult, topResult, lineResult, complement } = tooltipProps
@@ -185,6 +186,7 @@ const StackedBarChart = (props: IProps) => {
 
     return (
         <ReactEcharts
+            opts={ { width: width } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }

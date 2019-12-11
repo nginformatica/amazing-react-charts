@@ -22,8 +22,10 @@ const HorizontalBarChart = (props: IProps) => {
         color,
         xComplement,
         tooltip: tooltipProps,
-        grid: gridProps
+        grid: gridProps,
+        width
     } = props
+
     const xData = reverse(data.map((item: TEntryData) => item.result))
     const yData = reverse(data.map((item: TEntryData) => item.label))
     const backgroundBar = data.map(() => 100)
@@ -125,6 +127,7 @@ const HorizontalBarChart = (props: IProps) => {
 
     return (
         <ReactEcharts
+            opts={ { width: width } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }
