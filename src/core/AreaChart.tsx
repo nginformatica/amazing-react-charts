@@ -30,7 +30,9 @@ const AreaChart = (props: IDefaultChartProps) => {
         yComplement,
         dateFormat,
         grid: gridProps,
-        width
+        width,
+        rotateLabel,
+        fontLabelSize
     } = props
 
     const markLine = lineMarkValue && data.map(() => lineMarkValue)
@@ -78,7 +80,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 formatter: formatLabel,
                 show: true,
                 position: 'top',
-                fontSize: 11.5,
+                fontSize: fontLabelSize || 11.5,
                 color: 'black',
                 distance: 1.1
             },
@@ -126,10 +128,10 @@ const AreaChart = (props: IDefaultChartProps) => {
                             dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd MMM'
                         )
                         : item,
-                rotate: xData.length >= 24 ? 45 : 0,
+                rotate: rotateLabel || xData.length >= 24 ? 45 : 0,
                 interval: 0,
                 textStyle: {
-                    fontSize: 11.5
+                    fontSize: fontLabelSize || 11.5
                 }
             }
         },
@@ -150,7 +152,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                         ? timeConvert(item) + 'h'
                         : item + (yComplement || ''),
                 textStyle: {
-                    fontSize: 11.5
+                    fontSize: fontLabelSize || 11.5
                 }
             }
         },

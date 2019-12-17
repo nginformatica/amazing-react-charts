@@ -13,6 +13,8 @@ export interface IDefaultChartProps {
     dateFormat?: string
     grid?: TGridProps
     width?: TWidthProps
+    rotateLabel?: number
+    fontLabelSize?: number
 }
 
 export type TWidthProps =

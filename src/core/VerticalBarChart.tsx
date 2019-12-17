@@ -92,7 +92,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
             axisLabel: {
                 formatter:
                     (item: string) => xType === 'time'
-                        ? formatTime(item, 'dd/MMMM')
+                        ? formatTime(item, 'dd MMM')
                         : item,
                 rotate: xData.length >= 24 ? 45 : 0,
                 interval: 0,

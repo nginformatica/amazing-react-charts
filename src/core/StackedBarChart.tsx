@@ -31,7 +31,8 @@ const StackedBarChart = (props: IProps) => {
         sumDataValues,
         dateFormat,
         grid: gridProps,
-        width
+        width,
+        barWidth
     } = props
 
     const { label, bottomResult, topResult, lineResult, complement } = tooltipProps
@@ -61,12 +62,14 @@ const StackedBarChart = (props: IProps) => {
             ).join(' ')
 
         const labelResult = xType === 'time'
-            ? label + ': ' + formatTime(values[0].name, 'MMMM yyyy') + '<br>'
+            ? label + ': ' + formatTime(values[0].name, 'MMM/yy') + '<br>'
             : label + ': ' + values[0].name + '<br>'
 
-        const tooltipFooter = sumDataValues && values.length === 3
+        const tooltipFooter = sumDataValues && values.length === 3 && secondYAxisType
             ? complement + ': ' + formatToBRL(stackedValues)
-            : ''
+            : sumDataValues && values.length === 2 && !secondYAxisType
+                ? complement + ': ' + formatToBRL(stackedValues)
+                : ''
 
         return [labelResult + tooltipBody + tooltipFooter]
     }
@@ -111,6 +114,7 @@ const StackedBarChart = (props: IProps) => {
         color: colors,
         series: [
             {
+                barWidth: barWidth,
                 yAxisIndex: 0,
                 name: topResult,
                 type: 'bar',
@@ -118,6 +122,7 @@ const StackedBarChart = (props: IProps) => {
                 stack: 'stacked'
             },
             {
+                barWidth: barWidth,
                 yAxisIndex: 0,
                 name: bottomResult,
                 type: 'bar',
