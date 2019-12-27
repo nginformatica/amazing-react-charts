@@ -170,7 +170,7 @@ const AreaChart = (props: IDefaultChartProps) => {
     return (
         <ReactEcharts
             notMerge
-            opts={{ width: width }}
+            opts={ { width: width } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }

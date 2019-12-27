@@ -1,5 +1,5 @@
 import * as React from 'react'
-import ReactEcharts from "echarts-for-react"
+import ReactEcharts from 'echarts-for-react'
 import {
     IDefaultChartProps,
     TAxisProps,
@@ -104,7 +104,7 @@ const StackedBarChart = (props: IProps) => {
                 show: true,
                 zoomLock: true,
                 type: 'slider',
-                endValue: xData.length > 20 ? xData[17] : xData[xData.length-1],
+                endValue: xData.length > 20 ? xData[17] : xData[xData.length-1]
             }
         ]
         : []
