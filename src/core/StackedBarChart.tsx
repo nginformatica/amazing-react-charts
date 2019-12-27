@@ -1,5 +1,5 @@
 import * as React from 'react'
-import ReactEcharts from 'echarts-for-react'
+import ReactEcharts from "echarts-for-react"
 import {
     IDefaultChartProps,
     TAxisProps,
@@ -93,18 +93,18 @@ const StackedBarChart = (props: IProps) => {
         }
         : {}
 
-    const scrollable: TZoomProps[] = xData.length > 20
+    const scrollable: TZoomProps[] = data[0].length > 20
         ? [
             {
                 type: 'inside',
-                endValue: xData[17],
+                endValue: xData.length > 20 ? xData[17] : xData[xData.length-1],
                 zoomLock: true
             }, {
                 bottom: 250,
                 show: true,
                 zoomLock: true,
                 type: 'slider',
-                endValue: xData[17]
+                endValue: xData.length > 20 ? xData[17] : xData[xData.length-1],
             }
         ]
         : []
@@ -191,6 +191,7 @@ const StackedBarChart = (props: IProps) => {
 
     return (
         <ReactEcharts
+            notMerge
             opts={ { width: width } }
             option={
                 tooltipProps
