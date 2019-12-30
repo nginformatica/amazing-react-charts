@@ -97,14 +97,14 @@ const StackedBarChart = (props: IProps) => {
         ? [
             {
                 type: 'inside',
-                endValue: xData.length > 20 ? xData[17] : xData[xData.length-1],
+                endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1],
                 zoomLock: true
             }, {
                 bottom: 250,
                 show: true,
                 zoomLock: true,
                 type: 'slider',
-                endValue: xData.length > 20 ? xData[17] : xData[xData.length-1]
+                endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1]
             }
         ]
         : []
@@ -192,6 +192,7 @@ const StackedBarChart = (props: IProps) => {
     return (
         <ReactEcharts
             notMerge
+            style={ { width: '99%' } }
             opts={ { width: width } }
             option={
                 tooltipProps

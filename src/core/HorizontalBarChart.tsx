@@ -127,6 +127,7 @@ const HorizontalBarChart = (props: IProps) => {
 
     return (
         <ReactEcharts
+            style={ { width: '99%' } }
             opts={ { width: width } }
             option={
                 tooltipProps

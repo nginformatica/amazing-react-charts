@@ -126,6 +126,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
 
     return (
         <ReactEcharts
+            style={ { width: '99%' } }
             opts={ { width: width } }
             option={
                 tooltipProps
