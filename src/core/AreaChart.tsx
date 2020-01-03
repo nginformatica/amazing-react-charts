@@ -4,7 +4,9 @@ import {
     fixedDomain,
     formatTime,
     formatTooltip,
+    getDataView,
     getDomain,
+    getSaveAsImage,
     timeConvert,
     toDate
 } from './auxiliarFunctions'
@@ -13,6 +15,8 @@ import {
     TDataTooltip,
     TEntryData,
     TOptionsProps,
+    TSaveAsImage,
+    TTitleProps,
     TTooltipProps,
     TZoomProps
 } from './types'
@@ -33,7 +37,9 @@ const AreaChart = (props: IDefaultChartProps) => {
         grid: gridProps,
         width,
         rotateLabel,
-        fontLabelSize
+        fontLabelSize,
+        title: titleProps,
+        toolboxTooltip
     } = props
 
     const markLine = lineMarkValue && data.map(() => lineMarkValue)
@@ -73,7 +79,39 @@ const AreaChart = (props: IDefaultChartProps) => {
         textStyle: { fontSize: 11.5 }
     }
 
-    const scrollable: TZoomProps[] = data.length > 20
+    const title: TTitleProps = {
+        id: 'chart-' + titleProps,
+        show: titleProps !== undefined,
+        text: titleProps,
+        textStyle: {
+            fontFamily: 'roboto',
+            fontSize: 16,
+            fontWeight: 400
+        }
+    }
+
+    const toolbox = toolboxTooltip && (
+        {
+            showTitle: false,
+            feature: {
+                saveAsImage: toolboxTooltip.saveAsImage && (
+                    getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage
+                ),
+                dataView: toolboxTooltip.dataView && (
+                    getDataView(toolboxTooltip.dataView)
+                )
+            },
+            tooltip: {
+                show: true,
+                backgroundColor: 'grey',
+                textStyle: {
+                    fontSize: 12
+                }
+            }
+        }
+    )
+
+    const scrollable: TZoomProps[] = xData.length > 20
         ? [
             {
                 type: 'inside',
@@ -145,8 +183,8 @@ const AreaChart = (props: IDefaultChartProps) => {
                             dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd MMM'
                         )
                         : item,
-                rotate: rotateLabel || xData.length >= 24 ? 45 : 0,
-                interval: 0,
+                rotate: rotateLabel || 0,
+                interval: 'auto',
                 textStyle: {
                     fontSize: fontLabelSize || 11.5
                 }
@@ -182,7 +220,9 @@ const AreaChart = (props: IDefaultChartProps) => {
             data: [lineMakeName],
             itemGap: 30
         },
-        dataZoom: scrollable
+        dataZoom: scrollable,
+        title: title,
+        toolbox
     }
 
     return (

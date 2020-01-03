@@ -5,12 +5,16 @@ import {
     TDataTooltip,
     TEntryData,
     TOptionsProps,
+    TSaveAsImage,
+    TTitleProps,
     TTooltipProps,
     TZoomProps
 } from './types'
 import {
     formatTime,
     formatTooltip,
+    getDataView,
+    getSaveAsImage,
     timeConvert,
     toDate,
     truncateLabel
@@ -29,7 +33,9 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         dateFormat,
         grid: gridProps,
         width,
-        showBarLabel
+        showBarLabel,
+        title: titleProps,
+        toolboxTooltip
     } = props
 
     const yData = data.map((item: TEntryData) => item.result)
@@ -47,6 +53,38 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
                 : data
         )
     }
+
+    const title: TTitleProps = {
+        id: 'chart-' + titleProps,
+        show: titleProps !== undefined,
+        text: titleProps,
+        textStyle: {
+            fontFamily: 'roboto',
+            fontSize: 16,
+            fontWeight: 400
+        }
+    }
+
+    const toolbox = toolboxTooltip && (
+        {
+            showTitle: false,
+            feature: {
+                saveAsImage: toolboxTooltip.saveAsImage && (
+                    getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage
+                ),
+                dataView: toolboxTooltip.dataView && (
+                    getDataView(toolboxTooltip.dataView)
+                )
+            },
+            tooltip: {
+                show: true,
+                backgroundColor: 'grey',
+                textStyle: {
+                    fontSize: 12
+                }
+            }
+        }
+    )
 
     const formatSingleTooltip = (chartValues: TDataTooltip[]) => {
         const { label, result } = tooltipProps
@@ -152,7 +190,9 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
                 }
             }
         },
-        dataZoom: scrollable
+        dataZoom: scrollable,
+        title,
+        toolbox
     }
 
     return (

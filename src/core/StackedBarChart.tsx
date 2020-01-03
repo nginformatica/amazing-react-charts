@@ -7,11 +7,20 @@ import {
     TEntryData,
     TEntryDataTuples,
     TOptionsProps,
+    TSaveAsImage,
+    TTitleProps,
     TTooltipProps,
     TZoomProps
 } from './types'
 import { formatToBRL } from 'brazilian-values'
-import { formatTime, mountMessage, toDate, truncateText } from './auxiliarFunctions'
+import {
+    formatTime,
+    getDataView,
+    getSaveAsImage,
+    mountMessage,
+    toDate,
+    truncateText
+} from './auxiliarFunctions'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TEntryDataTuples
@@ -32,7 +41,9 @@ const StackedBarChart = (props: IProps) => {
         dateFormat,
         grid: gridProps,
         width,
-        barWidth
+        barWidth,
+        title: titleProps,
+        toolboxTooltip
     } = props
 
     const { label, bottomResult, topResult, lineResult, complement } = tooltipProps
@@ -97,17 +108,47 @@ const StackedBarChart = (props: IProps) => {
         ? [
             {
                 type: 'inside',
-                endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1],
-                zoomLock: true
+                endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1]
             }, {
                 bottom: 250,
                 show: true,
-                zoomLock: true,
                 type: 'slider',
                 endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1]
             }
         ]
         : []
+
+    const title: TTitleProps = {
+        id: 'chart-' + titleProps,
+        show: titleProps !== undefined,
+        text: titleProps,
+        textStyle: {
+            fontFamily: 'roboto',
+            fontSize: 16,
+            fontWeight: 400
+        }
+    }
+
+    const toolbox = toolboxTooltip && (
+        {
+            showTitle: false,
+            feature: {
+                saveAsImage: toolboxTooltip.saveAsImage && (
+                    getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage
+                ),
+                dataView: toolboxTooltip.dataView && (
+                    getDataView(toolboxTooltip.dataView)
+                )
+            },
+            tooltip: {
+                show: true,
+                backgroundColor: 'grey',
+                textStyle: {
+                    fontSize: 12
+                }
+            }
+        }
+    )
 
     const options: TOptionsProps = {
         grid: gridProps,
@@ -180,7 +221,9 @@ const StackedBarChart = (props: IProps) => {
             data: [topResult, bottomResult, lineResult],
             itemGap: 30
         },
-        dataZoom: scrollable
+        dataZoom: scrollable,
+        title: title,
+        toolbox
     }
 
     const tooltip: TTooltipProps = {

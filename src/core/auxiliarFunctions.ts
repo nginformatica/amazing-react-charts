@@ -103,3 +103,34 @@ export const getDomain = (item: TDomainValues) => {
 
 export const fixedDomain = (item: TDomainValues) =>
     item.max >= 90 ? 100 : getDomain(item)
+
+export const getSaveAsImage = (title: string) => ({
+    type: 'jpeg',
+    title,
+    show: true,
+    icon:
+        'path://M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 ' +
+        '.67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z',
+    iconStyle: {
+        color: '#152849',
+        borderColor: '#152849',
+        borderWidth: 0.1
+    },
+    excludeComponents: ['toolbox', 'title']
+})
+
+export const getDataView = (title: string) => ({
+    title,
+    show: true,
+    icon:
+        'path://M2 20h20v-4H2v4zm2-3h2v2H4v-2zM2 4v4h20V4H2zm4 ' +
+        '3H4V5h2v2zm-4 7h20v-4H2v4zm2-3h2v2H4v-2z',
+    iconStyle: {
+        color: '#152849',
+        borderColor: '#152849',
+        borderWidth: 0.1
+    },
+    buttonColor: '#152849',
+    lang: [title, 'Voltar', 'Atualizar']
+})
+

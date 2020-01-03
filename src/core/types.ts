@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react'
+
 export interface IDefaultChartProps {
     data: TEntryData[]
     lineMarkValue?: number
@@ -16,6 +18,13 @@ export interface IDefaultChartProps {
     rotateLabel?: number
     fontLabelSize?: number
     showBarLabel?: boolean
+    title?: string
+    toolboxTooltip?: TToolboxEntryProps
+}
+
+export type TToolboxEntryProps = {
+    saveAsImage?: string
+    dataView?: string
 }
 
 export type TWidthProps =
@@ -200,8 +209,10 @@ export type TOptionsProps = {
     color?: string[]
     grid?: TGridProps
     legend?: TLegendProps
-    series: TSeries[]
     dataZoom?: TZoomProps[]
+    title?: TTitleProps
+    toolbox?: TToolBoxProps
+    series: TSeries[]
     xAxis: TAxisProps | TAxisProps[]
     yAxis: TAxisProps | TAxisProps[]
 }
@@ -237,4 +248,37 @@ export type TDataTooltip = {
     data?: number | string
     seriesType?: string
     axisValueLabel?: string
+}
+
+export type TTitleProps = {
+    id?: string
+    text?: string
+    show?: boolean
+    textStyle?: CSSProperties
+}
+
+export type TToolBoxProps = {
+    feature: TFeatureProps
+}
+
+export type TFeatureProps = {
+    saveAsImage: TSaveAsImage
+    dataView: TDataView
+}
+
+export type TSaveAsImage = {
+    type?: 'png' | 'jpeg'
+    excludeComponents?: string[]
+    show?: boolean
+    title?: string
+    icon?: string
+    iconStyle?: CSSProperties
+}
+
+export type TDataView = {
+    buttonColor?: string
+    lang?: string[]
+    title?: string
+    icon?: string
+    iconStyle?: CSSProperties
 }
