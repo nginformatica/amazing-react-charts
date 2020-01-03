@@ -144,7 +144,7 @@ const StackedBarChart = (props: IProps) => {
                     ? formatTime(item, 'MMM/yy')
                     : truncateText(item, xData.length),
                 textStyle: { fontSize: xData.length > 14 ? 10 : 11.5 },
-                interval: 0
+                interval: xData.length > 20 ? 'auto' : 0
             },
             splitLine: {
                 show: true,

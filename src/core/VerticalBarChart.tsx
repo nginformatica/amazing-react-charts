@@ -5,9 +5,16 @@ import {
     TDataTooltip,
     TEntryData,
     TOptionsProps,
-    TTooltipProps
+    TTooltipProps,
+    TZoomProps
 } from './types'
-import { formatTime, formatTooltip, timeConvert, toDate } from './auxiliarFunctions'
+import {
+    formatTime,
+    formatTooltip,
+    timeConvert,
+    toDate,
+    truncateLabel
+} from './auxiliarFunctions'
 
 const VerticalBarChart = (props: IDefaultChartProps) => {
     const {
@@ -21,7 +28,8 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         barWidth,
         dateFormat,
         grid: gridProps,
-        width
+        width,
+        showBarLabel
     } = props
 
     const yData = data.map((item: TEntryData) => item.result)
@@ -48,8 +56,12 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
             ? timeConvert(data as number) + 'h'
             : data + (yComplement || '')
 
+        const labelPrint = xType === 'time'
+            ? formatTooltip(axisValueLabel)
+            : axisValueLabel
+
         return [
-            `${label}: ${formatTooltip(axisValueLabel)} <br>` +
+            `${label}: ${labelPrint} <br>` +
             `${result}: ${values} <br>` +
             complement
         ]
@@ -61,16 +73,30 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         textStyle: { fontSize: 11.5 }
     }
 
+    const scrollable: TZoomProps[] = data.length > 20
+        ? [
+            {
+                type: 'inside',
+                endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1]
+            }, {
+                bottom: 250,
+                show: true,
+                type: 'slider',
+                endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1]
+            }
+        ]
+        : []
+
     const options: TOptionsProps = {
         grid: gridProps,
         color: [color],
         series: [{
-            barWidth: barWidth,
+            barWidth: barWidth || 'auto',
             type: 'bar',
             data: yData,
             label: {
                 formatter: formatLabel,
-                show: true,
+                show: showBarLabel,
                 position: 'top',
                 fontSize: 11.5,
                 color: 'black',
@@ -79,7 +105,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         }],
         xAxis: {
             type: 'category',
-            boundaryGap: false,
+            boundaryGap: true,
             showGrid: true,
             data: xData,
             splitLine: {
@@ -87,18 +113,22 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
                 lineStyle: {
                     type: 'dotted',
                     opacity: 0.8
-                }
+                },
+                alignWithLabel: true
             },
             axisLabel: {
                 formatter:
                     (item: string) => xType === 'time'
                         ? formatTime(item, 'dd MMM')
-                        : item,
-                rotate: xData.length >= 24 ? 45 : 0,
-                interval: 0,
+                        : truncateLabel(item),
+                interval: 'auto',
                 textStyle: {
                     fontSize: 11.5
                 }
+            },
+            axisTick: {
+                show: true,
+                alignWithLabel: true
             }
         },
         yAxis: {
@@ -121,11 +151,13 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
                     fontSize: 11.5
                 }
             }
-        }
+        },
+        dataZoom: scrollable
     }
 
     return (
         <ReactEcharts
+            notMerge
             style={ { width: '99%' } }
             opts={ { width: width } }
             option={

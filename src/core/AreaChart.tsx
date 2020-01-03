@@ -13,7 +13,8 @@ import {
     TDataTooltip,
     TEntryData,
     TOptionsProps,
-    TTooltipProps
+    TTooltipProps,
+    TZoomProps
 } from './types'
 
 const AreaChart = (props: IDefaultChartProps) => {
@@ -71,6 +72,22 @@ const AreaChart = (props: IDefaultChartProps) => {
         trigger: 'axis',
         textStyle: { fontSize: 11.5 }
     }
+
+    const scrollable: TZoomProps[] = data.length > 20
+        ? [
+            {
+                type: 'inside',
+                endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1]
+            }, {
+                bottom: 250,
+                show: true,
+                type: 'slider',
+                endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1],
+                labelFormatter:
+                    (_: string, item2: string) => formatTime(item2, 'dd/MM/yyyy')
+            }
+        ]
+        : []
 
     const options: TOptionsProps = {
         series: [{
@@ -164,7 +181,8 @@ const AreaChart = (props: IDefaultChartProps) => {
             top: 260,
             data: [lineMakeName],
             itemGap: 30
-        }
+        },
+        dataZoom: scrollable
     }
 
     return (

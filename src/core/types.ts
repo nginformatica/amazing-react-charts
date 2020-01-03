@@ -15,6 +15,7 @@ export interface IDefaultChartProps {
     width?: TWidthProps
     rotateLabel?: number
     fontLabelSize?: number
+    showBarLabel?: boolean
 }
 
 export type TWidthProps =
@@ -83,6 +84,9 @@ type TFormatterEntry =
     | TDataTooltip[]
 
 export type TFormatterType = string | ((item: TFormatterEntry) => TFormatterReturn)
+
+export type TFormatterSliderType =
+    string | ((yValue: string, xValue: string) => TFormatterReturn)
 
 export type TPositionType =
     | 'top'
@@ -206,6 +210,7 @@ export type TZoomProps = {
     bottom?: number
     show?: boolean
     zoomLock?: boolean
+    labelFormatter?: TFormatterSliderType
     type: 'inside' | 'slider'
     endValue: number | Date | string
 }
