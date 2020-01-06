@@ -76,11 +76,18 @@ const AreaChart = (props: IDefaultChartProps) => {
     const tooltip: TTooltipProps = {
         formatter: formatSingleTooltip,
         trigger: 'axis',
-        textStyle: { fontSize: 11.5 }
+        textStyle: { fontSize: 11.5 },
+        axisPointer: {
+            type: 'cross',
+            label: {
+                backgroundColor: 'grey'
+            }
+        }
     }
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
+        left: 56,
         show: titleProps !== undefined,
         text: titleProps,
         textStyle: {
@@ -93,6 +100,7 @@ const AreaChart = (props: IDefaultChartProps) => {
     const toolbox = toolboxTooltip && (
         {
             showTitle: false,
+            right: 82,
             feature: {
                 saveAsImage: toolboxTooltip.saveAsImage && (
                     getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage
@@ -228,8 +236,8 @@ const AreaChart = (props: IDefaultChartProps) => {
     return (
         <ReactEcharts
             notMerge
-            style={ { width: '99%' } }
-            opts={ { width: width } }
+            style={ { width: '99.9%' } }
+            opts={ { width: width || 'auto' } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }

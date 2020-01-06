@@ -120,6 +120,7 @@ const StackedBarChart = (props: IProps) => {
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
+        left: 26,
         show: titleProps !== undefined,
         text: titleProps,
         textStyle: {
@@ -132,6 +133,7 @@ const StackedBarChart = (props: IProps) => {
     const toolbox = toolboxTooltip && (
         {
             showTitle: false,
+            right: 82,
             feature: {
                 saveAsImage: toolboxTooltip.saveAsImage && (
                     getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage

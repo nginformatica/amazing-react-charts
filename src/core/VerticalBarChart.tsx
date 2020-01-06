@@ -56,6 +56,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
+        left: 50,
         show: titleProps !== undefined,
         text: titleProps,
         textStyle: {
@@ -68,6 +69,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
     const toolbox = toolboxTooltip && (
         {
             showTitle: false,
+            right: 82,
             feature: {
                 saveAsImage: toolboxTooltip.saveAsImage && (
                     getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage

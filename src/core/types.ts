@@ -239,6 +239,12 @@ export type TTooltipProps = {
     formatter: TFormatterType
     trigger?: 'axis'
     textStyle?: React.CSSProperties
+    axisPointer?: TAxisPointerProps
+}
+
+export type TAxisPointerProps ={
+    type?: 'cross' | string
+    label?: CSSProperties
 }
 
 export type TDataTooltip = {
@@ -255,10 +261,12 @@ export type TTitleProps = {
     text?: string
     show?: boolean
     textStyle?: CSSProperties
+    left?: number
 }
 
 export type TToolBoxProps = {
     feature: TFeatureProps
+    right?: number
 }
 
 export type TFeatureProps = {
