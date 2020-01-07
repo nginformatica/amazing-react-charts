@@ -120,9 +120,10 @@ const StackedBarChart = (props: IProps) => {
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
-        left: 26,
+        left: '4%',
         show: titleProps !== undefined,
         text: titleProps,
+        textAlign: 'left',
         textStyle: {
             fontFamily: 'roboto',
             fontSize: 16,
@@ -133,7 +134,7 @@ const StackedBarChart = (props: IProps) => {
     const toolbox = toolboxTooltip && (
         {
             showTitle: false,
-            right: 82,
+            right: '8.7%',
             feature: {
                 saveAsImage: toolboxTooltip.saveAsImage && (
                     getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage
@@ -182,6 +183,7 @@ const StackedBarChart = (props: IProps) => {
         xAxis: {
             data: xData,
             type: 'category',
+            boundaryGap: true,
             axisLabel: {
                 formatter: (item: string) => xType === 'time'
                     ? formatTime(item, 'MMM/yy')

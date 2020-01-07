@@ -76,20 +76,15 @@ const AreaChart = (props: IDefaultChartProps) => {
     const tooltip: TTooltipProps = {
         formatter: formatSingleTooltip,
         trigger: 'axis',
-        textStyle: { fontSize: 11.5 },
-        axisPointer: {
-            type: 'cross',
-            label: {
-                backgroundColor: 'grey'
-            }
-        }
+        textStyle: { fontSize: 11.5 }
     }
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
-        left: 56,
+        left: '6.2%',
         show: titleProps !== undefined,
         text: titleProps,
+        textAlign: 'left',
         textStyle: {
             fontFamily: 'roboto',
             fontSize: 16,
@@ -100,7 +95,7 @@ const AreaChart = (props: IDefaultChartProps) => {
     const toolbox = toolboxTooltip && (
         {
             showTitle: false,
-            right: 82,
+            right: '9.52%',
             feature: {
                 saveAsImage: toolboxTooltip.saveAsImage && (
                     getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage

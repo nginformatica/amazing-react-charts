@@ -260,13 +260,14 @@ export type TTitleProps = {
     id?: string
     text?: string
     show?: boolean
+    textAlign?: 'left' | 'right' | 'auto'
     textStyle?: CSSProperties
-    left?: number
+    left?: number | string
 }
 
 export type TToolBoxProps = {
     feature: TFeatureProps
-    right?: number
+    right?: number | string
 }
 
 export type TFeatureProps = {

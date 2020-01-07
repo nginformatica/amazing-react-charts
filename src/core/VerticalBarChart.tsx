@@ -56,9 +56,10 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
-        left: 50,
+        left: '5.9%',
         show: titleProps !== undefined,
         text: titleProps,
+        textAlign: 'left',
         textStyle: {
             fontFamily: 'roboto',
             fontSize: 16,
@@ -69,7 +70,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
     const toolbox = toolboxTooltip && (
         {
             showTitle: false,
-            right: 82,
+            right: '8.7%',
             feature: {
                 saveAsImage: toolboxTooltip.saveAsImage && (
                     getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage
@@ -182,7 +183,6 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
                 }
             },
             axisLabel: {
-                margin: yType === 'time' ? 14 : 10,
                 formatter:
                     (item: number) => yType === 'time'
                         ? timeConvert(item) + 'h'
