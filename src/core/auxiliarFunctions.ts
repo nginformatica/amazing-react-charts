@@ -116,7 +116,7 @@ export const getSaveAsImage = (title: string) => ({
         borderColor: '#152849',
         borderWidth: 0.1
     },
-    excludeComponents: ['toolbox', 'title']
+    excludeComponents: ['toolbox', 'title', 'dataZoom']
 })
 
 export const getDataView = (title: string) => ({

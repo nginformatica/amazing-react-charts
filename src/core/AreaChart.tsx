@@ -118,12 +118,16 @@ const AreaChart = (props: IDefaultChartProps) => {
         ? [
             {
                 type: 'inside',
-                endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1]
-            }, {
-                bottom: 250,
+                start: xData.length > 20 ? 66 : 100,
+                end: 100,
+                zoomLock: true
+            },
+            {
+                bottom: 0,
                 show: true,
                 type: 'slider',
-                endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1],
+                start: xData.length > 20 ? 66 : 100,
+                end: 100,
                 labelFormatter:
                     (_: string, item2: string) => formatTime(item2, 'dd/MM/yyyy')
             }
@@ -134,14 +138,17 @@ const AreaChart = (props: IDefaultChartProps) => {
         series: [{
             type: 'line',
             data: yData,
-            label: {
-                formatter: formatLabel,
-                show: true,
-                position: 'top',
-                fontSize: fontLabelSize || 11.5,
-                color: 'black',
-                distance: 1.1
-            },
+            label:
+                xData.length < 50
+                    ? {
+                        formatter: formatLabel,
+                        show: true,
+                        position: 'top',
+                        fontSize: fontLabelSize || 11.5,
+                        color: 'black',
+                        distance: 1.1
+                    }
+                    : undefined,
             lineStyle: {
                 color: color || 'blue'
             },
@@ -219,7 +226,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             x: 'center',
             y: 'bottom',
             icon: 'line',
-            top: 260,
+            top: 30,
             data: [lineMakeName],
             itemGap: 30
         },
@@ -231,7 +238,7 @@ const AreaChart = (props: IDefaultChartProps) => {
     return (
         <ReactEcharts
             notMerge
-            style={ { width: '99.9%' } }
+            style={ { width: '99.9%', height: 300 } }
             opts={ { width: width || 'auto' } }
             option={
                 tooltipProps

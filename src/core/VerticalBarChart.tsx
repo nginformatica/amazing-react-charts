@@ -120,7 +120,6 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
                 type: 'inside',
                 endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1]
             }, {
-                bottom: 250,
                 show: true,
                 type: 'slider',
                 endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1]

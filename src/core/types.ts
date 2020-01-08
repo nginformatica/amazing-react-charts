@@ -221,9 +221,11 @@ export type TZoomProps = {
     bottom?: number
     show?: boolean
     zoomLock?: boolean
+    start?: number
     labelFormatter?: TFormatterSliderType
     type: 'inside' | 'slider'
-    endValue: number | Date | string
+    end?: number
+    endValue?: number | Date | string
 }
 
 export type TLegendProps = {

@@ -110,7 +110,6 @@ const StackedBarChart = (props: IProps) => {
                 type: 'inside',
                 endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1]
             }, {
-                bottom: 250,
                 show: true,
                 type: 'slider',
                 endValue: xData.length > 20 ? xData[17] : xData[xData.length - 1]
@@ -221,7 +220,7 @@ const StackedBarChart = (props: IProps) => {
         legend: {
             x: 'center',
             y: 'bottom',
-            top: 260,
+            top: 30,
             data: [topResult, bottomResult, lineResult],
             itemGap: 30
         },
