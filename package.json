@@ -1,6 +1,6 @@
 {
   "name": "@keepfy/react-charts",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "A react charts package based in echarts",
   "author": "Leonardo Filipe Rigon",
   "license": "MIT",
