@@ -237,6 +237,7 @@ const AreaChart = (props: IDefaultChartProps) => {
 
     return (
         <ReactEcharts
+            lazyUpdate
             notMerge
             style={ { width: '99.9%', height: 300 } }
             opts={ { width: width || 'auto' } }

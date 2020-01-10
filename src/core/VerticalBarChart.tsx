@@ -198,6 +198,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
 
     return (
         <ReactEcharts
+            lazyUpdate
             notMerge
             style={ { width: '99%' } }
             opts={ { width: width } }

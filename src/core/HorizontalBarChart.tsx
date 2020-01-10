@@ -127,6 +127,7 @@ const HorizontalBarChart = (props: IProps) => {
 
     return (
         <ReactEcharts
+            lazyUpdate
             style={ { width: '99%' } }
             opts={ { width: width } }
             option={
