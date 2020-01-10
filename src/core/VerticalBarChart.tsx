@@ -114,15 +114,15 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         textStyle: { fontSize: 11.5 }
     }
 
-    const scrollable: TZoomProps[] = data.length > 14
+    const scrollable: TZoomProps[] = data.length > 12
         ? [
             {
                 type: 'inside',
-                endValue: xData.length > 14 ? xData[13] : xData[xData.length - 1]
+                endValue: xData.length > 12 ? xData[11] : xData[xData.length - 1]
             }, {
                 show: true,
                 type: 'slider',
-                endValue: xData.length > 14 ? xData[13] : xData[xData.length - 1]
+                endValue: xData.length > 12 ? xData[11] : xData[xData.length - 1]
             }
         ]
         : []

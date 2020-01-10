@@ -68,7 +68,7 @@ export const truncateText = (text: string, listSize?: number) => {
 }
 
 export const truncateLabel = (text: string) =>
-    text.length > 5 ? text.slice(0, 2) + '...' : text
+    text.length > 8 ? text.slice(0, 5) + '...' : text
 
 export const getDomain = (item: TDomainValues) => {
     switch (true) {
@@ -116,7 +116,7 @@ export const getSaveAsImage = (title: string) => ({
         borderColor: '#152849',
         borderWidth: 0.1
     },
-    excludeComponents: ['toolbox', 'title', 'dataZoom']
+    excludeComponents: ['toolbox', 'dataZoom']
 })
 
 export const getDataView = (title: string) => ({
