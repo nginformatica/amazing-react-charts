@@ -71,8 +71,8 @@ export type TSeries = {
     showSymbol?: boolean
     hoverAnimation?: boolean
     barMaxWidth?: number | string
-    type: 'line' | 'bar'
-    data: number[] | string[] | Date[]
+    type?: 'line' | 'bar'
+    data?: number[] | string[] | Date[]
 }
 
 export type TDomainValues = {
@@ -212,9 +212,9 @@ export type TOptionsProps = {
     dataZoom?: TZoomProps[]
     title?: TTitleProps
     toolbox?: TToolBoxProps
-    series: TSeries[]
-    xAxis: TAxisProps | TAxisProps[]
-    yAxis: TAxisProps | TAxisProps[]
+    series?: TSeries[]
+    xAxis?: TAxisProps | TAxisProps[]
+    yAxis?: TAxisProps | TAxisProps[]
 }
 
 export type TZoomProps = {
@@ -292,4 +292,13 @@ export type TDataView = {
     title?: string
     icon?: string
     iconStyle?: CSSProperties
+}
+
+export type TDataZoomEventProps = {
+    start: number
+    end: number
+}
+
+export type TDataZoomChartProps ={
+    setOption(option: TOptionsProps): void
 }

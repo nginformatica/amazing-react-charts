@@ -18,8 +18,11 @@ import {
     TSaveAsImage,
     TTitleProps,
     TTooltipProps,
-    TZoomProps
+    TZoomProps,
+    TDataZoomEventProps,
+    TDataZoomChartProps
 } from './types'
+
 
 const AreaChart = (props: IDefaultChartProps) => {
     const {
@@ -47,6 +50,26 @@ const AreaChart = (props: IDefaultChartProps) => {
     const xData = xType === 'time'
         ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
         : data.map((item: TEntryData) => item.label)
+
+        const dinamicData = (item: TDataZoomEventProps, charts: TDataZoomChartProps) => {
+            const dataRange = item.end - item.start
+            const calc = 3000/xData.length
+            
+            if (xData.length <= 30 || dataRange < calc) {
+                return charts.setOption({
+                    series: [{label: {  formatter: formatLabel,
+                    show: true,
+                    position: 'top',
+                    fontSize: fontLabelSize || 11.5,
+                    color: 'black',
+                    distance: 1.1 }}]}
+                )
+            } else { 
+                charts.setOption({series: [{label: { show: false } }]} )
+            }               
+        }
+        
+
 
     const formatLabel = (chartValues: TDataTooltip) => {
         const { data } = chartValues
@@ -138,17 +161,14 @@ const AreaChart = (props: IDefaultChartProps) => {
         series: [{
             type: 'line',
             data: yData,
-            label:
-                xData.length < 50
-                    ? {
-                        formatter: formatLabel,
-                        show: true,
-                        position: 'top',
-                        fontSize: fontLabelSize || 11.5,
-                        color: 'black',
-                        distance: 1.1
-                    }
-                    : undefined,
+            label: {
+                formatter: formatLabel,
+                show: true,
+                position: 'top',
+                fontSize: fontLabelSize || 11.5,
+                color: 'black',
+                distance: 1.1
+                    },
             lineStyle: {
                 color: color || 'blue'
             },
@@ -241,6 +261,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             notMerge
             style={ { width: '99.9%', height: 300 } }
             opts={ { width: width || 'auto' } }
+            onEvents={ { dataZoom: (item, chartOptions) => dinamicData(item, chartOptions) } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }
