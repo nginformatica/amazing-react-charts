@@ -3,14 +3,14 @@ import ReactEcharts from 'echarts-for-react'
 import {
     IDefaultChartProps,
     TDataTooltip,
+    TDataZoomChartProps,
+    TDataZoomEventProps,
     TEntryData,
     TOptionsProps,
     TSaveAsImage,
     TTitleProps,
     TTooltipProps,
-    TZoomProps,
-    TDataZoomEventProps,
-    TDataZoomChartProps
+    TZoomProps
 } from './types'
 import {
     formatTime,
@@ -22,42 +22,50 @@ import {
     truncateLabel
 } from './auxiliarFunctions'
 
-
-export const fullText = { 
-    xAxis: { axisLabel: { 
-        rotate: 0, 
-        show: true, 
-        interval: 0, 
-        formatter: (item:string) => item } },
+export const fullText = {
+    xAxis: {
+        axisLabel: {
+            rotate: 0,
+            show: true,
+            interval: 0,
+            formatter: (item: string) => item
+        }
+    },
     grid: { bottom: 60 }
 }
 
-export const rotatedLabel = { 
-    xAxis: { axisLabel: { 
-        rotate: 30, 
-        show: true, 
-        interval: 0,
-        formatter: truncateLabel
-    } }, 
+export const rotatedLabel = {
+    xAxis: {
+        axisLabel: {
+            rotate: 30,
+            show: true,
+            interval: 0,
+            formatter: truncateLabel
+        }
+    },
     grid: { bottom: '29%' }
 }
 
-export const normalLabel = { 
-    xAxis: { axisLabel: { 
-        rotate: 0, 
-        show: true, 
-        interval: 0,
-        formatter: truncateLabel    
-    } },
+export const normalLabel = {
+    xAxis: {
+        axisLabel: {
+            rotate: 0,
+            show: true,
+            interval: 0,
+            formatter: truncateLabel
+        }
+    },
     grid: { bottom: 60 }
 }
 
-export const dontShowLabel = { 
-    xAxis: { axisLabel: { 
-        rotate: 0, 
-        interval: 'auto',
-        formatter: (item:string) => item 
-    } },
+export const dontShowLabel = {
+    xAxis: {
+        axisLabel: {
+            rotate: 0,
+            interval: 'auto',
+            formatter: (item: string) => item
+        }
+    },
     grid: { bottom: 60 }
 }
 
@@ -79,18 +87,20 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         toolboxTooltip
     } = props
 
-
     const yData = data.map((item: TEntryData) => item.result)
     const xData = xType === 'time'
         ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
         : data.map((item: TEntryData) => item.label)
 
-    const dynamicDataZoom = (item: TDataZoomEventProps, charts: TDataZoomChartProps) => {
+    const dynamicDataZoom = (
+        item: TDataZoomEventProps,
+        charts: TDataZoomChartProps
+    ) => {
         const dataRange = item.end - item.start
         const dataLimit = 1200 / xData.length
         const fullLabel = 500 / xData.length
 
-        if (xData.length <= 5 || dataRange < fullLabel ) {
+        if (xData.length <= 5 || dataRange < fullLabel) {
             charts.setOption(fullText)
         } else if (xData.length <= 14 || dataRange < dataLimit) {
             charts.setOption(normalLabel)

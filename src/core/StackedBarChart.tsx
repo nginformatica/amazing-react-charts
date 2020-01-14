@@ -4,15 +4,15 @@ import {
     IDefaultChartProps,
     TAxisProps,
     TDataTooltip,
+    TDataZoomChartProps,
+    TDataZoomEventProps,
     TEntryData,
     TEntryDataTuples,
     TOptionsProps,
     TSaveAsImage,
     TTitleProps,
     TTooltipProps,
-    TZoomProps,
-    TDataZoomEventProps,
-    TDataZoomChartProps
+    TZoomProps
 } from './types'
 import { formatToBRL } from 'brazilian-values'
 import {
@@ -23,7 +23,12 @@ import {
     toDate,
     truncateLabel
 } from './auxiliarFunctions'
-import { normalLabel, rotatedLabel, dontShowLabel, fullText } from './VerticalBarChart'
+import {
+    dontShowLabel,
+    fullText,
+    normalLabel,
+    rotatedLabel
+} from './VerticalBarChart'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TEntryDataTuples
@@ -59,7 +64,10 @@ const StackedBarChart = (props: IProps) => {
         ? bottomData.map((item: TEntryData) => toDate(item.label, dateFormat))
         : bottomData.map((item: TEntryData) => item.label)
 
-    const dynamicDataZoom = (item: TDataZoomEventProps, charts: TDataZoomChartProps) => {
+    const dynamicDataZoom = (
+        item: TDataZoomEventProps,
+        charts: TDataZoomChartProps
+    ) => {
         const dataRange = item.end - item.start
         const dataLimit = 1200 / xData.length
         const fullLabel = 500 / xData.length
@@ -234,7 +242,7 @@ const StackedBarChart = (props: IProps) => {
                 show: true
             }
         },
-            secondYAxis
+        secondYAxis
         ],
         legend: {
             x: 'center',
@@ -257,8 +265,8 @@ const StackedBarChart = (props: IProps) => {
     return (
         <ReactEcharts
             notMerge
-            style={{ width: '99%' }}
-            opts={{ width: width }}
+            style={ { width: '99%' } }
+            opts={ { width: width } }
             onEvents={ { dataZoom: dynamicDataZoom } }
             option={
                 tooltipProps

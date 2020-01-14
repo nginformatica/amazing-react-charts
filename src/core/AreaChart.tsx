@@ -13,16 +13,15 @@ import {
 import {
     IDefaultChartProps,
     TDataTooltip,
+    TDataZoomChartProps,
+    TDataZoomEventProps,
     TEntryData,
     TOptionsProps,
     TSaveAsImage,
     TTitleProps,
     TTooltipProps,
-    TZoomProps,
-    TDataZoomEventProps,
-    TDataZoomChartProps
+    TZoomProps
 } from './types'
-
 
 const AreaChart = (props: IDefaultChartProps) => {
     const {
@@ -51,7 +50,20 @@ const AreaChart = (props: IDefaultChartProps) => {
         ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
         : data.map((item: TEntryData) => item.label)
 
-    const dinamicData = (item: TDataZoomEventProps, charts: TDataZoomChartProps) => {
+    const formatLabel = (chartValues: TDataTooltip) => {
+        const { data } = chartValues
+
+        return yComplement
+            ? Number(data).toFixed(2) + yComplement
+            : yType === 'time'
+                ? timeConvert(Number(data))
+                : data
+    }
+
+    const dinamicData = (
+        item: TDataZoomEventProps,
+        charts: TDataZoomChartProps
+    ) => {
         const dataRange = item.end - item.start
         const dataLimit = (yType === 'time' ? 3400 : 4500) / xData.length
 
@@ -72,18 +84,6 @@ const AreaChart = (props: IDefaultChartProps) => {
         } else {
             charts.setOption({ series: [{ label: { show: false } }] })
         }
-    }
-
-
-
-    const formatLabel = (chartValues: TDataTooltip) => {
-        const { data } = chartValues
-
-        return yComplement
-            ? Number(data).toFixed(2) + yComplement
-            : yType === 'time'
-                ? timeConvert(Number(data))
-                : data
     }
 
     const formatSingleTooltip = (chartValues: TDataTooltip[]) => {
@@ -142,12 +142,11 @@ const AreaChart = (props: IDefaultChartProps) => {
         }
     )
 
-
     const scrollable: TZoomProps[] = xData.length > 30
         ? [
             {
                 type: 'inside',
-                start: xData.length > 30 ? (100-(3000/xData.length)) : 0,
+                start: xData.length > 30 ? (100 - (3000 / xData.length)) : 0,
                 end: 100,
                 zoomLock: true,
                 zoomOnMouseWheel: 'shift'
@@ -156,7 +155,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 bottom: 0,
                 show: true,
                 type: 'slider',
-                start: xData.length > 30 ? (100-(3000/xData.length)) : 0,
+                start: xData.length > 30 ? (100 - (3000 / xData.length)) : 0,
                 end: 100,
                 labelFormatter:
                     (_: string, item2: string) => formatTime(item2, 'dd/MM/yyyy')
@@ -266,9 +265,11 @@ const AreaChart = (props: IDefaultChartProps) => {
         <ReactEcharts
             lazyUpdate
             notMerge
-            style={{ width: '99.9%', height: 300 }}
-            opts={{ width: width || 'auto' }}
-            onEvents={{ dataZoom: (item, chartOptions) => dinamicData(item, chartOptions) }}
+            style={ { width: '99.9%', height: 300 } }
+            opts={ { width: width || 'auto' } }
+            onEvents={ {
+                dataZoom: dinamicData
+            } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }
