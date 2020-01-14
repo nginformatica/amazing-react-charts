@@ -10,7 +10,9 @@ import {
     TSaveAsImage,
     TTitleProps,
     TTooltipProps,
-    TZoomProps
+    TZoomProps,
+    TDataZoomEventProps,
+    TDataZoomChartProps
 } from './types'
 import { formatToBRL } from 'brazilian-values'
 import {
@@ -19,8 +21,9 @@ import {
     getSaveAsImage,
     mountMessage,
     toDate,
-    truncateText
+    truncateLabel
 } from './auxiliarFunctions'
+import { normalLabel, rotatedLabel, dontShowLabel, fullText } from './VerticalBarChart'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TEntryDataTuples
@@ -55,6 +58,22 @@ const StackedBarChart = (props: IProps) => {
     const xData = xType === 'time'
         ? bottomData.map((item: TEntryData) => toDate(item.label, dateFormat))
         : bottomData.map((item: TEntryData) => item.label)
+
+    const dynamicDataZoom = (item: TDataZoomEventProps, charts: TDataZoomChartProps) => {
+        const dataRange = item.end - item.start
+        const dataLimit = 1200 / xData.length
+        const fullLabel = 500 / xData.length
+
+        if (xData.length <= 5 || dataRange < fullLabel ) {
+            charts.setOption(fullText)
+        } else if (xData.length <= 14 || dataRange < dataLimit) {
+            charts.setOption(normalLabel)
+        } else if (dataRange < 40) {
+            charts.setOption(rotatedLabel)
+        } else {
+            charts.setOption(dontShowLabel)
+        }
+    }
 
     const formatTooltip = (values: TDataTooltip[]) => {
         const valueBot = values[0] ? Number(values[0].data) : 0
@@ -186,7 +205,7 @@ const StackedBarChart = (props: IProps) => {
             axisLabel: {
                 formatter: (item: string) => xType === 'time'
                     ? formatTime(item, 'MMM/yy')
-                    : truncateText(item, xData.length),
+                    : truncateLabel(item),
                 textStyle: { fontSize: xData.length > 14 ? 10 : 11.5 },
                 interval: xData.length > 20 ? 'auto' : 0
             },
@@ -215,7 +234,7 @@ const StackedBarChart = (props: IProps) => {
                 show: true
             }
         },
-        secondYAxis
+            secondYAxis
         ],
         legend: {
             x: 'center',
@@ -238,8 +257,9 @@ const StackedBarChart = (props: IProps) => {
     return (
         <ReactEcharts
             notMerge
-            style={ { width: '99%' } }
-            opts={ { width: width } }
+            style={{ width: '99%' }}
+            opts={{ width: width }}
+            onEvents={ { dataZoom: dynamicDataZoom } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }

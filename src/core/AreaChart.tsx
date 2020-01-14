@@ -51,24 +51,29 @@ const AreaChart = (props: IDefaultChartProps) => {
         ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
         : data.map((item: TEntryData) => item.label)
 
-        const dinamicData = (item: TDataZoomEventProps, charts: TDataZoomChartProps) => {
-            const dataRange = item.end - item.start
-            const calc = 3000/xData.length
-            
-            if (xData.length <= 30 || dataRange < calc) {
-                return charts.setOption({
-                    series: [{label: {  formatter: formatLabel,
-                    show: true,
-                    position: 'top',
-                    fontSize: fontLabelSize || 11.5,
-                    color: 'black',
-                    distance: 1.1 }}]}
-                )
-            } else { 
-                charts.setOption({series: [{label: { show: false } }]} )
-            }               
+    const dinamicData = (item: TDataZoomEventProps, charts: TDataZoomChartProps) => {
+        const dataRange = item.end - item.start
+        const dataLimit = (yType === 'time' ? 3400 : 4500) / xData.length
+
+        if (xData.length <= 30 || dataRange < dataLimit) {
+            return charts.setOption({
+                series: [{
+                    label: {
+                        formatter: formatLabel,
+                        show: true,
+                        position: 'top',
+                        fontSize: yType === 'time' ? 10 : 11.5,
+                        color: 'black',
+                        distance: 1.1
+                    }
+                }]
+            }
+            )
+        } else {
+            charts.setOption({ series: [{ label: { show: false } }] })
         }
-        
+    }
+
 
 
     const formatLabel = (chartValues: TDataTooltip) => {
@@ -137,19 +142,21 @@ const AreaChart = (props: IDefaultChartProps) => {
         }
     )
 
-    const scrollable: TZoomProps[] = xData.length > 20
+
+    const scrollable: TZoomProps[] = xData.length > 30
         ? [
             {
                 type: 'inside',
-                start: xData.length > 20 ? 66 : 100,
+                start: xData.length > 30 ? (100-(3000/xData.length)) : 0,
                 end: 100,
-                zoomLock: true
+                zoomLock: true,
+                zoomOnMouseWheel: 'shift'
             },
             {
                 bottom: 0,
                 show: true,
                 type: 'slider',
-                start: xData.length > 20 ? 66 : 100,
+                start: xData.length > 30 ? (100-(3000/xData.length)) : 0,
                 end: 100,
                 labelFormatter:
                     (_: string, item2: string) => formatTime(item2, 'dd/MM/yyyy')
@@ -165,10 +172,10 @@ const AreaChart = (props: IDefaultChartProps) => {
                 formatter: formatLabel,
                 show: true,
                 position: 'top',
-                fontSize: fontLabelSize || 11.5,
+                fontSize: yType === 'time' ? 10 : 11.5,
                 color: 'black',
                 distance: 1.1
-                    },
+            },
             lineStyle: {
                 color: color || 'blue'
             },
@@ -241,7 +248,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 }
             }
         },
-        grid: { ...gridProps, show: true },
+        grid: { ...gridProps || { bottom: 60 }, show: true },
         legend: {
             x: 'center',
             y: 'bottom',
@@ -259,9 +266,9 @@ const AreaChart = (props: IDefaultChartProps) => {
         <ReactEcharts
             lazyUpdate
             notMerge
-            style={ { width: '99.9%', height: 300 } }
-            opts={ { width: width || 'auto' } }
-            onEvents={ { dataZoom: (item, chartOptions) => dinamicData(item, chartOptions) } }
+            style={{ width: '99.9%', height: 300 }}
+            opts={{ width: width || 'auto' }}
+            onEvents={{ dataZoom: (item, chartOptions) => dinamicData(item, chartOptions) }}
             option={
                 tooltipProps
                     ? { ...options, tooltip }

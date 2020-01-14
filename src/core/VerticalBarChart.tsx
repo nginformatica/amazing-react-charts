@@ -8,7 +8,9 @@ import {
     TSaveAsImage,
     TTitleProps,
     TTooltipProps,
-    TZoomProps
+    TZoomProps,
+    TDataZoomEventProps,
+    TDataZoomChartProps
 } from './types'
 import {
     formatTime,
@@ -19,6 +21,45 @@ import {
     toDate,
     truncateLabel
 } from './auxiliarFunctions'
+
+
+export const fullText = { 
+    xAxis: { axisLabel: { 
+        rotate: 0, 
+        show: true, 
+        interval: 0, 
+        formatter: (item:string) => item } },
+    grid: { bottom: 60 }
+}
+
+export const rotatedLabel = { 
+    xAxis: { axisLabel: { 
+        rotate: 30, 
+        show: true, 
+        interval: 0,
+        formatter: truncateLabel
+    } }, 
+    grid: { bottom: '29%' }
+}
+
+export const normalLabel = { 
+    xAxis: { axisLabel: { 
+        rotate: 0, 
+        show: true, 
+        interval: 0,
+        formatter: truncateLabel    
+    } },
+    grid: { bottom: 60 }
+}
+
+export const dontShowLabel = { 
+    xAxis: { axisLabel: { 
+        rotate: 0, 
+        interval: 'auto',
+        formatter: (item:string) => item 
+    } },
+    grid: { bottom: 60 }
+}
 
 const VerticalBarChart = (props: IDefaultChartProps) => {
     const {
@@ -38,10 +79,27 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         toolboxTooltip
     } = props
 
+
     const yData = data.map((item: TEntryData) => item.result)
     const xData = xType === 'time'
         ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
         : data.map((item: TEntryData) => item.label)
+
+    const dynamicDataZoom = (item: TDataZoomEventProps, charts: TDataZoomChartProps) => {
+        const dataRange = item.end - item.start
+        const dataLimit = 1200 / xData.length
+        const fullLabel = 500 / xData.length
+
+        if (xData.length <= 5 || dataRange < fullLabel ) {
+            charts.setOption(fullText)
+        } else if (xData.length <= 14 || dataRange < dataLimit) {
+            charts.setOption(normalLabel)
+        } else if (dataRange < 40) {
+            charts.setOption(rotatedLabel)
+        } else {
+            charts.setOption(dontShowLabel)
+        }
+    }
 
     const formatLabel = (chartValues: TDataTooltip) => {
         const { data } = chartValues
@@ -118,7 +176,8 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         ? [
             {
                 type: 'inside',
-                endValue: xData.length > 12 ? xData[11] : xData[xData.length - 1]
+                endValue: xData.length > 12 ? xData[11] : xData[xData.length - 1],
+                zoomOnMouseWheel: 'shift'
             }, {
                 show: true,
                 type: 'slider',
@@ -161,7 +220,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
                     (item: string) => xType === 'time'
                         ? formatTime(item, 'dd MMM')
                         : truncateLabel(item),
-                interval: 'auto',
+                interval: 0,
                 textStyle: {
                     fontSize: 11.5
                 }
@@ -202,6 +261,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
             notMerge
             style={ { width: '99%' } }
             opts={ { width: width } }
+            onEvents={ { dataZoom: dynamicDataZoom } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }

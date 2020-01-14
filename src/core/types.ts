@@ -121,7 +121,7 @@ export type TLabelProps = {
     normal?: TNormalProps
     opacity?: number
     color?: string
-    formatter?: TFormatterType
+    formatter?: TFormatterType | undefined
     show?: boolean
     position?: TPositionType
     fontSize?: number
@@ -159,7 +159,7 @@ export type TAxisLabelProps = {
     type?: TChartType
     formatter?: TFormatterType
     textStyle?: React.CSSProperties
-    interval?: number | 'auto'
+    interval?: number | string | 'auto'
     rotate?: number
     show?: boolean
     inside?: boolean
@@ -225,6 +225,7 @@ export type TZoomProps = {
     labelFormatter?: TFormatterSliderType
     type: 'inside' | 'slider'
     end?: number
+    zoomOnMouseWheel?: 'ctrl' | 'shift' | boolean
     endValue?: number | Date | string
 }
 
