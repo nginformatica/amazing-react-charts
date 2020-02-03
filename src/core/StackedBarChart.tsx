@@ -105,11 +105,12 @@ const StackedBarChart = (props: IProps) => {
             ? label + ': ' + formatTime(values[0].name, 'MMM/yy') + '<br>'
             : label + ': ' + values[0].name + '<br>'
 
-        const tooltipSumValues = sumDataValues && values.length === 3 && secondYAxisType
-            ? complement + ': ' + formatToBRL(stackedValues)
-            : sumDataValues && values.length === 2 && !secondYAxisType
+        const tooltipSumValues =
+            sumDataValues && values.length === 3 && secondYAxisType
                 ? complement + ': ' + formatToBRL(stackedValues)
-                : ''
+                : sumDataValues && values.length === 2 && !secondYAxisType
+                    ? complement + ': ' + formatToBRL(stackedValues)
+                    : ''
 
         const tooltipFooter = tooltipExtra && !sumDataValues
             ? tooltipExtra
@@ -248,7 +249,7 @@ const StackedBarChart = (props: IProps) => {
                 show: true
             }
         },
-            secondYAxis
+        secondYAxis
         ],
         legend: {
             x: 'center',
@@ -271,9 +272,9 @@ const StackedBarChart = (props: IProps) => {
     return (
         <ReactEcharts
             notMerge
-            style={{ width: '99%' }}
-            opts={{ width: width }}
-            onEvents={{ dataZoom: dynamicDataZoom }}
+            style={ { width: '99%' } }
+            opts={ { width: width } }
+            onEvents={ { dataZoom: dynamicDataZoom } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }
