@@ -32,6 +32,7 @@ import {
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TEntryDataTuples
+    tooltipExtra?: string
     sumDataValues?: boolean
     colors?: [string, string] | [string, string, string]
     secondYAxisType?: 'percent' | string
@@ -51,7 +52,8 @@ const StackedBarChart = (props: IProps) => {
         width,
         barWidth,
         title: titleProps,
-        toolboxTooltip
+        toolboxTooltip,
+        tooltipExtra
     } = props
 
     const { label, bottomResult, topResult, lineResult, complement } = tooltipProps
@@ -72,7 +74,7 @@ const StackedBarChart = (props: IProps) => {
         const dataLimit = 1200 / xData.length
         const fullLabel = 500 / xData.length
 
-        if (xData.length <= 5 || dataRange < fullLabel ) {
+        if (xData.length <= 5 || dataRange < fullLabel) {
             charts.setOption(fullText)
         } else if (xData.length <= 14 || dataRange < dataLimit) {
             charts.setOption(normalLabel)
@@ -103,11 +105,15 @@ const StackedBarChart = (props: IProps) => {
             ? label + ': ' + formatTime(values[0].name, 'MMM/yy') + '<br>'
             : label + ': ' + values[0].name + '<br>'
 
-        const tooltipFooter = sumDataValues && values.length === 3 && secondYAxisType
+        const tooltipSumValues = sumDataValues && values.length === 3 && secondYAxisType
             ? complement + ': ' + formatToBRL(stackedValues)
             : sumDataValues && values.length === 2 && !secondYAxisType
                 ? complement + ': ' + formatToBRL(stackedValues)
                 : ''
+
+        const tooltipFooter = tooltipExtra && !sumDataValues
+            ? tooltipExtra
+            : tooltipSumValues
 
         return [labelResult + tooltipBody + tooltipFooter]
     }
@@ -242,7 +248,7 @@ const StackedBarChart = (props: IProps) => {
                 show: true
             }
         },
-        secondYAxis
+            secondYAxis
         ],
         legend: {
             x: 'center',
@@ -265,9 +271,9 @@ const StackedBarChart = (props: IProps) => {
     return (
         <ReactEcharts
             notMerge
-            style={ { width: '99%' } }
-            opts={ { width: width } }
-            onEvents={ { dataZoom: dynamicDataZoom } }
+            style={{ width: '99%' }}
+            opts={{ width: width }}
+            onEvents={{ dataZoom: dynamicDataZoom }}
             option={
                 tooltipProps
                     ? { ...options, tooltip }

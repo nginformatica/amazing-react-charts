@@ -236,6 +236,7 @@ export type TLegendProps = {
     top?: number
     data: string[]
     itemGap?: number
+    color?: string[]
 }
 
 export type TTooltipProps = {

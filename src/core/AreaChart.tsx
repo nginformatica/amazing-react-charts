@@ -247,6 +247,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 }
             }
         },
+        color: [lineMarkColor],
         grid: { ...gridProps || { bottom: 60 }, show: true },
         legend: {
             x: 'center',
