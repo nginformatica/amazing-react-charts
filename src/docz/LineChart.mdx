@@ -1,0 +1,53 @@
+---
+name: Line charts
+route: /line-charts
+---
+
+import LineChart from '../core/LineChart'
+import { Playground } from 'docz'
+
+# line chart example
+
+## Demo
+<Playground>
+    <LineChart
+        showLabel
+        title='ola'
+        xType='time'
+        toolboxTooltip={{ saveAsImage: 'saving'}}
+        dateFormat='yyyy-MM'
+        colors={ ['red', 'green', 'blue'] }
+        data={ [ 
+            {
+                name: 'um',
+                values: [
+                    { label: '2019-01', result: 10 }, 
+                    { label: '2019-02', result: 40 },
+                    { label: '2019-03', result: 30 }, 
+                    { label: '2019-04', result: 20 },
+                    { label: '2019-05', result: 40 },
+                    { label: '2019-06', result: 50 },
+                    { label: '2019-07', result: 15 },
+                    { label: '2019-08', result: 70 },
+                    { label: '2019-09', result: 80 },
+                    { label: '2019-10', result: 90 }
+                ]
+            },
+             {
+                name: 'dois',
+                values: [
+                    { label: '2019-01', result: 1 }, 
+                    { label: '2019-02', result: 4 },
+                    { label: '2019-03', result: 3 }, 
+                    { label: '2019-04', result: 2 },
+                    { label: '2019-05', result: 4 },
+                    { label: '2019-06', result: 5 },
+                    { label: '2019-07', result: 1 },
+                    { label: '2019-08', result: 7 },
+                    { label: '2019-09', result: 8 },
+                    { label: '2019-10', result: 9 }
+                ]
+            }
+        ] }
+    />
+</Playground>

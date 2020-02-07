@@ -198,7 +198,6 @@ const AreaChart = (props: IDefaultChartProps) => {
             }
         }
         ],
-
         xAxis: {
             type: 'category',
             boundaryGap: false,

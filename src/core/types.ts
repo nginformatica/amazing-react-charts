@@ -42,6 +42,11 @@ export type TTooltipEntryProps = {
     complement?: string
 }
 
+export type TEntryDataLine = {
+    name?: string
+    values: TEntryData[]
+}
+
 export type TEntryData = {
     label: string
     result: number
@@ -273,6 +278,7 @@ export type TDataTooltip = {
     seriesName?: string
     data?: number | string
     seriesType?: string
+    value?: string | number
     axisValueLabel?: string
 }
 

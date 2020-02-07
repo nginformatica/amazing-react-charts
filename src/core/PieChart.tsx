@@ -3,10 +3,13 @@ import {
     IDefaultChartProps,
     TOptionsProps,
     TPieChartData,
-    TPieDataLabel
+    TPieDataLabel,
+    TSaveAsImage,
+    TTitleProps
 } from './types'
 import ReactEcharts from 'echarts-for-react'
 import { map } from 'ramda'
+import { getDataView, getSaveAsImage } from './auxiliarFunctions'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TPieChartData[]
@@ -16,7 +19,7 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
     center?: [string, string] | [number, string]
 }
 
-const formatTooltip = ( { name, value }: TPieChartData) =>
+const formatTooltip = ({ name, value }: TPieChartData) =>
     name + ': ' + value
 
 export const PieChart = (props: IProps) => {
@@ -28,12 +31,49 @@ export const PieChart = (props: IProps) => {
         colors,
         legendPosition,
         radius,
-        center
+        center,
+        title: titleProps,
+        toolboxTooltip
     } = props
-    const names = map(item => (item.name), data)
 
+    const names = map(item => (item.name), data)
     const formatPieLabel = ({ data }: TPieDataLabel) =>
         data.value === 0 ? '' : data.value + (yComplement || '')
+
+    const title: TTitleProps = {
+        id: 'chart-' + titleProps,
+        left: '6.2%',
+        show: titleProps !== undefined,
+        text: titleProps,
+        textAlign: 'left',
+        textStyle: {
+            fontFamily: 'roboto',
+            fontSize: 16,
+            fontWeight: 400
+        }
+    }
+
+    const toolbox = toolboxTooltip && (
+        {
+            showTitle: false,
+            right: '9.52%',
+            feature: {
+                saveAsImage: toolboxTooltip.saveAsImage && (
+                    getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage
+                ),
+                dataView: toolboxTooltip.dataView && (
+                    getDataView(toolboxTooltip.dataView)
+                )
+            },
+            tooltip: {
+                show: true,
+                backgroundColor: 'grey',
+                textStyle: {
+                    fontSize: 12
+                }
+            }
+        }
+    )
 
     const options: TOptionsProps = {
         grid: gridProps,
@@ -56,9 +96,11 @@ export const PieChart = (props: IProps) => {
             data: data
         }],
         legend: {
-            data: names
-        }
-
+            data: names,
+            top: 270
+        },
+        title: title,
+        toolbox
     }
 
     return (
