@@ -114,7 +114,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         text: titleProps,
         textAlign: 'left',
         textStyle: {
-            fontFamily: 'roboto',
+            fontFamily: 'Roboto',
             fontSize: 16,
             fontWeight: 400
         }
