@@ -52,6 +52,7 @@ export type TEntryDataTuples =
     | [TEntryData[], TEntryData[], TEntryData[]]
 
 export type TSeries = {
+    stillShowZeroSum?: boolean
     name?: string
     xAxisIndex?: number
     yAxisIndex?: number
@@ -71,13 +72,17 @@ export type TSeries = {
     showSymbol?: boolean
     hoverAnimation?: boolean
     barMaxWidth?: number | string
-    type?: 'line' | 'bar'
-    data?: number[] | string[] | Date[]
+    type?: 'line' | 'bar' | 'pie'
+    data?: number[] | string[] | Date[] | TPieChartData[]
 }
 
 export type TDomainValues = {
     min: number
     max: number
+}
+
+export type TPieDataLabel = {
+    data: TPieChartData
 }
 
 type TFormatterReturn =
@@ -91,6 +96,7 @@ type TFormatterEntry =
     | TDomainValues
     | TDataTooltip
     | TDataTooltip[]
+    | TPieDataLabel
 
 export type TFormatterType = string | ((item: TFormatterEntry) => TFormatterReturn)
 
@@ -104,6 +110,8 @@ export type TPositionType =
     | 'right'
     | 'insideRight'
     | 'insideLeft'
+    | 'inside'
+    | 'outside'
     | [number, number]
 
 export type TChartType =
@@ -121,7 +129,7 @@ export type TLabelProps = {
     normal?: TNormalProps
     opacity?: number
     color?: string
-    formatter?: TFormatterType | undefined
+    formatter?: TFormatterType | undefined | string
     show?: boolean
     position?: TPositionType
     fontSize?: number
@@ -178,11 +186,16 @@ type TSplitLineProps = {
     }
 }
 
+export type TPieChartData = {
+    name: string
+    value: number
+}
+
 export type TAxisProps = {
     name?: string
     type?: TChartType
     boundaryGap?: boolean
-    data?: number[] | string[] | Date[]
+    data?: number[] | string[] | Date[] | TPieChartData[]
     gridIndex?: number
     showGrid?: boolean
     splitLine?: TSplitLineProps
@@ -207,12 +220,15 @@ export type TAxisTickProps = {
 
 export type TOptionsProps = {
     color?: string[]
+    radius?: string
+    center?: [string, string] | [number, string]
     grid?: TGridProps
     legend?: TLegendProps
     dataZoom?: TZoomProps[]
     title?: TTitleProps
     toolbox?: TToolBoxProps
     series?: TSeries[]
+    tooltip?: TTooltipProps
     xAxis?: TAxisProps | TAxisProps[]
     yAxis?: TAxisProps | TAxisProps[]
 }
@@ -241,12 +257,12 @@ export type TLegendProps = {
 
 export type TTooltipProps = {
     formatter: TFormatterType
-    trigger?: 'axis'
+    trigger?: 'axis' | 'item'
     textStyle?: React.CSSProperties
     axisPointer?: TAxisPointerProps
 }
 
-export type TAxisPointerProps ={
+export type TAxisPointerProps = {
     type?: 'cross' | string
     label?: CSSProperties
 }
@@ -301,6 +317,6 @@ export type TDataZoomEventProps = {
     end: number
 }
 
-export type TDataZoomChartProps ={
+export type TDataZoomChartProps = {
     setOption(option: TOptionsProps): void
 }

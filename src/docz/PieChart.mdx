@@ -1,0 +1,28 @@
+---
+name: Pie charts
+route: /piechart
+---
+
+import PieChart from '../core/PieChart'
+import { Playground } from 'docz'
+
+# Area chart example
+
+## Demo
+<Playground>
+    <PieChart
+        colors={ ['blue', 'green', 'red', 'purple', 'black'] }
+        legendPosition='inside'
+        radius='55%'
+        center={ ['40%', '50%'] }
+        data={ 
+            [ 
+                { name: "trained", value: 25 },
+                { name: "knewNorms", value: 10 },
+                { name: "wasUsedEpi", value: 45 },
+                { name: "defectiveEquipment", value: 10 },
+                { name: "improvisation", value: 90 }
+            ] 
+        }
+    />
+</Playground>

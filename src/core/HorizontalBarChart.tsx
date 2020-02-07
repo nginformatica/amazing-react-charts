@@ -26,7 +26,7 @@ const HorizontalBarChart = (props: IProps) => {
         width
     } = props
 
-    const xData = reverse(data.map((item: TEntryData) => item.result))
+    const xData: number[] = reverse(data.map((item: TEntryData) => item.result))
     const yData = reverse(data.map((item: TEntryData) => item.label))
     const backgroundBar = data.map(() => 100)
 
