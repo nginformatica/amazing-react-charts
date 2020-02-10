@@ -23,7 +23,8 @@ const HorizontalBarChart = (props: IProps) => {
         xComplement,
         tooltip: tooltipProps,
         grid: gridProps,
-        width
+        width,
+        labelWordSize
     } = props
 
     const xData: number[] = reverse(data.map((item: TEntryData) => item.result))
@@ -47,7 +48,10 @@ const HorizontalBarChart = (props: IProps) => {
     }
 
     const options: TOptionsProps = {
-        grid: gridProps,
+        grid: {
+            containLabel: true,
+            ...gridProps
+        },
         series: [
             {
                 barGap: '-100%',
@@ -60,7 +64,7 @@ const HorizontalBarChart = (props: IProps) => {
                 data: backgroundBar,
                 itemStyle: {
                     normal: {
-                        color: '#C1C1C1',
+                        color: '#ececec',
                         barBorderRadius: 10,
                         borderColor: props.color
                     }
@@ -112,8 +116,7 @@ const HorizontalBarChart = (props: IProps) => {
                 show: false
             },
             axisLabel: {
-                formatter: truncateLabel,
-                interval: 0
+                formatter: (text: string) => truncateLabel(text, labelWordSize)
             },
             axisTick: {
                 show: false

@@ -67,8 +67,13 @@ export const truncateText = (text: string, listSize?: number) => {
     return text.length > wordSize ? text.slice(0, wordSize - 3) + '...' : text
 }
 
-export const truncateLabel = (text: string) =>
-    text.length > 12 ? text.slice(0, 8) + '...' : text
+export const truncateLabel = (text: string, labelWordSize?: number) => {
+    const numberOfLetters = labelWordSize ? labelWordSize : 12
+
+    return text.length > numberOfLetters
+        ? text.slice(0, numberOfLetters-4) + '...'
+        : text
+}
 
 export const getDomain = (item: TDomainValues) => {
     switch (true) {

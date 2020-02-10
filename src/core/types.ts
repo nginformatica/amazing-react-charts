@@ -21,6 +21,7 @@ export interface IDefaultChartProps {
     title?: string
     toolboxTooltip?: TToolboxEntryProps
     isMoreThanHundredPercent?: boolean
+    labelWordSize?: number
 }
 
 export type TToolboxEntryProps = {
@@ -167,6 +168,7 @@ export type TGridProps = {
     top?: string | number
     bottom?: string | number
     height?: string | number
+    containLabel?: boolean
 }
 
 export type TAxisLabelProps = {
