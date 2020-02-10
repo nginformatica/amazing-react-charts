@@ -16,11 +16,11 @@ import {
     formatTime,
     formatTooltip,
     getDataView,
+    getDomain,
     getSaveAsImage,
     timeConvert,
     toDate,
-    truncateLabel,
-    getDomain
+    truncateLabel
 } from './auxiliarFunctions'
 
 export const fullText = {

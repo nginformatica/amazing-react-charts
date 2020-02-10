@@ -241,7 +241,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 formatter:
                     (item: number) => yType === 'time'
                         ? timeConvert(item) + 'h'
-                        : yComplement === 'money' 
+                        : yComplement === 'money'
                             ? item + (yComplement || '')
                             : formatToBRL(item),
                 textStyle: {
