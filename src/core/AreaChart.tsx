@@ -22,6 +22,7 @@ import {
     TTooltipProps,
     TZoomProps
 } from './types'
+import { formatToBRL } from 'brazilian-values'
 
 const AreaChart = (props: IDefaultChartProps) => {
     const {
@@ -114,7 +115,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         text: titleProps,
         textAlign: 'left',
         textStyle: {
-            fontFamily: 'Roboto',
+            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
             fontSize: 16,
             fontWeight: 400
         }
@@ -240,7 +241,9 @@ const AreaChart = (props: IDefaultChartProps) => {
                 formatter:
                     (item: number) => yType === 'time'
                         ? timeConvert(item) + 'h'
-                        : item + (yComplement || ''),
+                        : yComplement === 'money' 
+                            ? item + (yComplement || '')
+                            : formatToBRL(item),
                 textStyle: {
                     fontSize: fontLabelSize || 11.5
                 }

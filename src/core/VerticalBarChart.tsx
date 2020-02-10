@@ -19,7 +19,8 @@ import {
     getSaveAsImage,
     timeConvert,
     toDate,
-    truncateLabel
+    truncateLabel,
+    getDomain
 } from './auxiliarFunctions'
 
 export const fullText = {
@@ -129,7 +130,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         text: titleProps,
         textAlign: 'left',
         textStyle: {
-            fontFamily: 'Roboto',
+            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
             fontSize: 16,
             fontWeight: 400
         }
@@ -241,7 +242,7 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
             }
         },
         yAxis: {
-            max: yComplement === '%' && 100,
+            max: yComplement === '%' ? 100 : getDomain,
             type: 'value',
             splitLine: {
                 show: true,

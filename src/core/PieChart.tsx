@@ -47,7 +47,7 @@ export const PieChart = (props: IProps) => {
         text: titleProps,
         textAlign: 'left',
         textStyle: {
-            fontFamily: 'Roboto',
+            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
             fontSize: 16,
             fontWeight: 400
         }
