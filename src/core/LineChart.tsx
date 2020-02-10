@@ -18,6 +18,7 @@ import {
     getSaveAsImage,
     timeConvert
 } from './auxiliarFunctions'
+import { formatToBRL } from 'brazilian-values'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TEntryDataLine[]
@@ -84,8 +85,12 @@ const LineChart = (props: IProps) => {
         : []
 
     const formatLabel = (lines: TDataTooltip[]) => {
+        const takeComplement = (value: number) => yComplement === 'money'
+            ? formatToBRL(value)
+            : yComplement ? value + yComplement : value
+
         const linesTooltips = lines.map(line => (
-            line.seriesName + ': ' + line.value + '<br>'
+            line.seriesName + ': ' + takeComplement(Number(line.value)) + '<br>'
         ))
 
         const tooltipTitle = xType === 'time'

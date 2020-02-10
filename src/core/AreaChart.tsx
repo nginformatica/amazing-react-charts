@@ -2,6 +2,7 @@ import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
     fixedDomain,
+    formatMoneyLabel,
     formatTime,
     formatTooltip,
     getDataView,
@@ -58,7 +59,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             ? Number(data).toFixed(2) + yComplement
             : yType === 'time'
                 ? timeConvert(Number(data))
-                : data
+                : yComplement === 'money' ? formatToBRL(data) : data
     }
 
     const dinamicData = (
@@ -92,8 +93,10 @@ const AreaChart = (props: IDefaultChartProps) => {
         const { axisValueLabel, data } = chartValues[0]
         const complement = tooltipComplement ? tooltipComplement : ''
         const values = yType === 'time'
-            ? timeConvert(data as number) + 'h'
-            : data + (yComplement || '')
+            ? timeConvert(Number(data as number)) + 'h'
+            : yComplement === 'money'
+                ? formatToBRL(Number(data))
+                : data + (yComplement || '')
 
         return [
             `${label}: ${formatTooltip(axisValueLabel, dateFormat)} <br>` +
@@ -169,7 +172,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             type: 'line',
             data: yData,
             label: {
-                formatter: formatLabel,
+                formatter: yComplement === 'money' ? formatMoneyLabel : formatLabel,
                 show: true,
                 position: 'top',
                 fontSize: yType === 'time' ? 10 : 11.5,
@@ -242,8 +245,8 @@ const AreaChart = (props: IDefaultChartProps) => {
                     (item: number) => yType === 'time'
                         ? timeConvert(item) + 'h'
                         : yComplement === 'money'
-                            ? item + (yComplement || '')
-                            : formatToBRL(item),
+                            ? formatToBRL(item)
+                            : item + (yComplement || ''),
                 textStyle: {
                     fontSize: fontLabelSize || 11.5
                 }

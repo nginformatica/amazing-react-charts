@@ -85,7 +85,8 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         width,
         showBarLabel,
         title: titleProps,
-        toolboxTooltip
+        toolboxTooltip,
+        isMoreThanHundredPercent
     } = props
 
     const yData = data.map((item: TEntryData) => item.result)
@@ -242,7 +243,9 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
             }
         },
         yAxis: {
-            max: yComplement === '%' ? 100 : getDomain,
+            max: !isMoreThanHundredPercent && yComplement === '%'
+                ? 100
+                : getDomain,
             type: 'value',
             splitLine: {
                 show: true,

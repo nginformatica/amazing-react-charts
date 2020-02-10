@@ -134,3 +134,4 @@ export const getDataView = (title: string) => ({
     lang: [title, 'Voltar', 'Atualizar']
 })
 
+export const formatMoneyLabel = (item: TDataTooltip) => formatToBRL(item.value)

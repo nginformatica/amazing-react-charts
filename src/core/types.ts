@@ -20,6 +20,7 @@ export interface IDefaultChartProps {
     showBarLabel?: boolean
     title?: string
     toolboxTooltip?: TToolboxEntryProps
+    isMoreThanHundredPercent?: boolean
 }
 
 export type TToolboxEntryProps = {
