@@ -1,4 +1,4 @@
-<h1 align="center">Keepfy React Charts</h1>
+<h1 align="center">Amazing React Charts</h1>
 
 <div align="center">
 
@@ -12,15 +12,15 @@ This package is based on echarts and echarts-for-react wrapper.
 
 ## Installation
 
-Keepfy React Charts is avaliable as an npm package.
+Amazing React Charts is avaliable as an npm package.
 
 ```
     // with npm 
-    npm install --save @keepfy/react-charts 
+    npm install --save amazing-react-charts 
 
 
     //with yarn 
-    yarn add @keepfy/react-charts 
+    yarn add amazing-react-charts 
 ```
 
 ## Usage
@@ -28,7 +28,7 @@ Keepfy React Charts is avaliable as an npm package.
 Here is a quick example to get you started, **it's all you need**:
 
 ```ts
-import VerticalBarChart from '@keepfy/react-charts'
+import VerticalBarChart from 'amazing-react-charts'
 
 <VerticalBarChart
     color='green'
@@ -53,7 +53,7 @@ import VerticalBarChart from '@keepfy/react-charts'
 To run the demo:
 
 ```sh
-git clone https://github.com/keepfy/keepfy-react-charts.git
+git clone https://github.com/nginformatica/amazing-react-charts.git
 
 yarn && yarn start
 ```
@@ -64,16 +64,18 @@ yarn && yarn start
 - [x] HorizontalBarChart
 - [x] StackedBarChart
 - [x] VerticalBarChart
+- [x] PieChart
+
 
 ## Next Components
 
-- [ ] PieChart
+- [ ] CalendarChart
 - [ ] ClusteredBarChart
 - [ ] RadarChart
 
 ## Documentation
 
-Check out our [documentation website](https://nginformatica.github.io/flipper-ui/).
+Check out our [documentation website](https://nginformatica.github.io/amazing-react-charts/).
   
 ## Contributing
 

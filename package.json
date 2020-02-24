@@ -1,14 +1,14 @@
 {
-  "name": "@keepfy/react-charts",
-  "version": "0.1.24",
-  "description": "A react charts package based in echarts",
+  "name": "amazing-react-charts",
+  "version": "0.1.0",
+  "description": "An amazing react charts package based in echarts",
   "author": "Leonardo Filipe Rigon",
   "license": "MIT",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "typings": "build/index.d.ts",
   "keywords": [
-    "keepfy",
+    "nginformatica",
     "charts",
     "echarts",
     "react",
