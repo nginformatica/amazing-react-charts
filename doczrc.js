@@ -1,6 +1,6 @@
 export default {
     typescript: true,
     dest: '/docs',
-    base: '/keepfy-react-charts/',
-    description: 'Keepfy React Chart Components'
+    base: '/amazing-react-charts/',
+    description: 'Amazing React Chart Components'
 }
