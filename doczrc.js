@@ -1,6 +1,6 @@
 export default {
     typescript: true,
-    dest: '/docs',
+    dest: '/public',
     base: '/amazing-react-charts/',
     description: 'Amazing React Chart Components'
 }

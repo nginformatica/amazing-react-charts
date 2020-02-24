@@ -1,6 +1,6 @@
 {
   "name": "amazing-react-charts",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "An amazing react charts package based in echarts",
   "author": "Leonardo Filipe Rigon",
   "license": "MIT",
@@ -19,6 +19,7 @@
     "build:ts": "tsc",
     "build": "rm -rf build && yarn build:ts",
     "serve": "docz build && docz serve",
+    "docz:build": "docz build",
     "lint": "eslint 'src/**/*.ts?(x)'",
     "prepack": "yarn build"
   },
