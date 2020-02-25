@@ -247,6 +247,7 @@ export type TOptionsProps = {
     tooltip?: TTooltipProps
     xAxis?: TAxisProps | TAxisProps[]
     yAxis?: TAxisProps | TAxisProps[]
+    width?: string | number
 }
 
 export type TZoomProps = {

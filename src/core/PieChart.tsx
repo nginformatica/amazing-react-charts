@@ -15,6 +15,7 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TPieChartData[]
     colors?: string[]
     legendPosition?: 'inside' | 'outside'
+    legendType?: 'scroll' | 'plain'
     radius?: [string, string]
     center?: [number, string] | string | number
 }
@@ -33,7 +34,8 @@ export const PieChart = (props: IProps) => {
         radius,
         center,
         title: titleProps,
-        toolboxTooltip
+        toolboxTooltip,
+        legendType
     } = props
 
     const names = map(item => (item.name), data)
@@ -98,7 +100,8 @@ export const PieChart = (props: IProps) => {
         legend: {
             data: names,
             top: 270,
-            type: 'scroll'
+            type: legendType || 'plain',
+            itemGap: legendType === 'scroll' ? 60 : 10
         },
         title: title,
         toolbox

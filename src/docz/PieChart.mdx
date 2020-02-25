@@ -6,11 +6,12 @@ route: /piechart
 import PieChart from '../core/PieChart'
 import { Playground } from 'docz'
 
-# Area chart example
+# Pie chart example
 
 ## Demo
+
+## Pie chart with standart legend
 <Playground>
-    <div style={{ width: '300px'}}>
     <PieChart
         colors={ ['blue', 'green', 'red', 'purple', 'black'] }
         legendPosition='inside'
@@ -28,5 +29,28 @@ import { Playground } from 'docz'
             ] 
         }
     />
+</Playground>
+
+## Pie chart with scrollable legend
+<Playground>
+    <div style={ { width: '300px'} }>
+        <PieChart
+            legendType="scroll"
+            colors={ ['blue', 'green', 'red', 'purple', 'black'] }
+            legendPosition='inside'
+            radius='75%'
+            toolboxTooltip={{ saveAsImage: 'saving'}}
+            title='pie chart'
+            center={ ['50%', '50%'] }
+            data={ 
+                [ 
+                    { name: "Sem treinamento", value: 25 },
+                    { name: "Não utilizava EPI", value: 10 },
+                    { name: "Não conhecia as normas", value: 45 },
+                    { name: "Defeito de equipamento", value: 10 },
+                    { name: "Improvisação", value: 90 }
+                ] 
+            }
+        />
     </div>
 </Playground>
