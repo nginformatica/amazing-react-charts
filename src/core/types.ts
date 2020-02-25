@@ -88,6 +88,8 @@ export type TSeries = {
     hoverAnimation?: boolean
     barMaxWidth?: number | string
     type?: 'line' | 'bar' | 'pie'
+    radius?: [string, string]
+    center?: [number, string] | string | number
     data?: number[] | string[] | Date[] | TPieChartData[] | TEntryWithStyleData[]
 }
 
@@ -236,8 +238,6 @@ export type TAxisTickProps = {
 
 export type TOptionsProps = {
     color?: string[]
-    radius?: string
-    center?: [string, string] | [number, string]
     grid?: TGridProps
     legend?: TLegendProps
     dataZoom?: TZoomProps[]
@@ -269,6 +269,7 @@ export type TLegendProps = {
     data: string[]
     itemGap?: number
     color?: string[]
+    type?: 'scroll' | 'plain'
 }
 
 export type TTooltipProps = {

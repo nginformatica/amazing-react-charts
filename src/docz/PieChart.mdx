@@ -10,13 +10,14 @@ import { Playground } from 'docz'
 
 ## Demo
 <Playground>
+    <div style={{ width: '300px'}}>
     <PieChart
         colors={ ['blue', 'green', 'red', 'purple', 'black'] }
         legendPosition='inside'
-        radius='55%'
+        radius='75%'
         toolboxTooltip={{ saveAsImage: 'saving'}}
         title='pie chart'
-        center={ ['40%', '50%'] }
+        center={ ['50%', '50%'] }
         data={ 
             [ 
                 { name: "trained", value: 25 },
@@ -27,4 +28,5 @@ import { Playground } from 'docz'
             ] 
         }
     />
+    </div>
 </Playground>

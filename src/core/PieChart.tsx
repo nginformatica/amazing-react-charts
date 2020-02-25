@@ -15,8 +15,8 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TPieChartData[]
     colors?: string[]
     legendPosition?: 'inside' | 'outside'
-    radius?: string
-    center?: [string, string] | [number, string]
+    radius?: [string, string]
+    center?: [number, string] | string | number
 }
 
 const formatTooltip = ({ name, value }: TPieChartData) =>
@@ -83,8 +83,6 @@ export const PieChart = (props: IProps) => {
             formatter: formatTooltip,
             textStyle: { fontSize: 11.5 }
         },
-        radius: radius || '55%',
-        center: center || ['40%', '50%'],
         series: [{
             stillShowZeroSum: false,
             label: {
@@ -93,11 +91,14 @@ export const PieChart = (props: IProps) => {
                 position: legendPosition || 'inside'
             },
             type: 'pie',
-            data: data
+            data: data,
+            radius: radius || ['50%', '50%'],
+            center: center || [0, '75%'],
         }],
         legend: {
             data: names,
-            top: 270
+            top: 270,
+            type: 'scroll'
         },
         title: title,
         toolbox
