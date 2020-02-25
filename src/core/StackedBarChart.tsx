@@ -10,10 +10,10 @@ import {
     TEntryDataTuples,
     TOptionsProps,
     TSaveAsImage,
+    TSeries,
     TTitleProps,
     TTooltipProps,
-    TZoomProps,
-    TSeries
+    TZoomProps
 } from './types'
 import { formatToBRL } from 'brazilian-values'
 import {
@@ -31,10 +31,9 @@ import {
     rotatedLabel
 } from './VerticalBarChart'
 
-
 type TColorNTuples =
     | [string, string]
-    | [string, string, string] 
+    | [string, string, string]
     | [string, string, string, string]
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
@@ -63,19 +62,20 @@ const StackedBarChart = (props: IProps) => {
         tooltipExtra
     } = props
 
-    const { 
-        label, 
-        bottomResult, 
-        topResult, 
-        extraResult, 
-        lineResult, 
-        complement 
+    const {
+        label,
+        bottomResult,
+        topResult,
+        extraResult,
+        lineResult,
+        complement
     } = tooltipProps
 
     const [bottomData, topData, lineData = [], extraData] = data
     const yBottomData = bottomData.map((item: TEntryData) => item.result)
     const yTopData = topData.map((item: TEntryData) => item.result)
-    const yExtraData = data.length === 4 && extraData.map((item: TEntryData) => item.result)
+    const yExtraData = data.length === 4 && 
+        extraData.map((item: TEntryData) => item.result)
 
     const yLineData = lineData.map((item: TEntryData) => item.result)
     const xData = xType === 'time'
@@ -203,12 +203,12 @@ const StackedBarChart = (props: IProps) => {
     )
 
     const extraStackedSerie: TSeries = yExtraData && {
-            barWidth: barWidth,
-            yAxisIndex: 0,
-            name: extraResult,
-            type: 'bar',
-            data: yExtraData,
-            stack: 'stacked'
+        barWidth: barWidth,
+        yAxisIndex: 0,
+        name: extraResult,
+        type: 'bar',
+        data: yExtraData,
+        stack: 'stacked'
     }
 
     const options: TOptionsProps = {
@@ -231,7 +231,7 @@ const StackedBarChart = (props: IProps) => {
                 data: yBottomData,
                 stack: 'stacked'
             },
-            extraStackedSerie, 
+            extraStackedSerie,
             {
                 yAxisIndex: secondYAxisType === 'percent' ? 1 : 0,
                 name: lineResult,
