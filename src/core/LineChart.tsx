@@ -65,6 +65,7 @@ const LineChart = (props: IProps) => {
     }))
 
     const arrayInitialSize = dateFormat === 'yyyy-MM' ? 12 : 30
+    const tooltipLabelFormat = dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
 
     const scrollable: TZoomProps[] = xData.length > arrayInitialSize
         ? [
@@ -81,8 +82,10 @@ const LineChart = (props: IProps) => {
                 type: 'slider',
                 start: getInitialValues(xData.length, dateFormat),
                 end: 100,
-                labelFormatter:
-                    (_: string, item2: string) => formatTime(item2, 'dd/MM/yyyy')
+                labelFormatter: (
+                    _: string, 
+                    item2: string
+                ) => formatTime(item2, tooltipLabelFormat)
             }
         ]
         : []

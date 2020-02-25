@@ -158,7 +158,9 @@ const StackedBarChart = (props: IProps) => {
         ? [
             {
                 type: 'inside',
-                endValue: xData.length > 12 ? xData[11] : xData[xData.length - 1]
+                endValue: xData.length > 12 ? xData[11] : xData[xData.length - 1],
+                zoomLock: true,
+                zoomOnMouseWheel: 'shift'
             }, {
                 show: true,
                 type: 'slider',
