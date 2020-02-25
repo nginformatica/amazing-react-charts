@@ -74,7 +74,7 @@ const StackedBarChart = (props: IProps) => {
     const [bottomData, topData, lineData = [], extraData] = data
     const yBottomData = bottomData.map((item: TEntryData) => item.result)
     const yTopData = topData.map((item: TEntryData) => item.result)
-    const yExtraData = data.length === 4 && 
+    const yExtraData = data.length === 4 &&
         extraData.map((item: TEntryData) => item.result)
 
     const yLineData = lineData.map((item: TEntryData) => item.result)
