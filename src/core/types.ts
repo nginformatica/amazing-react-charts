@@ -40,6 +40,7 @@ export type TTooltipEntryProps = {
     result?: string
     topResult?: string
     bottomResult?: string
+    extraResult?: string
     lineResult?: string
     complement?: string
 }
@@ -57,6 +58,7 @@ export type TEntryData = {
 export type TEntryDataTuples =
     | [TEntryData[], TEntryData[]]
     | [TEntryData[], TEntryData[], TEntryData[]]
+    | [TEntryData[], TEntryData[], TEntryData[], TEntryData[]]
 
 export type TSeries = {
     stillShowZeroSum?: boolean
