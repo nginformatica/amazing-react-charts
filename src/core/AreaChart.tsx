@@ -273,9 +273,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             notMerge
             style={ { width: '99.9%', height: 300 } }
             opts={ { width: width || 'auto' } }
-            onEvents={ {
-                dataZoom: dinamicData
-            } }
+            onEvents={ { dataZoom: dinamicData } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }

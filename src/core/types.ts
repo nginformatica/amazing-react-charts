@@ -53,6 +53,12 @@ export type TEntryDataLine = {
 export type TEntryData = {
     label: string
     result: number
+    style?: TLabelProps
+}
+
+export type TEntryWithStyleData = {
+    value: number
+    label?: TLabelProps
 }
 
 export type TEntryDataTuples =
@@ -82,7 +88,7 @@ export type TSeries = {
     hoverAnimation?: boolean
     barMaxWidth?: number | string
     type?: 'line' | 'bar' | 'pie'
-    data?: number[] | string[] | Date[] | TPieChartData[]
+    data?: number[] | string[] | Date[] | TPieChartData[] | TEntryWithStyleData[]
 }
 
 export type TDomainValues = {
@@ -205,7 +211,7 @@ export type TAxisProps = {
     name?: string
     type?: TChartType
     boundaryGap?: boolean
-    data?: number[] | string[] | Date[] | TPieChartData[]
+    data?: number[] | string[] | Date[] | TPieChartData[] | TEntryWithStyleData[]
     gridIndex?: number
     showGrid?: boolean
     splitLine?: TSplitLineProps
