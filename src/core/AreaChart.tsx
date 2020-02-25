@@ -147,9 +147,9 @@ const AreaChart = (props: IDefaultChartProps) => {
         }
     )
 
-    const aaa = dateFormat === 'yyyy-MM' ? 12 : 30
+    const arrayInitialSize = dateFormat === 'yyyy-MM' ? 12 : 30
 
-    const scrollable: TZoomProps[] = xData.length > aaa
+    const scrollable: TZoomProps[] = xData.length > arrayInitialSize
         ? [
             {
                 type: 'inside',

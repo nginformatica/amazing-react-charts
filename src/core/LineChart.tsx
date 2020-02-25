@@ -16,7 +16,8 @@ import {
     formatTime,
     getDataView,
     getSaveAsImage,
-    timeConvert
+    timeConvert,
+    getInitialValues
 } from './auxiliarFunctions'
 import { formatToBRL } from 'brazilian-values'
 
@@ -63,11 +64,13 @@ const LineChart = (props: IProps) => {
         }
     }))
 
-    const scrollable: TZoomProps[] = xData.length > 30
+    const arrayInitialSize = dateFormat === 'yyyy-MM' ? 12 : 30
+
+    const scrollable: TZoomProps[] = xData.length > arrayInitialSize
         ? [
             {
                 type: 'inside',
-                start: xData.length > 30 ? (100 - (3000 / xData.length)) : 0,
+                start: getInitialValues(xData.length, dateFormat),
                 end: 100,
                 zoomLock: true,
                 zoomOnMouseWheel: 'shift'
@@ -76,7 +79,7 @@ const LineChart = (props: IProps) => {
                 bottom: 0,
                 show: true,
                 type: 'slider',
-                start: xData.length > 30 ? (100 - (3000 / xData.length)) : 0,
+                start: getInitialValues(xData.length, dateFormat),
                 end: 100,
                 labelFormatter:
                     (_: string, item2: string) => formatTime(item2, 'dd/MM/yyyy')

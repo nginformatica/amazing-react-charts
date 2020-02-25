@@ -12,14 +12,14 @@ import { Playground } from 'docz'
 <Playground>
     <LineChart
         showLabel
-        title='ola'
+        title='Concurrent lines'
         xType='time'
         toolboxTooltip={{ saveAsImage: 'saving'}}
         dateFormat='yyyy-MM'
         colors={ ['red', 'green', 'blue'] }
         data={ [ 
             {
-                name: 'um',
+                name: 'top line',
                 values: [
                     { label: '2019-01', result: 10 }, 
                     { label: '2019-02', result: 40 },
@@ -30,11 +30,14 @@ import { Playground } from 'docz'
                     { label: '2019-07', result: 15 },
                     { label: '2019-08', result: 70 },
                     { label: '2019-09', result: 80 },
-                    { label: '2019-10', result: 90 }
+                    { label: '2019-10', result: 90 },
+                    { label: '2019-11', result: 70 },
+                    { label: '2019-12', result: 80 },
+                    { label: '2019-01', result: 90 }
                 ]
             },
              {
-                name: 'dois',
+                name: 'bottom line',
                 values: [
                     { label: '2019-01', result: 1 }, 
                     { label: '2019-02', result: 4 },
@@ -45,7 +48,10 @@ import { Playground } from 'docz'
                     { label: '2019-07', result: 1 },
                     { label: '2019-08', result: 7 },
                     { label: '2019-09', result: 8 },
-                    { label: '2019-10', result: 9 }
+                    { label: '2019-10', result: 9 },
+                    { label: '2019-11', result: 70 },
+                    { label: '2019-12', result: 80 },
+                    { label: '2019-01', result: 90 }
                 ]
             }
         ] }
