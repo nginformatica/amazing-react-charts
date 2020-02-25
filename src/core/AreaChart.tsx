@@ -166,7 +166,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 start: getInitialValues(xData.length, dateFormat),
                 end: 100,
                 labelFormatter: (
-                    _: string, 
+                    _: string,
                     item: string
                 ) => formatTime(item, tooltipLabelFormat)
             }

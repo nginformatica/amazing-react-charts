@@ -15,9 +15,9 @@ import {
 import {
     formatTime,
     getDataView,
+    getInitialValues,
     getSaveAsImage,
-    timeConvert,
-    getInitialValues
+    timeConvert
 } from './auxiliarFunctions'
 import { formatToBRL } from 'brazilian-values'
 
@@ -83,7 +83,7 @@ const LineChart = (props: IProps) => {
                 start: getInitialValues(xData.length, dateFormat),
                 end: 100,
                 labelFormatter: (
-                    _: string, 
+                    _: string,
                     item2: string
                 ) => formatTime(item2, tooltipLabelFormat)
             }
