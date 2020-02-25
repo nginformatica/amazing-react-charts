@@ -5,6 +5,7 @@
       "plugin:import/typescript"
     ],
     "rules": {
-      "no-magic-numbers": "off"
+      "no-magic-numbers": "off",
+      "max-lines": "off"
     }
 }

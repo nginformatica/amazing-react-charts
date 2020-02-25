@@ -144,7 +144,6 @@ const HorizontalBarChart = (props: IProps) => {
             lazyUpdate
             style={ { width: '99%' } }
             opts={ { width: width } }
-            onEvents={ { finished: item => console.log(item) } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }
