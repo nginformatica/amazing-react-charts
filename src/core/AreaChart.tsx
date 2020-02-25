@@ -7,6 +7,7 @@ import {
     formatTooltip,
     getDataView,
     getDomain,
+    getInitialValues,
     getSaveAsImage,
     timeConvert,
     toDate
@@ -146,11 +147,13 @@ const AreaChart = (props: IDefaultChartProps) => {
         }
     )
 
-    const scrollable: TZoomProps[] = xData.length > 30
+    const aaa = dateFormat === 'yyyy-MM' ? 12 : 30
+
+    const scrollable: TZoomProps[] = xData.length > aaa
         ? [
             {
                 type: 'inside',
-                start: xData.length > 30 ? (100 - (3000 / xData.length)) : 0,
+                start: getInitialValues(xData.length, dateFormat),
                 end: 100,
                 zoomLock: true,
                 zoomOnMouseWheel: 'shift'
@@ -159,7 +162,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 bottom: 0,
                 show: true,
                 type: 'slider',
-                start: xData.length > 30 ? (100 - (3000 / xData.length)) : 0,
+                start: getInitialValues(xData.length, dateFormat),
                 end: 100,
                 labelFormatter:
                     (_: string, item2: string) => formatTime(item2, 'dd/MM/yyyy')

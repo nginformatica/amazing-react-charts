@@ -4,10 +4,10 @@ import {
     IDefaultChartProps,
     TDataTooltip,
     TEntryData,
-    TOptionsProps,
-    TTooltipProps,
+    TEntryWithStyleData,
     TLabelProps,
-    TEntryWithStyleData
+    TOptionsProps,
+    TTooltipProps
 } from './types'
 import { truncateLabel } from './auxiliarFunctions'
 import { reverse } from 'ramda'
@@ -30,18 +30,21 @@ const HorizontalBarChart = (props: IProps) => {
     } = props
 
     const xData: TEntryWithStyleData[] = reverse(data.map((item: TEntryData) => {
-        const label: TLabelProps = item.result <= 2 && { position: 'right', distance: 1}
+        const label: TLabelProps = item.result <= 2 && {
+            position: 'right',
+            distance: 1
+        }
 
-        return ({value: item.result, label: label})
+        return ({ value: item.result, label: label })
     }))
-         
+
     const yData = reverse(data.map((item: TEntryData) => item.label))
     const backgroundBar = data.map(() => 100)
 
     const formatTooltip = (chartValues: TDataTooltip) => {
         const { label, result } = tooltipProps
         const { name, value } = chartValues
-        
+
         const dataValue = xComplement ? value + xComplement : value
 
         return [
@@ -141,7 +144,7 @@ const HorizontalBarChart = (props: IProps) => {
             lazyUpdate
             style={ { width: '99%' } }
             opts={ { width: width } }
-            onEvents={ { finished: item => console.log(item)}}
+            onEvents={ { finished: item => console.log(item) } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }
