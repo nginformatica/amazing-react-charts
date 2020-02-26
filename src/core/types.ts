@@ -88,8 +88,8 @@ export type TSeries = {
     hoverAnimation?: boolean
     barMaxWidth?: number | string
     type?: 'line' | 'bar' | 'pie'
-    radius?: [string, string]
-    center?: [number, string] | string | number
+    radius?: string
+    center?: [number, string] | [string, string] | string | number
     data?: number[] | string[] | Date[] | TPieChartData[] | TEntryWithStyleData[]
 }
 
