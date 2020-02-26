@@ -94,7 +94,7 @@ export const PieChart = (props: IProps) => {
             },
             type: 'pie',
             data: data,
-            radius: radius || "50%",
+            radius: radius || '50%',
             center: center || ['50%', '50%']
         }],
         legend: {
