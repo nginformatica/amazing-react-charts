@@ -41,6 +41,8 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
     tooltipExtra?: string
     sumDataValues?: boolean
     colors?: TColorNTuples
+    legendType?: 'scroll'
+    legendScrollGap?: number
     secondYAxisType?: 'percent' | string
 }
 
@@ -59,7 +61,9 @@ const StackedBarChart = (props: IProps) => {
         barWidth,
         title: titleProps,
         toolboxTooltip,
-        tooltipExtra
+        tooltipExtra,
+        legendType,
+        legendScrollGap
     } = props
 
     const {
@@ -171,7 +175,8 @@ const StackedBarChart = (props: IProps) => {
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
-        left: '4%',
+        left: legendType === 'scroll' ? '0.1%' :'4%',
+        top: legendType === 'scroll' && '5.7%',
         show: titleProps !== undefined,
         text: titleProps,
         textAlign: 'left',
@@ -212,6 +217,19 @@ const StackedBarChart = (props: IProps) => {
         data: yExtraData,
         stack: 'stacked'
     }
+
+    const legendProps = legendType === 'scroll'
+        ? {
+            data: [topResult, bottomResult, extraResult, lineResult],
+            top: 270,
+            type: legendType,
+            itemGap: legendScrollGap || 60
+        }
+        : {
+            top: 30,
+            data: [topResult, bottomResult, extraResult, lineResult],
+            itemGap: 30
+        }
 
     const options: TOptionsProps = {
         grid: gridProps,
@@ -279,13 +297,7 @@ const StackedBarChart = (props: IProps) => {
         },
         secondYAxis
         ],
-        legend: {
-            x: 'center',
-            y: 'bottom',
-            top: 30,
-            data: [topResult, bottomResult, extraResult, lineResult],
-            itemGap: 30
-        },
+        legend: legendProps,
         dataZoom: scrollable,
         title: title,
         toolbox
