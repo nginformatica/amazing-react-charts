@@ -302,6 +302,7 @@ export type TTitleProps = {
     textAlign?: 'left' | 'right' | 'auto'
     textStyle?: CSSProperties
     left?: number | string
+    top?: number | string
 }
 
 export type TToolBoxProps = {

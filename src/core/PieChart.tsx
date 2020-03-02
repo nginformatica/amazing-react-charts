@@ -10,6 +10,7 @@ import {
 import ReactEcharts from 'echarts-for-react'
 import { map } from 'ramda'
 import { getDataView, getSaveAsImage } from './auxiliarFunctions'
+import { formatToBRL } from 'brazilian-values'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TPieChartData[]
@@ -17,11 +18,9 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
     legendPosition?: 'inside' | 'outside'
     legendType?: 'scroll' | 'plain'
     radius?: string
+    resultFormatType?: 'money'
     center?: [number, string] | [string, string] | string | number
 }
-
-const formatTooltip = ({ name, value }: TPieChartData) =>
-    name + ': ' + value
 
 export const PieChart = (props: IProps) => {
     const {
@@ -35,16 +34,26 @@ export const PieChart = (props: IProps) => {
         center,
         title: titleProps,
         toolboxTooltip,
-        legendType
+        legendType,
+        resultFormatType
     } = props
 
     const names = map(item => (item.name), data)
+
+    const formatTooltip = ({ name, value }: TPieChartData) =>
+        name + ': ' + (resultFormatType === 'money' ? formatToBRL(value) : value)
+
     const formatPieLabel = ({ data }: TPieDataLabel) =>
-        data.value === 0 ? '' : data.value + (yComplement || '')
+        data.value === 0
+            ? ''
+            : resultFormatType === 'money'
+                ? formatToBRL(data.value)
+                : data.value + (yComplement || '')
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
-        left: '6.2%',
+        left: resultFormatType ? '0.1%' :'6.2%',
+        top: resultFormatType && '5.7%',
         show: titleProps !== undefined,
         text: titleProps,
         textAlign: 'left',
@@ -59,6 +68,7 @@ export const PieChart = (props: IProps) => {
         {
             showTitle: false,
             right: '9.52%',
+            top: resultFormatType && '5.5%',
             feature: {
                 saveAsImage: toolboxTooltip.saveAsImage && (
                     getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage
