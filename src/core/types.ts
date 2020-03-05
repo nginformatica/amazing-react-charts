@@ -9,6 +9,7 @@ export interface IDefaultChartProps {
     tooltipComplement?: string
     tooltip?: TTooltipEntryProps
     color?: string
+    forecastColor?: string
     xType?: 'time' | 'category'
     yType?: 'time' | 'value'
     barWidth?: number
@@ -78,6 +79,7 @@ export type TSeries = {
     barCategoryGap?: string
     animation?: boolean
     itemStyle?: TLabelProps
+    markLine?: TMarkLineProps
     barWidth?: number | string
     emphasis?: TNormalProps
     stack?: string
@@ -157,6 +159,30 @@ export type TLabelProps = {
     itemStyle?: TLabelProps
 }
 
+export type TDataMarkLine = {
+    name?: string
+    xAxis?: string
+    type?: string
+}
+
+export type TMarkLineProps = {
+    silent?: boolean
+    symbol?: string
+    label?: TLabelProps
+    animation?: boolean
+    data: TDataMarkLine[]
+    lineStyle: TLineStyle
+}
+
+export type TLineStyle = {
+    width?: number,
+    type?: string 
+    color?: string 
+    emphasis?: { 
+        lineStyle?: TLineStyle
+    }
+}
+
 export type TNormalProps = {
     formatter?: TFormatterType
     show?: boolean
@@ -213,7 +239,7 @@ export type TAxisProps = {
     name?: string
     type?: TChartType
     boundaryGap?: boolean
-    data?: number[] | string[] | Date[] | TPieChartData[] | TEntryWithStyleData[]
+    data?: number[] | string[] | Date[] | TPieChartData[] | TEntryWithStyleData[] | { name: string }[]
     gridIndex?: number
     showGrid?: boolean
     splitLine?: TSplitLineProps
@@ -339,4 +365,9 @@ export type TDataZoomEventProps = {
 
 export type TDataZoomChartProps = {
     setOption(option: TOptionsProps): void
+}
+
+export type TForecastAreaChartData = {
+    current: TEntryData[]
+    forecast: TEntryData[]
 }

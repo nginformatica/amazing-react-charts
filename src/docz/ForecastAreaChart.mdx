@@ -1,0 +1,49 @@
+---
+name: Forecast area charts
+route: /forecast-areachart
+---
+
+import ForecastAreaChart from '../core/ForecastAreaChart'
+import { Playground } from 'docz'
+
+# Forecast area chart example
+
+## Demo
+<Playground>
+    <div style={ { width: 300 }}>
+    <ForecastAreaChart 
+        tooltip={ { label: 'Data', result: 'MTBF' } }
+        xType="time"
+        yType="time"
+        grid={ { left: "25%" } }
+        forecastColor="cyano"
+        color="blue"
+        lineMarkValue={ new Date('2019-03-01 09:20:00') }
+        lineMarkColor="red"
+        data={ 
+            [
+                { 
+                    label: '2019-01-01 09:20:00', 
+                    result: 1.8 
+                }, 
+                { 
+                    label: '2019-01-01 09:21:00', 
+                    result: 4.5 
+                },
+                { 
+                    label: '2019-03-01 09:20:00', 
+                    result: 3 
+                }, 
+                { 
+                    label: '2019-04-01 09:20:00', 
+                    result: 2 
+                },
+                { 
+                    label: '2019-05-01 09:20:00', 
+                    result: 4 
+                }
+            ]
+        }
+    />
+    </div>
+</Playground>
