@@ -3,7 +3,7 @@ import ReactEcharts from 'echarts-for-react'
 import {
     formatMoneyLabel,
     formatTime,
-    formatTooltip,
+    formatTooltipWithHours,
     getDataView,
     getDomain,
     getInitialValues,
@@ -26,12 +26,16 @@ import {
 } from './types'
 import { formatToBRL } from 'brazilian-values'
 import take from 'ramda/es/take'
-import { equals, findIndex } from 'ramda'
 
 interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
     tooltip: {
         current: TTooltipEntryProps
         forecast: TTooltipEntryProps
+    }
+    forecastChartLegends?: {
+        current?: string
+        forecast?: string
+        lineMark?: string
     }
 }
 
@@ -53,15 +57,14 @@ const ForecastAreaChart = (props: IProps) => {
         rotateLabel,
         fontLabelSize,
         title: titleProps,
-        toolboxTooltip
+        toolboxTooltip,
+        forecastChartLegends
     } = props
 
     const yData = data.map((item: TEntryData) => item.result)
     const xData = data.map(
-        (item: TEntryData) => toDate(item.label, 'yyyy-MM-dd HH:mm:ss')
+        (item: TEntryData) => toDate(item.label, 'yyyy-MM-dd HH:mm')
     )
-
-    const maxCurrentValue = findIndex(equals(lineMarkValue), xData) + 1
 
     const formatLabel = (chartValues: TDataTooltip) => {
         const { data } = chartValues
@@ -116,7 +119,7 @@ const ForecastAreaChart = (props: IProps) => {
                 : data + (yComplement || '')
 
         return [
-            `${label}: ${formatTooltip(axisValueLabel, dateFormat)} <br>` +
+            `${label}: ${formatTooltipWithHours(axisValueLabel)} <br>` +
             `${result}: ${values} <br>` +
             complement
         ]
@@ -181,7 +184,7 @@ const ForecastAreaChart = (props: IProps) => {
                 labelFormatter: (
                     _: string,
                     item: string
-                ) => formatTime(item, 'dd-MM-yyyy HH:mm:ss')
+                ) => formatTime(item, 'dd-MM-yyyy HH:mm')
             }
         ]
         : []
@@ -189,6 +192,7 @@ const ForecastAreaChart = (props: IProps) => {
     const options: TOptionsProps = {
         series: [{
             type: 'line',
+            name: forecastChartLegends ? forecastChartLegends.forecast : '',
             data: yData,
             label: {
                 formatter: yComplement === 'money' ? formatMoneyLabel : formatLabel,
@@ -212,13 +216,14 @@ const ForecastAreaChart = (props: IProps) => {
                 silent: true,
                 symbol: '',
                 label: {
-                    show: false
+                    formatter: forecastChartLegends.lineMark,
+                    show: true
                 },
                 animation: false,
                 data: [
                     {
-                        name: 'mark-line',
-                        xAxis: lineMarkValue.toString(),
+                        name: forecastChartLegends.lineMark || 'markLine',
+                        xAxis: xData[lineMarkValue-1].toString(),
                         type: 'solid'
                     }
                 ],
@@ -238,7 +243,8 @@ const ForecastAreaChart = (props: IProps) => {
         },
         {
             type: 'line',
-            data: take(maxCurrentValue, yData),
+            name: forecastChartLegends.current || '',
+            data: take(lineMarkValue, yData),
             label: {
                 formatter: yComplement === 'money' ? formatMoneyLabel : formatLabel,
                 show: true,
@@ -310,9 +316,12 @@ const ForecastAreaChart = (props: IProps) => {
         legend: {
             x: 'center',
             y: 'bottom',
-            icon: 'line',
-            top: 30,
-            data: [],
+            top: 260,
+            selectedMode: false,
+            data: [
+                forecastChartLegends.current,
+                forecastChartLegends.forecast
+            ],
             itemGap: 30
         },
         dataZoom: scrollable,

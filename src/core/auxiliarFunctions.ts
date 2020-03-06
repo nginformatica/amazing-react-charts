@@ -51,6 +51,9 @@ export const formatTooltip = (text: string, dateFormat?: string) =>
         { locale: ptBR }
     )
 
+export const formatTooltipWithHours = (text: string) =>
+    format(new Date(text), 'dd/MM/yyyy HH:mm', { locale: ptBR })
+
 export const timeConvert = (value: number) => {
     const seconds = Math.round((value % 1) * 3600)
     const minutes = Math.trunc(seconds / 60)

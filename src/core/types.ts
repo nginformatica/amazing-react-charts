@@ -2,7 +2,7 @@ import { CSSProperties } from 'react'
 
 export interface IDefaultChartProps {
     data: TEntryData[]
-    lineMarkValue?: number | Date
+    lineMarkValue?: number
     lineMarkColor?: string
     lineMakeName?: string
     yComplement?: string | 'money'
@@ -301,6 +301,7 @@ export type TLegendProps = {
     top?: number
     data: string[]
     itemGap?: number
+    selectedMode?: boolean
     color?: string[]
     type?: 'scroll' | 'plain'
 }
