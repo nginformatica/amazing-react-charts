@@ -80,9 +80,9 @@ const ForecastAreaChart = (props: IProps) => {
         charts: TDataZoomChartProps
     ) => {
         const dataRange = item.end - item.start
-        const dataLimit = (yType === 'time' ? 3400 : 4500) / xData.length
+        const dataLimit = (700 / xData.length)
 
-        if (xData.length <= 30 || dataRange < dataLimit) {
+        if (dataRange < dataLimit) {
             return charts.setOption({
                 series: [{
                     label: {
