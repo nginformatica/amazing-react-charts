@@ -1,7 +1,6 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
-    fixedDomain,
     formatMoneyLabel,
     formatTime,
     formatTooltip,
@@ -21,13 +20,13 @@ import {
     TOptionsProps,
     TSaveAsImage,
     TTitleProps,
-    TTooltipProps,
-    TZoomProps,
     TTooltipEntryProps,
+    TTooltipProps,
+    TZoomProps
 } from './types'
 import { formatToBRL } from 'brazilian-values'
 import take from 'ramda/es/take'
-import { findIndex, equals } from 'ramda'
+import { equals, findIndex } from 'ramda'
 
 interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
     tooltip: {
@@ -58,7 +57,9 @@ const ForecastAreaChart = (props: IProps) => {
     } = props
 
     const yData = data.map((item: TEntryData) => item.result)
-    const xData = data.map((item: TEntryData) => toDate(item.label, 'yyyy-MM-dd HH:mm:ss'))
+    const xData = data.map(
+        (item: TEntryData) => toDate(item.label, 'yyyy-MM-dd HH:mm:ss')
+    )
 
     const maxCurrentValue = findIndex(equals(lineMarkValue), xData) + 1
 
@@ -100,10 +101,14 @@ const ForecastAreaChart = (props: IProps) => {
 
     const formatSingleTooltip = (chartValues: TDataTooltip[]) => {
         const { current, forecast } = tooltipProps
-        const { axisValueLabel, data } = chartValues.length === 2 ? chartValues[1] : chartValues[0]
-        const { label, result } = chartValues.length === 2 ? current : forecast        
+        const {
+            axisValueLabel,
+            data
+        } = chartValues.length === 2 ? chartValues[1] : chartValues[0]
+
+        const { label, result } = chartValues.length === 2 ? current : forecast
         const complement = tooltipComplement ? tooltipComplement : ''
-        
+
         const values = yType === 'time'
             ? timeConvert(Number(data as number)) + 'h'
             : yComplement === 'money'
@@ -176,7 +181,7 @@ const ForecastAreaChart = (props: IProps) => {
                 labelFormatter: (
                     _: string,
                     item: string
-                ) => formatTime(item, "dd-MM-yyyy HH:mm:ss")
+                ) => formatTime(item, 'dd-MM-yyyy HH:mm:ss')
             }
         ]
         : []
@@ -206,15 +211,15 @@ const ForecastAreaChart = (props: IProps) => {
             markLine: {
                 silent: true,
                 symbol: '',
-                label: { 
+                label: {
                     show: false
                 },
                 animation: false,
                 data: [
-                    { 
+                    {
                         name: 'mark-line',
                         xAxis: lineMarkValue.toString(),
-                        type: 'solid' 
+                        type: 'solid'
                     }
                 ],
                 lineStyle: {
@@ -226,7 +231,7 @@ const ForecastAreaChart = (props: IProps) => {
                             type: 'solid',
                             width: 50,
                             color: lineMarkColor || 'red'
-                        },
+                        }
                     }
                 }
             }
@@ -319,9 +324,9 @@ const ForecastAreaChart = (props: IProps) => {
         <ReactEcharts
             lazyUpdate
             notMerge
-            style={{ width: '99.9%', height: 300 }}
-            opts={{ width: width || 'auto' }}
-            onEvents={{ dataZoom: dinamicData }}
+            style={ { width: '99.9%', height: 300 } }
+            opts={ { width: width || 'auto' } }
+            onEvents={ { dataZoom: dinamicData } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }

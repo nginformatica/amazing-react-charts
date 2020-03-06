@@ -175,10 +175,10 @@ export type TMarkLineProps = {
 }
 
 export type TLineStyle = {
-    width?: number,
-    type?: string 
-    color?: string 
-    emphasis?: { 
+    width?: number
+    type?: string
+    color?: string
+    emphasis?: {
         lineStyle?: TLineStyle
     }
 }
@@ -239,7 +239,13 @@ export type TAxisProps = {
     name?: string
     type?: TChartType
     boundaryGap?: boolean
-    data?: number[] | string[] | Date[] | TPieChartData[] | TEntryWithStyleData[] | { name: string }[]
+    data?:
+        | number[]
+        | string[]
+        | Date[]
+        | TPieChartData[]
+        | TEntryWithStyleData[]
+        | { name: string }[]
     gridIndex?: number
     showGrid?: boolean
     splitLine?: TSplitLineProps
