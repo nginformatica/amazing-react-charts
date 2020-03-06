@@ -6,10 +6,10 @@ import {
     formatTooltipWithHours,
     getDataView,
     getDomain,
-    getInitialValues,
     getSaveAsImage,
     timeConvert,
-    toDate
+    toDate,
+    getEndForecast
 } from './auxiliarFunctions'
 import {
     IDefaultChartProps,
@@ -49,7 +49,6 @@ const ForecastAreaChart = (props: IProps) => {
         yType,
         tooltipComplement,
         yComplement,
-        dateFormat,
         lineMarkColor,
         lineMarkValue,
         grid: gridProps,
@@ -166,25 +165,25 @@ const ForecastAreaChart = (props: IProps) => {
         }
     )
 
-    const scrollable: TZoomProps[] = xData.length > 30
+    const scrollable: TZoomProps[] = xData.length > 5 
         ? [
             {
                 type: 'inside',
-                start: getInitialValues(xData.length, dateFormat),
-                end: 100,
+                start: 0,
+                end: getEndForecast(xData.length),
                 zoomLock: true,
                 zoomOnMouseWheel: 'shift'
             },
             {
-                bottom: 0,
+                bottom: 10,
                 show: true,
                 type: 'slider',
-                start: getInitialValues(xData.length, dateFormat),
-                end: 100,
+                start: 0,
+                end: getEndForecast(xData.length),
                 labelFormatter: (
                     _: string,
                     item: string
-                ) => formatTime(item, 'dd-MM-yyyy HH:mm')
+                ) => formatTime(item, 'dd/MM/yyyy')
             }
         ]
         : []
@@ -247,7 +246,7 @@ const ForecastAreaChart = (props: IProps) => {
             data: take(lineMarkValue, yData),
             label: {
                 formatter: yComplement === 'money' ? formatMoneyLabel : formatLabel,
-                show: true,
+                show: false,
                 position: 'top',
                 fontSize: yType === 'time' ? 10 : 11.5,
                 color: 'black',
@@ -316,7 +315,7 @@ const ForecastAreaChart = (props: IProps) => {
         legend: {
             x: 'center',
             y: 'bottom',
-            top: 260,
+            top: 30,
             selectedMode: false,
             data: [
                 forecastChartLegends.current,
