@@ -23,12 +23,20 @@ import {
     TTitleProps,
     TTooltipProps,
     TZoomProps,
+    TTooltipEntryProps,
 } from './types'
 import { formatToBRL } from 'brazilian-values'
 import take from 'ramda/es/take'
 import { findIndex, equals } from 'ramda'
 
-const ForecastAreaChart = (props: IDefaultChartProps) => {
+interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
+    tooltip: {
+        current: TTooltipEntryProps
+        forecast: TTooltipEntryProps
+    }
+}
+
+const ForecastAreaChart = (props: IProps) => {
     const {
         data,
         xType,
@@ -91,9 +99,11 @@ const ForecastAreaChart = (props: IDefaultChartProps) => {
     }
 
     const formatSingleTooltip = (chartValues: TDataTooltip[]) => {
-        const { label, result } = tooltipProps
-        const { axisValueLabel, data } = chartValues[0]
+        const { current, forecast } = tooltipProps
+        const { axisValueLabel, data } = chartValues.length === 2 ? chartValues[1] : chartValues[0]
+        const { label, result } = chartValues.length === 2 ? current : forecast        
         const complement = tooltipComplement ? tooltipComplement : ''
+        
         const values = yType === 'time'
             ? timeConvert(Number(data as number)) + 'h'
             : yComplement === 'money'

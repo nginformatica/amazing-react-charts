@@ -11,9 +11,12 @@ import { Playground } from 'docz'
 ## Demo
 <Playground>
     <ForecastAreaChart 
-        tooltip={ { label: 'Data', result: 'MTBF' } }
+        tooltip={ { 
+            current: { label: 'Lançamento', result: 'Posição' }, 
+            forecast:{ label: 'Projeção', result: 'Posição' }   
+        } }
+        yComplement=" km"
         xType="time"
-        yType="time"
         grid={ { left: "10%" } }
         forecastColor="cyano"
         color="blue"
