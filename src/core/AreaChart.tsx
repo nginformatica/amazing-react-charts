@@ -93,7 +93,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         const { label, result } = tooltipProps
         const { axisValueLabel, data } = chartValues[0]
         const complement = tooltipComplement ? tooltipComplement : ''
-        
+
         const values = yType === 'time'
             ? timeConvert(Number(data as number)) + 'h'
             : yComplement === 'money'

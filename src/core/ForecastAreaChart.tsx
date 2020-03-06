@@ -8,8 +8,7 @@ import {
     getDomain,
     getSaveAsImage,
     timeConvert,
-    toDate,
-    getEndForecast
+    toDate
 } from './auxiliarFunctions'
 import {
     IDefaultChartProps,
@@ -165,7 +164,7 @@ const ForecastAreaChart = (props: IProps) => {
         }
     )
 
-    const scrollable: TZoomProps[] = xData.length > 5 
+    const scrollable: TZoomProps[] = xData.length > 5
         ? [
             {
                 type: 'inside',
