@@ -202,7 +202,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             showSymbol: false,
             hoverAnimation: false,
             type: 'line',
-            data: markLine,
+            data: markLine as number[],
             lineStyle: {
                 color: lineMarkColor
             }

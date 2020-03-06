@@ -2,7 +2,7 @@ import { CSSProperties } from 'react'
 
 export interface IDefaultChartProps {
     data: TEntryData[]
-    lineMarkValue?: number
+    lineMarkValue?: number | Date
     lineMarkColor?: string
     lineMakeName?: string
     yComplement?: string | 'money'

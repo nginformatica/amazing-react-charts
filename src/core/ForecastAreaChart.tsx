@@ -26,6 +26,7 @@ import {
 } from './types'
 import { formatToBRL } from 'brazilian-values'
 import take from 'ramda/es/take'
+import { findIndex, equals } from 'ramda'
 
 const ForecastAreaChart = (props: IDefaultChartProps) => {
     const {
@@ -50,6 +51,8 @@ const ForecastAreaChart = (props: IDefaultChartProps) => {
 
     const yData = data.map((item: TEntryData) => item.result)
     const xData = data.map((item: TEntryData) => toDate(item.label, 'yyyy-MM-dd HH:mm:ss'))
+
+    const maxCurrentValue = findIndex(equals(lineMarkValue), xData) + 1
 
     const formatLabel = (chartValues: TDataTooltip) => {
         const { data } = chartValues
@@ -220,7 +223,7 @@ const ForecastAreaChart = (props: IDefaultChartProps) => {
         },
         {
             type: 'line',
-            data: take(3, yData),
+            data: take(maxCurrentValue, yData),
             label: {
                 formatter: yComplement === 'money' ? formatMoneyLabel : formatLabel,
                 show: true,
