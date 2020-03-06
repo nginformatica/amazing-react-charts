@@ -291,6 +291,7 @@ export type TZoomProps = {
     type: 'inside' | 'slider'
     end?: number
     zoomOnMouseWheel?: 'ctrl' | 'shift' | boolean
+    startValue?: number
     endValue?: number | Date | string
 }
 

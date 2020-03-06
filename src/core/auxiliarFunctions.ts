@@ -150,4 +150,7 @@ export const getInitialValues = (arrayLength: number, dateFormat?: string) =>
         : arrayLength > 12 ? (100 - (1200 / arrayLength)) : 0
 
 
-export const getEndForecast = (arrayLength: number) => (400 / arrayLength)
+export const getEndForecast = (
+    arrayLength: number, 
+    lineMarkValue: number
+) => ((lineMarkValue*250) / arrayLength)

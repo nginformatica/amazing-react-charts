@@ -169,8 +169,8 @@ const ForecastAreaChart = (props: IProps) => {
         ? [
             {
                 type: 'inside',
-                start: 0,
-                end: getEndForecast(xData.length),
+                startValue: lineMarkValue - 2,
+                endValue: lineMarkValue,
                 zoomLock: true,
                 zoomOnMouseWheel: 'shift'
             },
@@ -178,8 +178,8 @@ const ForecastAreaChart = (props: IProps) => {
                 bottom: 10,
                 show: true,
                 type: 'slider',
-                start: 0,
-                end: getEndForecast(xData.length),
+                startValue: lineMarkValue - 1,
+                endValue: lineMarkValue + 3,
                 labelFormatter: (
                     _: string,
                     item: string
