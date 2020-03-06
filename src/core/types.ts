@@ -89,7 +89,9 @@ export type TSeries = {
     showSymbol?: boolean
     hoverAnimation?: boolean
     barMaxWidth?: number | string
-    type?: 'line' | 'bar' | 'pie'
+    type?: 'line' | 'bar' | 'pie' | 'pictorialBar'
+    symbolClip?: boolean
+    symbolBoundingData?: boolean
     radius?: string
     center?: [number, string] | [string, string] | string | number
     data?: number[] | string[] | Date[] | TPieChartData[] | TEntryWithStyleData[]
