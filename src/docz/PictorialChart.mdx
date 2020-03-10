@@ -14,7 +14,12 @@ import { Playground } from 'docz'
         <PictorialChart
             grid={ { bottom: '10%' } }
             height={ 500 }
-            tooltip={{ label: 'acidents', labelComplement: 10}}
+            tooltip={ { 
+                label: 'acidents', 
+                labelComplement: 10,
+                result: 'problems',
+                resultComplement: '25%'
+            } }
             data={ 
                 [{ 
                     value: 10,
