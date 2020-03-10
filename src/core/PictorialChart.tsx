@@ -1,30 +1,84 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { IDefaultChartProps, TOptionsProps } from './types'
+import {
+    IDefaultChartProps,
+    TOptionsProps,
+    TPictorialEntryData,
+    TTooltipProps
+} from './types'
 
-const PictorialChart = (props: IDefaultChartProps) => {
+interface IProps extends Omit<IDefaultChartProps, 'data'> {
+    data: TPictorialEntryData[]
+    height?: number | string
+}
+
+const PictorialChart = (props: IProps) => {
+    const formatTooltip = () =>
+        `${props.tooltip.label}: ${props.tooltip.labelComplement}`
+
+    const gridProps = {
+        top: 'center',
+        ...props.grid
+    }
+
+    const tooltip: TTooltipProps = {
+        formatter: formatTooltip,
+        textStyle: { fontSize: 11.5 },
+        trigger: 'item'
+    }
+
     const options: TOptionsProps = {
-        series: [{
-            type: 'pictorialBar',
-            symbolClip: true
-        }],
+        series: [
+            {
+                name: 'full',
+                silent: true,
+                type: 'pictorialBar',
+                symbolClip: true,
+                symbolBoundingData: 100,
+                animationDuration: 0,
+                itemStyle: { color: '#ccc' },
+                data: [{ value: 100, symbol: props.data[0].symbol }]
+            },
+            {
+                name: 'empty',
+                type: 'pictorialBar',
+                itemStyle: {
+                    color: props.color || 'green'
+                },
+                animationDuration: 100,
+                symbolClip: true,
+                symbolBoundingData: 100,
+                data: props.data
+            }],
         xAxis: {
-            axisTick: {show: false},
-            axisLine: {show: false},
-            axisLabel: {show: false}
+            showGrid: false,
+            data: ['a'],
+            axisTick: { show: false },
+            axisLine: { show: false },
+            axisLabel: { show: false },
+            splitLine: { show: false }
         },
         yAxis: {
-            axisTick: {show: false},
-            axisLine: {show: false},
-            axisLabel: {show: false}
-        }
+            max: 100,
+            showGrid: false,
+            axisTick: { show: false },
+            axisLine: { show: false },
+            axisLabel: { show: false },
+            splitLine: { show: false }
+        },
+        grid: gridProps,
+        tooltip: tooltip
     }
 
     return (
         <ReactEcharts
             lazyUpdate
             option={ options }
-            style={{ width: '99%' }} />
+            style={ {
+                width: '99%',
+                height: props.height || 500
+            } }
+        />
     )
 }
 

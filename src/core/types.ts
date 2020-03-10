@@ -44,6 +44,7 @@ export type TTooltipEntryProps = {
     extraResult?: string
     lineResult?: string
     complement?: string
+    labelComplement?: string | number
 }
 
 export type TEntryDataLine = {
@@ -60,6 +61,11 @@ export type TEntryData = {
 export type TEntryWithStyleData = {
     value: number
     label?: TLabelProps
+}
+
+export type TPictorialEntryData = {
+    value: number
+    symbol: string
 }
 
 export type TEntryDataTuples =
@@ -91,10 +97,17 @@ export type TSeries = {
     barMaxWidth?: number | string
     type?: 'line' | 'bar' | 'pie' | 'pictorialBar'
     symbolClip?: boolean
-    symbolBoundingData?: boolean
+    symbolBoundingData?: boolean | number
+    animationDuration?: number
     radius?: string
     center?: [number, string] | [string, string] | string | number
-    data?: number[] | string[] | Date[] | TPieChartData[] | TEntryWithStyleData[]
+    data?:
+        | number[]
+        | string[]
+        | Date[]
+        | TPieChartData[]
+        | TEntryWithStyleData[]
+        | TPictorialEntryData[]
 }
 
 export type TDomainValues = {
