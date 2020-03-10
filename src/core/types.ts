@@ -45,6 +45,7 @@ export type TTooltipEntryProps = {
     lineResult?: string
     complement?: string
     labelComplement?: string | number
+    resultComplement?: string | number
 }
 
 export type TEntryDataLine = {

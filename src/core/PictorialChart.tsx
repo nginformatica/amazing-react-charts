@@ -14,7 +14,8 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
 
 const PictorialChart = (props: IProps) => {
     const formatTooltip = () =>
-        `${props.tooltip.label}: ${props.tooltip.labelComplement}`
+        `${props.tooltip.label}: ${props.tooltip.labelComplement} <br>` +
+        `${props.tooltip.result}: ${props.tooltip.resultComplement} <br>`
 
     const gridProps = {
         top: 'center',
