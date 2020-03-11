@@ -6,9 +6,9 @@ route: /audiometry chart
 import AudiometryChart from '../core/AudiometryChart'
 import { Playground } from 'docz'
 
-# Audiometry chart
+# Demo
 
-## Demo
+## Audiometry chart with solid line
 <Playground>
     <div style={{ width: 600}}>
         <AudiometryChart
@@ -43,6 +43,51 @@ import { Playground } from 'docz'
                 },
                 {
                     result: 10
+                }
+            ] }
+        />
+    </div>
+</Playground>
+
+## Audiometry chart with dashed line
+<Playground>
+    <div style={{ width: 600}}>
+        <AudiometryChart
+            title='right'
+            color='blue'
+            lineType='dashed'
+            data={ [
+                { 
+                    result: 60,
+                    symbol: 'path://M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'
+                },
+                {
+                    result: 50,
+                    symbol: 'path://M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'
+                },
+                {
+                    result: 60,
+                    symbol: 'path://M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'
+                },       
+                {
+                    result: 70,
+                    symbol: 'path://M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'
+                },
+                {
+                    result: 50,
+                    symbol: 'path://M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'
+                },
+                {
+                    result: 55,
+                    symbol: 'path://M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'
+                },
+                {
+                    result: 50,
+                    symbol: 'path://M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'
+                },
+                {
+                    result: 10,
+                    symbol: 'path://M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'
                 }
             ] }
         />

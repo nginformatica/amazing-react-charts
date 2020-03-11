@@ -81,7 +81,7 @@ export type TSeries = {
     yAxisIndex?: number
     label?: TLabelProps
     areaStyle?: React.CSSProperties
-    lineStyle?: React.CSSProperties
+    lineStyle?: React.CSSProperties & { type?: TLineStyleType }
     barGap?: string
     barCategoryGap?: string
     animation?: boolean

@@ -2,12 +2,13 @@ import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
     IDefaultChartProps,
+    TAudiometryDataEntry,
     TAudiometryDataTooltip,
+    TLineStyleType,
     TOptionsProps,
     TSaveAsImage,
     TTitleProps,
-    TTooltipProps,
-    TAudiometryDataEntry
+    TTooltipProps
 } from './types'
 import { map, zipWith } from 'ramda'
 import { getDataView, getSaveAsImage } from './auxiliarFunctions'
@@ -17,6 +18,7 @@ const xFixedData: string[] = ['.25', '.5', '1', '2', '3', '4', '6', '8']
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TAudiometryDataEntry[]
     height?: number
+    lineType?: TLineStyleType
 }
 
 const formatTooltip = (items: TAudiometryDataTooltip[]) => items[0]
@@ -42,7 +44,7 @@ const AudiometryChart = (props: IProps) => {
                 symbol: data.boneSymbol
             })
             : {}
-        ,xFixedData, 
+        ,xFixedData,
         props.data
     )
 
@@ -55,7 +57,8 @@ const AudiometryChart = (props: IProps) => {
         textStyle: {
             fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
             fontSize: 16,
-            fontWeight: 400
+            fontWeight: 400,
+            color: props.color || 'red'
         }
     }
 
@@ -92,6 +95,10 @@ const AudiometryChart = (props: IProps) => {
             {
                 name: 'audiometry',
                 type: 'line',
+                lineStyle: {
+                    width: 1,
+                    type: props.lineType || 'solid'
+                },
                 data: yData,
                 markPoint: {
                     symbolSize: 14,
