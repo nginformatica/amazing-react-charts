@@ -22,7 +22,11 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
 }
 
 const formatTooltip = (items: TAudiometryDataTooltip[]) => items[0]
-    ? `dB: ${items[0].data.value} <br> kHz: ${items[0].axisValue}`
+    ? `Limiar Aéreo: ${items[0].data.value} dB` + (
+        items[0].data.boneValue
+            ? `<br> Limiar Ósseo: ${items[0].data.boneValue} dB`
+            : ''
+    )
     : null
 
 const AudiometryChart = (props: IProps) => {
@@ -31,7 +35,8 @@ const AudiometryChart = (props: IProps) => {
             value: item.result,
             symbol: item.symbol,
             symbolSize: 12,
-            name: item.result
+            name: item.result,
+            boneValue: item.boneResult
         }),
         props.data
     )
@@ -44,7 +49,7 @@ const AudiometryChart = (props: IProps) => {
                 symbol: data.boneSymbol
             })
             : {}
-        ,xFixedData,
+        , xFixedData,
         props.data
     )
 
