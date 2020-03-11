@@ -87,6 +87,7 @@ export type TSeries = {
     animation?: boolean
     itemStyle?: TLabelProps
     markLine?: TMarkLineProps
+    markPoint?: TMarkPointProps
     barWidth?: number | string
     emphasis?: TNormalProps
     stack?: string
@@ -133,7 +134,9 @@ type TFormatterEntry =
     | TDataTooltip[]
     | TPieDataLabel
 
-export type TFormatterType = string | ((item: TFormatterEntry) => TFormatterReturn)
+export type TFormatterType =
+    | string
+    | ((item: TFormatterEntry | TAudiometryDataTooltip[]) => TFormatterReturn)
 
 export type TFormatterSliderType =
     string | ((yValue: string, xValue: string) => TFormatterReturn)
@@ -178,6 +181,7 @@ export type TLabelProps = {
 export type TDataMarkLine = {
     name?: string
     xAxis?: string
+    yAxis?: string | number
     type?: string
 }
 
@@ -188,6 +192,11 @@ export type TMarkLineProps = {
     animation?: boolean
     data: TDataMarkLine[]
     lineStyle: TLineStyle
+}
+
+export type TMarkPointProps = {
+    symbolSize?: number
+    data: TDataMarkLine[]
 }
 
 export type TLineStyle = {
@@ -345,6 +354,12 @@ export type TDataTooltip = {
     seriesType?: string
     value?: string | number
     axisValueLabel?: string
+    axisValue?: string
+}
+
+export type TAudiometryDataTooltip = {
+    data?: { value: number | string }
+    axisValue?: string
 }
 
 export type TTitleProps = {
@@ -396,4 +411,11 @@ export type TDataZoomChartProps = {
 export type TForecastAreaChartData = {
     current: TEntryData[]
     forecast: TEntryData[]
+}
+
+export type TAudiometryDataEntry = {
+    result: number
+    symbol?: string
+    boneResult?: number
+    boneSymbol?: string
 }

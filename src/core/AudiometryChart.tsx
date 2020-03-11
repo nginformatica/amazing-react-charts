@@ -1,57 +1,125 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { IDefaultChartProps, TOptionsProps } from './types'
-import { map } from 'ramda'
+import {
+    IDefaultChartProps,
+    TAudiometryDataTooltip,
+    TOptionsProps,
+    TSaveAsImage,
+    TTitleProps,
+    TTooltipProps,
+    TAudiometryDataEntry
+} from './types'
+import { map, zipWith } from 'ramda'
+import { getDataView, getSaveAsImage } from './auxiliarFunctions'
 
 const xFixedData: string[] = ['.25', '.5', '1', '2', '3', '4', '6', '8']
-
-type TAudiometryDataEntry = {
-    result: number
-    symbol?: string
-    symbolCondition?: string
-}
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TAudiometryDataEntry[]
     height?: number
 }
 
+const formatTooltip = (items: TAudiometryDataTooltip[]) => items[0]
+    ? `dB: ${items[0].data.value} <br> kHz: ${items[0].axisValue}`
+    : null
+
 const AudiometryChart = (props: IProps) => {
     const yData = map(
         item => ({
             value: item.result,
             symbol: item.symbol,
-            symbolSize: 10,
-            label: {
-                show: item.symbolCondition,
-                formatter: item.symbolCondition,
-                distance: -2,
-                fontSize: 16
-            }
+            symbolSize: 12,
+            name: item.result
         }),
         props.data
     )
+
+    const marks = zipWith(
+        (label, data) => data.boneSymbol
+            ? ({
+                xAxis: label,
+                yAxis: data.boneResult,
+                symbol: data.boneSymbol
+            })
+            : {}
+        ,xFixedData, 
+        props.data
+    )
+
+    const title: TTitleProps = {
+        id: 'chart-' + props.title,
+        left: '6.2%',
+        show: props.title !== undefined,
+        text: props.title,
+        textAlign: 'left',
+        textStyle: {
+            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+            fontSize: 16,
+            fontWeight: 400
+        }
+    }
+
+    const toolbox = props.toolboxTooltip && (
+        {
+            showTitle: false,
+            right: '9.52%',
+            feature: {
+                saveAsImage: props.toolboxTooltip.saveAsImage && (
+                    getSaveAsImage(props.toolboxTooltip.saveAsImage) as TSaveAsImage
+                ),
+                dataView: props.toolboxTooltip.dataView && (
+                    getDataView(props.toolboxTooltip.dataView)
+                )
+            },
+            tooltip: {
+                show: true,
+                backgroundColor: 'grey',
+                textStyle: {
+                    fontSize: 12
+                }
+            }
+        }
+    )
+
+    const tooltip: TTooltipProps = {
+        formatter: formatTooltip,
+        trigger: 'axis',
+        textStyle: { fontSize: 11.5 }
+    }
 
     const options: TOptionsProps = {
         series: [
             {
                 name: 'audiometry',
                 type: 'line',
-                data: yData
+                data: yData,
+                markPoint: {
+                    symbolSize: 14,
+                    data: marks
+                }
             }
         ],
         xAxis: {
             data: xFixedData,
             type: 'category',
+            showGrid: true,
             splitLine: {
                 show: true,
                 lineStyle: {
                     type: 'solid',
-                    opacity: 0.8
-                }
+                    opacity: 0.2,
+                    color: props.color || 'red'
+                },
+                alignWithLabel: true
             },
             axisLine: {
-                onZeroAxisIndex: '1'
+                onZeroAxisIndex: '1',
+                lineStyle: {
+                    color: props.color || 'red'
+                }
+            },
+            axisTick: {
+                alignWithLabel: true
             }
         },
         yAxis: {
@@ -59,8 +127,26 @@ const AudiometryChart = (props: IProps) => {
             max: 130,
             interval: 10,
             inverse: true,
-            type: 'value'
-        }
+            type: 'value',
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    type: 'solid',
+                    opacity: 0.2,
+                    color: props.color || 'red'
+                },
+                alignWithLabel: true
+            },
+            axisLine: {
+                lineStyle: {
+                    color: props.color || 'red'
+                }
+            }
+        },
+        toolbox,
+        title,
+        tooltip,
+        color: [props.color || 'red']
     }
 
     return (
