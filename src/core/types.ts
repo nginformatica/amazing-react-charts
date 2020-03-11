@@ -237,6 +237,7 @@ export type TAxisLabelProps = {
 
 type TSplitLineProps = {
     show?: boolean
+    onZeroAxisIndex?: string
     alignWithLabel?: boolean
     lineStyle?: {
         color?: string | string[]
@@ -271,7 +272,8 @@ export type TAxisProps = {
     max?: number | string | TFormatterType
     position?: TPositionType
     axisLine?: TSplitLineProps
-    interval?: number | string
+    interval?: number | string[]
+    inverse?: boolean
 }
 
 export type TAxisLineProps = {

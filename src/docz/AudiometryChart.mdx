@@ -1,0 +1,48 @@
+---
+name: Audiometry Chart
+route: /audiometry chart
+---
+
+import AudiometryChart from '../core/AudiometryChart'
+import { Playground } from 'docz'
+
+# Audiometry chart
+
+## Demo
+<Playground>
+    <div style={{ width: 600}}>
+    <AudiometryChart 
+            data={ [
+                { 
+                    result: 60,
+                },
+                {
+                    result: 50,
+                    symbolCondition: '<'
+                },
+                {
+                    result: 60,
+                    symbolCondition: '<'
+                },       
+                {
+                    result: 70,
+                    symbolCondition: '<'
+                },
+                {
+                    result: 50,
+                    symbolCondition: '<'
+                },
+                {
+                    result: 55,
+                    symbolCondition: '<'
+                },
+                {
+                    result: 50,
+                },
+                {
+                    result: 10,
+                }
+            ] }
+        />
+    </div>
+</Playground>
