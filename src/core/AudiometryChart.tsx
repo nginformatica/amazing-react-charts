@@ -158,7 +158,8 @@ const AudiometryChart = (props: IProps) => {
         toolbox,
         title,
         tooltip,
-        color: [props.color || 'red']
+        color: [props.color || 'red'],
+        grid: props.grid
     }
 
     return (
