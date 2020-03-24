@@ -414,7 +414,7 @@ export type TForecastAreaChartData = {
 }
 
 export type TAudiometryDataEntry = {
-    result: number
+    result?: number
     symbol?: string
     boneResult?: number
     boneSymbol?: string

@@ -21,13 +21,19 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
     lineType?: TLineStyleType
 }
 
-const formatTooltip = (items: TAudiometryDataTooltip[]) => items[0]
-    ? `Limiar Aéreo: ${items[0].data.value} dB` + (
-        items[0].data.boneValue
-            ? `<br> Limiar Ósseo: ${items[0].data.boneValue} dB`
-            : ''
-    )
-    : null
+const formatTooltip = (items: TAudiometryDataTooltip[]) => {
+    const result = items[0].data.value
+        ? `Limiar Aéreo: ${items[0].data.value} dB <br>`
+        : ''
+
+    const boneResult = items[0].data.boneValue
+        ? `Limiar Ósseo: ${items[0].data.boneValue} dB`
+        : ''
+
+    return items[0] && items[0].data
+        ? result + boneResult
+        : null
+}
 
 const AudiometryChart = (props: IProps) => {
     const yData = map(
