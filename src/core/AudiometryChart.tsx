@@ -22,11 +22,11 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
 }
 
 const formatTooltip = (items: TAudiometryDataTooltip[]) => {
-    const result = items[0].data.value
+    const result = items[0].data.value || items[0].data.value === 0
         ? `Limiar Aéreo: ${items[0].data.value} dB <br>`
         : ''
 
-    const boneResult = items[0].data.boneValue
+    const boneResult = items[0].data.boneValue || items[0].data.boneValue === 0
         ? `Limiar Ósseo: ${items[0].data.boneValue} dB`
         : ''
 
