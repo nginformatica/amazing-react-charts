@@ -19,6 +19,7 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TAudiometryDataEntry[]
     height?: number
     lineType?: TLineStyleType
+    symbolsSize?: number
 }
 
 const formatTooltip = (items: TAudiometryDataTooltip[]) => {
@@ -40,7 +41,7 @@ const AudiometryChart = (props: IProps) => {
         item => ({
             value: item.result,
             symbol: item.symbol,
-            symbolSize: 12,
+            symbolSize: props.symbolsSize || 12,
             name: item.result,
             boneValue: item.boneResult
         }),
@@ -54,8 +55,8 @@ const AudiometryChart = (props: IProps) => {
                 yAxis: data.boneResult,
                 symbol: data.boneSymbol
             })
-            : {}
-        , xFixedData,
+            : {},
+        xFixedData,
         props.data
     )
 
@@ -112,8 +113,9 @@ const AudiometryChart = (props: IProps) => {
                 },
                 data: yData,
                 markPoint: {
-                    symbolSize: 14,
-                    data: marks
+                    symbolSize: props.symbolsSize || 12,
+                    data: marks,
+                    hoverAnimation: true
                 }
             }
         ],

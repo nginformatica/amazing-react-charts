@@ -196,6 +196,7 @@ export type TMarkLineProps = {
 
 export type TMarkPointProps = {
     symbolSize?: number
+    hoverAnimation?: boolean
     data: TDataMarkLine[]
 }
 
