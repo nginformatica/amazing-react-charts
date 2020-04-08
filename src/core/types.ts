@@ -97,7 +97,7 @@ export type TSeries = {
     showSymbol?: boolean
     hoverAnimation?: boolean
     barMaxWidth?: number | string
-    type?: 'line' | 'bar' | 'pie' | 'pictorialBar'
+    type?: 'line' | 'bar' | 'pie' | 'pictorialBar' | 'scatter'
     symbolClip?: boolean
     symbolBoundingData?: boolean | number
     animationDuration?: number
@@ -110,6 +110,13 @@ export type TSeries = {
         | TPieChartData[]
         | TEntryWithStyleData[]
         | TPictorialEntryData[]
+        | TCostumizedSymbolData[]
+}
+
+export type TCostumizedSymbolData = {
+    value?: string | number
+    symbol?: string
+    symbolSize?: number
 }
 
 export type TDomainValues = {

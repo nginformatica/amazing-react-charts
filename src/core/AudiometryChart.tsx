@@ -4,6 +4,7 @@ import {
     IDefaultChartProps,
     TAudiometryDataEntry,
     TAudiometryDataTooltip,
+    TCostumizedSymbolData,
     TLineStyleType,
     TOptionsProps,
     TSaveAsImage,
@@ -48,12 +49,12 @@ const AudiometryChart = (props: IProps) => {
         props.data
     )
 
-    const marks = zipWith(
-        (label, data) => data.boneSymbol
+    const marks: TCostumizedSymbolData[] = zipWith(
+        (_, data) => data.boneSymbol
             ? ({
-                xAxis: label,
-                yAxis: data.boneResult,
-                symbol: data.boneSymbol
+                value: data.boneResult,
+                symbol: data.boneSymbol,
+                symbolSize: props.symbolsSize || 12
             })
             : {},
         xFixedData,
@@ -111,12 +112,12 @@ const AudiometryChart = (props: IProps) => {
                     width: 1,
                     type: props.lineType || 'solid'
                 },
-                data: yData,
-                markPoint: {
-                    symbolSize: props.symbolsSize || 12,
-                    data: marks,
-                    hoverAnimation: true
-                }
+                data: yData
+            },
+            {
+                name: 'marks',
+                type: 'scatter',
+                data: marks
             }
         ],
         xAxis: {
