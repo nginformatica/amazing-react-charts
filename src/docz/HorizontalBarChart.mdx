@@ -6,7 +6,29 @@ route: /horizontal-barchart
 import HorizontalBarChart from '../core/HorizontalBarChart'
 import { Playground } from 'docz'
 
-# Horizontal bar chart example
+# Horizontal bar chart example with different bar colors
+
+## Demo
+<Playground>
+    <HorizontalBarChart
+        showTickInfos
+        xComplement='%'
+        onClickBar={ item => window.alert(item.data.value) }
+        tooltip={ { 
+            label: 'Criticidade', 
+            result: 'Quantidade (percentual)' 
+        } }
+        data={ 
+            [ 
+                { label: 'A', result: 75, style: { color: 'red' } }, 
+                { label: 'B', result: 86, style: { color: 'yellow' } },
+                { label: 'C', result: 94.3, style: { color: '#8BC34A' } }
+            ]
+        }
+    />
+</Playground>
+
+# Horizontal bar chart example with radius border
 
 ## Demo
 <Playground>

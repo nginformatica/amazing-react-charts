@@ -89,8 +89,8 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         isMoreThanHundredPercent
     } = props
 
-    const yData = data.map((item: TEntryData) => ({ 
-        value: item.result, 
+    const yData = data.map((item: TEntryData) => ({
+        value: item.result,
         itemId: item.itemId && item.itemId
     }))
 
@@ -279,9 +279,9 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
             notMerge
             style={ { width: '99%' } }
             opts={ { width: width } }
-            onEvents={ { 
-                dataZoom: dynamicDataZoom, 
-                click: props.onClickBar 
+            onEvents={ {
+                dataZoom: dynamicDataZoom,
+                click: props.onClickBar
             } }
             option={
                 tooltipProps

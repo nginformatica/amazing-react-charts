@@ -13,9 +13,8 @@ import { truncateLabel } from './auxiliarFunctions'
 import { reverse } from 'ramda'
 
 interface IProps extends IDefaultChartProps {
+    showTickInfos?: boolean
     xComplement?: string
-    marginLeft?: string | number
-    marginRight?: string | number
 }
 
 const HorizontalBarChart = (props: IProps) => {
@@ -26,7 +25,8 @@ const HorizontalBarChart = (props: IProps) => {
         tooltip: tooltipProps,
         grid: gridProps,
         width,
-        labelWordSize
+        labelWordSize,
+        showTickInfos
     } = props
 
     const xData: TEntryWithStyleData[] = reverse(data.map((item: TEntryData) => {
@@ -35,7 +35,11 @@ const HorizontalBarChart = (props: IProps) => {
             distance: 1
         }
 
-        return ({ value: item.result, label: label })
+        return ({
+            value: item.result,
+            label: label,
+            itemStyle: item.style
+        })
     }))
 
     const yData = reverse(data.map((item: TEntryData) => item.label))
@@ -70,14 +74,15 @@ const HorizontalBarChart = (props: IProps) => {
                 type: 'bar',
                 animation: false,
                 barWidth: '80%',
-                barMaxWidth: 20,
+                barMaxWidth: !showTickInfos && 20,
                 silent: true,
                 data: backgroundBar,
                 itemStyle: {
                     normal: {
                         color: '#ececec',
-                        barBorderRadius: 10,
-                        borderColor: props.color
+                        barBorderRadius: showTickInfos ? 0 : 10,
+                        opacity: showTickInfos && 0.5,
+                        borderColor: showTickInfos ? undefined : props.color
                     }
                 }
             },
@@ -86,11 +91,11 @@ const HorizontalBarChart = (props: IProps) => {
                 data: xData,
                 type: 'bar',
                 barWidth: '80%',
-                barMaxWidth: 20,
+                barMaxWidth: !showTickInfos && 20,
                 itemStyle: {
                     normal: {
                         color: color,
-                        barBorderRadius: 10
+                        barBorderRadius: showTickInfos ? 0 : 10
                     }
                 },
                 label: {
@@ -107,17 +112,18 @@ const HorizontalBarChart = (props: IProps) => {
             type: 'value',
             data: xData,
             axisTick: {
-                show: false
+                show: showTickInfos || false
             },
             axisLine: {
-                show: false
+                show: showTickInfos || false
             },
             axisLabel: {
-                show: false
+                show: showTickInfos || false,
+                formatter: item => item + xComplement
             },
-            showGrid: false,
+            showGrid: showTickInfos || false,
             splitLine: {
-                show: false
+                show: showTickInfos || false
             }
         },
         yAxis: {
@@ -130,11 +136,12 @@ const HorizontalBarChart = (props: IProps) => {
                 formatter: (text: string) => truncateLabel(text, labelWordSize)
             },
             axisTick: {
-                show: false
+                show: showTickInfos || false,
+                alignWithLabel: true
             },
-            showGrid: false,
+            showGrid: showTickInfos || false,
             splitLine: {
-                show: false
+                show: showTickInfos || false
             }
         }
     }
@@ -144,6 +151,7 @@ const HorizontalBarChart = (props: IProps) => {
             lazyUpdate
             style={ { width: '99%' } }
             opts={ { width: width } }
+            onEvents={ { click: props.onClickBar } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }
