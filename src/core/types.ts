@@ -23,6 +23,7 @@ export interface IDefaultChartProps {
     toolboxTooltip?: TToolboxEntryProps
     isMoreThanHundredPercent?: boolean
     labelWordSize?: number
+    onClickBar?(): void
 }
 
 export type TToolboxEntryProps = {
@@ -56,6 +57,7 @@ export type TEntryDataLine = {
 export type TEntryData = {
     label: string
     result: number
+    itemId?: string
     style?: TLabelProps
 }
 
@@ -155,6 +157,8 @@ export type TPositionType =
     | 'right'
     | 'insideRight'
     | 'insideLeft'
+    | 'insideTop'
+    | 'insideBottom'
     | 'inside'
     | 'outside'
     | [number, number]

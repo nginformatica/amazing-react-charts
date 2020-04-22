@@ -89,7 +89,11 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         isMoreThanHundredPercent
     } = props
 
-    const yData = data.map((item: TEntryData) => item.result)
+    const yData = data.map((item: TEntryData) => ({ 
+        value: item.result, 
+        itemId: item.itemId && item.itemId
+    }))
+
     const xData = xType === 'time'
         ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
         : data.map((item: TEntryData) => item.label)
@@ -114,13 +118,13 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
     }
 
     const formatLabel = (chartValues: TDataTooltip) => {
-        const { data } = chartValues
+        const { value } = chartValues
 
         return (yComplement
-            ? data + yComplement
+            ? value + yComplement
             : yType === 'time'
-                ? timeConvert(Number(data))
-                : data
+                ? timeConvert(Number(value))
+                : value
         )
     }
 
@@ -161,11 +165,11 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
 
     const formatSingleTooltip = (chartValues: TDataTooltip[]) => {
         const { label, result } = tooltipProps
-        const { axisValueLabel, data } = chartValues[0]
+        const { axisValueLabel, value } = chartValues[0]
         const complement = tooltipComplement ? tooltipComplement : ''
         const values = yType === 'time'
-            ? timeConvert(data as number) + 'h'
-            : data + (yComplement || '')
+            ? timeConvert(value as number) + 'h'
+            : value + (yComplement || '')
 
         const labelPrint = xType === 'time'
             ? formatTooltip(axisValueLabel)
@@ -208,10 +212,10 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
             label: {
                 formatter: formatLabel,
                 show: showBarLabel,
-                position: 'top',
-                fontSize: 11.5,
+                position: 'insideTop',
+                fontSize: 14,
                 color: 'black',
-                distance: 1.1
+                distance: 6
             }
         }],
         xAxis: {
@@ -275,7 +279,10 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
             notMerge
             style={ { width: '99%' } }
             opts={ { width: width } }
-            onEvents={ { dataZoom: dynamicDataZoom } }
+            onEvents={ { 
+                dataZoom: dynamicDataZoom, 
+                click: props.onClickBar 
+            } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }

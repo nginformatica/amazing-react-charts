@@ -9,6 +9,7 @@ import { Playground } from 'docz'
 # Stacked bar chart example
 <Playground>
     <VerticalBarChart
+        showBarLabel
         yComplement='%'
         xType='category'
         yType='value'
@@ -16,86 +17,98 @@ import { Playground } from 'docz'
         title='Bar Chart example'
         toolboxTooltip={{ saveAsImage: 'save' }}
         tooltip={ { label: 'Equipamento', result: 'Disponibilidade' } }
+        onClickBar={ item => console.log(item) }
         data={ [
   {
     label: 'NG209',
     result: '100',
+    itemId: 1
   },
   {
     label: 'NG210',
     result: '100',
+    itemId: 2
     
   },
   {
     label: 'NG205',
     result: '100',
+    itemId: 3
     
   },
   {
     label: '123123',
     result: '100',
+    itemId: 4
     
   },
   {
     label: 'NG 350',
     result: '100',
+    itemId: 5
     
   },
   {
     label: 'NG207',
     result: '100',
+    itemId: 6
     
   },
   {
     label: 'APT1',
     result: '100',
+    itemId: 1
     
   },
   {
     label: 'NG208',
     result: '100',
+    itemId: 7
     
   },
   {
     label: 'NG206',
     result: '100',
+    itemId: 8
     
   },
   {
     label: 'MAMP001',
     result: '100',
+    itemId: 10
     
   },
   {
     label: 'CONNECT 2.2',
     result: '100',
+    itemId: 15
     
   },
   {
     label: 'APT631',
     result: '100',
+    itemId: 23
     
   },
   {
     label: 'CONNECT 2.1 - CNC connect CVC512',
     result: '100',
-    
-  }
-  ,
+    itemId: 24
+  },
   {
     label: 'APT63111',
     result: '50',
-    
+    itemId: 26    
   },
   {
     label: 'CONNECT 2.1 - CNC connect CVC51211',
     result: '100',
-    
+    itemId: 28
   },
   {
     label: 'CONNECT 2.1 - CNC connect CVCaaa51211',
     result: '100',
-    
+    itemId: 30
   }
 ] } 
     />
