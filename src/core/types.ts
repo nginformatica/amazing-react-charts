@@ -25,7 +25,8 @@ export interface IDefaultChartProps {
     labelWordSize?: number
     marginLeftTitle?: string
     titleFontSize?: number
-    onClickBar?(): void
+    // TODO: verify how to improve these types
+    onClickBar?(itemProps?: object, itemFunctions?: object): void
 }
 
 export type TToolboxEntryProps = {

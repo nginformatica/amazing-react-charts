@@ -32,7 +32,8 @@ const HorizontalBarChart = (props: IProps) => {
         boldTickLabel,
         title: titleProps,
         marginLeftTitle,
-        titleFontSize
+        titleFontSize,
+        onClickBar
     } = props
 
     const xData: TEntryWithStyleData[] = reverse(data.map((item: TEntryData) => {
@@ -180,7 +181,7 @@ const HorizontalBarChart = (props: IProps) => {
             lazyUpdate
             style={ { width: '99%' } }
             opts={ { width: width } }
-            onEvents={ { click: props.onClickBar } }
+            onEvents={ { click: onClickBar } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }

@@ -93,7 +93,8 @@ const VerticalBarChart = (props: IProps) => {
         isMoreThanHundredPercent,
         marginLeftTitle,
         titleFontSize,
-        rotateLabel
+        rotateLabel,
+        onClickBar
     } = props
 
     const yData = data.map((item: TEntryData) => ({
@@ -292,7 +293,7 @@ const VerticalBarChart = (props: IProps) => {
             opts={ { width: width } }
             onEvents={ {
                 dataZoom: dynamicDataZoom,
-                click: props.onClickBar
+                click: onClickBar
             } }
             option={
                 tooltipProps
