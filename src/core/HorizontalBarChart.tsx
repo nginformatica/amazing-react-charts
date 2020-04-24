@@ -154,7 +154,7 @@ const HorizontalBarChart = (props: IProps) => {
             data: yData,
             type: 'category',
             axisLine: {
-                show: showTickInfos || false,
+                show: showTickInfos || false
             },
             axisLabel: {
                 formatter: (text: string) => truncateLabel(text, labelWordSize),
