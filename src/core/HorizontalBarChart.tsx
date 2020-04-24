@@ -7,8 +7,8 @@ import {
     TEntryWithStyleData,
     TLabelProps,
     TOptionsProps,
-    TTooltipProps,
-    TTitleProps
+    TTitleProps,
+    TTooltipProps
 } from './types'
 import { truncateLabel } from './auxiliarFunctions'
 import { reverse } from 'ramda'
