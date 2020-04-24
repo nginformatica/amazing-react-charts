@@ -70,7 +70,11 @@ export const dontShowLabel = {
     grid: { bottom: 60 }
 }
 
-const VerticalBarChart = (props: IDefaultChartProps) => {
+interface IProps extends IDefaultChartProps {
+    rotateTickLabel?: number
+}
+
+const VerticalBarChart = (props: IProps) => {
     const {
         data,
         color,
@@ -88,7 +92,8 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         toolboxTooltip,
         isMoreThanHundredPercent,
         marginLeftTitle,
-        titleFontSize
+        titleFontSize,
+        rotateLabel
     } = props
 
     const yData = data.map((item: TEntryData) => ({
@@ -104,18 +109,21 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         item: TDataZoomEventProps,
         charts: TDataZoomChartProps
     ) => {
-        const dataRange = item.end - item.start
-        const dataLimit = 1200 / xData.length
-        const fullLabel = 500 / xData.length
 
-        if (xData.length <= 5 || dataRange < fullLabel) {
-            charts.setOption(fullText)
-        } else if (xData.length <= 14 || dataRange < dataLimit) {
-            charts.setOption(normalLabel)
-        } else if (dataRange < 40) {
-            charts.setOption(rotatedLabel)
-        } else {
-            charts.setOption(dontShowLabel)
+        if (!rotateLabel) {
+            const dataRange = item.end - item.start
+            const dataLimit = 1200 / xData.length
+            const fullLabel = 500 / xData.length
+
+            if (xData.length <= 5 || dataRange < fullLabel) {
+                charts.setOption(fullText)
+            } else if (xData.length <= 14 || dataRange < dataLimit) {
+                charts.setOption(normalLabel)
+            } else if (dataRange < 40) {
+                charts.setOption(rotatedLabel)
+            } else {
+                charts.setOption(dontShowLabel)
+            }
         }
     }
 
@@ -234,10 +242,11 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
                 alignWithLabel: true
             },
             axisLabel: {
+                rotate: rotateLabel && rotateLabel,
                 formatter:
                     (item: string) => xType === 'time'
                         ? formatTime(item, 'dd MMM')
-                        : truncateLabel(item),
+                        : truncateLabel(item, rotateLabel && 7),
                 interval: 0,
                 textStyle: {
                     fontSize: 11.5
@@ -279,12 +288,12 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         <ReactEcharts
             lazyUpdate
             notMerge
-            style={ { width: '99%' } }
-            opts={ { width: width } }
-            onEvents={ {
+            style={{ width: '99%' }}
+            opts={{ width: width }}
+            onEvents={{
                 dataZoom: dynamicDataZoom,
                 click: props.onClickBar
-            } }
+            }}
             option={
                 tooltipProps
                     ? { ...options, tooltip }

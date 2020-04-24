@@ -72,9 +72,10 @@ export const truncateText = (text: string, listSize?: number) => {
 
 export const truncateLabel = (text: string, labelWordSize?: number) => {
     const numberOfLetters = labelWordSize ? labelWordSize : 12
+    const lettersToShow = labelWordSize ? 3 : 4
 
     return text.length > numberOfLetters
-        ? text.slice(0, numberOfLetters-4) + '...'
+        ? text.slice(0, (numberOfLetters-lettersToShow)) + '...'
         : text
 }
 
