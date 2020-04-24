@@ -10,7 +10,7 @@ import {
     TTitleProps,
     TTooltipProps
 } from './types'
-import { truncateLabel } from './auxiliarFunctions'
+import { getDomain, timeConvert, truncateLabel } from './auxiliarFunctions'
 import { reverse } from 'ramda'
 
 interface IProps extends IDefaultChartProps {
@@ -33,11 +33,12 @@ const HorizontalBarChart = (props: IProps) => {
         title: titleProps,
         marginLeftTitle,
         titleFontSize,
-        onClickBar
+        onClickBar,
+        xType
     } = props
 
     const xData: TEntryWithStyleData[] = reverse(data.map((item: TEntryData) => {
-        const label: TLabelProps = item.result <= 2 && {
+        const label: TLabelProps = item.result <= (xType === 'time' ? 10 : 5) && {
             position: 'right',
             distance: 1
         }
@@ -50,18 +51,38 @@ const HorizontalBarChart = (props: IProps) => {
     }))
 
     const yData = reverse(data.map((item: TEntryData) => item.label))
-    const backgroundBar = data.map(() => 100)
+    const domain = { min: 0, max: Math.max(...data.map(item => item.result)) }
+    const backgroundBar = data.map(() =>
+        xComplement === '%'
+            ? 100
+            : getDomain(domain)
+    )
 
     const formatTooltip = (chartValues: TDataTooltip) => {
         const { label, result } = tooltipProps
         const { name, value } = chartValues
 
-        const dataValue = xComplement ? value + xComplement : value
+        const dataValue = xComplement
+            ? value + xComplement
+            : xType === 'time'
+                ? timeConvert(Number(value)) + 'h'
+                : value
 
         return [
             `${label}: ${name} <br>` +
             `${result}: ${dataValue} <br>`
         ]
+    }
+
+    const formatLabel = (chartValues: TDataTooltip) => {
+        const { value } = chartValues
+
+        return (xComplement
+            ? value + xComplement
+            : xType === 'time'
+                ? timeConvert(Number(value)) + 'h'
+                : value
+        )
     }
 
     const tooltip: TTooltipProps = {
@@ -119,7 +140,7 @@ const HorizontalBarChart = (props: IProps) => {
                     }
                 },
                 label: {
-                    formatter: xComplement ? `{c}${xComplement}` : '{c}',
+                    formatter: formatLabel,
                     position: 'insideRight',
                     fontSize: showTickInfos ? 14 : 11,
                     fontWeight: 400,
@@ -129,6 +150,7 @@ const HorizontalBarChart = (props: IProps) => {
             }
         ],
         xAxis: {
+            max: xComplement === '%' ? 100 : getDomain(domain),
             type: 'value',
             data: xData,
             axisTick: {
@@ -139,7 +161,9 @@ const HorizontalBarChart = (props: IProps) => {
             },
             axisLabel: {
                 show: showTickInfos || false,
-                formatter: item => item + xComplement
+                formatter: item => xType === 'time'
+                    ? timeConvert(Number(item)) + 'h'
+                    : item + xComplement
             },
             showGrid: showTickInfos || false,
             splitLine: {

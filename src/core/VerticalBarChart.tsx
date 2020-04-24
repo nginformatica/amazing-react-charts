@@ -6,6 +6,7 @@ import {
     TDataZoomChartProps,
     TDataZoomEventProps,
     TEntryData,
+    TLabelProps,
     TOptionsProps,
     TSaveAsImage,
     TTitleProps,
@@ -97,10 +98,18 @@ const VerticalBarChart = (props: IProps) => {
         onClickBar
     } = props
 
-    const yData = data.map((item: TEntryData) => ({
-        value: item.result,
-        itemId: item.itemId && item.itemId
-    }))
+    const yData = data.map((item: TEntryData) => {
+        const label: TLabelProps = (showBarLabel && item.result <= 10) && {
+            position: 'top',
+            distance: 1
+        }
+
+        return ({
+            value: item.result,
+            label: label,
+            itemId: item.itemId && item.itemId
+        })
+    })
 
     const xData = xType === 'time'
         ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
@@ -134,7 +143,7 @@ const VerticalBarChart = (props: IProps) => {
         return (yComplement
             ? value + yComplement
             : yType === 'time'
-                ? timeConvert(Number(value))
+                ? timeConvert(Number(value)) + 'h'
                 : value
         )
     }
