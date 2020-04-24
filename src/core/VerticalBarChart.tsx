@@ -86,7 +86,9 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
         showBarLabel,
         title: titleProps,
         toolboxTooltip,
-        isMoreThanHundredPercent
+        isMoreThanHundredPercent,
+        marginLeftTitle,
+        titleFontSize
     } = props
 
     const yData = data.map((item: TEntryData) => ({
@@ -130,13 +132,13 @@ const VerticalBarChart = (props: IDefaultChartProps) => {
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
-        left: '5.9%',
+        left: marginLeftTitle || '5.9%',
         show: titleProps !== undefined,
         text: titleProps,
         textAlign: 'left',
         textStyle: {
             fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-            fontSize: 16,
+            fontSize: titleFontSize || 16,
             fontWeight: 400
         }
     }

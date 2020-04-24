@@ -23,6 +23,8 @@ export interface IDefaultChartProps {
     toolboxTooltip?: TToolboxEntryProps
     isMoreThanHundredPercent?: boolean
     labelWordSize?: number
+    marginLeftTitle?: string
+    titleFontSize?: number
     onClickBar?(): void
 }
 

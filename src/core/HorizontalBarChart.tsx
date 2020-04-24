@@ -7,7 +7,8 @@ import {
     TEntryWithStyleData,
     TLabelProps,
     TOptionsProps,
-    TTooltipProps
+    TTooltipProps,
+    TTitleProps
 } from './types'
 import { truncateLabel } from './auxiliarFunctions'
 import { reverse } from 'ramda'
@@ -15,6 +16,7 @@ import { reverse } from 'ramda'
 interface IProps extends IDefaultChartProps {
     showTickInfos?: boolean
     xComplement?: string
+    boldTickLabel?: boolean
 }
 
 const HorizontalBarChart = (props: IProps) => {
@@ -26,7 +28,11 @@ const HorizontalBarChart = (props: IProps) => {
         grid: gridProps,
         width,
         labelWordSize,
-        showTickInfos
+        showTickInfos,
+        boldTickLabel,
+        title: titleProps,
+        marginLeftTitle,
+        titleFontSize
     } = props
 
     const xData: TEntryWithStyleData[] = reverse(data.map((item: TEntryData) => {
@@ -60,6 +66,19 @@ const HorizontalBarChart = (props: IProps) => {
     const tooltip: TTooltipProps = {
         formatter: formatTooltip,
         textStyle: { fontSize: 11.5 }
+    }
+
+    const title: TTitleProps = {
+        id: 'chart-' + titleProps,
+        left: marginLeftTitle || '5.9%',
+        show: titleProps !== undefined,
+        text: titleProps,
+        textAlign: 'left',
+        textStyle: {
+            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+            fontSize: titleFontSize || 16,
+            fontWeight: 400
+        }
     }
 
     const options: TOptionsProps = {
@@ -137,7 +156,8 @@ const HorizontalBarChart = (props: IProps) => {
                 show: false
             },
             axisLabel: {
-                formatter: (text: string) => truncateLabel(text, labelWordSize)
+                formatter: (text: string) => truncateLabel(text, labelWordSize),
+                textStyle: { fontWeight: boldTickLabel ? 550 : undefined }
             },
             axisTick: {
                 show: showTickInfos || false,
@@ -151,7 +171,8 @@ const HorizontalBarChart = (props: IProps) => {
                     opacity: 0.8
                 }
             }
-        }
+        },
+        title
     }
 
     return (

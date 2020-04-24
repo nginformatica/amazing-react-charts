@@ -11,7 +11,10 @@ import { Playground } from 'docz'
 ## Demo
 <Playground>
     <HorizontalBarChart
+        boldTickLabel
         showTickInfos
+        marginLeftTitle="50%"
+        title="RYG graph"
         xComplement='%'
         onClickBar={ item => window.alert(item.data.value) }
         tooltip={ { 
