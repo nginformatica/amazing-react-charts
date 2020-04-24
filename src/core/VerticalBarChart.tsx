@@ -288,12 +288,12 @@ const VerticalBarChart = (props: IProps) => {
         <ReactEcharts
             lazyUpdate
             notMerge
-            style={{ width: '99%' }}
-            opts={{ width: width }}
-            onEvents={{
+            style={ { width: '99%' } }
+            opts={ { width: width } }
+            onEvents={ {
                 dataZoom: dynamicDataZoom,
                 click: props.onClickBar
-            }}
+            } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }
