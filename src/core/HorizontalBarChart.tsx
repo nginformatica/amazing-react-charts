@@ -101,7 +101,7 @@ const HorizontalBarChart = (props: IProps) => {
                 label: {
                     formatter: xComplement ? `{c}${xComplement}` : '{c}',
                     position: 'insideRight',
-                    fontSize: 11,
+                    fontSize: showTickInfos ? 14 : 11,
                     fontWeight: 400,
                     color: 'black',
                     show: true
@@ -123,7 +123,11 @@ const HorizontalBarChart = (props: IProps) => {
             },
             showGrid: showTickInfos || false,
             splitLine: {
-                show: showTickInfos || false
+                show: showTickInfos || false,
+                lineStyle: {
+                    type: 'dotted',
+                    opacity: 0.8
+                }
             }
         },
         yAxis: {
@@ -141,7 +145,11 @@ const HorizontalBarChart = (props: IProps) => {
             },
             showGrid: showTickInfos || false,
             splitLine: {
-                show: showTickInfos || false
+                show: showTickInfos || false,
+                lineStyle: {
+                    type: 'dotted',
+                    opacity: 0.8
+                }
             }
         }
     }
