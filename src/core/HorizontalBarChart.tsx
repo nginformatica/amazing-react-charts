@@ -7,10 +7,17 @@ import {
     TEntryWithStyleData,
     TLabelProps,
     TOptionsProps,
+    TSaveAsImage,
     TTitleProps,
     TTooltipProps
 } from './types'
-import { getDomain, timeConvert, truncateLabel } from './auxiliarFunctions'
+import {
+    getDataView,
+    getDomain,
+    getSaveAsImage,
+    timeConvert,
+    truncateLabel
+} from './auxiliarFunctions'
 import { reverse } from 'ramda'
 
 interface IProps extends IDefaultChartProps {
@@ -34,7 +41,9 @@ const HorizontalBarChart = (props: IProps) => {
         marginLeftTitle,
         titleFontSize,
         onClickBar,
-        xType
+        xType,
+        toolboxTooltip,
+        marginRightToolbox
     } = props
 
     const xData: TEntryWithStyleData[] = reverse(data.map((item: TEntryData) => {
@@ -89,6 +98,28 @@ const HorizontalBarChart = (props: IProps) => {
         formatter: formatTooltip,
         textStyle: { fontSize: 11.5 }
     }
+
+    const toolbox = toolboxTooltip && (
+        {
+            showTitle: false,
+            right: marginRightToolbox || '8.7%',
+            feature: {
+                saveAsImage: toolboxTooltip.saveAsImage && (
+                    getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage
+                ),
+                dataView: toolboxTooltip.dataView && (
+                    getDataView(toolboxTooltip.dataView)
+                )
+            },
+            tooltip: {
+                show: true,
+                backgroundColor: 'grey',
+                textStyle: {
+                    fontSize: 12
+                }
+            }
+        }
+    )
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
@@ -197,7 +228,8 @@ const HorizontalBarChart = (props: IProps) => {
                 }
             }
         },
-        title
+        title,
+        toolbox
     }
 
     return (

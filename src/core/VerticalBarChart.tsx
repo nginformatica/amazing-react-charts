@@ -95,7 +95,8 @@ const VerticalBarChart = (props: IProps) => {
         marginLeftTitle,
         titleFontSize,
         rotateLabel,
-        onClickBar
+        onClickBar,
+        marginRightToolbox
     } = props
 
     const yData = data.map((item: TEntryData) => {
@@ -164,7 +165,7 @@ const VerticalBarChart = (props: IProps) => {
     const toolbox = toolboxTooltip && (
         {
             showTitle: false,
-            right: '8.7%',
+            right: marginRightToolbox || '8.7%',
             feature: {
                 saveAsImage: toolboxTooltip.saveAsImage && (
                     getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage
