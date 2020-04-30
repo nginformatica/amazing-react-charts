@@ -21,7 +21,8 @@ import {
     getSaveAsImage,
     timeConvert,
     toDate,
-    truncateLabel
+    truncateLabel,
+    truncateSpecialLabel
 } from './auxiliarFunctions'
 
 export const fullText = {
@@ -30,7 +31,10 @@ export const fullText = {
             rotate: 0,
             show: true,
             interval: 0,
-            formatter: (item: string) => item
+            formatter: (item: string) => truncateSpecialLabel(item, 20),
+            textStyle: {
+                fontSize: 11.5
+            }
         }
     },
     grid: { bottom: 60 }
@@ -47,6 +51,21 @@ export const rotatedLabel = {
     },
     grid: { bottom: '29%' }
 }
+
+export const rotatedLabelSpecial = (rotate: number) => ({
+    xAxis: {
+        axisLabel: {
+            rotate: rotate,
+            show: true,
+            interval: 0,
+            formatter: (item: string) => truncateSpecialLabel(item, 11),
+            textStyle: {
+                fontSize: 8.5
+            }
+        }
+    },
+    grid: { bottom: '30%' }
+})
 
 export const normalLabel = {
     xAxis: {
@@ -120,15 +139,27 @@ const VerticalBarChart = (props: IProps) => {
         item: TDataZoomEventProps,
         charts: TDataZoomChartProps
     ) => {
+        const dataRange = item.end - item.start
+        const fullLabel = 500 / xData.length
+        const minimum = 800 / xData.length
 
-        if (!rotateLabel) {
-            const dataRange = item.end - item.start
+        // TODO: improve this piece of code
+        if (rotateLabel) {
+            if (xData.length <= 8 || dataRange < minimum) {
+                charts.setOption(fullText)
+            } else {
+                if (dataRange > fullLabel && xData.length <= 40) {
+                    charts.setOption(rotatedLabelSpecial(rotateLabel))
+                } else {
+                    charts.setOption(dontShowLabel)
+                }
+            }
+        } else {
             const dataLimit = 1200 / xData.length
-            const fullLabel = 500 / xData.length
 
             if (xData.length <= 5 || dataRange < fullLabel) {
                 charts.setOption(fullText)
-            } else if (xData.length <= 14 || dataRange < dataLimit) {
+            } else if (xData.length <= 12 || dataRange < dataLimit) {
                 charts.setOption(normalLabel)
             } else if (dataRange < 40) {
                 charts.setOption(rotatedLabel)
@@ -224,7 +255,10 @@ const VerticalBarChart = (props: IProps) => {
         : []
 
     const options: TOptionsProps = {
-        grid: gridProps,
+        grid: {
+            ...gridProps,
+            bottom: rotateLabel && '30%'
+        },
         color: [color],
         series: [{
             barWidth: barWidth || 'auto',
@@ -257,10 +291,10 @@ const VerticalBarChart = (props: IProps) => {
                 formatter:
                     (item: string) => xType === 'time'
                         ? formatTime(item, 'dd MMM')
-                        : truncateLabel(item, rotateLabel && 7),
+                        : rotateLabel ? truncateSpecialLabel(item, 11) : item,
                 interval: 0,
                 textStyle: {
-                    fontSize: 11.5
+                    fontSize: rotateLabel ? 8.5 : 11.5
                 }
             },
             axisTick: {

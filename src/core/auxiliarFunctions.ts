@@ -79,6 +79,9 @@ export const truncateLabel = (text: string, labelWordSize?: number) => {
         : text
 }
 
+export const truncateSpecialLabel = (text: string, size: number) =>
+    text.length > size ? text.slice(0, (size-3)) + '...' : text
+
 export const getDomain = (item: TDomainValues) => {
     switch (true) {
         case (item.max >= 2500):
