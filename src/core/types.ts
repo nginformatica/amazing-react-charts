@@ -25,8 +25,7 @@ export interface IDefaultChartProps {
     labelWordSize?: number
     marginLeftTitle?: string
     marginRightToolbox?: string
-    titleFontSize?: string
-    // TODO: verify how to improve these types
+    titleFontSize?: string | number
     onClickBar?(itemProps?: object, itemFunctions?: object): void
 }
 
