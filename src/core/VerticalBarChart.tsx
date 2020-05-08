@@ -31,7 +31,7 @@ export const fullText = {
             rotate: 0,
             show: true,
             interval: 0,
-            formatter: (item: string) => truncateSpecialLabel(item, 20),
+            formatter: (item: string) => truncateSpecialLabel(item, 16),
             textStyle: {
                 fontSize: 11.5
             }
