@@ -42,7 +42,7 @@ export const fullText = {
 export const rotatedLabel = {
     xAxis: {
         axisLabel: {
-            rotate: 30,
+            rotate: 315,
             show: true,
             interval: 0,
             formatter: (item: string) => truncateSpecialLabel(item, 9)
