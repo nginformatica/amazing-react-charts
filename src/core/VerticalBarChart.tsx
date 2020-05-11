@@ -36,7 +36,7 @@ export const fullText = {
             }
         }
     },
-    grid: { bottom: 70 }
+    grid: { bottom: 60 }
 }
 
 export const rotatedLabel = {
@@ -45,7 +45,7 @@ export const rotatedLabel = {
             rotate: 30,
             show: true,
             interval: 0,
-            formatter: (item: string) => truncateSpecialLabel(item, 9),
+            formatter: (item: string) => truncateSpecialLabel(item, 9)
         }
     },
     grid: { bottom: 98 }
@@ -72,7 +72,7 @@ export const normalLabel = {
             rotate: 0,
             show: true,
             interval: 0,
-            formatter: (item: string) => truncateSpecialLabel(item, 9),
+            formatter: (item: string) => truncateSpecialLabel(item, 9)
         }
     },
     grid: { bottom: 60 }
