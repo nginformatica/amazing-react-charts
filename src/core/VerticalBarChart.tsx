@@ -21,7 +21,6 @@ import {
     getSaveAsImage,
     timeConvert,
     toDate,
-    truncateLabel,
     truncateSpecialLabel
 } from './auxiliarFunctions'
 
@@ -31,13 +30,13 @@ export const fullText = {
             rotate: 0,
             show: true,
             interval: 0,
-            formatter: (item: string) => truncateSpecialLabel(item, 16),
+            formatter: (item: string) => truncateSpecialLabel(item, 12),
             textStyle: {
-                fontSize: 11.5
+                fontSize: 11
             }
         }
     },
-    grid: { bottom: 60 }
+    grid: { bottom: 70 }
 }
 
 export const rotatedLabel = {
@@ -46,10 +45,10 @@ export const rotatedLabel = {
             rotate: 30,
             show: true,
             interval: 0,
-            formatter: truncateLabel
+            formatter: (item: string) => truncateSpecialLabel(item, 9),
         }
     },
-    grid: { bottom: '29%' }
+    grid: { bottom: 98 }
 }
 
 export const rotatedLabelSpecial = (rotate: number) => ({
@@ -58,13 +57,13 @@ export const rotatedLabelSpecial = (rotate: number) => ({
             rotate: rotate,
             show: true,
             interval: 0,
-            formatter: (item: string) => truncateSpecialLabel(item, 11),
+            formatter: (item: string) => truncateSpecialLabel(item, 9),
             textStyle: {
-                fontSize: 8.5
+                fontSize: 11
             }
         }
     },
-    grid: { bottom: '30%' }
+    grid: { bottom: 98 }
 })
 
 export const normalLabel = {
@@ -73,7 +72,7 @@ export const normalLabel = {
             rotate: 0,
             show: true,
             interval: 0,
-            formatter: truncateLabel
+            formatter: (item: string) => truncateSpecialLabel(item, 9),
         }
     },
     grid: { bottom: 60 }
@@ -237,7 +236,7 @@ const VerticalBarChart = (props: IProps) => {
     const tooltip: TTooltipProps = {
         formatter: formatSingleTooltip,
         trigger: 'axis',
-        textStyle: { fontSize: 11.5 }
+        textStyle: { fontSize: 11 }
     }
 
     const scrollable: TZoomProps[] = data.length > 12
@@ -255,10 +254,7 @@ const VerticalBarChart = (props: IProps) => {
         : []
 
     const options: TOptionsProps = {
-        grid: {
-            ...gridProps,
-            bottom: rotateLabel && '30%'
-        },
+        grid: { ...gridProps },
         color: [color],
         series: [{
             barWidth: barWidth || 'auto',
@@ -291,10 +287,10 @@ const VerticalBarChart = (props: IProps) => {
                 formatter:
                     (item: string) => xType === 'time'
                         ? formatTime(item, 'dd MMM')
-                        : rotateLabel ? truncateSpecialLabel(item, 11) : item,
+                        : truncateSpecialLabel(item, 9),
                 interval: 0,
                 textStyle: {
-                    fontSize: rotateLabel ? 8.5 : 11.5
+                    fontSize: 11
                 }
             },
             axisTick: {
@@ -320,7 +316,7 @@ const VerticalBarChart = (props: IProps) => {
                         ? timeConvert(item) + 'h'
                         : item + (yComplement || ''),
                 textStyle: {
-                    fontSize: 11.5
+                    fontSize: 11
                 }
             }
         },
