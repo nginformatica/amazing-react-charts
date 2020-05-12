@@ -30,7 +30,7 @@ export const fullText = {
             rotate: 0,
             show: true,
             interval: 0,
-            formatter: (item: string) => truncateSpecialLabel(item, 12),
+            formatter: (item: string) => truncateSpecialLabel(item, 16),
             textStyle: {
                 fontSize: 11
             }
@@ -144,7 +144,7 @@ const VerticalBarChart = (props: IProps) => {
 
         // TODO: improve this piece of code
         if (rotateLabel) {
-            if (xData.length <= 8 || dataRange < minimum) {
+            if (xData.length <= 5 || dataRange < minimum) {
                 charts.setOption(fullText)
             } else {
                 if (dataRange > fullLabel && xData.length <= 40) {
@@ -287,7 +287,7 @@ const VerticalBarChart = (props: IProps) => {
                 formatter:
                     (item: string) => xType === 'time'
                         ? formatTime(item, 'dd MMM')
-                        : truncateSpecialLabel(item, 9),
+                        : truncateSpecialLabel(item, xData.length <= 5 ? 16 : 9),
                 interval: 0,
                 textStyle: {
                     fontSize: 11
