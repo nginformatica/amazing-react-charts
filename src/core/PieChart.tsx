@@ -9,7 +9,7 @@ import {
 } from './types'
 import ReactEcharts from 'echarts-for-react'
 import { map } from 'ramda'
-import { getDataView, getSaveAsImage, formatValueAxis } from './auxiliarFunctions'
+import { getDataView, getSaveAsImage } from './auxiliarFunctions'
 import { formatToBRL } from 'brazilian-values'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {

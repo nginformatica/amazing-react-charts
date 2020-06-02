@@ -16,13 +16,13 @@ import {
 import {
     formatTime,
     formatTooltip,
+    formatValueAxis,
     getDataView,
     getDomain,
     getSaveAsImage,
     timeConvert,
     toDate,
-    truncateSpecialLabel,
-    formatValueAxis
+    truncateSpecialLabel
 } from './auxiliarFunctions'
 
 export const fullText = {
@@ -116,9 +116,26 @@ const VerticalBarChart = (props: IProps) => {
     } = props
 
     const yData = data.map((item: TEntryData) => {
+        const results = data.map(item => item.result)
+        const maxValue = Math.max(...results)
+
         const label: TLabelProps = (showBarLabel && item.result <= 10) && {
             position: 'top',
             distance: 1
+        }
+
+        if (maxValue !== item.result && yType === 'time') {
+            const mainPercentage = (item.result*100)/maxValue
+            const label: TLabelProps = mainPercentage < 15
+                ? { position: 'top', distance: 1 }
+                : {}
+
+            return ({
+                value: item.result,
+                label: label,
+                itemStyle: item.style
+            })
+
         }
 
         return ({
@@ -324,12 +341,12 @@ const VerticalBarChart = (props: IProps) => {
         <ReactEcharts
             lazyUpdate
             notMerge
-            style={{ width: '99%' }}
-            opts={{ width: width }}
-            onEvents={{
+            style={ { width: '99%' } }
+            opts={ { width: width } }
+            onEvents={ {
                 dataZoom: dynamicDataZoom,
                 click: onClickBar
-            }}
+            } }
             option={
                 tooltipProps
                     ? { ...options, tooltip }

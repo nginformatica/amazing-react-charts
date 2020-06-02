@@ -18,12 +18,12 @@ import {
 import { formatToBRL } from 'brazilian-values'
 import {
     formatTime,
+    formatValueAxis,
     getDataView,
     getSaveAsImage,
     mountMessage,
     toDate,
-    truncateLabel,
-    formatValueAxis
+    truncateLabel
 } from './auxiliarFunctions'
 import {
     dontShowLabel,

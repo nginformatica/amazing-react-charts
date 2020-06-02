@@ -14,11 +14,11 @@ import {
 } from './types'
 import {
     formatTime,
+    formatValueAxis,
     getDataView,
     getInitialValues,
     getSaveAsImage,
-    timeConvert,
-    formatValueAxis
+    timeConvert
 } from './auxiliarFunctions'
 import { formatToBRL } from 'brazilian-values'
 

@@ -47,9 +47,26 @@ const HorizontalBarChart = (props: IProps) => {
     } = props
 
     const xData: TEntryWithStyleData[] = reverse(data.map((item: TEntryData) => {
+        const results = data.map(item => item.result)
+        const maxValue = Math.max(...results)
+
         const label: TLabelProps = item.result <= (xType === 'time' ? 10 : 5) && {
             position: 'right',
             distance: 1
+        }
+
+        if (maxValue !== item.result && xType === 'time') {
+            const mainPercentage = (item.result*100)/maxValue
+            const label: TLabelProps = mainPercentage < 15
+                ? { position: 'right' as 'right', distance: 1 }
+                : {}
+
+            return ({
+                value: item.result,
+                label: label,
+                itemStyle: item.style
+            })
+
         }
 
         return ({

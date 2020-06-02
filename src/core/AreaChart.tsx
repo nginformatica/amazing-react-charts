@@ -5,13 +5,13 @@ import {
     formatMoneyLabel,
     formatTime,
     formatTooltip,
+    formatValueAxis,
     getDataView,
     getDomain,
     getInitialValues,
     getSaveAsImage,
     timeConvert,
-    toDate,
-    formatValueAxis
+    toDate
 } from './auxiliarFunctions'
 import {
     IDefaultChartProps,

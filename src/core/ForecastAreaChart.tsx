@@ -4,12 +4,12 @@ import {
     formatMoneyLabel,
     formatTime,
     formatTooltipWithHours,
+    formatValueAxis,
     getDataView,
     getDomain,
     getSaveAsImage,
     timeConvert,
-    toDate,
-    formatValueAxis
+    toDate
 } from './auxiliarFunctions'
 import {
     IDefaultChartProps,
@@ -72,7 +72,7 @@ const ForecastAreaChart = (props: IProps) => {
             ? Number(data).toFixed(2) + yComplement
             : yType === 'time'
                 ? timeConvert(Number(data))
-                : yComplement === 'money' 
+                : yComplement === 'money'
                     ? formatToBRL(data) : data
     }
 

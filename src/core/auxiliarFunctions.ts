@@ -159,6 +159,6 @@ export const getEndForecast = (
 ) => ((lineMarkValue * 250) / arrayLength)
 
 export const formatValueAxis = (value: number, complement: string) =>
-    complement === '%' 
+    complement === '%'
         ? value.toFixed(2) + '%'
         : value + complement
