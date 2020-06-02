@@ -1189,10 +1189,10 @@
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-0.0.29.tgz#a1e514adfbd92f03a224ba54d693111dbf1f3754"
   integrity sha1-oeUUrfvZLwOiJLpU1pMRHb8fN1Q=
 
-"@types/echarts@4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.4.1.tgz#d5b257d38d7af62b7bba8cca952e814f610b1f03"
-  integrity sha512-Tq2XdnrxaneIVHBQa8Vkm69u4yL1xFgh6gFWK5XlVave23VFUEwg3dfzTjec1XdfgZI/jKPsf6QS/TpTa9Gr9g==
+"@types/echarts@4.6.1":
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.6.1.tgz#de6ede6b8069123150d53f3350f9e38533f1970e"
+  integrity sha512-oeekc7CQASQzRCbx8ixVQw4U4AmnjF2/fEyptqeUYeQnsEubr87Yde8nw6AxWTsEtWSNB/Pp0B/FTgGNHqkAUQ==
   dependencies:
     "@types/zrender" "*"
 
@@ -4322,20 +4322,20 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-echarts-for-react@2.0.15-beta.1:
-  version "2.0.15-beta.1"
-  resolved "https://registry.yarnpkg.com/echarts-for-react/-/echarts-for-react-2.0.15-beta.1.tgz#1afa21ee0f08f9023eff0b5ab3351f2fe0f708b6"
-  integrity sha512-wR8XaI3j/4JvTidZrrJVfP/RqSggLRlzKOwcruytyLSA6AyE51T7mK+EucfwZ0NkX8H6tPFCHCvgJH1LyXjiIg==
+echarts-for-react@2.0.16:
+  version "2.0.16"
+  resolved "https://registry.yarnpkg.com/echarts-for-react/-/echarts-for-react-2.0.16.tgz#8134a53dff90882c1e6a95c45ceab21e00f6c9f5"
+  integrity sha512-VmHCktay2qKt/+wpL/C7thbvIa7dYBEey0/U4Zaqo+qeA4wx+uiCd5NeCsPIhD/0Pv+2qqNswqiNiUCtcgccOw==
   dependencies:
     fast-deep-equal "^2.0.1"
-    size-sensor "^0.2.0"
+    size-sensor "^1.0.0"
 
-echarts@4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/echarts/-/echarts-4.6.0.tgz#b5a47a1046cec93ceeef954f9ee54751340558ec"
-  integrity sha512-xKkcr6v9UVOSF+PMuj7Ngt3bnzLwN1sSXWCvpvX+jYb3mePYsZnABq7wGkPac/m0nV653uGHXoHK8DCKCprdNg==
+echarts@4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/echarts/-/echarts-4.8.0.tgz#b2c1cfb9229b13d368ee104fc8eea600b574d4c4"
+  integrity sha512-YwShpug8fWngj/RlgxDaYrLBoD+LsZUArrusjNPHpAF+is+gGe38xx4W848AwWMGoi745t3OXM52JedNrv+F6g==
   dependencies:
-    zrender "4.2.0"
+    zrender "4.3.1"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -11462,10 +11462,10 @@ sisteransi@^1.0.3:
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.4.tgz#386713f1ef688c7c0304dc4c0632898941cad2e3"
   integrity sha512-/ekMoM4NJ59ivGSfKapeG+FWtrmWvA1p6FBZwXrqojw90vJu8lBmrTxCMuBCydKtkaUe2zt4PlxeTKpjwMbyig==
 
-size-sensor@^0.2.0:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/size-sensor/-/size-sensor-0.2.6.tgz#6fe43afd570786f097171834002a97fe0b19a3da"
-  integrity sha512-0EZ0tXXjyRl9R9+JpoBdH57Xpnbf5NTyDdj7fnFL6KqCsdKyah286ShMflnV2SonnrSFH4OAT/52Jy8qqnoerg==
+size-sensor@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/size-sensor/-/size-sensor-1.0.1.tgz#f84e46206d3e259faff1d548e4b3beca93219dbb"
+  integrity sha512-QTy7MnuugCFXIedXRpUSk9gUnyNiaxIdxGfUjr8xxXOqIB3QvBUYP9+b51oCg2C4dnhaeNk/h57TxjbvoJrJUA==
 
 slash@^2.0.0:
   version "2.0.0"
@@ -13537,10 +13537,10 @@ yurnalist@^1.1.1:
     strip-ansi "^5.2.0"
     strip-bom "^4.0.0"
 
-zrender@4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/zrender/-/zrender-4.2.0.tgz#d001302e155f28de1f9fc7fcd5c254bad28471cf"
-  integrity sha512-YJ9hxt5uFincYYU3KK31+Ce+B6PJmYYK0Q9fQ6jOUAoC/VHbe4kCKAPkxKeT7jGTxrK5wYu18R0TLGqj2zbEOA==
+zrender@4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/zrender/-/zrender-4.3.1.tgz#baf8aa6dc8187a2f819692d7d5f9bedfa2b90fa3"
+  integrity sha512-CeH2TpJeCdG0TAGYoPSAcFX2ogdug1K7LIn9UO/q9HWqQ54gWhrMAlDP9AwWYMUDhrPe4VeazQ4DW3msD96nUQ==
 
 zwitch@^1.0.0:
   version "1.0.4"
