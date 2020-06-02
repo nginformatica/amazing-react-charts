@@ -17,7 +17,8 @@ import {
     getDataView,
     getInitialValues,
     getSaveAsImage,
-    timeConvert
+    timeConvert,
+    formatValueAxis
 } from './auxiliarFunctions'
 import { formatToBRL } from 'brazilian-values'
 
@@ -93,7 +94,7 @@ const LineChart = (props: IProps) => {
     const formatLabel = (lines: TDataTooltip[]) => {
         const takeComplement = (value: number) => yComplement === 'money'
             ? formatToBRL(value)
-            : yComplement ? value + yComplement : value
+            : yComplement ? formatValueAxis(value, yComplement) : value
 
         const linesTooltips = lines.map(line => (
             line.seriesName + ': ' + takeComplement(Number(line.value)) + '<br>'
@@ -195,7 +196,7 @@ const LineChart = (props: IProps) => {
                 formatter:
                     (item: number) => yType === 'time'
                         ? timeConvert(item) + 'h'
-                        : item + (yComplement || ''),
+                        : formatValueAxis(item, yComplement),
                 textStyle: {
                     fontSize: fontLabelSize || 11.5
                 }

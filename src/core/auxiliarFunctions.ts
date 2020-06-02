@@ -75,12 +75,12 @@ export const truncateLabel = (text: string, labelWordSize?: number) => {
     const lettersToShow = labelWordSize ? 3 : 4
 
     return text.length > numberOfLetters
-        ? text.slice(0, (numberOfLetters-lettersToShow)) + '...'
+        ? text.slice(0, (numberOfLetters - lettersToShow)) + '...'
         : text
 }
 
 export const truncateSpecialLabel = (text: string, size: number) =>
-    text.length > size ? text.slice(0, (size-3)) + '...' : text
+    text.length > size ? text.slice(0, (size - 3)) + '...' : text
 
 export const getDomain = (item: TDomainValues) => {
     switch (true) {
@@ -156,4 +156,9 @@ export const getInitialValues = (arrayLength: number, dateFormat?: string) =>
 export const getEndForecast = (
     arrayLength: number,
     lineMarkValue: number
-) => ((lineMarkValue*250) / arrayLength)
+) => ((lineMarkValue * 250) / arrayLength)
+
+export const formatValueAxis = (value: number, complement: string) =>
+    complement === '%' 
+        ? value.toFixed(2) + '%'
+        : value + complement

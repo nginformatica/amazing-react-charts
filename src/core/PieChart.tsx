@@ -9,7 +9,7 @@ import {
 } from './types'
 import ReactEcharts from 'echarts-for-react'
 import { map } from 'ramda'
-import { getDataView, getSaveAsImage } from './auxiliarFunctions'
+import { getDataView, getSaveAsImage, formatValueAxis } from './auxiliarFunctions'
 import { formatToBRL } from 'brazilian-values'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
@@ -48,7 +48,7 @@ export const PieChart = (props: IProps) => {
             ? ''
             : resultFormatType === 'money'
                 ? formatToBRL(data.value)
-                : data.value + (yComplement || '')
+                : formatValueAxis(data.value, yComplement)
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,

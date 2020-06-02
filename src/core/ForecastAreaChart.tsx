@@ -8,7 +8,8 @@ import {
     getDomain,
     getSaveAsImage,
     timeConvert,
-    toDate
+    toDate,
+    formatValueAxis
 } from './auxiliarFunctions'
 import {
     IDefaultChartProps,
@@ -71,7 +72,8 @@ const ForecastAreaChart = (props: IProps) => {
             ? Number(data).toFixed(2) + yComplement
             : yType === 'time'
                 ? timeConvert(Number(data))
-                : yComplement === 'money' ? formatToBRL(data) : data
+                : yComplement === 'money' 
+                    ? formatToBRL(data) : data
     }
 
     const dinamicData = (
@@ -304,7 +306,7 @@ const ForecastAreaChart = (props: IProps) => {
                         ? timeConvert(item) + 'h'
                         : yComplement === 'money'
                             ? formatToBRL(item)
-                            : item + (yComplement || ''),
+                            : formatValueAxis(item, yComplement),
                 textStyle: {
                     fontSize: fontLabelSize || 11.5
                 }

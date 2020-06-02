@@ -10,7 +10,8 @@ import {
     getInitialValues,
     getSaveAsImage,
     timeConvert,
-    toDate
+    toDate,
+    formatValueAxis
 } from './auxiliarFunctions'
 import {
     IDefaultChartProps,
@@ -98,7 +99,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             ? timeConvert(Number(data as number)) + 'h'
             : yComplement === 'money'
                 ? formatToBRL(Number(data))
-                : data + (yComplement || '')
+                : formatValueAxis(Number(data), yComplement)
 
         return [
             `${label}: ${formatTooltip(axisValueLabel, dateFormat)} <br>` +
@@ -253,7 +254,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                         ? timeConvert(item) + 'h'
                         : yComplement === 'money'
                             ? formatToBRL(item)
-                            : item + (yComplement || ''),
+                            : formatValueAxis(item, yComplement),
                 textStyle: {
                     fontSize: fontLabelSize || 11.5
                 }

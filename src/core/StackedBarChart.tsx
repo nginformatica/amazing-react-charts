@@ -22,7 +22,8 @@ import {
     getSaveAsImage,
     mountMessage,
     toDate,
-    truncateLabel
+    truncateLabel,
+    formatValueAxis
 } from './auxiliarFunctions'
 import {
     dontShowLabel,
@@ -286,7 +287,7 @@ const StackedBarChart = (props: IProps) => {
             axisLabel: {
                 formatter: (item: string) => yComplement === 'money'
                     ? formatToBRL(item)
-                    : item + (yComplement || ''),
+                    : formatValueAxis(Number(item), yComplement),
                 textStyle: { fontSize: 11.5 },
                 interval: 0
             },

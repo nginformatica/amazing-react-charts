@@ -21,7 +21,8 @@ import {
     getSaveAsImage,
     timeConvert,
     toDate,
-    truncateSpecialLabel
+    truncateSpecialLabel,
+    formatValueAxis
 } from './auxiliarFunctions'
 
 export const fullText = {
@@ -30,10 +31,7 @@ export const fullText = {
             rotate: 0,
             show: true,
             interval: 0,
-            formatter: (item: string) => truncateSpecialLabel(item, 16),
-            textStyle: {
-                fontSize: 11
-            }
+            formatter: (item: string) => truncateSpecialLabel(item, 16)
         }
     },
     grid: { bottom: 60 }
@@ -142,7 +140,6 @@ const VerticalBarChart = (props: IProps) => {
         const fullLabel = 500 / xData.length
         const minimum = 800 / xData.length
 
-        // TODO: improve this piece of code
         if (rotateLabel) {
             if (xData.length <= 5 || dataRange < minimum) {
                 charts.setOption(fullText)
@@ -171,12 +168,11 @@ const VerticalBarChart = (props: IProps) => {
     const formatLabel = (chartValues: TDataTooltip) => {
         const { value } = chartValues
 
-        return (yComplement
-            ? value + yComplement
+        return yComplement
+            ? formatValueAxis(Number(value), yComplement)
             : yType === 'time'
                 ? timeConvert(Number(value)) + 'h'
                 : value
-        )
     }
 
     const title: TTitleProps = {
@@ -219,8 +215,8 @@ const VerticalBarChart = (props: IProps) => {
         const { axisValueLabel, value } = chartValues[0]
         const complement = tooltipComplement ? tooltipComplement : ''
         const values = yType === 'time'
-            ? timeConvert(value as number) + 'h'
-            : value + (yComplement || '')
+            ? timeConvert(Number(value)) + 'h'
+            : formatValueAxis(Number(value), yComplement)
 
         const labelPrint = xType === 'time'
             ? formatTooltip(axisValueLabel)
@@ -264,7 +260,7 @@ const VerticalBarChart = (props: IProps) => {
                 formatter: formatLabel,
                 show: showBarLabel,
                 position: 'insideTop',
-                fontSize: 14,
+                fontSize: 12,
                 color: 'black',
                 distance: 6
             }
@@ -311,10 +307,9 @@ const VerticalBarChart = (props: IProps) => {
                 }
             },
             axisLabel: {
-                formatter:
-                    (item: number) => yType === 'time'
-                        ? timeConvert(item) + 'h'
-                        : item + (yComplement || ''),
+                formatter: (item: number) => yType === 'time'
+                    ? timeConvert(item) + 'h'
+                    : formatValueAxis(item, yComplement),
                 textStyle: {
                     fontSize: 11
                 }
@@ -329,12 +324,12 @@ const VerticalBarChart = (props: IProps) => {
         <ReactEcharts
             lazyUpdate
             notMerge
-            style={ { width: '99%' } }
-            opts={ { width: width } }
-            onEvents={ {
+            style={{ width: '99%' }}
+            opts={{ width: width }}
+            onEvents={{
                 dataZoom: dynamicDataZoom,
                 click: onClickBar
-            } }
+            }}
             option={
                 tooltipProps
                     ? { ...options, tooltip }
