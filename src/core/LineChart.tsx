@@ -196,7 +196,7 @@ const LineChart = (props: IProps) => {
                 formatter:
                     (item: number) => yType === 'time'
                         ? timeConvert(item) + 'h'
-                        : formatValueAxis(item, yComplement),
+                        : item + (yComplement || ''),
                 textStyle: {
                     fontSize: fontLabelSize || 11.5
                 }

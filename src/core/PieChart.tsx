@@ -48,7 +48,7 @@ export const PieChart = (props: IProps) => {
             ? ''
             : resultFormatType === 'money'
                 ? formatToBRL(data.value)
-                : formatValueAxis(data.value, yComplement)
+                : data.value + (yComplement || '')
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,

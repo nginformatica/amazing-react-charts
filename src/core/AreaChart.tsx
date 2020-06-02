@@ -60,7 +60,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         return yComplement
             ? Number(data).toFixed(2) + yComplement
             : yType === 'time'
-                ? timeConvert(Number(data))
+                ? timeConvert(Number(data)) + 'h'
                 : yComplement === 'money' ? formatToBRL(data) : data
     }
 
