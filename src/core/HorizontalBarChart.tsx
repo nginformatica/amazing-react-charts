@@ -12,6 +12,7 @@ import {
     TTooltipProps
 } from './types'
 import {
+    formatValueAxis,
     getDataView,
     getDomain,
     getSaveAsImage,
@@ -50,7 +51,7 @@ const HorizontalBarChart = (props: IProps) => {
         const results = data.map(item => item.result)
         const maxValue = Math.max(...results)
 
-        const label: TLabelProps = item.result <= (xType === 'time' ? 10 : 5) && {
+        const label: TLabelProps = item.result <= 15 && {
             position: 'right',
             distance: 1
         }
@@ -64,7 +65,8 @@ const HorizontalBarChart = (props: IProps) => {
             return ({
                 value: item.result,
                 label: label,
-                itemStyle: item.style
+                itemStyle: item.style,
+                itemId: item.itemId
             })
 
         }
@@ -72,7 +74,8 @@ const HorizontalBarChart = (props: IProps) => {
         return ({
             value: item.result,
             label: label,
-            itemStyle: item.style
+            itemStyle: item.style,
+            itemId: item.itemId
         })
     }))
 
@@ -89,7 +92,7 @@ const HorizontalBarChart = (props: IProps) => {
         const { name, value } = chartValues
 
         const dataValue = xComplement
-            ? value + xComplement
+            ? formatValueAxis(Number(value), xComplement)
             : xType === 'time'
                 ? timeConvert(Number(value)) + 'h'
                 : value
@@ -104,7 +107,7 @@ const HorizontalBarChart = (props: IProps) => {
         const { value } = chartValues
 
         return (xComplement
-            ? value + xComplement
+            ? formatValueAxis(Number(value), xComplement)
             : xType === 'time'
                 ? timeConvert(Number(value)) + 'h'
                 : value

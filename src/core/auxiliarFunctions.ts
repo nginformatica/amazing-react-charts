@@ -160,5 +160,5 @@ export const getEndForecast = (
 
 export const formatValueAxis = (value: number, complement: string) =>
     complement === '%'
-        ? value.toFixed(2) + '%'
+        ? (value.toFixed(2) + '%').replace('.', ',')
         : value + complement
