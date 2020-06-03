@@ -51,7 +51,7 @@ const HorizontalBarChart = (props: IProps) => {
         const results = data.map(item => item.result)
         const maxValue = Math.max(...results)
 
-        const label: TLabelProps = item.result <= (showTickInfos ? 50 : 15) && {
+        const label: TLabelProps = item.result <= (!showTickInfos ? 50 : 15) && {
             position: 'right',
             distance: 1
         }
@@ -87,9 +87,10 @@ const HorizontalBarChart = (props: IProps) => {
             : getDomain(domain)
     )
 
-    const formatTooltip = (chartValues: TDataTooltip) => {
+    const formatTooltip = (chartValues: TDataTooltip[]) => {
+        console.log(chartValues)
         const { label, result } = tooltipProps
-        const { name, value } = chartValues
+        const { name, value } = chartValues[0]
 
         const dataValue = xComplement
             ? formatValueAxis(Number(value), xComplement)
@@ -115,6 +116,10 @@ const HorizontalBarChart = (props: IProps) => {
     }
 
     const tooltip: TTooltipProps = {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow',
+        },
         formatter: formatTooltip,
         textStyle: { fontSize: 11.5 }
     }

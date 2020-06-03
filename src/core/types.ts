@@ -257,6 +257,7 @@ export type TAxisLabelProps = {
     inside?: boolean
     color?: string | string[]
     margin?: number
+    align?: 'left' | 'right' | 'center'
 }
 
 type TSplitLineProps = {
@@ -357,7 +358,7 @@ export type TTooltipProps = {
 }
 
 export type TAxisPointerProps = {
-    type?: 'cross' | string
+    type?: 'cross' | 'none' | 'shadow'
     label?: CSSProperties
 }
 
