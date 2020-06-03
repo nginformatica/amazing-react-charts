@@ -4,6 +4,11 @@ import { takeLast } from 'ramda'
 import { ptBR } from 'date-fns/locale'
 import { TDataTooltip, TDomainValues } from './types'
 
+export const formatValueAxis = (value: number, complement: string) =>
+    complement === '%'
+        ? (value.toFixed(2) + '%').replace('.', ',')
+        : value + complement
+
 export const takeComplement = (data: string | number, complement: string) =>
     complement === 'money'
         ? ': ' + formatToBRL(data) + '<br>'
@@ -33,7 +38,9 @@ export const mountMessage = (
             moneyPercent(value.data as number, stackedValues, sumDataValues)
         )
         : axisType === 'percent'
-            ? value.marker + value.seriesName + ': ' + value.data + '% <br>'
+            ? value.marker + value.seriesName + ': ' + (
+                formatValueAxis(Number(value.data), '%') + '<br>'
+            )
             : value.marker + value.seriesName + (
                 takeComplement(value.data, complement)
             )
@@ -158,7 +165,3 @@ export const getEndForecast = (
     lineMarkValue: number
 ) => ((lineMarkValue * 250) / arrayLength)
 
-export const formatValueAxis = (value: number, complement: string) =>
-    complement === '%'
-        ? (value.toFixed(2) + '%').replace('.', ',')
-        : value + complement

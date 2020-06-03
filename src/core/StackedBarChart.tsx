@@ -150,7 +150,7 @@ const StackedBarChart = (props: IProps) => {
                 lineStyle: { color: colors[2] }
             },
             axisLabel: {
-                formatter: '{value} %',
+                formatter: item => formatValueAxis(Number(item), '%'),
                 color: colors[2]
             },
             splitLine: {

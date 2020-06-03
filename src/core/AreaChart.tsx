@@ -58,7 +58,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         const { data } = chartValues
 
         return yComplement
-            ? Number(data).toFixed(2) + yComplement
+            ? formatValueAxis(Number(data), yComplement)
             : yType === 'time'
                 ? timeConvert(Number(data)) + 'h'
                 : yComplement === 'money' ? formatToBRL(data) : data
@@ -99,7 +99,9 @@ const AreaChart = (props: IDefaultChartProps) => {
             ? timeConvert(Number(data as number)) + 'h'
             : yComplement === 'money'
                 ? formatToBRL(Number(data))
-                : formatValueAxis(Number(data), yComplement)
+                : yComplement
+                    ? formatValueAxis(Number(data), yComplement)
+                    : data
 
         return [
             `${label}: ${formatTooltip(axisValueLabel, dateFormat)} <br>` +
