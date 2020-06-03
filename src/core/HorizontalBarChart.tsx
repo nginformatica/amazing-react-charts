@@ -51,7 +51,7 @@ const HorizontalBarChart = (props: IProps) => {
         const results = data.map(item => item.result)
         const maxValue = Math.max(...results)
 
-        const label: TLabelProps = item.result <= 15 && {
+        const label: TLabelProps = item.result <= (showTickInfos ? 50 : 15) && {
             position: 'right',
             distance: 1
         }
