@@ -360,6 +360,7 @@ export type TTooltipProps = {
 export type TAxisPointerProps = {
     type?: 'cross' | 'none' | 'shadow'
     label?: CSSProperties
+    shadowStyle?: CSSProperties
 }
 
 export type TDataTooltip = {

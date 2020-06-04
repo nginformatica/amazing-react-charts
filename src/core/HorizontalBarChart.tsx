@@ -89,7 +89,7 @@ const HorizontalBarChart = (props: IProps) => {
 
     const formatTooltip = (chartValues: TDataTooltip[]) => {
         const { label, result } = tooltipProps
-        const { name, value } = chartValues[0]
+        const { name, value } = chartValues[1]
 
         const dataValue = xComplement
             ? formatValueAxis(Number(value), xComplement)
@@ -116,7 +116,10 @@ const HorizontalBarChart = (props: IProps) => {
     const tooltip: TTooltipProps = {
         trigger: 'axis',
         axisPointer: {
-            type: 'shadow'
+            type: 'shadow',
+            shadowStyle: {
+                opacity: 0.5
+            }
         },
         formatter: formatTooltip,
         textStyle: { fontSize: 11.5 }
