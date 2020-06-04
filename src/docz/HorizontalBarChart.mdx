@@ -6,7 +6,7 @@ route: /horizontal-barchart
 import HorizontalBarChart from '../core/HorizontalBarChart'
 import { Playground } from 'docz'
 
-# Horizontal bar chart example with different bar colors
+# Horizontal bar chart example with different colors and click event
 
 ## Demo
 <Playground>
@@ -18,14 +18,29 @@ import { Playground } from 'docz'
         xType='time'
         onClickBar={ item => window.alert(item.data.value) }
         tooltip={ { 
-            label: 'Criticidade', 
-            result: 'Quantidade (percentual)' 
+            label: 'Criticity', 
+            result: 'Amount (percentage)' 
         } }
         data={ 
             [ 
-                { label: 'A', result: 75, style: { color: 'red' }, itemId: 'aaa' }, 
-                { label: 'B', result: 86, style: { color: 'yellow' }, itemId: 'bbb' },
-                { label: 'C', result: 94.3, style: { color: '#8BC34A' }, itemId: 'ccc' }
+                { 
+                    label: 'A', 
+                    result: 75.3, 
+                    style: { color: 'red' }, 
+                    itemId: 'c' 
+                }, 
+                { 
+                    label: 'B', 
+                    result: 86, 
+                    style: { color: 'yellow' }, 
+                    itemId: 'b' 
+                },
+                { 
+                    label: 'C', 
+                    result: 94, 
+                    style: { color: 'green' }, 
+                    itemId: 'c' 
+                }
             ]
         }
     />
@@ -38,7 +53,12 @@ import { Playground } from 'docz'
     <HorizontalBarChart
         xComplement='%'
         color='#8BC34A'
-        tooltip={ { label: 'Equipamento', result: 'Confiabilidade' } }
+        title='horizontal chart'
+        toolboxTooltip={ { saveAsImage: 'save as image' } }
+        tooltip={ { 
+            label: 'Equipment', 
+            result: 'Reliability' 
+        } }
         data={ 
             [ 
                 { label: 'equipment 01', result: 2 }, 
