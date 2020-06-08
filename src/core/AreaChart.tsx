@@ -256,7 +256,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                         ? timeConvert(item) + 'h'
                         : yComplement === 'money'
                             ? formatToBRL(item)
-                            : yComplement 
+                            : yComplement
                                 ? formatValueAxis(item, yComplement)
                                 : item,
                 textStyle: {
