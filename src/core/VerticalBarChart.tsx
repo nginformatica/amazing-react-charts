@@ -133,7 +133,8 @@ const VerticalBarChart = (props: IProps) => {
             return ({
                 value: item.result,
                 label: label,
-                itemStyle: item.style
+                itemStyle: item.style,
+                itemId: item.itemId && item.itemId
             })
 
         }
