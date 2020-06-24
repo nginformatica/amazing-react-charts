@@ -7,7 +7,9 @@ import { TDataTooltip, TDomainValues } from './types'
 export const formatValueAxis = (value: number, complement: string) =>
     complement === '%'
         ? (value.toFixed(2) + '%').replace('.', ',')
-        : value + complement
+        : complement === 'money'
+            ? formatToBRL(value)
+            : value + complement
 
 export const takeComplement = (data: string | number, complement: string) =>
     complement === 'money'
