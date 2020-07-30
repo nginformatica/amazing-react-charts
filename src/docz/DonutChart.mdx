@@ -1,0 +1,28 @@
+---
+name: Donut charts
+route: /donut-chart
+---
+
+import DonutChart from '../core/DonutChart'
+import { Playground } from 'docz'
+
+# Donut chart example
+
+## Demo
+<Playground>
+    <DonutChart
+        colors={ ['red', 'orange', 'yellow', 'green'] }
+        legendPosition='inside'
+        toolboxTooltip={{ saveAsImage: 'saving'}}
+        title='Total de S.S. por criticidade'
+        center={ ['50%', '50%'] }
+        data={ 
+            [ 
+                { name: "Emergencial", value: 23 },
+                { name: "Alta", value: 234 },
+                { name: "Média", value: 259 },
+                { name: "Baixa", value: 440 }
+            ] 
+        }
+    />
+</Playground>

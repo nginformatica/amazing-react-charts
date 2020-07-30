@@ -12,7 +12,7 @@ import { map } from 'ramda'
 import { getDataView, getSaveAsImage } from './auxiliarFunctions'
 import { formatToBRL } from 'brazilian-values'
 
-interface IProps extends Omit<IDefaultChartProps, 'data'> {
+export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TPieChartData[]
     colors?: string[]
     legendPosition?: 'inside' | 'outside'

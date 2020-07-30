@@ -85,6 +85,7 @@ export type TSeries = {
     xAxisIndex?: number
     yAxisIndex?: number
     label?: TLabelProps
+    labelLine?: { show?: boolean, length?: number, length2?: number }
     areaStyle?: React.CSSProperties
     lineStyle?: React.CSSProperties & { type?: TLineStyleType }
     barGap?: string
@@ -106,7 +107,7 @@ export type TSeries = {
     symbolClip?: boolean
     symbolBoundingData?: boolean | number
     animationDuration?: number
-    radius?: string
+    radius?: string | [string, string]
     center?: [number, string] | [string, string] | string | number
     data?:
         | number[]
@@ -164,6 +165,7 @@ export type TPositionType =
     | 'insideBottom'
     | 'inside'
     | 'outside'
+    | 'center'
     | [number, number]
 
 export type TChartType =
@@ -181,7 +183,7 @@ export type TLabelProps = {
     normal?: TNormalProps
     opacity?: number
     color?: string
-    formatter?: TFormatterType | undefined | string
+    formatter?: TFormatterType | undefined | string | number
     show?: boolean
     position?: TPositionType
     fontSize?: number
@@ -190,6 +192,9 @@ export type TLabelProps = {
     borderColor?: string
     barBorderRadius?: number
     itemStyle?: TLabelProps
+    margin?: string
+    distanceToLabelLine?: number
+    fontFamily?: string
 }
 
 export type TDataMarkLine = {
@@ -341,13 +346,15 @@ export type TZoomProps = {
 export type TLegendProps = {
     x?: 'center' | 'bottom'
     y?: 'center' | 'bottom'
-    icon?: 'line' | 'rect'
+    icon?: 'line' | 'rect' | 'shape'
     top?: number
     data: string[]
     itemGap?: number
     selectedMode?: boolean
     color?: string[]
     type?: 'scroll' | 'plain'
+    orient?: 'vertical' | 'horizontal'
+    left?: number | string
 }
 
 export type TTooltipProps = {
