@@ -328,6 +328,7 @@ export type TOptionsProps = {
     xAxis?: TAxisProps | TAxisProps[]
     yAxis?: TAxisProps | TAxisProps[]
     width?: string | number
+    itemStyle?: TLabelProps
 }
 
 export type TZoomProps = {

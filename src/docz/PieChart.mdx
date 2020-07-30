@@ -13,19 +13,21 @@ import { Playground } from 'docz'
 ## Pie chart with standart legend
 <Playground>
     <PieChart
-        colors={ ['blue', 'green', 'red', 'purple', 'black'] }
+        noAnimation
+        colors={ ['red', 'yellow', 'green', 'blue'] }
         legendPosition='inside'
         radius='75%'
         toolboxTooltip={{ saveAsImage: 'saving'}}
         title='pie chart'
+        resultFormatType='percent'
+        labelFontColor='black'
         center={ ['50%', '50%'] }
         data={ 
             [ 
-                { name: "trained", value: 25 },
-                { name: "knewNorms", value: 10 },
-                { name: "wasUsedEpi", value: 45 },
-                { name: "defectiveEquipment", value: 10 },
-                { name: "improvisation", value: 90 }
+                { name: 'Ruim', value: 25 },
+                { name: 'Satisfatório', value: 10 },
+                { name: 'Bom', value: 45 },
+                { name: 'Ótimo', value: 10 },
             ] 
         }
     />
