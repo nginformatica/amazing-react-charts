@@ -1,8 +1,8 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { IProps } from './PieChart'
-import { TOptionsProps, TTitleProps, TSaveAsImage, TPieChartData, TPieDataLabel } from './types'
-import { getSaveAsImage, getDataView } from './auxiliarFunctions'
+import { TOptionsProps, TPieDataLabel, TSaveAsImage, TTitleProps } from './types'
+import { getDataView, getSaveAsImage } from './auxiliarFunctions'
 import { map } from 'ramda'
 import { formatToBRL } from 'brazilian-values'
 
@@ -60,7 +60,6 @@ export const DonutChart = (props: IProps) => {
         }
     )
 
-
     const options: TOptionsProps = {
         grid: props.grid,
         color: props.colors,
@@ -73,7 +72,7 @@ export const DonutChart = (props: IProps) => {
             icon: 'shape'
         },
         series: [
-            {   
+            {
                 name: 'background',
                 type: 'pie',
                 radius: ['58%', '70%'],
@@ -95,9 +94,10 @@ export const DonutChart = (props: IProps) => {
                 animation: false,
                 label: {
                     color: 'black',
-                    formatter: (item: TPieDataLabel) => yComplement || resultFormatType
-                        ? formatDonutLabel(item.data.value)
-                        : item.data.value,
+                    formatter: (item: TPieDataLabel) =>
+                        yComplement || resultFormatType
+                            ? formatDonutLabel(item.data.value)
+                            : item.data.value,
                     distanceToLabelLine: 0
                 },
                 labelLine: {
@@ -111,9 +111,9 @@ export const DonutChart = (props: IProps) => {
     return (
         <ReactEcharts
             lazyUpdate
-            style={{ width: '99%' }}
-            opts={{ width: props.width }}
-            option={options}
+            style={ { width: '99%' } }
+            opts={ { width: props.width } }
+            option={ options }
         />
     )
 
