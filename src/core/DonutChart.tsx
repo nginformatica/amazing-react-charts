@@ -6,12 +6,20 @@ import { getDataView, getSaveAsImage } from './auxiliarFunctions'
 import { map } from 'ramda'
 import { formatToBRL } from 'brazilian-values'
 
-export const DonutChart = (props: IProps) => {
+interface IDonutProps extends IProps {
+    donutCenterValue: string
+    donutRadius: [string, string]
+}
+
+export const DonutChart = (props: IDonutProps) => {
     const {
         title: titleProps,
         resultFormatType,
         toolboxTooltip,
-        yComplement
+        yComplement,
+        donutCenterValue,
+        donutRadius,
+        center
     } = props
 
     const xData = map(item => item.name, props.data)
@@ -75,13 +83,14 @@ export const DonutChart = (props: IProps) => {
             {
                 name: 'background',
                 type: 'pie',
-                radius: ['58%', '70%'],
+                radius: donutRadius,
                 data: props.data,
                 animation: false,
+                center: center || ['50%', '50%'],
                 label: {
                     color: 'black',
                     position: 'center',
-                    formatter: '1.025',
+                    formatter: donutCenterValue || '',
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontSize: 30,
                     fontWeight: 200
@@ -89,9 +98,10 @@ export const DonutChart = (props: IProps) => {
             },
             {
                 type: 'pie',
-                radius: ['58%', '70%'],
+                radius: donutRadius,
                 data: props.data,
                 animation: false,
+                center: center || ['50%', '50%'],
                 label: {
                     color: 'black',
                     formatter: (item: TPieDataLabel) =>
