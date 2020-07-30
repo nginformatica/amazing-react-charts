@@ -1,7 +1,13 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { IProps } from './PieChart'
-import { TOptionsProps, TPieDataLabel, TSaveAsImage, TTitleProps } from './types'
+import {
+    TOptionsProps,
+    TPieChartData,
+    TPieDataLabel,
+    TSaveAsImage,
+    TTitleProps
+} from './types'
 import { getDataView, getSaveAsImage } from './auxiliarFunctions'
 import { map } from 'ramda'
 import { formatToBRL } from 'brazilian-values'
@@ -23,6 +29,9 @@ export const DonutChart = (props: IDonutProps) => {
     } = props
 
     const xData = map(item => item.name, props.data)
+
+    const formatTooltip = ({ name, value }: TPieChartData) =>
+        name + ': ' + (resultFormatType === 'money' ? formatToBRL(value) : value)
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
@@ -73,6 +82,11 @@ export const DonutChart = (props: IDonutProps) => {
         color: props.colors,
         title,
         toolbox,
+        tooltip: {
+            trigger: 'item',
+            formatter: formatTooltip,
+            textStyle: { fontSize: 11.5 }
+        },
         legend: {
             orient: 'horizontal',
             top: 270,

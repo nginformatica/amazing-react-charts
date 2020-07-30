@@ -379,6 +379,7 @@ export type TDataTooltip = {
     value?: string | number
     axisValueLabel?: string
     axisValue?: string
+    dataIndex?: number
 }
 
 export type TAudiometryDataTooltip = {

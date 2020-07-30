@@ -21,7 +21,9 @@ import {
     formatValueAxis,
     getDataView,
     getSaveAsImage,
+    monuntTimeMessage,
     mountMessage,
+    timeConvert,
     toDate,
     truncateLabel
 } from './auxiliarFunctions'
@@ -42,10 +44,14 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
     tooltipExtra?: string
     sumDataValues?: boolean
     colors?: TColorNTuples
-    legendType?: 'scroll'
+    legendType?: 'scroll' | 'none'
     legendScrollGap?: number
     secondYAxisType?: 'percent' | string
 }
+
+const verifyStyleProps = (data: TEntryData) => data.style
+    ? ({ value: data.result, itemStyle: data.style })
+    : data.result
 
 const StackedBarChart = (props: IProps) => {
     const {
@@ -64,7 +70,8 @@ const StackedBarChart = (props: IProps) => {
         toolboxTooltip,
         tooltipExtra,
         legendType,
-        legendScrollGap
+        legendScrollGap,
+        showBarLabel
     } = props
 
     const {
@@ -77,10 +84,31 @@ const StackedBarChart = (props: IProps) => {
     } = tooltipProps
 
     const [bottomData, topData, lineData = [], extraData] = data
-    const yBottomData = bottomData.map((item: TEntryData) => item.result)
-    const yTopData = topData.map((item: TEntryData) => item.result)
+    const yBottomData = bottomData.map(verifyStyleProps)
+    const yTopData = topData.map(verifyStyleProps)
     const yExtraData = data.length === 4 &&
         extraData.map((item: TEntryData) => item.result)
+
+    const yBottomValue = yBottomData.map(item => typeof item === 'object'
+        ? item.value : item
+    )
+
+    const yTopValue = yTopData.map(item => typeof item === 'object'
+        ? item.value : item
+    )
+
+    const topLabels = yBottomValue.map((item, index) => item + yTopValue[index])
+
+    const formatLabel = (chartValues: TDataTooltip) => {
+        const { dataIndex } = chartValues
+        const value = topLabels[dataIndex]
+
+        return yComplement
+            ? formatValueAxis(Number(value), yComplement)
+            : yComplement === 'time'
+                ? timeConvert(Number(value)) + 'h'
+                : value
+    }
 
     const yLineData = lineData.map((item: TEntryData) => item.result)
     const xData = xType === 'time'
@@ -107,20 +135,28 @@ const StackedBarChart = (props: IProps) => {
     }
 
     const formatTooltip = (values: TDataTooltip[]) => {
-        const valueBot = values[0] ? Number(values[0].data) : 0
-        const valueTop = values[1] ? Number(values[1].data) : 0
+        const takeValue = (data: { value: number | string } | string | number) =>
+            typeof data === 'object' ? Number(data.value) : Number(data)
+
+        const valueBot = values[0] ? takeValue(values[0].data) : 0
+        const valueTop = values[1] ? takeValue(values[1].data) : 0
         const stackedValues = valueBot + valueTop
 
-        const tooltipBody =
-            values.map((value: TDataTooltip) =>
-                mountMessage(
+        const tooltipBody = values.map((value: TDataTooltip) =>
+            yComplement === 'time'
+                ? monuntTimeMessage(value, stackedValues)
+                : mountMessage(
                     value,
                     yComplement,
                     secondYAxisType,
                     stackedValues,
                     sumDataValues
                 )
-            ).join(' ')
+        ).join(' ')
+
+        const verifyFormat = yComplement === 'time'
+            ? timeConvert(stackedValues)
+            : formatToBRL(stackedValues)
 
         const labelResult = xType === 'time'
             ? label + ': ' + formatTime(values[0].name, 'MMM/yy') + '<br>'
@@ -130,7 +166,7 @@ const StackedBarChart = (props: IProps) => {
             sumDataValues && values.length === 3 && secondYAxisType
                 ? complement + ': ' + formatToBRL(stackedValues)
                 : sumDataValues && values.length === 2 && !secondYAxisType
-                    ? complement + ': ' + formatToBRL(stackedValues)
+                    ? complement + ': ' + verifyFormat
                     : ''
 
         const tooltipFooter = tooltipExtra && !sumDataValues
@@ -176,7 +212,7 @@ const StackedBarChart = (props: IProps) => {
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
-        left: legendType === 'scroll' ? '0.1%' :'4%',
+        left: legendType === 'scroll' ? '0.1%' : '4%',
         top: legendType === 'scroll' && '5.7%',
         show: titleProps !== undefined,
         text: titleProps,
@@ -241,7 +277,7 @@ const StackedBarChart = (props: IProps) => {
                 yAxisIndex: 0,
                 name: topResult,
                 type: 'bar',
-                data: yTopData,
+                data: yTopData as number[],
                 stack: 'stacked'
             },
             {
@@ -249,8 +285,16 @@ const StackedBarChart = (props: IProps) => {
                 yAxisIndex: 0,
                 name: bottomResult,
                 type: 'bar',
-                data: yBottomData,
-                stack: 'stacked'
+                data: yBottomData as number[],
+                stack: 'stacked',
+                label: {
+                    formatter: formatLabel,
+                    show: showBarLabel,
+                    position: 'top',
+                    fontSize: 12,
+                    color: 'black',
+                    distance: 2
+                }
             },
             extraStackedSerie,
             {
@@ -291,14 +335,14 @@ const StackedBarChart = (props: IProps) => {
                 textStyle: { fontSize: 11.5 },
                 interval: 0
             },
-            data: yBottomData,
+            data: yBottomData as number[],
             splitLine: {
                 show: true
             }
         },
         secondYAxis
         ],
-        legend: legendProps,
+        legend: legendType === 'none' ? undefined : legendProps,
         dataZoom: scrollable,
         title: title,
         toolbox

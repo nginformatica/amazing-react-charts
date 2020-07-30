@@ -4,12 +4,24 @@ import { takeLast } from 'ramda'
 import { ptBR } from 'date-fns/locale'
 import { TDataTooltip, TDomainValues } from './types'
 
+export const timeConvert = (value: number) => {
+    const seconds = Math.round((value % 1) * 3600)
+    const minutes = Math.trunc(seconds / 60)
+    const formatedMinutes = takeLast(2, '0' + minutes)
+
+    return minutes > 0
+        ? Math.floor(value) + ':' + formatedMinutes
+        : Math.floor(value) + ':00'
+}
+
 export const formatValueAxis = (value: number, complement: string) =>
     complement === '%'
         ? (value.toFixed(2) + '%').replace('.', ',')
         : complement === 'money'
             ? formatToBRL(value)
-            : value + complement
+            : complement === 'time'
+                ? timeConvert(value)
+                : value + complement
 
 export const takeComplement = (data: string | number, complement: string) =>
     complement === 'money'
@@ -26,6 +38,18 @@ export const moneyPercent = (
     return sumDataValues
         ? formatToBRL(value) + ' (' + percent + '%) <br>'
         : formatToBRL(value) + '<br>'
+}
+
+export const monuntTimeMessage = (
+    item: TDataTooltip,
+    stackedValues: number
+) => {
+    const time = timeConvert(Number(item.value))
+    const percent = item.value !== 0
+        ? (Number(item.value) * (100 / stackedValues)).toFixed(2)
+        : 0
+
+    return item.seriesName + ': ' + time + ' (' + percent + '%) <br>'
 }
 
 export const mountMessage = (
@@ -62,16 +86,6 @@ export const formatTooltip = (text: string, dateFormat?: string) =>
 
 export const formatTooltipWithHours = (text: string) =>
     format(new Date(text), 'dd/MM/yyyy HH:mm', { locale: ptBR })
-
-export const timeConvert = (value: number) => {
-    const seconds = Math.round((value % 1) * 3600)
-    const minutes = Math.trunc(seconds / 60)
-    const formatedMinutes = takeLast(2, '0' + minutes)
-
-    return minutes > 0
-        ? Math.floor(value) + ':' + formatedMinutes
-        : Math.floor(value) + ':00'
-}
 
 export const truncateText = (text: string, listSize?: number) => {
     const wordSize = listSize && listSize > 10 ? 8 : 12

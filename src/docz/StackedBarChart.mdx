@@ -203,3 +203,35 @@ import { Playground } from 'docz'
             ]}
     />
 </Playground>
+
+
+## Chart wit 2 bars stacked 
+<Playground>
+    <StackedBarChart
+    sumDataValues
+    showBarLabel
+    barWidth={ 80 }
+    yComplement='time'
+    legendType='none'
+    tooltip={{
+        label: 'Criticidade',
+        topResult: 'Tempo médio em atendimento',
+        bottomResult: 'Tempo médio em execução',
+        complement: 'Tempo médio total',
+    }}
+    data={[
+        [
+          { label: 'Emergencial', result: 1, style: { color: 'red', opacity: 0.7 } },
+          { label: 'Alta', result: 2, style: { color: 'orange', opacity: 0.7 } },
+          { label: 'Média', result: 4, style: { color: 'yellow', opacity: 0.7 } },
+          { label: 'Baixa', result: 5, style: { color: 'green', opacity: 0.7 } }
+        ],
+        [
+          { label: 'Emergencial', result: 10, style: { color: 'red' } },
+          { label: 'Alta', result: 40,  style: { color: 'orange' } },
+          { label: 'Média', result: 30,  style: { color: 'yellow' } },
+          { label: 'Baixa', result: 20, style: { color: 'green' } }
+        ]
+    ]}
+    />
+</Playground>
