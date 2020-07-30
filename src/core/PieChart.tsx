@@ -115,7 +115,7 @@ export const PieChart = (props: IProps) => {
             label: {
                 formatter: formatPieLabel,
                 show: true,
-                position: legendPosition || 'inside',
+                position: legendPosition || 'outside',
                 color: labelFontColor || 'white'
             },
             type: 'pie',
@@ -140,9 +140,9 @@ export const PieChart = (props: IProps) => {
     return (
         <ReactEcharts
             lazyUpdate
-            style={{ width: '99%' }}
-            opts={{ width: width }}
-            option={options}
+            style={ { width: '99%' } }
+            opts={ { width: width } }
+            option={ options }
         />
     )
 

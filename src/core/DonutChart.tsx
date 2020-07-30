@@ -9,12 +9,14 @@ import {
     TTitleProps
 } from './types'
 import { getDataView, getSaveAsImage } from './auxiliarFunctions'
-import { map } from 'ramda'
+import { map, sum } from 'ramda'
 import { formatToBRL } from 'brazilian-values'
 
 interface IDonutProps extends IProps {
-    donutCenterValue: string
+    donutCenterValue?: string
     donutRadius: [string, string]
+    centerPieValueFontSize?: number
+    selectedMode?: boolean
 }
 
 export const DonutChart = (props: IDonutProps) => {
@@ -25,13 +27,34 @@ export const DonutChart = (props: IDonutProps) => {
         yComplement,
         donutCenterValue,
         donutRadius,
-        center
+        center,
+        pieceBorderColor,
+        tooltip,
+        legendPosition,
+        labelFontColor,
+        centerPieValueFontSize,
+        selectedMode
     } = props
 
     const xData = map(item => item.name, props.data)
+    const totalValues = sum(map(item => item.value, props.data))
 
-    const formatTooltip = ({ name, value }: TPieChartData) =>
-        name + ': ' + (resultFormatType === 'money' ? formatToBRL(value) : value)
+    const formatTooltip = ({ name, value }: TPieChartData) => {
+        const percent = value !== 0 ? (value * (100 / totalValues)).toFixed(2) : 0
+
+        const valueToShow = resultFormatType === 'money'
+            ? formatToBRL(value)
+            : resultFormatType === 'percent'
+                ? value + ' (' + percent + '%)'
+                : value
+
+        const label =
+            tooltip && tooltip.label ? tooltip.label + ': ' + name + '<br>' : ''
+        const result =
+            tooltip && tooltip.result ? (tooltip.result + ': ' + valueToShow) : ''
+
+        return tooltip ? (label + result) : name + ': ' + valueToShow
+    }
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
@@ -43,7 +66,7 @@ export const DonutChart = (props: IDonutProps) => {
         textStyle: {
             fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
             fontSize: 16,
-            fontWeight: 400
+            fontWeight: 300
         }
     }
 
@@ -88,6 +111,7 @@ export const DonutChart = (props: IDonutProps) => {
             textStyle: { fontSize: 11.5 }
         },
         legend: {
+            selectedMode: selectedMode || false,
             orient: 'horizontal',
             top: 270,
             data: xData,
@@ -104,20 +128,23 @@ export const DonutChart = (props: IDonutProps) => {
                 label: {
                     color: 'black',
                     position: 'center',
-                    formatter: donutCenterValue || '',
+                    formatter: donutCenterValue ||
+                        totalValues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'),
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontSize: 30,
-                    fontWeight: 200
+                    fontSize: centerPieValueFontSize || 24,
+                    fontWeight: 350
                 }
             },
             {
+                name: 'first',
                 type: 'pie',
                 radius: donutRadius,
                 data: props.data,
                 animation: false,
                 center: center || ['50%', '50%'],
                 label: {
-                    color: 'black',
+                    position: legendPosition || 'outside',
+                    color: labelFontColor || 'black',
                     formatter: (item: TPieDataLabel) =>
                         yComplement || resultFormatType
                             ? formatDonutLabel(item.data.value)
@@ -129,7 +156,10 @@ export const DonutChart = (props: IDonutProps) => {
                     length2: 4
                 }
             }
-        ]
+        ],
+        itemStyle: {
+            borderColor: pieceBorderColor || 'white'
+        }
     }
 
     return (
