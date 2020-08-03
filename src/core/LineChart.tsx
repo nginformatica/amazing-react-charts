@@ -27,6 +27,9 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
     colors?: string[]
     showLabel?: boolean
     smooth?: boolean
+    disableMarks?: boolean
+    noTooltip?: boolean
+    axisNames?: { x: string, y: string }
 }
 
 const takeYdata = (entryData: TEntryData[]) =>
@@ -47,8 +50,28 @@ const LineChart = (props: IProps) => {
         title: titleProps,
         toolboxTooltip,
         showLabel,
-        smooth
+        smooth,
+        disableMarks,
+        noTooltip,
+        axisNames
     } = props
+
+    const yAxis = axisNames && {
+        type: 'value',
+        name: axisNames.y,
+        nameGap: 10,
+        min: 0,
+        max: 8,
+        interval: 1
+    }
+
+    const xAxis = axisNames && {
+        type: 'category',
+        name: axisNames.x,
+        min: 0,
+        max: 8,
+        interval: 2
+    }
 
     const yData = data[0].values.map(item => item.result)
     const xData = data[0].values.map(item => item.label)
@@ -58,6 +81,11 @@ const LineChart = (props: IProps) => {
         name: item.name,
         type: 'line',
         data: takeYdata(item.values),
+        showSymbol: !disableMarks,
+        lineStyle: {
+            width: 1.5,
+            type: item.name === 'ref' ? 'dashed' : undefined
+        },
         smooth: smooth,
         label: {
             show: showLabel,
@@ -113,7 +141,7 @@ const LineChart = (props: IProps) => {
         return `${tooltipTitle} <br> ${linesTooltips.join(' ')}`
     }
 
-    const tooltip: TTooltipProps = {
+    const tooltip: TTooltipProps = !noTooltip && {
         formatter: formatLabel,
         trigger: 'axis',
         textStyle: { fontSize: 11.5 }
@@ -158,7 +186,8 @@ const LineChart = (props: IProps) => {
         color: colors,
         series: series,
         xAxis: {
-            type: 'category',
+            ...xAxis,
+            type: axisNames ? 'value' : 'category',
             data: xData,
             boundaryGap: false,
             showGrid: true,
@@ -185,6 +214,7 @@ const LineChart = (props: IProps) => {
             }
         },
         yAxis: {
+            ...yAxis,
             type: 'value',
             data: yData,
             splitLine: {
@@ -207,7 +237,8 @@ const LineChart = (props: IProps) => {
         },
         grid: { ...gridProps || { bottom: 60 }, show: true },
         legend: {
-            data: names
+            data: names,
+            icon: 'line'
         },
         dataZoom: scrollable,
         title: title,
@@ -219,9 +250,9 @@ const LineChart = (props: IProps) => {
         <ReactCharts
             lazyUpdate
             notMerge
-            style={ { width: '99.9%', height: 300 } }
-            opts={ { width: width || 'auto' } }
-            option={ options }
+            style={{ width: '99.9%', height: 300 }}
+            opts={{ width: width || 'auto' }}
+            option={options}
         />
     )
 }

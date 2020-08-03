@@ -5,9 +5,11 @@ import {
     TCoordinates,
     TOptionsProps,
     TTitleProps,
-    TTuple
+    TTuple,
+    TSaveAsImage
 } from './types'
 import { map } from 'ramda'
+import { getSaveAsImage, getDataView } from './auxiliarFunctions'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
     coordinates: [TCoordinates[], TCoordinates[], TCoordinates[]]
@@ -29,7 +31,8 @@ const RespiratoryFlowChart = (props: IProps) => {
         height, 
         title: titleProps, 
         coordinateNames,
-        legendNames
+        legendNames,
+        toolboxTooltip
     } = props
     
     const [ref, pre, pos] = coordinates
@@ -37,6 +40,28 @@ const RespiratoryFlowChart = (props: IProps) => {
     const reference: TTuple[] = map(item => [item.x, item.y], ref)
     const preRespiratory: TTuple[] = map(item => [item.x, item.y], pre)
     const posResporatory: TTuple[] = map(item => [item.x, item.y], pos)
+
+    const toolbox = toolboxTooltip && (
+        {
+            showTitle: false,
+            right: '9.52%',
+            feature: {
+                saveAsImage: toolboxTooltip.saveAsImage && (
+                    getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage
+                ),
+                dataView: toolboxTooltip.dataView && (
+                    getDataView(toolboxTooltip.dataView)
+                )
+            },
+            tooltip: {
+                show: true,
+                backgroundColor: 'grey',
+                textStyle: {
+                    fontSize: 12
+                }
+            }
+        }
+    )
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
@@ -82,7 +107,7 @@ const RespiratoryFlowChart = (props: IProps) => {
         ],
         yAxis: {
             type: 'value',
-            name: coordinateNames.x,
+            name: coordinateNames.y,
             nameGap: 10,
             min: -8,
             max: 8,
@@ -90,7 +115,7 @@ const RespiratoryFlowChart = (props: IProps) => {
         },
         xAxis: {
             type: 'value',
-            name: coordinateNames.y,
+            name: coordinateNames.x,
             nameTextStyle: {
                 verticalAlign: 'top',
                 padding: [150, 0, 0, 0]
@@ -121,7 +146,8 @@ const RespiratoryFlowChart = (props: IProps) => {
         title: title,
         grid: {
             containLabel: true
-        }
+        },
+        toolbox
     }
 
     return (
