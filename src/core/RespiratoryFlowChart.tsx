@@ -13,6 +13,8 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
     coordinates: [TCoordinates[], TCoordinates[], TCoordinates[]]
     colors?: string[]
     height?: number
+    legendNames?: [string, string, string]
+    coordinateNames?: { x: string, y: string }
 }
 
 const DASHED_ICON =
@@ -21,7 +23,15 @@ const DASHED_ICON =
     '-40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40z'
 
 const RespiratoryFlowChart = (props: IProps) => {
-    const { coordinates, colors, height, title: titleProps } = props
+    const { 
+        coordinates, 
+        colors, 
+        height, 
+        title: titleProps, 
+        coordinateNames,
+        legendNames
+    } = props
+    
     const [ref, pre, pos] = coordinates
 
     const reference: TTuple[] = map(item => [item.x, item.y], ref)
@@ -45,7 +55,7 @@ const RespiratoryFlowChart = (props: IProps) => {
         color: colors,
         series: [
             {
-                name: 'ref',
+                name: legendNames[0] || '' ,
                 showSymbol: false,
                 type: 'line',
                 data: reference,
@@ -56,14 +66,14 @@ const RespiratoryFlowChart = (props: IProps) => {
                 }
             },
             {
-                name: 'pre',
+                name: legendNames[1] || '',
                 showSymbol: false,
                 type: 'line',
                 data: preRespiratory,
                 smooth: true
             },
             {
-                name: 'pos',
+                name: legendNames[2] || '',
                 showSymbol: false,
                 type: 'line',
                 data: posResporatory,
@@ -71,21 +81,27 @@ const RespiratoryFlowChart = (props: IProps) => {
             }
         ],
         yAxis: {
-            name: 'Fluxo (L/s)',
+            type: 'value',
+            name: coordinateNames.x,
             nameGap: 10,
             min: -8,
             max: 8,
             interval: 2
         },
         xAxis: {
-            name: 'Volume (L/s)',
+            type: 'value',
+            name: coordinateNames.y,
             nameTextStyle: {
-                verticalAlign: 'top'
+                verticalAlign: 'top',
+                padding: [150, 0, 0, 0]
             },
-            nameGap: -50,
+            nameGap: -56,
             min: 0,
             max: 8,
-            interval: 2
+            interval: 2,
+            axisTick: {
+                show: false
+            }
         },
         legend: {
             x: 'center',
@@ -93,11 +109,11 @@ const RespiratoryFlowChart = (props: IProps) => {
             top: 18,
             data: [
                 {
-                    name: 'ref',
+                    name: legendNames[0],
                     icon: DASHED_ICON
                 },
-                { name: 'pre' },
-                { name: 'pos' }
+                { name: legendNames[1] },
+                { name: legendNames[2] }
             ],
             icon: 'line',
             itemGap: 30
