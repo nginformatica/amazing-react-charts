@@ -26,6 +26,7 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TEntryDataLine[]
     colors?: string[]
     showLabel?: boolean
+    smooth?: boolean
 }
 
 const takeYdata = (entryData: TEntryData[]) =>
@@ -45,7 +46,8 @@ const LineChart = (props: IProps) => {
         yComplement,
         title: titleProps,
         toolboxTooltip,
-        showLabel
+        showLabel,
+        smooth
     } = props
 
     const yData = data[0].values.map(item => item.result)
@@ -56,6 +58,7 @@ const LineChart = (props: IProps) => {
         name: item.name,
         type: 'line',
         data: takeYdata(item.values),
+        smooth: smooth,
         label: {
             show: showLabel,
             position: 'top',

@@ -34,6 +34,13 @@ export type TToolboxEntryProps = {
     dataView?: string
 }
 
+export type TCoordinates = {
+    x: number
+    y: number
+}
+
+export type TTuple = [number, number]
+
 export type TWidthProps =
     | number
     | null
@@ -109,6 +116,7 @@ export type TSeries = {
     animationDuration?: number
     radius?: string | [string, string]
     center?: [number, string] | [string, string] | string | number
+    smooth?: boolean
     data?:
         | number[]
         | string[]
@@ -117,6 +125,7 @@ export type TSeries = {
         | TEntryWithStyleData[]
         | TPictorialEntryData[]
         | TCostumizedSymbolData[]
+        | TTuple[]
 }
 
 export type TCostumizedSymbolData = {
@@ -284,7 +293,9 @@ export type TPieChartData = {
 
 export type TAxisProps = {
     name?: string
+    nameGap?: number
     type?: TChartType
+    nameTextStyle?: { padding?: number[], verticalAlign?: string }
     boundaryGap?: boolean
     data?:
         | number[]
@@ -349,7 +360,7 @@ export type TLegendProps = {
     y?: 'center' | 'bottom'
     icon?: 'line' | 'rect' | 'shape'
     top?: number
-    data: string[]
+    data: string[] | {name: string, icon?: string}[]
     itemGap?: number
     selectedMode?: boolean
     color?: string[]
