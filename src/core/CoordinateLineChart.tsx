@@ -45,6 +45,10 @@ const CoordinateLineChart = (props: IProps) => {
     const preRespiratory: TTuple[] = map(item => [item.x, item.y], pre)
     const posResporatory: TTuple[] = map(item => [item.x, item.y], pos)
 
+    const namePadding = yRangeValues
+        ? [150, 0, 0, 0]
+        : [20, 0, 0, 0]
+
     const toolbox = toolboxTooltip && (
         {
             showTitle: false,
@@ -121,8 +125,8 @@ const CoordinateLineChart = (props: IProps) => {
             type: 'value',
             name: coordinateNames.x,
             nameTextStyle: {
-                verticalAlign: 'top',
-                padding: [150, 0, 0, 0]
+                verticalAlign: yRangeValues ? 'top' : 'end',
+                padding: namePadding
             },
             nameGap: -56,
             min: 0,
