@@ -4,37 +4,41 @@ import {
     IDefaultChartProps,
     TCoordinates,
     TOptionsProps,
+    TSaveAsImage,
     TTitleProps,
-    TTuple,
-    TSaveAsImage
+    TTuple
 } from './types'
 import { map } from 'ramda'
-import { getSaveAsImage, getDataView } from './auxiliarFunctions'
+import { getDataView, getSaveAsImage } from './auxiliarFunctions'
 
-interface IProps extends Omit<IDefaultChartProps, 'data'> {
+export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     coordinates: [TCoordinates[], TCoordinates[], TCoordinates[]]
     colors?: string[]
     height?: number
     legendNames?: [string, string, string]
     coordinateNames?: { x: string, y: string }
+    yRangeValues?: number
+    xMaxValue?: number
 }
 
-const DASHED_ICON =
+export const DASHED_ICON =
     'path://M180 1000 l0 -40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40z, M810 ' +
     '1000 l0 -40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40zm, M1440 1000 l0 ' +
     '-40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40z'
 
-const RespiratoryFlowChart = (props: IProps) => {
-    const { 
-        coordinates, 
-        colors, 
-        height, 
-        title: titleProps, 
+const CoordinatesLineChart = (props: IProps) => {
+    const {
+        coordinates,
+        colors,
+        height,
+        title: titleProps,
         coordinateNames,
         legendNames,
-        toolboxTooltip
+        toolboxTooltip,
+        yRangeValues,
+        xMaxValue
     } = props
-    
+
     const [ref, pre, pos] = coordinates
 
     const reference: TTuple[] = map(item => [item.x, item.y], ref)
@@ -109,8 +113,8 @@ const RespiratoryFlowChart = (props: IProps) => {
             type: 'value',
             name: coordinateNames.y,
             nameGap: 10,
-            min: -8,
-            max: 8,
+            min: -yRangeValues || 0 ,
+            max: yRangeValues || 8,
             interval: 2
         },
         xAxis: {
@@ -122,7 +126,7 @@ const RespiratoryFlowChart = (props: IProps) => {
             },
             nameGap: -56,
             min: 0,
-            max: 8,
+            max: xMaxValue || 8,
             interval: 2,
             axisTick: {
                 show: false
@@ -158,4 +162,4 @@ const RespiratoryFlowChart = (props: IProps) => {
     )
 }
 
-export default RespiratoryFlowChart
+export default CoordinatesLineChart

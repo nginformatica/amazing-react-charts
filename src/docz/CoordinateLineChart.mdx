@@ -1,22 +1,75 @@
 ---
-name: Respiratory Flow Chart
-route: /respiratory-flow-chart
+name: Coordinates Line Chart
+route: /coordinates-line-chart
 ---
 
-import RespiratoryFlowChart from '../core/RespiratoryFlowChart'
+import CoordinatesLineChart from '../core/CoordinatesLineChart'
 import { Playground } from 'docz'
 
-# Respiratory flow chart example
+# Charts passing coorditantes as data
 
 ## Demo
 
-## Pie chart with standart legend
+
+#  Line chart with negative values
+<Playground>
+    <RespiratoryFlowChart
+        title='Respiratory volume chart'
+            height={400}
+            xMaxValue={8}
+            legendNames={['ref', 'pre', 'pos']}
+            coordinateNames={
+                {
+                    x: 'Volume (L)',
+                    y: 'Fluxo (L/s)'
+                }
+            }
+            colors={['gray', 'orange', 'green']}
+            coordinates={ [ 
+                [
+                    { x: 0.1, y: 0.5 },
+                    { x: 0.4, y: 0.9 },
+                    { x: 2, y: 0.9 },
+                    { x: 3, y: 1 },
+                    { x: 4, y: 5.9 },
+                    { x: 5, y: 6 },
+                    { x: 6, y: 6 },
+                ],
+      [
+        { x: 0.6, y: 7.5 },
+        { x: 0.9, y: 7.3 },
+        { x: 1.4, y: 7 },
+        { x: 1.5, y: 6.5 },
+        { x: 2.2, y: 2 },
+        { x: 4.2, y: 4 },
+        { x: 5.2, y: 4.3 },
+        { x: 0.6, y: 7.5 },
+      ],
+      [
+        { x: 0.3, y: 7.5 },
+        { x: 0.6, y: 7.3 },
+        { x: 1, y: 7 },
+        { x: 1.2, y: 6.5 },
+        { x: 1.8, y: 2 },
+        { x: 3.8, y: 4 },
+        { x: 4.8, y: 4.3 },
+        { x: 0.3, y: 7.5 },
+      ]
+        ] }
+    />
+</Playground>
+
+
+
+# Line chart with negative values on y axis
 <Playground>
     <div style={{ width: '300px', height: '400px' }}>
         <RespiratoryFlowChart
             title='Respiratory flow chart'
             height={400}
             legendNames={['ref', 'pre', 'pos']}
+            yRangeValues={8}
+            xMaxValue={8}
             coordinateNames={
                 {
                     x: 'Volume (L)',
