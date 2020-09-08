@@ -161,3 +161,29 @@ import { Playground } from 'docz'
         ] }       
   />
 </Playground>
+
+
+# Vertical bar chart example
+<Playground>
+    <VerticalBarChart
+        showBarLabel
+        yComplement='money'
+        xType='category'
+        yType='value'
+        color='blue'
+        title='Bar Chart example'
+        customMaxDomain={ 3000 }
+        toolboxTooltip={{ saveAsImage: 'save' }}
+        tooltip={ { label: 'Equipamento', result: 'Disponibilidade' } }
+        data={ [
+          {
+            label: 'NG209131231',
+            result: '2057',
+          },
+          {
+            label: 'NG21021313',
+            result: '20',
+          },
+        ] }       
+  />
+</Playground>

@@ -89,6 +89,7 @@ export const dontShowLabel = {
 
 interface IProps extends IDefaultChartProps {
     rotateTickLabel?: number
+    customMaxDomain?: number
 }
 
 const VerticalBarChart = (props: IProps) => {
@@ -112,7 +113,8 @@ const VerticalBarChart = (props: IProps) => {
         titleFontSize,
         rotateLabel,
         onClickBar,
-        marginRightToolbox
+        marginRightToolbox,
+        customMaxDomain
     } = props
 
     const yData = data.map((item: TEntryData) => {
@@ -124,8 +126,9 @@ const VerticalBarChart = (props: IProps) => {
             distance: 1
         }
 
-        if (maxValue !== item.result && yType === 'time') {
+        if (maxValue !== item.result) {
             const mainPercentage = (item.result*100)/maxValue
+
             const label: TLabelProps = mainPercentage < 15
                 ? { position: 'top', distance: 1 }
                 : {}
@@ -136,7 +139,6 @@ const VerticalBarChart = (props: IProps) => {
                 itemStyle: item.style,
                 itemId: item.itemId && item.itemId
             })
-
         }
 
         return ({
@@ -315,7 +317,7 @@ const VerticalBarChart = (props: IProps) => {
         yAxis: {
             max: !isMoreThanHundredPercent && yComplement === '%'
                 ? 100
-                : getDomain,
+                : customMaxDomain ? customMaxDomain : getDomain,
             type: 'value',
             splitLine: {
                 show: true,
