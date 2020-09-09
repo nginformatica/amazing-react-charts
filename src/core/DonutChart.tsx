@@ -39,7 +39,7 @@ export const DonutChart = (props: IDonutProps) => {
     const xData = map(item => item.name, props.data)
     const totalValues = sum(map(item => item.value, props.data))
 
-    const formatTooltip = ({ name, value }: TPieChartData) => {
+    const formatTooltip = ({ name, value, marker }: TPieChartData) => {
         const percent = value !== 0 ? (value * (100 / totalValues)).toFixed(2) : 0
 
         const valueToShow = resultFormatType === 'money'
@@ -50,10 +50,11 @@ export const DonutChart = (props: IDonutProps) => {
 
         const label =
             tooltip && tooltip.label ? tooltip.label + ': ' + name + '<br>' : ''
-        const result =
-            tooltip && tooltip.result ? (tooltip.result + ': ' + valueToShow) : ''
+        const result = tooltip && tooltip.result
+            ? (marker + tooltip.result + ': ' + valueToShow)
+            : ''
 
-        return tooltip ? (label + result) : name + ': ' + valueToShow
+        return tooltip ? (label + result) : marker + name + ': ' + valueToShow
     }
 
     const title: TTitleProps = {
