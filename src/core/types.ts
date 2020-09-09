@@ -289,6 +289,7 @@ type TSplitLineProps = {
 export type TPieChartData = {
     name: string
     value: number
+    marker: string
 }
 
 export type TAxisProps = {

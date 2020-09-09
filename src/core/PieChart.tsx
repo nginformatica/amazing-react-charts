@@ -23,6 +23,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     noAnimation?: boolean
     pieceBorderColor?: string
     center?: [number, string] | [string, string] | string | number
+    tooltipTitle?: string
 }
 
 export const PieChart = (props: IProps) => {
@@ -41,19 +42,22 @@ export const PieChart = (props: IProps) => {
         resultFormatType,
         labelFontColor,
         noAnimation,
-        pieceBorderColor
+        pieceBorderColor,
+        tooltipTitle
     } = props
 
     const names = map(item => (item.name), data)
     const totalValues = sum(map(item => item.value, data))
 
-    const formatTooltip = ({ name, value }: TPieChartData) => {
+    const formatTooltip = ({ name, value, marker }: TPieChartData) => {
+        const title = tooltipTitle ? tooltipTitle + '<br>' : ''
         const percent = value !== 0 ? (value * (100 / totalValues)).toFixed(2) : 0
         const valuePrint = resultFormatType === 'money' ? formatToBRL(value) : value
 
-        return name + ': ' + valuePrint + ' ' + (resultFormatType === 'percent'
-            ? '(' + percent + '%)'
-            : ''
+        return title + marker + name + ': ' + valuePrint + ' ' + (
+            resultFormatType === 'percent'
+                ? '(' + percent + '%)'
+                : ''
         )
     }
 
