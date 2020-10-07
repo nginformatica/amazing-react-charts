@@ -52,7 +52,8 @@ const LineChart = (props: IProps) => {
         showLabel,
         smooth,
         disableMarks,
-        noTooltip
+        noTooltip,
+        scrollStart
     } = props
 
     const yData = data[0].values.map(item => item.result)
@@ -78,7 +79,7 @@ const LineChart = (props: IProps) => {
         }
     }))
 
-    const arrayInitialSize = dateFormat === 'yyyy-MM' ? 12 : 30
+    const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
     const tooltipLabelFormat = dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
 
     const scrollable: TZoomProps[] = xData.length > arrayInitialSize

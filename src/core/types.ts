@@ -26,6 +26,7 @@ export interface IDefaultChartProps {
     marginLeftTitle?: string
     marginRightToolbox?: string
     titleFontSize?: string | number
+    scrollStart?: number
     onClickBar?(itemProps?: object, itemFunctions?: object): void
 }
 
@@ -289,7 +290,7 @@ type TSplitLineProps = {
 export type TPieChartData = {
     name: string
     value: number
-    marker: string
+    marker?: string
 }
 
 export type TAxisProps = {
