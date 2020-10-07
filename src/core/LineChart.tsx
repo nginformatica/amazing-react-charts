@@ -86,7 +86,7 @@ const LineChart = (props: IProps) => {
         ? [
             {
                 type: 'inside',
-                start: getInitialValues(xData.length, dateFormat),
+                start: getInitialValues(xData.length, dateFormat, scrollStart),
                 end: 100,
                 zoomLock: true,
                 zoomOnMouseWheel: 'shift'
@@ -95,7 +95,7 @@ const LineChart = (props: IProps) => {
                 bottom: 0,
                 show: true,
                 type: 'slider',
-                start: getInitialValues(xData.length, dateFormat),
+                start: getInitialValues(xData.length, dateFormat, scrollStart),
                 end: 100,
                 labelFormatter: (
                     _: string,
