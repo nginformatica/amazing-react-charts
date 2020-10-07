@@ -45,7 +45,8 @@ const AreaChart = (props: IDefaultChartProps) => {
         rotateLabel,
         fontLabelSize,
         title: titleProps,
-        toolboxTooltip
+        toolboxTooltip,
+        scrollStart
     } = props
 
     const markLine = lineMarkValue && data.map(() => lineMarkValue)
@@ -151,14 +152,14 @@ const AreaChart = (props: IDefaultChartProps) => {
         }
     )
 
-    const arrayInitialSize = dateFormat === 'yyyy-MM' ? 12 : 30
+    const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
     const tooltipLabelFormat = dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
 
     const scrollable: TZoomProps[] = xData.length > arrayInitialSize
         ? [
             {
                 type: 'inside',
-                start: getInitialValues(xData.length, dateFormat),
+                start: getInitialValues(xData.length, dateFormat, scrollStart),
                 end: 100,
                 zoomLock: true,
                 zoomOnMouseWheel: 'shift'
@@ -167,7 +168,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 bottom: 0,
                 show: true,
                 type: 'slider',
-                start: getInitialValues(xData.length, dateFormat),
+                start: getInitialValues(xData.length, dateFormat, scrollStart),
                 end: 100,
                 labelFormatter: (
                     _: string,
