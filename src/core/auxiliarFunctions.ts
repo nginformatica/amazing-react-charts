@@ -171,10 +171,21 @@ export const getDataView = (title: string) => ({
 
 export const formatMoneyLabel = (item: TDataTooltip) => formatToBRL(item.value)
 
-export const getInitialValues = (arrayLength: number, dateFormat?: string) =>
-    dateFormat !== 'yyyy-MM'
+export const getInitialValues = (
+    arrayLength: number,
+    dateFormat?: string,
+    scrollStart?: number
+) => {
+    if (scrollStart) {
+        return arrayLength > scrollStart
+            ? (100 - ((scrollStart * 100) / arrayLength))
+            : 0
+    }
+
+    return dateFormat !== 'yyyy-MM'
         ? arrayLength > 30 ? (100 - (3000 / arrayLength)) : 0
         : arrayLength > 12 ? (100 - (1200 / arrayLength)) : 0
+}
 
 export const getEndForecast = (
     arrayLength: number,
