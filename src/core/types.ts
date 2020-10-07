@@ -26,6 +26,7 @@ export interface IDefaultChartProps {
     marginLeftTitle?: string
     marginRightToolbox?: string
     titleFontSize?: string | number
+    scrollStart?: number
     onClickBar?(itemProps?: object, itemFunctions?: object): void
 }
 
