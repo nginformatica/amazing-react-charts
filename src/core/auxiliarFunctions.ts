@@ -1,7 +1,7 @@
 import { formatToBRL } from 'brazilian-values'
 import { format, parse } from 'date-fns'
 import { takeLast } from 'ramda'
-import { ptBR } from 'date-fns/locale'
+import ptBR from 'date-fns/locale/pt-BR'
 import { TDataTooltip, TDomainValues } from './types'
 
 export const timeConvert = (value: number) => {
