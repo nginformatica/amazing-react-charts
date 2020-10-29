@@ -19,6 +19,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     coordinateNames?: { x: string, y: string }
     yRangeValues?: number
     xMaxValue?: number
+    legendPosition?: number
 }
 
 export const DASHED_ICON =
@@ -36,7 +37,9 @@ const CoordinateLineChart = (props: IProps) => {
         legendNames,
         toolboxTooltip,
         yRangeValues,
-        xMaxValue
+        xMaxValue,
+        grid,
+        legendPosition
     } = props
 
     const [ref, pre, pos] = coordinates
@@ -45,31 +48,25 @@ const CoordinateLineChart = (props: IProps) => {
     const preRespiratory: TTuple[] = map(item => [item.x, item.y], pre)
     const posResporatory: TTuple[] = map(item => [item.x, item.y], pos)
 
-    const namePadding = yRangeValues
-        ? [150, 0, 0, 0]
-        : [20, 0, 0, 0]
+    const namePadding = yRangeValues ? [150, 0, 0, 0] : [20, 0, 0, 0]
 
-    const toolbox = toolboxTooltip && (
-        {
-            showTitle: false,
-            right: '9.52%',
-            feature: {
-                saveAsImage: toolboxTooltip.saveAsImage && (
-                    getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage
-                ),
-                dataView: toolboxTooltip.dataView && (
-                    getDataView(toolboxTooltip.dataView)
-                )
-            },
-            tooltip: {
-                show: true,
-                backgroundColor: 'grey',
-                textStyle: {
-                    fontSize: 12
-                }
+    const toolbox = toolboxTooltip && {
+        showTitle: false,
+        right: '9.52%',
+        feature: {
+            saveAsImage:
+        toolboxTooltip.saveAsImage &&
+        (getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage),
+            dataView: toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
+        },
+        tooltip: {
+            show: true,
+            backgroundColor: 'grey',
+            textStyle: {
+                fontSize: 12
             }
         }
-    )
+    }
 
     const title: TTitleProps = {
         id: 'chart-' + titleProps,
@@ -88,7 +85,7 @@ const CoordinateLineChart = (props: IProps) => {
         color: colors,
         series: [
             {
-                name: legendNames[0] || '' ,
+                name: legendNames[0] || '',
                 showSymbol: false,
                 type: 'line',
                 data: reference,
@@ -117,7 +114,7 @@ const CoordinateLineChart = (props: IProps) => {
             type: 'value',
             name: coordinateNames.y,
             nameGap: 10,
-            min: -yRangeValues || 0 ,
+            min: -yRangeValues || 0,
             max: yRangeValues || 8,
             interval: 2
         },
@@ -139,21 +136,22 @@ const CoordinateLineChart = (props: IProps) => {
         legend: {
             x: 'center',
             y: 'bottom',
-            top: 18,
+            top: legendPosition ?? 26,
             data: [
                 {
-                    name: legendNames[0],
+                    name: legendNames[0] || '',
                     icon: DASHED_ICON
                 },
-                { name: legendNames[1] },
-                { name: legendNames[2] }
+                { name: legendNames[1] || '' },
+                { name: legendNames[2] || '' }
             ],
             icon: 'line',
             itemGap: 30
         },
         title: title,
         grid: {
-            containLabel: true
+            containLabel: true,
+            ...grid
         },
         toolbox
     }
