@@ -9,12 +9,12 @@ import {
   TParamsTooltip,
 } from './types'
 import {
-  formatValueAxis,
   getDataView,
   getDomain,
   getSaveAsImage,
   timeConvert,
-  truncateLabel
+  truncateLabel,
+  takeLabelComplement
 } from './auxiliarFunctions'
 import { reverse } from 'ramda'
 
@@ -88,11 +88,9 @@ const HorizontalBarChart = (props: IProps) => {
     const { label, result } = tooltipProps
     const { name, value } = chartValues[1]
 
-    const dataValue = xComplement
-      ? formatValueAxis(Number(value), xComplement)
-      : xType === 'time'
-        ? timeConvert(Number(value)) + 'h'
-        : value
+    const dataValue = xType === 'time'
+      ? timeConvert(value) + 'h'
+      : takeLabelComplement(Number(value), xComplement)
 
     return `${label}: ${name} <br>` + `${result}: ${dataValue} <br>`
   }
@@ -100,12 +98,11 @@ const HorizontalBarChart = (props: IProps) => {
   const formatLabel = (chartValues: TDataTooltip) => {
     const { value } = chartValues
 
-    return xComplement
-      ? formatValueAxis(Number(value), xComplement)
-      : xType === 'time'
-        ? timeConvert(Number(value)) + 'h'
-        : value
+    return xType === 'time'
+      ? timeConvert(Number(value)) + 'h'
+      : takeLabelComplement(Number(value), xComplement)
   }
+
 
   const tooltip = {
     trigger: 'axis' as const,
@@ -165,7 +162,7 @@ const HorizontalBarChart = (props: IProps) => {
         xAxisIndex: 0,
         data: xData,
         type: 'bar' as const,
-        barWidth: 80,
+        barWidth: '80%',
         barMaxWidth: !showTickInfos && 20,
         itemStyle: {
           color: color,

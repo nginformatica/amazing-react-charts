@@ -4,12 +4,12 @@ import {
   formatMoneyLabel,
   formatTime,
   formatTooltipWithHours,
-  formatValueAxis,
   getDataView,
   getDomain,
   getSaveAsImage,
   timeConvert,
-  toDate
+  toDate,
+  takeLabelComplement
 } from './auxiliarFunctions'
 import {
   IDefaultChartProps,
@@ -22,8 +22,7 @@ import {
   TTooltipEntryProps,
   TZoomProps
 } from './types'
-import { formatToBRL } from 'brazilian-values'
-import take from 'ramda/es/take'
+import { take } from 'ramda'
 
 interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
   tooltip: {
@@ -60,19 +59,15 @@ const ForecastAreaChart = (props: IProps) => {
 
   const yData = data.map((item: TEntryData) => item.result)
   const xData = data.map((item: TEntryData) =>
-    toDate(item.label, 'yyyy-MM-dd HH:mm')
+    toDate(item.label, 'yyyy-MM-dd HH:mm').toString()
   )
 
   const formatLabel = (chartValues: TDataTooltip) => {
     const { data } = chartValues
 
-    return yComplement
-      ? Number(data).toFixed(2) + yComplement
-      : yType === 'time'
-        ? timeConvert(Number(data))
-        : yComplement === 'money'
-          ? formatToBRL(data)
-          : data
+    return yType === 'time'
+      ? timeConvert(Number(data))
+      : takeLabelComplement(Number(Number(data).toFixed(2)), yComplement)
   }
 
   const dinamicData = (
@@ -112,12 +107,9 @@ const ForecastAreaChart = (props: IProps) => {
     const { label, result } = chartValues.length === 2 ? current : forecast
     const complement = tooltipComplement ? tooltipComplement : ''
 
-    const values =
-      yType === 'time'
-        ? timeConvert(Number(data as number)) + 'h'
-        : yComplement === 'money'
-          ? formatToBRL(Number(data))
-          : data + (yComplement || '')
+    const values = yType === 'time'
+      ? timeConvert(Number(data))
+      : takeLabelComplement(Number(Number(data).toFixed(2)), yComplement)
 
     return (
       `${label}: ${formatTooltipWithHours(axisValueLabel)} <br>
@@ -206,7 +198,7 @@ const ForecastAreaChart = (props: IProps) => {
           data: [
             {
               name: forecastChartLegends.lineMark || 'markLine',
-              // @ts-ignore
+              // @ts-ignore TODO: remove this XGH
               xAxis: xData[lineMarkValue - 1].toString(),
               type: 'solid'
             }
@@ -249,8 +241,6 @@ const ForecastAreaChart = (props: IProps) => {
     ],
     xAxis: {
       type: 'category',
-      showGrid: true,
-      // @ts-ignore
       data: xData,
       boundaryGap: false,
       splitLine: {
@@ -282,10 +272,8 @@ const ForecastAreaChart = (props: IProps) => {
         margin: yType === 'time' ? 16 : 14,
         formatter: (item: number) =>
           yType === 'time'
-            ? timeConvert(item) + 'h'
-            : yComplement === 'money'
-              ? formatToBRL(item)
-              : formatValueAxis(item, yComplement),
+            ? timeConvert(Number(data))
+            : takeLabelComplement(Number(item.toFixed(2)), yComplement),
         fontSize: fontLabelSize || 11.5
       }
     },

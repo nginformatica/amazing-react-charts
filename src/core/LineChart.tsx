@@ -9,10 +9,10 @@ import {
 } from './types'
 import {
   formatTime,
-  formatValueAxis,
   getDataView,
   getInitialValues,
   getSaveAsImage,
+  takeLabelComplement,
   timeConvert
 } from './auxiliarFunctions'
 import { formatToBRL } from 'brazilian-values'
@@ -99,15 +99,13 @@ const LineChart = (props: IProps) => {
       ]
       : []
 
-  const formatLabel = (
+  const formatTooltip = (
     lines: { name: string, seriesName: string, value: number }[]
   ) => {
     const takeComplement = (value: number) =>
-      yComplement === 'money'
-        ? formatToBRL(value)
-        : yComplement
-          ? formatValueAxis(value, yComplement)
-          : value
+      yType === 'time'
+        ? timeConvert(Number(value)) + 'h'
+        : takeLabelComplement(Number(value), yComplement)
 
     const linesTooltips = lines.map(
       line =>
@@ -125,19 +123,13 @@ const LineChart = (props: IProps) => {
     return `${tooltipTitle} <br> ${linesTooltips.join(' ')}`
   }
 
-  const tooltip = !noTooltip && {
-    formatter: formatLabel,
-    trigger: 'axis' as const,
-    textStyle: { fontSize: 11.5 }
-  }
-
   const toolbox = toolboxTooltip && {
     showTitle: false,
     right: '9.52%',
     feature: {
       saveAsImage:
         toolboxTooltip.saveAsImage &&
-        (getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage),
+        getSaveAsImage(toolboxTooltip.saveAsImage),
       dataView: toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
     },
     tooltip: {
@@ -146,19 +138,6 @@ const LineChart = (props: IProps) => {
       textStyle: {
         fontSize: 12
       }
-    }
-  }
-
-  const title = {
-    id: 'chart-' + titleProps,
-    left: '6.2%',
-    show: titleProps !== undefined,
-    text: titleProps,
-    textAlign: 'left',
-    textStyle: {
-      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-      fontSize: 16,
-      fontWeight: '400' as const
     }
   }
 
@@ -215,13 +194,26 @@ const LineChart = (props: IProps) => {
     },
     grid: { ...(gridProps || { bottom: 60 }), show: true },
     legend: {
-      data: names,
-      icon: 'line'
+      data: names, icon: 'line'
+    },
+    tooltip: !noTooltip && {
+      formatter: formatTooltip,
+      trigger: 'axis' as const,
+      textStyle: { fontSize: 11.5 }
+    },
+    title: {
+      left: '6.2%',
+      show: titleProps !== undefined,
+      text: titleProps,
+      textAlign: 'left',
+      textStyle: {
+        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+        fontSize: 16,
+        fontWeight: '400' as const
+      }
     },
     dataZoom: scrollable,
-    title: title,
-    toolbox,
-    tooltip
+    toolbox
   }
 
   return (
