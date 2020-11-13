@@ -4,6 +4,16 @@ import { takeLast } from 'ramda'
 import ptBR from 'date-fns/locale/pt-BR'
 import { TDataTooltip, TDomainValues } from './types'
 
+export const takeLabelComplement = (item: number, complement: string) =>
+  complement === 'money'
+    ? formatToBRL(item)
+    : complement
+      ? formatValueAxis(item, complement)
+      : item
+
+export const takeDonutComplement = (item: number, complement?: string) =>
+  item === 0 ? '' : item + (complement || '')
+
 export const timeConvert = (value: number) => {
   const seconds = Math.round((value % 1) * 3600)
   const minutes = Math.trunc(seconds / 60)
@@ -62,9 +72,9 @@ export const mountMessage = (
 ) =>
   complement === 'money' && value.seriesType !== 'line'
     ? value.marker +
-      value.seriesName +
-      ': ' +
-      moneyPercent(value.data as number, stackedValues, sumDataValues)
+    value.seriesName +
+    ': ' +
+    moneyPercent(value.data as number, stackedValues, sumDataValues)
     : axisType === 'percent'
       ? value.marker +
       value.seriesName +

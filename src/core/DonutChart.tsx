@@ -2,7 +2,11 @@ import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { IProps } from './PieChart'
 import { TPieChartData, TPieDataLabel } from './types'
-import { getDataView, getSaveAsImage } from './auxiliarFunctions'
+import {
+  getDataView,
+  getSaveAsImage,
+  takeDonutComplement
+} from './auxiliarFunctions'
 import { map, sum } from 'ramda'
 import { formatToBRL } from 'brazilian-values'
 
@@ -35,16 +39,17 @@ export const DonutChart = (props: IDonutProps) => {
 
   const formatTooltip = ({ name, value, marker }: TPieChartData) => {
     const percent = value !== 0 ? (value * (100 / totalValues)).toFixed(2) : 0
+    const valueWithPercent = resultFormatType === 'percent'
+      ? value + ' (' + percent + '%)'
+      : value
 
-    const valueToShow =
-      resultFormatType === 'money'
-        ? formatToBRL(value)
-        : resultFormatType === 'percent'
-          ? value + ' (' + percent + '%)'
-          : value
+    const valueToShow = resultFormatType === 'money'
+      ? formatToBRL(value)
+      : valueWithPercent
 
     const label =
       tooltip && tooltip.label ? tooltip.label + ': ' + name + '<br>' : ''
+
     const result =
       tooltip && tooltip.result
         ? marker + tooltip.result + ': ' + valueToShow
@@ -54,11 +59,9 @@ export const DonutChart = (props: IDonutProps) => {
   }
 
   const formatDonutLabel = (value: number) =>
-    value === 0
-      ? ''
-      : resultFormatType === 'money'
-        ? formatToBRL(value)
-        : value + (yComplement || '')
+    resultFormatType === 'money'
+      ? formatToBRL(value)
+      : takeDonutComplement(value, yComplement)
 
   const toolbox = toolboxTooltip && {
     showTitle: false,

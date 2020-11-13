@@ -5,13 +5,13 @@ import {
   formatMoneyLabel,
   formatTime,
   formatTooltip,
-  formatValueAxis,
   getDataView,
   getDomain,
   getInitialValues,
   getSaveAsImage,
   timeConvert,
-  toDate
+  toDate,
+  takeLabelComplement
 } from './auxiliarFunctions'
 import {
   IDefaultChartProps,
@@ -21,7 +21,6 @@ import {
   TSaveAsImage,
   TZoomProps
 } from './types'
-import { formatToBRL } from 'brazilian-values'
 
 const AreaChart = (props: IDefaultChartProps) => {
   const {
@@ -55,13 +54,9 @@ const AreaChart = (props: IDefaultChartProps) => {
   const formatLabel = (chartValues: { data: number }) => {
     const { data } = chartValues
 
-    return yComplement
-      ? formatValueAxis(Number(data), yComplement)
-      : yType === 'time'
-        ? timeConvert(Number(data)) + 'h'
-        : yComplement === 'money'
-          ? formatToBRL(data)
-          : data
+    return yType === 'time'
+      ? timeConvert(Number(data as number)) + 'h'
+      : takeLabelComplement(Number(data), yComplement)
   }
 
   const dinamicData = (
@@ -98,39 +93,15 @@ const AreaChart = (props: IDefaultChartProps) => {
     const { axisValueLabel, data } = chartValues[0]
     const complement = tooltipComplement ? tooltipComplement : ''
 
-    const values =
-      yType === 'time'
-        ? timeConvert(Number(data as number)) + 'h'
-        : yComplement === 'money'
-          ? formatToBRL(Number(data))
-          : yComplement
-            ? formatValueAxis(Number(data), yComplement)
-            : data
+    const values = yType === 'time'
+      ? timeConvert(Number(data as number)) + 'h'
+      : takeLabelComplement(Number(data), yComplement)
 
     return (
       `${label}: ${formatTooltip(axisValueLabel, dateFormat)} <br>
       ${result}: ${values} <br> 
       ${complement}`
     )
-  }
-
-  const tooltip = {
-    formatter: formatSingleTooltip,
-    trigger: 'axis' as const,
-    textStyle: { fontSize: 11.5 }
-  }
-
-  const title = {
-    id: 'chart-' + titleProps,
-    left: '6.2%',
-    show: titleProps !== undefined,
-    text: titleProps,
-    textAlign: 'left',
-    textStyle: {
-      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-      fontSize: 16,
-      fontWeight: '400' as const
-    }
   }
 
   const toolbox = toolboxTooltip && {
@@ -253,11 +224,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         formatter: (item: number) =>
           yType === 'time'
             ? timeConvert(item) + 'h'
-            : yComplement === 'money'
-              ? formatToBRL(item)
-              : yComplement
-                ? formatValueAxis(item, yComplement)
-                : item,
+            : takeLabelComplement(item, yComplement),
         textStyle: {
           fontSize: fontLabelSize || 11.5
         }
@@ -273,10 +240,24 @@ const AreaChart = (props: IDefaultChartProps) => {
       data: [lineMakeName],
       itemGap: 30
     },
+    title: {
+      left: '6.2%',
+      show: titleProps !== undefined,
+      text: titleProps,
+      textAlign: 'left',
+      textStyle: {
+        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+        fontSize: 16,
+        fontWeight: '400' as const
+      }
+    },
+    tooltip: tooltipProps && {
+      formatter: formatSingleTooltip,
+      trigger: 'axis' as const,
+      textStyle: { fontSize: 11.5 }
+    },
     dataZoom: scrollable,
-    title: title,
-    toolbox,
-    tooltip: tooltipProps && tooltip
+    toolbox
   }
 
   return (
