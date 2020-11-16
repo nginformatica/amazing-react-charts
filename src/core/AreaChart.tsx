@@ -18,7 +18,6 @@ import {
   TDataZoomChartProps,
   TDataZoomEventProps,
   TEntryData,
-  TSaveAsImage,
   TZoomProps
 } from './types'
 
@@ -110,7 +109,7 @@ const AreaChart = (props: IDefaultChartProps) => {
     feature: {
       saveAsImage:
         toolboxTooltip.saveAsImage &&
-        (getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage),
+        getSaveAsImage(toolboxTooltip.saveAsImage),
       dataView: toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
     },
     tooltip: {

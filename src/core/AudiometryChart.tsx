@@ -6,8 +6,7 @@ import {
   TAudiometryDataTooltip,
   TCostumizedSymbolData,
   TLineStyleType,
-  TOptionsProps,
-  TSaveAsImage,
+  TOptionsProps
 } from './types'
 import { map, zipWith } from 'ramda'
 import { getDataView, getSaveAsImage } from './auxiliarFunctions'
@@ -80,7 +79,7 @@ const AudiometryChart = (props: IProps) => {
     feature: {
       saveAsImage:
         props.toolboxTooltip.saveAsImage &&
-        (getSaveAsImage(props.toolboxTooltip.saveAsImage) as TSaveAsImage),
+        getSaveAsImage(props.toolboxTooltip.saveAsImage),
       dataView:
         props.toolboxTooltip.dataView &&
         getDataView(props.toolboxTooltip.dataView)

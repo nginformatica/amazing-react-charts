@@ -8,7 +8,6 @@ import {
   TEntryData,
   TLabelProps,
   TOptionsProps,
-  TSaveAsImage,
   TZoomProps
 } from './types'
 import {
@@ -203,7 +202,7 @@ const VerticalBarChart = (props: IProps) => {
     feature: {
       saveAsImage:
         toolboxTooltip.saveAsImage &&
-        (getSaveAsImage(toolboxTooltip.saveAsImage) as TSaveAsImage),
+        getSaveAsImage(toolboxTooltip.saveAsImage),
       dataView: toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
     },
     tooltip: {

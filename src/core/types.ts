@@ -396,25 +396,6 @@ export type TTitleProps = {
   top?: number | string
 }
 
-export type TToolBoxProps = {
-  feature: TFeatureProps
-  right?: number | string
-}
-
-export type TFeatureProps = {
-  saveAsImage: TSaveAsImage
-  dataView: TDataView
-}
-
-export type TSaveAsImage = {
-  type?: 'png' | 'jpeg'
-  excludeComponents?: string[]
-  show?: boolean
-  title?: string
-  icon?: string
-  iconStyle?: CSSProperties
-}
-
 export type TDataView = {
   buttonColor?: string
   lang?: string[]
