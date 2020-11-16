@@ -13,7 +13,6 @@ import {
 import {
   formatTime,
   formatTooltip,
-  formatValueAxis,
   getDataView,
   getDomain,
   getSaveAsImage,
@@ -222,7 +221,7 @@ const VerticalBarChart = (props: IProps) => {
     const values =
       yType === 'time'
         ? timeConvert(Number(value)) + 'h'
-        : formatValueAxis(Number(value), yComplement)
+        : takeLabelComplement(Number(value), yComplement)
 
     const labelPrint =
       xType === 'time' ? formatTooltip(axisValueLabel) : axisValueLabel
@@ -310,7 +309,7 @@ const VerticalBarChart = (props: IProps) => {
         formatter: (item: number) =>
           yType === 'time'
             ? timeConvert(item) + 'h'
-            : formatValueAxis(item, yComplement),
+            : takeLabelComplement(item, yComplement),
         fontSize: 11
       }
     },

@@ -4,12 +4,15 @@ import { takeLast } from 'ramda'
 import ptBR from 'date-fns/locale/pt-BR'
 import { TDataTooltip, TDomainValues } from './types'
 
-export const takeLabelComplement = (item: number, complement: string) =>
-  complement === 'money'
+export const takeLabelComplement = (item: number, complement: string) => {
+  const getComplement = complement
+    ? formatValueAxis(item, complement)
+    : item
+
+  return complement === 'money'
     ? formatToBRL(item)
-    : complement
-      ? formatValueAxis(item, complement)
-      : item
+    : getComplement
+}
 
 export const takeDonutComplement = (item: number, complement?: string) =>
   item === 0 ? '' : item + (complement || '')
@@ -24,14 +27,15 @@ export const timeConvert = (value: number) => {
     : Math.floor(value) + ':00'
 }
 
-export const formatValueAxis = (value: number, complement: string) =>
-  complement === '%' || complement === 'percent'
+export const formatValueAxis = (value: number, complement: string) => {
+  const getTime = complement === 'time'
+    ? timeConvert(value)
+    : value + complement
+
+  return complement === '%' || complement === 'percent'
     ? (value.toFixed(2) + '%').replace('.', ',')
-    : complement === 'money'
-      ? formatToBRL(value)
-      : complement === 'time'
-        ? timeConvert(value)
-        : value + complement
+    : getTime
+}
 
 export const takeComplement = (data: string | number, complement: string) =>
   complement === 'money'
@@ -69,18 +73,21 @@ export const mountMessage = (
   axisType: string,
   stackedValues: number,
   sumDataValues: boolean
-) =>
-  complement === 'money' && value.seriesType !== 'line'
-    ? value.marker +
-    value.seriesName +
-    ': ' +
-    moneyPercent(value.data as number, stackedValues, sumDataValues)
-    : axisType === 'percent'
-      ? value.marker +
-      value.seriesName +
-      ': ' +
-      (formatValueAxis(Number(value.data), '%') + '<br>')
-      : value.marker + value.seriesName + takeComplement(value.data, complement)
+) => {
+  const seriesLabel = value.marker + value.seriesName
+  const moneyValue =
+    moneyPercent(Number(value.data), stackedValues, sumDataValues)
+
+  const isPercentage = axisType === 'percent' || complement === '%'
+    ? seriesLabel + ': ' + (
+      formatValueAxis(Number(value.data), '%') + '<br>'
+    )
+    : seriesLabel + takeComplement(value.data, complement)
+
+  return complement === 'money' && value.seriesType !== 'line'
+    ? seriesLabel + ': ' + moneyValue
+    : isPercentage
+}
 
 export const toDate = (text: string, format?: string) =>
   parse(text, format ? format : 'yyyy-MM-dd', new Date())
@@ -96,12 +103,6 @@ export const formatTooltip = (text: string, dateFormat?: string) =>
 export const formatTooltipWithHours = (text: string) =>
   format(new Date(text), 'dd/MM/yyyy HH:mm', { locale: ptBR })
 
-export const truncateText = (text: string, listSize?: number) => {
-  const wordSize = listSize && listSize > 10 ? 8 : 12
-
-  return text.length > wordSize ? text.slice(0, wordSize - 3) + '...' : text
-}
-
 export const truncateLabel = (text: string, labelWordSize?: number) => {
   const numberOfLetters = labelWordSize ? labelWordSize : 12
   const lettersToShow = labelWordSize ? 3 : 4
@@ -115,6 +116,7 @@ export const truncateSpecialLabel = (text: string, size: number) =>
   text.length > size ? text.slice(0, size - 3) + '...' : text
 
 export const getDomain = (item: TDomainValues) => {
+  // TODO: improve this "pattern matching" xgh
   switch (true) {
     case item.max >= 2500:
       return item.max + (item.max * 20) / 100
@@ -191,13 +193,10 @@ export const getInitialValues = (
       : 0
   }
 
-  return dateFormat !== 'yyyy-MM'
-    ? arrayLength > 30
-      ? 100 - 3000 / arrayLength
-      : 0
-    : arrayLength > 12
-      ? 100 - 1200 / arrayLength
-      : 0
+  const monthly = arrayLength > 30 ? 100 - 3000 / arrayLength : 0
+  const yearly = arrayLength > 12 ? 100 - 1200 / arrayLength : 0
+
+  return dateFormat !== 'yyyy-MM' ? monthly : yearly
 }
 
 export const getEndForecast = (arrayLength: number, lineMarkValue: number) =>

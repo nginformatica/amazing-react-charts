@@ -13,7 +13,6 @@ import {
 import { formatToBRL } from 'brazilian-values'
 import {
   formatTime,
-  formatValueAxis,
   getDataView,
   getSaveAsImage,
   monuntTimeMessage,
@@ -184,7 +183,8 @@ const StackedBarChart = (props: IProps) => {
           lineStyle: { color: colors[2] }
         },
         axisLabel: {
-          formatter: (item: string) => formatValueAxis(Number(item), '%'),
+          formatter: (item: string) =>
+            takeLabelComplement(Number(item), '%'),
           color: colors[2]
         },
         splitLine: {
@@ -314,9 +314,7 @@ const StackedBarChart = (props: IProps) => {
         position: 'left' as const,
         axisLabel: {
           formatter: (item: string) =>
-            yComplement === 'money'
-              ? formatToBRL(item)
-              : formatValueAxis(Number(item), yComplement),
+            takeLabelComplement(Number(item), yComplement),
           fontSize: 11.5,
           interval: 0
         },
