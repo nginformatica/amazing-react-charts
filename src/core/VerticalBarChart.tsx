@@ -77,16 +77,16 @@ export const normalLabel = {
 export const dontShowLabel = {
   xAxis: {
     axisLabel: {
+      interval: 1,
       rotate: 0,
-      formatter: (item: string) => item
     }
   },
   grid: { bottom: 60 }
 }
 
 interface IProps extends IDefaultChartProps {
-  rotateTickLabel?: number;
-  customMaxDomain?: number;
+  rotateTickLabel?: number
+  customMaxDomain?: number
 }
 
 const VerticalBarChart = (props: IProps) => {

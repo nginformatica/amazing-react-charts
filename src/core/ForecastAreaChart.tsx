@@ -28,12 +28,12 @@ interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
   tooltip: {
     current: TTooltipEntryProps
     forecast: TTooltipEntryProps
-  };
+  }
   forecastChartLegends?: {
     current?: string
     forecast?: string
     lineMark?: string
-  };
+  }
 }
 
 const ForecastAreaChart = (props: IProps) => {

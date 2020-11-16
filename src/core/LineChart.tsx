@@ -23,7 +23,7 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
   smooth?: boolean
   disableMarks?: boolean
   noTooltip?: boolean
-  axisNames?: { x: string, y: string };
+  axisNames?: { x: string, y: string }
 }
 
 const takeYdata = (entryData: TEntryData[]) =>

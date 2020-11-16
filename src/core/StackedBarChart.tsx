@@ -33,16 +33,16 @@ import { WIDTH_STYLE } from './DonutChart'
 type TColorNTuples =
   | [string, string]
   | [string, string, string]
-  | [string, string, string, string];
+  | [string, string, string, string]
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
-  data: TEntryDataTuples;
-  tooltipExtra?: string;
-  sumDataValues?: boolean;
-  colors?: TColorNTuples;
-  legendType?: 'scroll' | 'none';
-  legendScrollGap?: number;
-  secondYAxisType?: 'percent' | string;
+  data: TEntryDataTuples
+  tooltipExtra?: string
+  sumDataValues?: boolean
+  colors?: TColorNTuples
+  legendType?: 'scroll' | 'none'
+  legendScrollGap?: number
+  secondYAxisType?: 'percent' | string
 }
 
 const verifyStyleProps = (data: TEntryData) =>

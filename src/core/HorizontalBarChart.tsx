@@ -20,9 +20,9 @@ import { reverse } from 'ramda'
 import { WIDTH_STYLE } from './DonutChart'
 
 interface IProps extends IDefaultChartProps {
-  showTickInfos?: boolean;
-  xComplement?: string;
-  boldTickLabel?: boolean;
+  showTickInfos?: boolean
+  xComplement?: string
+  boldTickLabel?: boolean
 }
 
 const HorizontalBarChart = (props: IProps) => {

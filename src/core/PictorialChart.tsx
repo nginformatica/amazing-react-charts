@@ -7,8 +7,8 @@ import {
 } from './types'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
-  data: TPictorialEntryData[];
-  height?: number | string;
+  data: TPictorialEntryData[]
+  height?: number | string
 }
 
 const PictorialChart = (props: IProps) => {
