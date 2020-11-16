@@ -12,17 +12,17 @@ This package is based on echarts and echarts-for-react wrapper.
 
 ## Installation
 
-Amazing React Charts is avaliable as an npm package.
+Amazing React Charts is avaliable as a [NPM](https://www.npmjs.com/package/amazing-react-charts) package.
 
 - With npm:
 
-```bash
+```sh
     npm install --save amazing-react-charts
 ```
 
 - With yarn:
 
- ```bash
+```sh
     yarn add amazing-react-charts
 ```
 
