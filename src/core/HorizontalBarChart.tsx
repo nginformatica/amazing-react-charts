@@ -17,6 +17,7 @@ import {
   takeLabelComplement
 } from './auxiliarFunctions'
 import { reverse } from 'ramda'
+import { WIDTH_STYLE } from './DonutChart'
 
 interface IProps extends IDefaultChartProps {
   showTickInfos?: boolean;
@@ -101,19 +102,6 @@ const HorizontalBarChart = (props: IProps) => {
     return xType === 'time'
       ? timeConvert(Number(value)) + 'h'
       : takeLabelComplement(Number(value), xComplement)
-  }
-
-
-  const tooltip = {
-    trigger: 'axis' as const,
-    axisPointer: {
-      type: 'shadow' as const,
-      shadowStyle: {
-        opacity: 0.5
-      }
-    },
-    formatter: formatTooltip,
-    textStyle: { fontSize: 11.5 }
   }
 
   const toolbox = toolboxTooltip && {
@@ -236,16 +224,30 @@ const HorizontalBarChart = (props: IProps) => {
         fontWeight: '400' as const
       }
     },
+    tooltip: tooltipProps && {
+      trigger: 'axis' as const,
+      axisPointer: {
+        type: 'shadow' as const,
+        shadowStyle: {
+          opacity: 0.5
+        }
+      },
+      formatter: formatTooltip,
+      textStyle: { fontSize: 11.5 }
+    },
     toolbox
   }
+
+  const widthOpts = { width: width || 'auto' }
+  const clickEvent = { click: onClickBar }
 
   return (
     <ReactEcharts
       lazyUpdate
-      style={{ width: '99%' }}
-      opts={{ width: width }}
-      onEvents={{ click: onClickBar }}
-      option={tooltipProps ? { ...options, tooltip } : options}
+      style={WIDTH_STYLE}
+      opts={widthOpts}
+      onEvents={clickEvent}
+      option={options}
     />
   )
 }

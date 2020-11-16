@@ -12,6 +12,7 @@ import {
   takeLabelComplement
 } from './auxiliarFunctions'
 import { formatToBRL } from 'brazilian-values'
+import { WIDTH_STYLE } from './DonutChart'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: TPieChartData[]
@@ -137,11 +138,12 @@ export const PieChart = (props: IProps) => {
     toolbox
   }
 
+  const widthOpts = { width: width || 'auto' }
+
   return (
-    <ReactEcharts
-      lazyUpdate
-      style={{ width: '99%' }}
-      opts={{ width: width }}
+    <ReactEcharts lazyUpdate
+      style={WIDTH_STYLE}
+      opts={widthOpts}
       option={options}
     />
   )

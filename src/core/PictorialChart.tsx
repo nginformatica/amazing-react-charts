@@ -70,16 +70,9 @@ const PictorialChart = (props: IProps) => {
     tooltip: tooltip
   }
 
-  return (
-    <ReactEcharts
-      lazyUpdate
-      option={options}
-      style={{
-        width: '99%',
-        height: props.height || 500
-      }}
-    />
-  )
+  const styleOpts = { width: '99.9%', height: props.height || 500 }
+
+  return <ReactEcharts lazyUpdate option={options} style={styleOpts} />
 }
 
 export default PictorialChart

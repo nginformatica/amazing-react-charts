@@ -21,6 +21,7 @@ import {
   truncateSpecialLabel,
   takeLabelComplement
 } from './auxiliarFunctions'
+import { WIDTH_STYLE } from './DonutChart'
 
 export const fullText = {
   xAxis: {
@@ -333,13 +334,16 @@ const VerticalBarChart = (props: IProps) => {
     toolbox
   }
 
+  const widthOpts = { width: width || 'auto' }
+  const events = { dataZoom: dynamicDataZoom, click: onClickBar }
+
   return (
     <ReactEcharts
       lazyUpdate
       notMerge
-      style={{ width: '99%' }}
-      opts={{ width: width }}
-      onEvents={{ dataZoom: dynamicDataZoom, click: onClickBar }}
+      style={WIDTH_STYLE}
+      opts={widthOpts}
+      onEvents={events}
       option={options}
     />
   )

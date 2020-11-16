@@ -22,6 +22,7 @@ import {
   TZoomProps
 } from './types'
 import { take } from 'ramda'
+import { STYLES } from './AreaChart'
 
 interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
   tooltip: {
@@ -115,12 +116,6 @@ const ForecastAreaChart = (props: IProps) => {
       ${result}: ${values} <br>
       ${complement}`
     )
-  }
-
-  const tooltip = {
-    formatter: formatSingleTooltip,
-    trigger: 'axis' as const,
-    textStyle: { fontSize: 11.5 }
   }
 
   const toolbox = toolboxTooltip && {
@@ -295,17 +290,25 @@ const ForecastAreaChart = (props: IProps) => {
         fontWeight: '400' as const
       }
     },
+    tooltip: tooltipProps && {
+      formatter: formatSingleTooltip,
+      trigger: 'axis' as const,
+      textStyle: { fontSize: 11.5 }
+    },
     toolbox
   }
+
+  const widthOpts = { width: width || 'auto' }
+  const zoomEvent = { dataZoom: dinamicData }
 
   return (
     <ReactEcharts
       lazyUpdate
       notMerge
-      style={{ width: '99.9%', height: 300 }}
-      opts={{ width: width || 'auto' }}
-      onEvents={{ dataZoom: dinamicData }}
-      option={tooltipProps ? { ...options, tooltip } : options}
+      style={STYLES}
+      opts={widthOpts}
+      onEvents={zoomEvent}
+      option={options}
     />
   )
 }

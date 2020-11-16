@@ -21,6 +21,8 @@ import {
   TZoomProps
 } from './types'
 
+export const STYLES = { width: '99.9%', height: 300 }
+
 const AreaChart = (props: IDefaultChartProps) => {
   const {
     data,
@@ -259,13 +261,16 @@ const AreaChart = (props: IDefaultChartProps) => {
     toolbox
   }
 
+  const widthOpts = { width: width || 'auto' }
+  const zoomEvent = { dataZoom: dinamicData }
+
   return (
     <ReactEcharts
       lazyUpdate
       notMerge
-      style={{ width: '99.9%', height: 300 }}
-      opts={{ width: width || 'auto' }}
-      onEvents={{ dataZoom: dinamicData }}
+      style={STYLES}
+      opts={widthOpts}
+      onEvents={zoomEvent}
       option={options}
     />
   )

@@ -28,6 +28,7 @@ import {
   normalLabel,
   rotatedLabel
 } from './VerticalBarChart'
+import { WIDTH_STYLE } from './DonutChart'
 
 type TColorNTuples =
   | [string, string]
@@ -347,12 +348,15 @@ const StackedBarChart = (props: IProps) => {
     toolbox
   }
 
+  const widthOpts = { width: width || 'auto' }
+  const zoomEvent = { dataZoom: dynamicDataZoom }
+
   return (
     <ReactEcharts
       notMerge
-      style={{ width: '99%' }}
-      opts={{ width: width }}
-      onEvents={{ dataZoom: dynamicDataZoom }}
+      style={WIDTH_STYLE}
+      opts={widthOpts}
+      onEvents={zoomEvent}
       option={options}
     />
   )

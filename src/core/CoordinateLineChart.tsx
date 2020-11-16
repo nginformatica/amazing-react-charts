@@ -35,7 +35,8 @@ const CoordinateLineChart = (props: IProps) => {
     yRangeValues,
     xMaxValue,
     grid,
-    legendPosition
+    legendPosition,
+    width
   } = props
 
   const [ref, pre, pos] = coordinates
@@ -128,8 +129,10 @@ const CoordinateLineChart = (props: IProps) => {
     }
   }
 
+  const widthStyle = { width: width || 'auto', height: height }
+
   return (
-    <ReactEcharts style={{ width: '99.9%', height: height }} option={options} />
+    <ReactEcharts lazyUpdate style={widthStyle} option={options} />
   )
 }
 

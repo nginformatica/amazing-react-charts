@@ -17,6 +17,8 @@ interface IDonutProps extends IProps {
   selectedMode?: boolean
 }
 
+export const WIDTH_STYLE = { width: '99.9%' }
+
 export const DonutChart = (props: IDonutProps) => {
   const {
     title: titleProps,
@@ -156,11 +158,13 @@ export const DonutChart = (props: IDonutProps) => {
     }
   }
 
+  const widthOpts = { width: props.width }
+
   return (
     <ReactEcharts
       lazyUpdate
-      style={{ width: '99%' }}
-      opts={{ width: props.width }}
+      style={WIDTH_STYLE}
+      opts={widthOpts}
       option={options}
     />
   )

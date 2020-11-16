@@ -175,12 +175,15 @@ const AudiometryChart = (props: IProps) => {
     }
   }
 
+  const style = { width: '99.9%', height: props.height || 400 }
+  const widthOpts = { width: props.width || 'auto' }
+
   return (
     <ReactEcharts
       lazyUpdate
       notMerge
-      style={{ width: '99.9%', height: props.height || 400 }}
-      opts={{ width: props.width || 'auto' }}
+      style={style}
+      opts={widthOpts}
       option={options}
     />
   )

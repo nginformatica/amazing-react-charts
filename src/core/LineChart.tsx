@@ -14,6 +14,7 @@ import {
   takeLabelComplement,
   timeConvert
 } from './auxiliarFunctions'
+import { WIDTH_STYLE } from './DonutChart'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: TEntryDataLine[]
@@ -214,12 +215,14 @@ const LineChart = (props: IProps) => {
     toolbox
   }
 
+  const widthOpts = { width: width || 'auto' }
+
   return (
     <ReactCharts
       lazyUpdate
       notMerge
-      style={{ width: '99.9%' }}
-      opts={{ width: width || 'auto' }}
+      style={WIDTH_STYLE}
+      opts={widthOpts}
       option={options}
     />
   )
