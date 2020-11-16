@@ -14,13 +14,16 @@ This package is based on echarts and echarts-for-react wrapper.
 
 Amazing React Charts is avaliable as an npm package.
 
+- With npm:
+
+```bash
+    npm install --save amazing-react-charts
 ```
-    // with npm 
-    npm install --save amazing-react-charts 
 
+- With yarn:
 
-    //with yarn 
-    yarn add amazing-react-charts 
+ ```bash
+    yarn add amazing-react-charts
 ```
 
 ## Usage
@@ -36,18 +39,19 @@ import VerticalBarChart from 'amazing-react-charts'
     barWidth={ 100 }
     yComplement='%'
     tooltip={{ 
-        label: 'Axis x tooltip label', 
-        result: 'Axis y tooltip label' 
+        label: 'Axis x tooltip label',
+        result: 'Axis y tooltip label'
     }}
     data={[
         { label: 'value 1', result: 50 },
         { label: 'value 2', result: 21 },
         { label: 'value 3', result: 84 },
-        { label: 'value 4', result: 79 }, 
-    ]} 
+        { label: 'value 4', result: 79 }
+    ]}
 />
 
 ```
+
 ## Demo
 
 To run the demo:
@@ -65,7 +69,15 @@ yarn && yarn start
 - [x] StackedBarChart
 - [x] VerticalBarChart
 - [x] PieChart
+- [x] CoordinateLineChart
+- [x] DonutChart
+- [x] LineChart
+- [x] PictorialChart
 
+## Special Components
+
+- [x] AudiometryChart
+- [x] ForecastAreaChart
 
 ## Next Components
 
