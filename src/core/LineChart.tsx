@@ -4,7 +4,6 @@ import {
   IDefaultChartProps,
   TEntryData,
   TEntryDataLine,
-  TSaveAsImage,
   TZoomProps
 } from './types'
 import {
@@ -15,7 +14,6 @@ import {
   takeLabelComplement,
   timeConvert
 } from './auxiliarFunctions'
-import { formatToBRL } from 'brazilian-values'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: TEntryDataLine[]

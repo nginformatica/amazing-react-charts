@@ -20,7 +20,8 @@ import {
   getSaveAsImage,
   timeConvert,
   toDate,
-  truncateSpecialLabel
+  truncateSpecialLabel,
+  takeLabelComplement
 } from './auxiliarFunctions'
 
 export const fullText = {
@@ -114,6 +115,10 @@ const VerticalBarChart = (props: IProps) => {
     customMaxDomain
   } = props
 
+  const isCustomDomain = customMaxDomain
+    ? customMaxDomain
+    : getDomain
+
   const yData = data.map((item: TEntryData) => {
     const results = data.map(item => item.result)
     const maxValue = Math.max(...results)
@@ -149,6 +154,9 @@ const VerticalBarChart = (props: IProps) => {
     xType === 'time'
       ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
       : data.map((item: TEntryData) => item.label)
+
+  const specialLabel = (item: string) =>
+    truncateSpecialLabel(item, xData.length <= 5 ? 16 : 9)
 
   const dynamicDataZoom = (
     item: TDataZoomEventProps,
@@ -186,11 +194,7 @@ const VerticalBarChart = (props: IProps) => {
   const formatLabel = (chartValues: TDataTooltip) => {
     const { value } = chartValues
 
-    return yComplement
-      ? formatValueAxis(Number(value), yComplement)
-      : yType === 'time'
-        ? timeConvert(Number(value)) + 'h'
-        : value
+    return takeLabelComplement(Number(value), yComplement)
   }
 
   const toolbox = toolboxTooltip && {
@@ -279,10 +283,9 @@ const VerticalBarChart = (props: IProps) => {
       },
       axisLabel: {
         rotate: rotateLabel && rotateLabel,
-        formatter: (item: string) =>
-          xType === 'time'
-            ? formatTime(item, 'dd MMM')
-            : truncateSpecialLabel(item, xData.length <= 5 ? 16 : 9),
+        formatter: (item: string) => xType === 'time'
+          ? formatTime(item, 'dd MMM')
+          : specialLabel(item),
         interval: 0,
         fontSize: 11
       },
@@ -295,9 +298,7 @@ const VerticalBarChart = (props: IProps) => {
       max:
         !isMoreThanHundredPercent && yComplement === '%'
           ? 100
-          : customMaxDomain
-            ? customMaxDomain
-            : getDomain,
+          : isCustomDomain,
       type: 'value',
       splitLine: {
         show: true,

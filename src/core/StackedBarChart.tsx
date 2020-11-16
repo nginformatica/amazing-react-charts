@@ -7,7 +7,8 @@ import {
   TDataZoomEventProps,
   TEntryData,
   TEntryDataTuples,
-  TZoomProps
+  TZoomProps,
+  TParamsTooltip
 } from './types'
 import { formatToBRL } from 'brazilian-values'
 import {
@@ -19,7 +20,8 @@ import {
   mountMessage,
   timeConvert,
   toDate,
-  truncateLabel
+  truncateLabel,
+  takeLabelComplement
 } from './auxiliarFunctions'
 import {
   dontShowLabel,
@@ -96,11 +98,7 @@ const StackedBarChart = (props: IProps) => {
     const { dataIndex } = chartValues
     const value = topLabels[dataIndex]
 
-    return yComplement
-      ? formatValueAxis(Number(value), yComplement)
-      : yComplement === 'time'
-        ? timeConvert(Number(value)) + 'h'
-        : value
+    return takeLabelComplement(Number(value), yComplement)
   }
 
   const yLineData = lineData.map((item: TEntryData) => item.result)
@@ -128,7 +126,7 @@ const StackedBarChart = (props: IProps) => {
     }
   }
 
-  const formatTooltip = (values: TDataTooltip[]): string => {
+  const formatTooltip = (values: TParamsTooltip[]): string => {
     const takeValue = (data: { value: number | string } | string | number) =>
       typeof data === 'object' ? Number(data.value) : Number(data)
 
@@ -150,27 +148,29 @@ const StackedBarChart = (props: IProps) => {
       )
       .join(' ')
 
-    const verifyFormat =
-      yComplement === 'time'
-        ? timeConvert(stackedValues)
-        : formatToBRL(stackedValues)
+    const verifyFormat = yComplement === 'time'
+      ? timeConvert(stackedValues)
+      : formatToBRL(stackedValues)
 
     const labelResult =
       xType === 'time'
         ? label + ': ' + formatTime(values[0].name, 'MMM/yy') + '<br>'
         : label + ': ' + values[0].name + '<br>'
 
+    const valueWithoutSecondYAxis =
+      sumDataValues && values.length === 2 && !secondYAxisType
+        ? complement + ': ' + verifyFormat
+        : ''
+
     const tooltipSumValues =
       sumDataValues && values.length === 3 && secondYAxisType
         ? complement + ': ' + formatToBRL(stackedValues)
-        : sumDataValues && values.length === 2 && !secondYAxisType
-          ? complement + ': ' + verifyFormat
-          : ''
+        : valueWithoutSecondYAxis
 
     const tooltipFooter =
       tooltipExtra && !sumDataValues ? tooltipExtra : tooltipSumValues
 
-    return labelResult + tooltipBody + tooltipFooter
+    return (labelResult + tooltipBody + tooltipFooter)
   }
 
   const secondYAxis =
@@ -209,20 +209,6 @@ const StackedBarChart = (props: IProps) => {
         }
       ]
       : []
-
-  const title = {
-    id: 'chart-' + titleProps,
-    left: legendType === 'scroll' ? '0.1%' : '4%',
-    top: legendType === 'scroll' && '5.7%',
-    show: titleProps !== undefined,
-    text: titleProps,
-    textAlign: 'left',
-    textStyle: {
-      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-      fontSize: 16,
-      fontWeight: '400' as const
-    }
-  }
 
   const toolbox = toolboxTooltip && {
     showTitle: false,
@@ -312,6 +298,8 @@ const StackedBarChart = (props: IProps) => {
         interval: xData.length > 20 ? () => 'auto' : 0
       },
       splitLine: {
+        // @ts-ignore https://github.com/apache/incubator-echarts/issues/13618
+        alignWithLabel: true,
         show: true
       },
       axisTick: {
@@ -341,8 +329,19 @@ const StackedBarChart = (props: IProps) => {
     ],
     legend: legendType === 'none' ? undefined : legendProps,
     dataZoom: scrollable,
-    title: title,
-    toooltip: tooltipProps && {
+    title: {
+      left: legendType === 'scroll' ? '0.1%' : '4%',
+      top: legendType === 'scroll' && '5.7%',
+      show: titleProps !== undefined,
+      text: titleProps,
+      textAlign: 'left',
+      textStyle: {
+        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+        fontSize: 16,
+        fontWeight: '400' as const
+      }
+    },
+    tooltip: tooltipProps && {
       formatter: formatTooltip,
       textStyle: { fontSize: 11.5 },
       trigger: 'axis' as const

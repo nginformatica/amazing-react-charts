@@ -25,7 +25,7 @@ export const timeConvert = (value: number) => {
 }
 
 export const formatValueAxis = (value: number, complement: string) =>
-  complement === '%'
+  complement === '%' || complement === 'percent'
     ? (value.toFixed(2) + '%').replace('.', ',')
     : complement === 'money'
       ? formatToBRL(value)

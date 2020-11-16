@@ -6,7 +6,11 @@ import {
 } from './types'
 import ReactEcharts from 'echarts-for-react'
 import { map, sum } from 'ramda'
-import { getDataView, getSaveAsImage } from './auxiliarFunctions'
+import {
+  getDataView,
+  getSaveAsImage,
+  takeLabelComplement
+} from './auxiliarFunctions'
 import { formatToBRL } from 'brazilian-values'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
@@ -28,7 +32,6 @@ export const PieChart = (props: IProps) => {
     data,
     grid: gridProps,
     width,
-    yComplement,
     colors,
     legendPosition,
     radius,
@@ -63,12 +66,9 @@ export const PieChart = (props: IProps) => {
     )
   }
 
-  const formatPieLabel = ({ data }: TPieDataLabel) =>
-    data.value === 0
-      ? ''
-      : resultFormatType === 'money'
-        ? formatToBRL(data.value)
-        : data.value + (yComplement || '')
+  const formatPieLabel = ({ data }: TPieDataLabel) => data.value === 0
+    ? ''
+    : takeLabelComplement(data.value, resultFormatType)
 
   const toolbox = toolboxTooltip && {
     showTitle: false,
