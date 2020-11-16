@@ -17,4 +17,4 @@ module.exports = {
     "transform-class-properties"
   ],
   presets: ["@babel/env", "@babel/react", "@babel/typescript"]
-};
+}
