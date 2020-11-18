@@ -4,6 +4,22 @@ import { takeLast } from 'ramda'
 import ptBR from 'date-fns/locale/pt-BR'
 import { TDataTooltip, TDomainValues } from './types'
 
+type TConnectedDataURL = {
+  type?: string
+  backgroundColor?: string
+  excludeComponents?: string[]
+}
+
+const DOWNLOAD_ICON =
+  'path://M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 ' +
+  '.67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z'
+
+const iconStyle = {
+  color: '#152849',
+  borderColor: '#152849',
+  borderWidth: 0.1
+}
+
 export const takeLabelComplement = (item: number, complement: string) => {
   const getComplement = complement
     ? formatValueAxis(item, complement)
@@ -151,18 +167,53 @@ export const fixedDomain = (item: TDomainValues) =>
   item.max >= 90 ? 100 : getDomain(item)
 
 export const getSaveAsImage = (title: string) => ({
+  title,
   type: 'jpeg',
+  show: true,
+  icon: DOWNLOAD_ICON,
+  iconStyle,
+  excludeComponents: ['toolbox', 'dataZoom']
+})
+
+export const getSaveAsImageWithTitle = (
+  title: string,
+  setTitle: (show: boolean) => void
+) => ({
   title,
   show: true,
-  icon:
-    'path://M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 ' +
-    '.67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z',
-  iconStyle: {
-    color: '#152849',
-    borderColor: '#152849',
-    borderWidth: 0.1
-  },
-  excludeComponents: ['toolbox', 'dataZoom']
+  icon: DOWNLOAD_ICON,
+  iconStyle,
+  onclick: (
+    item: { option: { title: { text: string }[] } },
+    chartInfo: { getConnectedDataURL: (opts: TConnectedDataURL) => string }
+  ) => {
+    const title = item.option.title.length > 0
+      ? item.option.title[0].text
+      : 'image'
+
+    setTitle(true)
+
+    const url = chartInfo.getConnectedDataURL({
+      type: 'jpg',
+      backgroundColor: '#fff',
+      excludeComponents: ['toolbox', 'dataZoom']
+    })
+
+    const a = document.createElement('a')
+    a.download = title + '.jpeg'
+    a.target = '_blank'
+    a.href = url
+
+    const event = new MouseEvent('click', {
+      view: document.defaultView,
+      bubbles: true,
+      cancelable: false
+    })
+
+    a.dispatchEvent(event)
+
+    setTitle(false)
+  }
 })
 
 export const getDataView = (title: string) => ({

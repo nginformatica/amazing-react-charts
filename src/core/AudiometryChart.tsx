@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
@@ -9,7 +9,11 @@ import {
   TOptionsProps
 } from './types'
 import { map, zipWith } from 'ramda'
-import { getDataView, getSaveAsImage } from './auxiliarFunctions'
+import {
+  getDataView,
+  getSaveAsImage,
+  getSaveAsImageWithTitle
+} from './auxiliarFunctions'
 
 const xFixedData: string[] = ['.25', '.5', '1', '2', '3', '4', '6', '8']
 
@@ -35,6 +39,12 @@ const formatTooltip = (items: TAudiometryDataTooltip[]) => {
 }
 
 const AudiometryChart = (props: IProps) => {
+  const [title, setTitle] = useState(false)
+
+  const handleShowTitle = (show: boolean) => {
+    setTitle(show)
+  }
+
   const yData = map(
     item => ({
       value: item.result,
@@ -59,27 +69,19 @@ const AudiometryChart = (props: IProps) => {
     props.data
   )
 
-  const title = {
-    id: 'chart-' + props.title,
-    left: '6.2%',
-    show: props.title !== undefined,
-    text: props.title,
-    textAlign: 'left',
-    textStyle: {
-      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-      fontSize: 16,
-      fontWeight: '400' as const,
-      color: props.color || 'red'
-    }
-  }
-
   const toolbox = props.toolboxTooltip && {
     showTitle: false,
     right: '9.52%',
     feature: {
       saveAsImage:
-        props.toolboxTooltip.saveAsImage &&
+        props.toolboxTooltip.saveAsImage && !props.showTitleOnlySave &&
         getSaveAsImage(props.toolboxTooltip.saveAsImage),
+      myTool:
+        props.toolboxTooltip.saveAsImage && props.showTitleOnlySave &&
+        getSaveAsImageWithTitle(
+          props.toolboxTooltip.saveAsImage,
+          handleShowTitle
+        ),
       dataView:
         props.toolboxTooltip.dataView &&
         getDataView(props.toolboxTooltip.dataView)
@@ -92,6 +94,7 @@ const AudiometryChart = (props: IProps) => {
       }
     }
   }
+
 
   const tooltip = {
     formatter: formatTooltip,
@@ -166,7 +169,18 @@ const AudiometryChart = (props: IProps) => {
       }
     },
     toolbox,
-    title,
+    title: {
+      left: '6.2%',
+      show: title && props.title !== undefined,
+      text: props.title,
+      textAlign: 'left',
+      textStyle: {
+        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+        fontSize: 16,
+        fontWeight: '400' as const,
+        color: props.color || 'red'
+      }
+    },
     tooltip,
     color: [props.color || 'red'],
     grid: {
@@ -180,8 +194,6 @@ const AudiometryChart = (props: IProps) => {
 
   return (
     <ReactEcharts
-      lazyUpdate
-      notMerge
       style={style}
       opts={widthOpts}
       option={options}

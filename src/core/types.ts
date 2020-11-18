@@ -28,6 +28,7 @@ export interface IDefaultChartProps {
   marginRightToolbox?: string
   titleFontSize?: number
   scrollStart?: number
+  showTitleOnlySave?: boolean
   onClickBar?(
     itemProps?: Record<string, unknown>,
     itemFunctions?: Record<string, unknown>
