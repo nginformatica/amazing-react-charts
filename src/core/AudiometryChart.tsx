@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
@@ -9,11 +9,7 @@ import {
   TOptionsProps
 } from './types'
 import { map, zipWith } from 'ramda'
-import {
-  getDataView,
-  getSaveAsImage,
-  getSaveAsImageWithTitle
-} from './auxiliarFunctions'
+import { getDataView, getSaveAsImageWithTitle } from './auxiliarFunctions'
 
 const xFixedData: string[] = ['.25', '.5', '1', '2', '3', '4', '6', '8']
 
@@ -39,7 +35,27 @@ const formatTooltip = (items: TAudiometryDataTooltip[]) => {
 }
 
 const AudiometryChart = (props: IProps) => {
+  const {
+    title: titleProps,
+    symbolsSize,
+    data,
+    toolboxTooltip,
+    lineType,
+    color,
+    grid,
+    height,
+    width
+  } = props
+
   const [title, setTitle] = useState(false)
+
+  useEffect(() => {
+    if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
+      setTitle(false)
+    } else {
+      setTitle(true)
+    }
+  }, [toolboxTooltip])
 
   const handleShowTitle = (show: boolean) => {
     setTitle(show)
@@ -49,11 +65,11 @@ const AudiometryChart = (props: IProps) => {
     item => ({
       value: item.result,
       symbol: item.symbol,
-      symbolSize: props.symbolsSize || 12,
+      symbolSize: symbolsSize || 12,
       name: item.result,
       boneValue: item.boneResult
     }),
-    props.data
+    data
   )
 
   const marks: TCostumizedSymbolData[] = zipWith(
@@ -62,29 +78,27 @@ const AudiometryChart = (props: IProps) => {
         ? {
           value: data.boneResult,
           symbol: data.boneSymbol,
-          symbolSize: props.symbolsSize || 12
+          symbolSize: symbolsSize || 12
         }
         : {},
     xFixedData,
-    props.data
+    data
   )
 
-  const toolbox = props.toolboxTooltip && {
+  const myTool = toolboxTooltip && toolboxTooltip.saveAsImageWithTitle &&
+    getSaveAsImageWithTitle(
+      toolboxTooltip.saveAsImageWithTitle,
+      handleShowTitle
+    )
+
+  const toolbox = toolboxTooltip && {
     showTitle: false,
     right: '9.52%',
     feature: {
-      saveAsImage:
-        props.toolboxTooltip.saveAsImage && !props.showTitleOnlySave &&
-        getSaveAsImage(props.toolboxTooltip.saveAsImage),
-      myTool:
-        props.toolboxTooltip.saveAsImage && props.showTitleOnlySave &&
-        getSaveAsImageWithTitle(
-          props.toolboxTooltip.saveAsImage,
-          handleShowTitle
-        ),
+      myTool: myTool,
       dataView:
-        props.toolboxTooltip.dataView &&
-        getDataView(props.toolboxTooltip.dataView)
+        toolboxTooltip.dataView &&
+        getDataView(toolboxTooltip.dataView)
     },
     tooltip: {
       show: true,
@@ -94,7 +108,6 @@ const AudiometryChart = (props: IProps) => {
       }
     }
   }
-
 
   const tooltip = {
     formatter: formatTooltip,
@@ -109,7 +122,7 @@ const AudiometryChart = (props: IProps) => {
         type: 'line',
         lineStyle: {
           width: 1,
-          type: props.lineType || 'solid'
+          type: lineType || 'solid'
         },
         data: yData
       },
@@ -130,13 +143,13 @@ const AudiometryChart = (props: IProps) => {
         lineStyle: {
           type: 'solid',
           opacity: 0.2,
-          color: props.color || 'red'
+          color: color || 'red'
         },
       },
       axisLine: {
         onZeroAxisIndex: 1,
         lineStyle: {
-          color: props.color || 'red'
+          color: color || 'red'
         }
       },
       axisTick: {
@@ -155,7 +168,7 @@ const AudiometryChart = (props: IProps) => {
         lineStyle: {
           type: 'solid',
           opacity: 0.2,
-          color: props.color || 'red'
+          color: color || 'red'
         },
       },
       axisTick: {
@@ -164,33 +177,33 @@ const AudiometryChart = (props: IProps) => {
       axisLine: {
         onZero: true,
         lineStyle: {
-          color: props.color || 'red'
+          color: color || 'red'
         }
       }
     },
-    toolbox,
     title: {
       left: '6.2%',
-      show: title && props.title !== undefined,
-      text: props.title,
+      show: title,
+      text: titleProps,
       textAlign: 'left',
       textStyle: {
         fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
         fontSize: 16,
         fontWeight: '400' as const,
-        color: props.color || 'red'
+        color: color || 'red'
       }
     },
-    tooltip,
-    color: [props.color || 'red'],
+    color: [color || 'red'],
     grid: {
-      ...props.grid,
+      ...grid,
       show: false
-    }
+    },
+    toolbox,
+    tooltip
   }
 
-  const style = { width: '99.9%', height: props.height || 400 }
-  const widthOpts = { width: props.width || 'auto' }
+  const style = { width: '99.9%', height: height || 400 }
+  const widthOpts = { width: width || 'auto' }
 
   return (
     <ReactEcharts

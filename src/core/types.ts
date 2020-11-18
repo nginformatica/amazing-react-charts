@@ -28,7 +28,6 @@ export interface IDefaultChartProps {
   marginRightToolbox?: string
   titleFontSize?: number
   scrollStart?: number
-  showTitleOnlySave?: boolean
   onClickBar?(
     itemProps?: Record<string, unknown>,
     itemFunctions?: Record<string, unknown>
@@ -38,6 +37,7 @@ export interface IDefaultChartProps {
 export type TToolboxEntryProps = {
   saveAsImage?: string
   dataView?: string
+  saveAsImageWithTitle?: string
 }
 
 export type TCoordinates = {
