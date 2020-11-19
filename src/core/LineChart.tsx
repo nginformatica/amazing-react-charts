@@ -164,7 +164,6 @@ const LineChart = (props: IProps) => {
             )
             : item,
         rotate: rotateLabel || 0,
-        interval: 0,
         textStyle: {
           fontSize: fontLabelSize || 11.5
         }

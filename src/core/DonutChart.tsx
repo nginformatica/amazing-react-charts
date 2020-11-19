@@ -1,14 +1,16 @@
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { IProps } from './PieChart'
 import { TPieChartData, TPieDataLabel } from './types'
 import {
   getDataView,
   getSaveAsImage,
-  takeDonutComplement
+  takeDonutComplement,
+  getSaveAsImageWithTitle
 } from './auxiliarFunctions'
 import { map, sum } from 'ramda'
 import { formatToBRL } from 'brazilian-values'
+import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 interface IDonutProps extends IProps {
   donutCenterValue?: string
@@ -35,6 +37,41 @@ export const DonutChart = (props: IDonutProps) => {
     centerPieValueFontSize,
     selectedMode
   } = props
+
+  const [title, setTitle] = useState(false)
+
+  useEffect(() => {
+    if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
+      setTitle(false)
+    } else {
+      setTitle(true)
+    }
+  }, [toolboxTooltip])
+
+  const handleShowTitle = (show: boolean) => {
+    setTitle(show)
+  }
+
+  const myTool = toolboxTooltip && toolboxTooltip.saveAsImageWithTitle && {
+    myTool: getSaveAsImageWithTitle(
+      toolboxTooltip.saveAsImageWithTitle,
+      handleShowTitle
+    )
+  }
+
+  const saveAsImage = toolboxTooltip && toolboxTooltip.saveAsImage && {
+    saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
+  }
+
+  const toolbox = toolboxTooltip && {
+    ...TOOLBOX_DEFAULT_PROPS,
+    feature: {
+      ...myTool,
+      ...saveAsImage,
+      dataView: toolboxTooltip.dataView &&
+        getDataView(toolboxTooltip.dataView)
+    }
+  }
 
   const xData = map(item => item.name, props.data)
   const totalValues = sum(map(item => item.value, props.data))
@@ -65,24 +102,6 @@ export const DonutChart = (props: IDonutProps) => {
       ? formatToBRL(value)
       : takeDonutComplement(value, yComplement)
 
-  const toolbox = toolboxTooltip && {
-    showTitle: false,
-    right: '9.52%',
-    top: resultFormatType && '5.5%',
-    feature: {
-      saveAsImage:
-        toolboxTooltip.saveAsImage &&
-        getSaveAsImage(toolboxTooltip.saveAsImage),
-      dataView: toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
-    },
-    tooltip: {
-      show: true,
-      backgroundColor: 'grey',
-      textStyle: {
-        fontSize: 12
-      }
-    }
-  }
 
   const options = {
     grid: props.grid,
@@ -90,7 +109,7 @@ export const DonutChart = (props: IDonutProps) => {
     title: {
       left: resultFormatType ? '0.1%' : '6.2%',
       top: resultFormatType && '5.7%',
-      show: titleProps !== undefined,
+      show: title,
       text: titleProps,
       textAlign: 'left',
       textStyle: {
@@ -162,7 +181,6 @@ export const DonutChart = (props: IDonutProps) => {
 
   return (
     <ReactEcharts
-      lazyUpdate
       style={WIDTH_STYLE}
       opts={widthOpts}
       option={options}

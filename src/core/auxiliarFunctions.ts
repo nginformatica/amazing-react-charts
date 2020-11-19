@@ -7,6 +7,7 @@ import { TDataTooltip, TDomainValues } from './types'
 type TConnectedDataURL = {
   type?: string
   backgroundColor?: string
+  connectedBackgroundColor?: string
   excludeComponents?: string[]
 }
 
@@ -196,6 +197,7 @@ export const getSaveAsImageWithTitle = (
     const url = chartInfo.getConnectedDataURL({
       type: 'jpg',
       backgroundColor: '#fff',
+      connectedBackgroundColor: '#fff',
       excludeComponents: ['toolbox', 'dataZoom']
     })
 

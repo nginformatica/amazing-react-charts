@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
@@ -14,10 +14,12 @@ import {
   getSaveAsImage,
   timeConvert,
   truncateLabel,
-  takeLabelComplement
+  takeLabelComplement,
+  getSaveAsImageWithTitle
 } from './auxiliarFunctions'
 import { reverse } from 'ramda'
 import { WIDTH_STYLE } from './DonutChart'
+import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 interface IProps extends IDefaultChartProps {
   showTickInfos?: boolean
@@ -44,6 +46,20 @@ const HorizontalBarChart = (props: IProps) => {
     toolboxTooltip,
     marginRightToolbox
   } = props
+
+  const [title, setTitle] = useState(false)
+
+  useEffect(() => {
+    if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
+      setTitle(false)
+    } else {
+      setTitle(true)
+    }
+  }, [toolboxTooltip])
+
+  const handleShowTitle = (show: boolean) => {
+    setTitle(show)
+  }
 
   const xData: TEntryWithStyleData[] = reverse(
     data.map((item: TEntryData) => {
@@ -104,24 +120,27 @@ const HorizontalBarChart = (props: IProps) => {
       : takeLabelComplement(Number(value), xComplement)
   }
 
-  const toolbox = toolboxTooltip && {
-    showTitle: false,
-    right: marginRightToolbox || '8.7%',
-    feature: {
-      saveAsImage:
-        toolboxTooltip.saveAsImage &&
-        getSaveAsImage(toolboxTooltip.saveAsImage),
-      dataView: toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
-    },
-    tooltip: {
-      show: true,
-      backgroundColor: 'grey',
-      textStyle: {
-        fontSize: 12
-      }
-    }
+  const myTool = toolboxTooltip && toolboxTooltip.saveAsImageWithTitle && {
+    myTool: getSaveAsImageWithTitle(
+      toolboxTooltip.saveAsImageWithTitle,
+      handleShowTitle
+    )
   }
 
+  const saveAsImage = toolboxTooltip && toolboxTooltip.saveAsImage && {
+    saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
+  }
+
+  const toolbox = toolboxTooltip && {
+    ...TOOLBOX_DEFAULT_PROPS,
+    right: marginRightToolbox || '8.7%',
+    feature: {
+      ...myTool,
+      ...saveAsImage,
+      dataView: toolboxTooltip.dataView &&
+        getDataView(toolboxTooltip.dataView)
+    }
+  }
   const options = {
     grid: {
       containLabel: true,
@@ -215,7 +234,7 @@ const HorizontalBarChart = (props: IProps) => {
     },
     title: {
       left: marginLeftTitle || '5.9%',
-      show: titleProps !== undefined,
+      show: title,
       text: titleProps,
       textAlign: 'left',
       textStyle: {
@@ -243,7 +262,6 @@ const HorizontalBarChart = (props: IProps) => {
 
   return (
     <ReactEcharts
-      lazyUpdate
       style={WIDTH_STYLE}
       opts={widthOpts}
       onEvents={clickEvent}

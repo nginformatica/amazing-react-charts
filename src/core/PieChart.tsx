@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   IDefaultChartProps,
   TPieChartData,
@@ -9,10 +9,12 @@ import { map, sum } from 'ramda'
 import {
   getDataView,
   getSaveAsImage,
-  takeLabelComplement
+  takeLabelComplement,
+  getSaveAsImageWithTitle
 } from './auxiliarFunctions'
 import { formatToBRL } from 'brazilian-values'
 import { WIDTH_STYLE } from './DonutChart'
+import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: TPieChartData[]
@@ -49,6 +51,41 @@ export const PieChart = (props: IProps) => {
 
   const names = map(item => item.name, data)
   const totalValues = sum(map(item => item.value, data))
+  const [title, setTitle] = useState(false)
+
+  useEffect(() => {
+    if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
+      setTitle(false)
+    } else {
+      setTitle(true)
+    }
+  }, [toolboxTooltip])
+
+  const handleShowTitle = (show: boolean) => {
+    setTitle(show)
+  }
+
+  const myTool = toolboxTooltip && toolboxTooltip.saveAsImageWithTitle && {
+    myTool: getSaveAsImageWithTitle(
+      toolboxTooltip.saveAsImageWithTitle,
+      handleShowTitle
+    )
+  }
+
+  const saveAsImage = toolboxTooltip && toolboxTooltip.saveAsImage && {
+    saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
+  }
+
+  const toolbox = toolboxTooltip && {
+    ...TOOLBOX_DEFAULT_PROPS,
+    feature: {
+      ...myTool,
+      ...saveAsImage,
+      dataView: toolboxTooltip.dataView &&
+        getDataView(toolboxTooltip.dataView)
+    }
+  }
+
 
   const formatTooltip = ({ name, value, marker }: TPieChartData) => {
     const title = tooltipTitle ? tooltipTitle + '<br>' : ''
@@ -71,24 +108,6 @@ export const PieChart = (props: IProps) => {
     ? ''
     : takeLabelComplement(data.value, resultFormatType)
 
-  const toolbox = toolboxTooltip && {
-    showTitle: false,
-    right: '9.52%',
-    top: resultFormatType && '5.5%',
-    feature: {
-      saveAsImage:
-        toolboxTooltip.saveAsImage &&
-        getSaveAsImage(toolboxTooltip.saveAsImage),
-      dataView: toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
-    },
-    tooltip: {
-      show: true,
-      backgroundColor: 'grey',
-      textStyle: {
-        fontSize: 12
-      }
-    }
-  }
   const options = {
     grid: gridProps,
     color: colors,
@@ -123,7 +142,7 @@ export const PieChart = (props: IProps) => {
     title: {
       left: resultFormatType ? '0.1%' : '6.2%',
       top: resultFormatType && '5.7%',
-      show: titleProps !== undefined,
+      show: title,
       text: titleProps,
       textAlign: 'left',
       textStyle: {
@@ -141,7 +160,7 @@ export const PieChart = (props: IProps) => {
   const widthOpts = { width: width || 'auto' }
 
   return (
-    <ReactEcharts lazyUpdate
+    <ReactEcharts
       style={WIDTH_STYLE}
       opts={widthOpts}
       option={options}

@@ -9,7 +9,12 @@ import {
   TOptionsProps
 } from './types'
 import { map, zipWith } from 'ramda'
-import { getDataView, getSaveAsImageWithTitle } from './auxiliarFunctions'
+import {
+  getDataView, 
+  getSaveAsImageWithTitle, 
+  getSaveAsImage
+} from './auxiliarFunctions'
+import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 const xFixedData: string[] = ['.25', '.5', '1', '2', '3', '4', '6', '8']
 
@@ -85,27 +90,24 @@ const AudiometryChart = (props: IProps) => {
     data
   )
 
-  const myTool = toolboxTooltip && toolboxTooltip.saveAsImageWithTitle &&
-    getSaveAsImageWithTitle(
+  const myTool = toolboxTooltip && toolboxTooltip.saveAsImageWithTitle && {
+    myTool: getSaveAsImageWithTitle(
       toolboxTooltip.saveAsImageWithTitle,
       handleShowTitle
     )
+  }
+
+  const saveAsImage = toolboxTooltip && toolboxTooltip.saveAsImage && {
+    saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
+  }
 
   const toolbox = toolboxTooltip && {
-    showTitle: false,
-    right: '9.52%',
+    ...TOOLBOX_DEFAULT_PROPS,
     feature: {
-      myTool: myTool,
-      dataView:
-        toolboxTooltip.dataView &&
+      ...myTool,
+      ...saveAsImage,
+      dataView: toolboxTooltip.dataView &&
         getDataView(toolboxTooltip.dataView)
-    },
-    tooltip: {
-      show: true,
-      backgroundColor: 'grey',
-      textStyle: {
-        fontSize: 12
-      }
     }
   }
 
