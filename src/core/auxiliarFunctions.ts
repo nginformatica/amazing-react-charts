@@ -59,12 +59,15 @@ export const takeComplement = (data: string | number, complement: string) =>
     ? ': ' + formatToBRL(data) + '<br>'
     : ': ' + data + complement + '<br>'
 
+export const getPercentage = (value: number, valueTotal: number) =>
+  value !== 0 ? (value * (100 / valueTotal)).toFixed(2) : '0'
+
 export const moneyPercent = (
   value: number,
   valueTotal: number,
   sumDataValues?: boolean
 ) => {
-  const percent = value !== 0 ? (value * (100 / valueTotal)).toFixed(2) : 0
+  const percent = getPercentage(value, valueTotal)
 
   return sumDataValues
     ? formatToBRL(value) + ' (' + percent + '%) <br>'
@@ -76,10 +79,9 @@ export const monuntTimeMessage = (
   stackedValues: number
 ) => {
   const time = timeConvert(Number(item.value))
-  const percent =
-    item.value !== 0
-      ? (Number(item.value) * (100 / stackedValues)).toFixed(2)
-      : 0
+  const percent = item.value !== 0 
+    ? getPercentage((Number(item.value)), stackedValues)
+    : '0'
 
   return item.seriesName + ': ' + time + ' (' + percent + '%) <br>'
 }
@@ -254,3 +256,9 @@ export const getInitialValues = (
 
 export const getEndForecast = (arrayLength: number, lineMarkValue: number) =>
   (lineMarkValue * 250) / arrayLength
+
+// This function take a number and put on this the thousand separator ".", e.g.:
+// 1000 => 1.000
+// 1000000 => 1.000.000 
+export const thousandSeparator = (values: string | number) =>
+  values.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')

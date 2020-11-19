@@ -10,7 +10,8 @@ import {
   getDataView,
   getSaveAsImage,
   takeLabelComplement,
-  getSaveAsImageWithTitle
+  getSaveAsImageWithTitle,
+  getPercentage
 } from './auxiliarFunctions'
 import { formatToBRL } from 'brazilian-values'
 import { WIDTH_STYLE } from './DonutChart'
@@ -89,7 +90,7 @@ export const PieChart = (props: IProps) => {
 
   const formatTooltip = ({ name, value, marker }: TPieChartData) => {
     const title = tooltipTitle ? tooltipTitle + '<br>' : ''
-    const percent = value !== 0 ? (value * (100 / totalValues)).toFixed(2) : 0
+    const percent = getPercentage(value, totalValues)
     const valuePrint =
       resultFormatType === 'money' ? formatToBRL(value) : value
 

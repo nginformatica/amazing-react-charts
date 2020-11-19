@@ -10,8 +10,8 @@ import {
 } from './types'
 import { map, zipWith } from 'ramda'
 import {
-  getDataView, 
-  getSaveAsImageWithTitle, 
+  getDataView,
+  getSaveAsImageWithTitle,
   getSaveAsImage
 } from './auxiliarFunctions'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
@@ -26,17 +26,17 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
 }
 
 const formatTooltip = (items: TAudiometryDataTooltip[]) => {
-  const result =
-    items[0].data.value || items[0].data.value === 0
-      ? `Limiar Aéreo: ${items[0].data.value} dB <br>`
-      : ''
+  const item = items.length > 0 ? items[0].data : { value: 0, boneValue: 0 }
 
-  const boneResult =
-    items[0].data.boneValue || items[0].data.boneValue === 0
-      ? `Limiar Ósseo: ${items[0].data.boneValue} dB`
-      : ''
+  const result = item.value || item.value === 0
+    ? `Limiar Aéreo: ${item.value} dB <br>`
+    : ''
 
-  return items[0] && items[0].data ? result + boneResult : null
+  const boneResult = item.boneValue || item.boneValue === 0
+    ? `Limiar Ósseo: ${item.boneValue} dB`
+    : ''
+
+  return result + boneResult
 }
 
 const AudiometryChart = (props: IProps) => {

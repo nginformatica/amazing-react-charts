@@ -6,7 +6,9 @@ import {
   getDataView,
   getSaveAsImage,
   takeDonutComplement,
-  getSaveAsImageWithTitle
+  getSaveAsImageWithTitle,
+  thousandSeparator,
+  getPercentage
 } from './auxiliarFunctions'
 import { map, sum } from 'ramda'
 import { formatToBRL } from 'brazilian-values'
@@ -77,7 +79,7 @@ export const DonutChart = (props: IDonutProps) => {
   const totalValues = sum(map(item => item.value, props.data))
 
   const formatTooltip = ({ name, value, marker }: TPieChartData) => {
-    const percent = value !== 0 ? (value * (100 / totalValues)).toFixed(2) : 0
+    const percent = getPercentage(value, totalValues)
     const valueWithPercent = resultFormatType === 'percent'
       ? value + ' (' + percent + '%)'
       : value
@@ -142,9 +144,7 @@ export const DonutChart = (props: IDonutProps) => {
         label: {
           color: 'black',
           position: 'center',
-          formatter:
-            donutCenterValue ||
-            totalValues.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'),
+          formatter: donutCenterValue || thousandSeparator(totalValues),
           fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
           fontSize: centerPieValueFontSize || 24,
           fontWeight: '300' as const
