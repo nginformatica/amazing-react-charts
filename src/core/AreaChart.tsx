@@ -11,7 +11,7 @@ import {
   getSaveAsImage,
   timeConvert,
   toDate,
-  takeLabelComplement,
+  takeLabelComplement
 } from './auxiliarFunctions'
 import {
   IDefaultChartProps,
