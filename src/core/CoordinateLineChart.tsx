@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
@@ -7,6 +7,11 @@ import {
   TTuple
 } from './types'
 import { map } from 'ramda'
+import {
+  getSaveAsImageWithTitle,
+  getSaveAsImage, getDataView
+} from './auxiliarFunctions'
+import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
   coordinates: [TCoordinates[], TCoordinates[], TCoordinates[]]
@@ -36,10 +41,45 @@ const CoordinateLineChart = (props: IProps) => {
     xMaxValue,
     grid,
     legendPosition,
-    width
+    width,
+    toolboxTooltip
   } = props
 
+  const [title, setTitle] = useState(false)
   const [ref, pre, pos] = coordinates
+
+  useEffect(() => {
+    if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
+      setTitle(false)
+    } else {
+      setTitle(true)
+    }
+  }, [toolboxTooltip])
+
+  const handleShowTitle = (show: boolean) => {
+    setTitle(show)
+  }
+
+  const myTool = toolboxTooltip && toolboxTooltip.saveAsImageWithTitle && {
+    myTool: getSaveAsImageWithTitle(
+      toolboxTooltip.saveAsImageWithTitle,
+      handleShowTitle
+    )
+  }
+
+  const saveAsImage = toolboxTooltip && toolboxTooltip.saveAsImage && {
+    saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
+  }
+
+  const toolbox = toolboxTooltip && {
+    ...TOOLBOX_DEFAULT_PROPS,
+    feature: {
+      ...myTool,
+      ...saveAsImage,
+      dataView: toolboxTooltip.dataView &&
+        getDataView(toolboxTooltip.dataView)
+    }
+  }
 
   const reference: TTuple[] = map(item => [item.x, item.y], ref)
   const preRespiratory: TTuple[] = map(item => [item.x, item.y], pre)
@@ -114,7 +154,7 @@ const CoordinateLineChart = (props: IProps) => {
     },
     title: {
       left: '6.2%',
-      show: titleProps !== undefined,
+      show: title,
       text: titleProps,
       textAlign: 'left',
       textStyle: {
@@ -126,13 +166,14 @@ const CoordinateLineChart = (props: IProps) => {
     grid: {
       containLabel: true,
       ...grid
-    }
+    },
+    toolbox
   }
 
   const widthStyle = { width: width || 'auto', height: height }
 
   return (
-    <ReactEcharts lazyUpdate style={widthStyle} option={options} />
+    <ReactEcharts style={widthStyle} option={options} />
   )
 }
 

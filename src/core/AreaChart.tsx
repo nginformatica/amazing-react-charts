@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   fixedDomain,
@@ -22,6 +22,17 @@ import {
 } from './types'
 
 export const STYLES = { width: '99.9%', height: 300 }
+export const TOOLBOX_DEFAULT_PROPS = {
+  showTitle: false,
+  right: '9.52%',
+  tooltip: {
+    show: true,
+    backgroundColor: 'grey',
+    textStyle: {
+      fontSize: 12
+    }
+  }
+}
 
 const AreaChart = (props: IDefaultChartProps) => {
   const {
@@ -106,20 +117,12 @@ const AreaChart = (props: IDefaultChartProps) => {
   }
 
   const toolbox = toolboxTooltip && {
-    showTitle: false,
-    right: '9.52%',
+    ...TOOLBOX_DEFAULT_PROPS,
     feature: {
-      saveAsImage:
-        toolboxTooltip.saveAsImage &&
-        getSaveAsImage(toolboxTooltip.saveAsImage),
+      saveAsImage: toolboxTooltip && toolboxTooltip.saveAsImage && {
+        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
+      },
       dataView: toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
-    },
-    tooltip: {
-      show: true,
-      backgroundColor: 'grey',
-      textStyle: {
-        fontSize: 12
-      }
     }
   }
 
@@ -202,7 +205,6 @@ const AreaChart = (props: IDefaultChartProps) => {
             ? formatTime(item, dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd MMM')
             : item,
         rotate: rotateLabel || 0,
-        interval: 0,
         rich: {
           textStyle: {
             fontSize: fontLabelSize || 11.5

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
@@ -9,7 +9,12 @@ import {
   TOptionsProps
 } from './types'
 import { map, zipWith } from 'ramda'
-import { getDataView, getSaveAsImage } from './auxiliarFunctions'
+import {
+  getDataView,
+  getSaveAsImageWithTitle,
+  getSaveAsImage
+} from './auxiliarFunctions'
+import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 const xFixedData: string[] = ['.25', '.5', '1', '2', '3', '4', '6', '8']
 
@@ -21,29 +26,55 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
 }
 
 const formatTooltip = (items: TAudiometryDataTooltip[]) => {
-  const result =
-    items[0].data.value || items[0].data.value === 0
-      ? `Limiar Aéreo: ${items[0].data.value} dB <br>`
-      : ''
+  const item = items.length > 0 ? items[0].data : { value: 0, boneValue: 0 }
 
-  const boneResult =
-    items[0].data.boneValue || items[0].data.boneValue === 0
-      ? `Limiar Ósseo: ${items[0].data.boneValue} dB`
-      : ''
+  const result = item.value || item.value === 0
+    ? `Limiar Aéreo: ${item.value} dB <br>`
+    : ''
 
-  return items[0] && items[0].data ? result + boneResult : null
+  const boneResult = item.boneValue || item.boneValue === 0
+    ? `Limiar Ósseo: ${item.boneValue} dB`
+    : ''
+
+  return result + boneResult
 }
 
 const AudiometryChart = (props: IProps) => {
+  const {
+    title: titleProps,
+    symbolsSize,
+    data,
+    toolboxTooltip,
+    lineType,
+    color,
+    grid,
+    height,
+    width
+  } = props
+
+  const [title, setTitle] = useState(false)
+
+  useEffect(() => {
+    if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
+      setTitle(false)
+    } else {
+      setTitle(true)
+    }
+  }, [toolboxTooltip])
+
+  const handleShowTitle = (show: boolean) => {
+    setTitle(show)
+  }
+
   const yData = map(
     item => ({
       value: item.result,
       symbol: item.symbol,
-      symbolSize: props.symbolsSize || 12,
+      symbolSize: symbolsSize || 12,
       name: item.result,
       boneValue: item.boneResult
     }),
-    props.data
+    data
   )
 
   const marks: TCostumizedSymbolData[] = zipWith(
@@ -52,44 +83,31 @@ const AudiometryChart = (props: IProps) => {
         ? {
           value: data.boneResult,
           symbol: data.boneSymbol,
-          symbolSize: props.symbolsSize || 12
+          symbolSize: symbolsSize || 12
         }
         : {},
     xFixedData,
-    props.data
+    data
   )
 
-  const title = {
-    id: 'chart-' + props.title,
-    left: '6.2%',
-    show: props.title !== undefined,
-    text: props.title,
-    textAlign: 'left',
-    textStyle: {
-      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-      fontSize: 16,
-      fontWeight: '400' as const,
-      color: props.color || 'red'
-    }
+  const myTool = toolboxTooltip && toolboxTooltip.saveAsImageWithTitle && {
+    myTool: getSaveAsImageWithTitle(
+      toolboxTooltip.saveAsImageWithTitle,
+      handleShowTitle
+    )
   }
 
-  const toolbox = props.toolboxTooltip && {
-    showTitle: false,
-    right: '9.52%',
+  const saveAsImage = toolboxTooltip && toolboxTooltip.saveAsImage && {
+    saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
+  }
+
+  const toolbox = toolboxTooltip && {
+    ...TOOLBOX_DEFAULT_PROPS,
     feature: {
-      saveAsImage:
-        props.toolboxTooltip.saveAsImage &&
-        getSaveAsImage(props.toolboxTooltip.saveAsImage),
-      dataView:
-        props.toolboxTooltip.dataView &&
-        getDataView(props.toolboxTooltip.dataView)
-    },
-    tooltip: {
-      show: true,
-      backgroundColor: 'grey',
-      textStyle: {
-        fontSize: 12
-      }
+      ...myTool,
+      ...saveAsImage,
+      dataView: toolboxTooltip.dataView &&
+        getDataView(toolboxTooltip.dataView)
     }
   }
 
@@ -106,7 +124,7 @@ const AudiometryChart = (props: IProps) => {
         type: 'line',
         lineStyle: {
           width: 1,
-          type: props.lineType || 'solid'
+          type: lineType || 'solid'
         },
         data: yData
       },
@@ -127,13 +145,13 @@ const AudiometryChart = (props: IProps) => {
         lineStyle: {
           type: 'solid',
           opacity: 0.2,
-          color: props.color || 'red'
+          color: color || 'red'
         },
       },
       axisLine: {
         onZeroAxisIndex: 1,
         lineStyle: {
-          color: props.color || 'red'
+          color: color || 'red'
         }
       },
       axisTick: {
@@ -152,7 +170,7 @@ const AudiometryChart = (props: IProps) => {
         lineStyle: {
           type: 'solid',
           opacity: 0.2,
-          color: props.color || 'red'
+          color: color || 'red'
         },
       },
       axisTick: {
@@ -161,27 +179,36 @@ const AudiometryChart = (props: IProps) => {
       axisLine: {
         onZero: true,
         lineStyle: {
-          color: props.color || 'red'
+          color: color || 'red'
         }
       }
     },
-    toolbox,
-    title,
-    tooltip,
-    color: [props.color || 'red'],
+    title: {
+      left: '6.2%',
+      show: title,
+      text: titleProps,
+      textAlign: 'left',
+      textStyle: {
+        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+        fontSize: 16,
+        fontWeight: '400' as const,
+        color: color || 'red'
+      }
+    },
+    color: [color || 'red'],
     grid: {
-      ...props.grid,
+      ...grid,
       show: false
-    }
+    },
+    toolbox,
+    tooltip
   }
 
-  const style = { width: '99.9%', height: props.height || 400 }
-  const widthOpts = { width: props.width || 'auto' }
+  const style = { width: '99.9%', height: height || 400 }
+  const widthOpts = { width: width || 'auto' }
 
   return (
     <ReactEcharts
-      lazyUpdate
-      notMerge
       style={style}
       opts={widthOpts}
       option={options}

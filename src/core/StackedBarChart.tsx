@@ -317,7 +317,6 @@ const StackedBarChart = (props: IProps) => {
           formatter: (item: string) =>
             takeLabelComplement(Number(item), yComplement),
           fontSize: 11.5,
-          interval: 0
         },
         data: yBottomData as number[],
         splitLine: {

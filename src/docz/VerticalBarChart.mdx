@@ -163,7 +163,7 @@ import { Playground } from 'docz'
 </Playground>
 
 
-# Vertical bar chart example
+# Vertical bar chart example with customMaxDomain
 <Playground>
     <VerticalBarChart
         showBarLabel
@@ -186,4 +186,25 @@ import { Playground } from 'docz'
           },
         ] }       
   />
+</Playground>
+
+# Vertical bar chart with dateFormat
+<Playground>
+      <VerticalBarChart
+          showBarLabel
+          title="Bar Chart example"
+          xType="time"
+          yComplement="%"
+          dateFormat="yyyy-MM"
+          color="blue"
+          customMaxDomain={100}
+          toolboxTooltip={{ saveAsImage: 'save as image' }}
+          tooltip={{ label: 'Date', result: 'Disp' }}
+          data={[
+              {
+                label: '2020-01',
+                result: '50',
+              }
+          ]}
+    />
 </Playground>

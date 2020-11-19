@@ -15,47 +15,48 @@ import { Playground } from 'docz'
 <Playground>
     <CoordinateLineChart
         title='Respiratory volume chart'
-            height={400}
-            xMaxValue={8}
-            legendNames={['ref', 'pre', 'pos']}
-            coordinateNames={
-                {
-                    x: 'Volume (L)',
-                    y: 'Fluxo (L/s)'
-                }
+        toolboxTooltip={{ saveAsImageWithTitle: 'save as image' }}
+        height={400}
+        xMaxValue={8}
+        legendNames={['ref', 'pre', 'pos']}
+        coordinateNames={
+            {
+                x: 'Volume (L)',
+                y: 'Fluxo (L/s)'
             }
-            colors={['gray', 'orange', 'green']}
-            coordinates={ [ 
-                [
-                    { x: 0.1, y: 0.5 },
-                    { x: 0.4, y: 0.9 },
-                    { x: 2, y: 0.9 },
-                    { x: 3, y: 1 },
-                    { x: 4, y: 5.9 },
-                    { x: 5, y: 6 },
-                    { x: 6, y: 6 },
-                    { x: 8, y: 6 }
-                ],
-                [
-                    { x: 0.1, y: 7.5 },
-                    { x: 0.4, y: 7.3 },
-                    { x: 2, y: 7 },
-                    { x: 3, y: 6.5 },
-                    { x: 4, y: 2 },
-                    { x: 5, y: 4 },
-                    { x: 6, y: 4.3 },
-                    { x: 8, y: 7.5 },
-                ],
-                [
-                    { x: 0.1, y: 1 },
-                    { x: 0.4, y: 7.4 },
-                    { x: 2, y: 7.2 },
-                    { x: 3, y: 7.9 },
-                    { x: 4, y: 2.1 },
-                    { x: 5, y: 4.3 },
-                    { x: 6, y: 4.5 },
-                    { x: 8, y: 7.6 },
-                ]
+        }
+        colors={['gray', 'orange', 'green']}
+        coordinates={ [ 
+            [
+                { x: 0.1, y: 0.5 },
+                { x: 0.4, y: 0.9 },
+                { x: 2, y: 0.9 },
+                { x: 3, y: 1 },
+                { x: 4, y: 5.9 },
+                { x: 5, y: 6 },
+                { x: 6, y: 6 },
+                { x: 8, y: 6 }
+            ],
+            [
+                { x: 0.1, y: 7.5 },
+                { x: 0.4, y: 7.3 },
+                { x: 2, y: 7 },
+                { x: 3, y: 6.5 },
+                { x: 4, y: 2 },
+                { x: 5, y: 4 },
+                { x: 6, y: 4.3 },
+                { x: 8, y: 7.5 },
+            ],
+            [
+                { x: 0.1, y: 1 },
+                { x: 0.4, y: 7.4 },
+                { x: 2, y: 7.2 },
+                { x: 3, y: 7.9 },
+                { x: 4, y: 2.1 },
+                { x: 5, y: 4.3 },
+                { x: 6, y: 4.5 },
+                { x: 8, y: 7.6 },
+            ]
         ] }
     />
 </Playground>

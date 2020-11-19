@@ -37,6 +37,7 @@ export interface IDefaultChartProps {
 export type TToolboxEntryProps = {
   saveAsImage?: string
   dataView?: string
+  saveAsImageWithTitle?: string
 }
 
 export type TCoordinates = {

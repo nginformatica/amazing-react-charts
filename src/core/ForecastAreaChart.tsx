@@ -248,7 +248,6 @@ const ForecastAreaChart = (props: IProps) => {
         formatter: (item: string) =>
           xType === 'time' ? formatTime(item, 'dd MMM') : item,
         rotate: rotateLabel || 0,
-        interval: 0,
         fontSize: fontLabelSize || 11.5
       }
     },

@@ -4,6 +4,23 @@ import { takeLast } from 'ramda'
 import ptBR from 'date-fns/locale/pt-BR'
 import { TDataTooltip, TDomainValues } from './types'
 
+type TConnectedDataURL = {
+  type?: string
+  backgroundColor?: string
+  connectedBackgroundColor?: string
+  excludeComponents?: string[]
+}
+
+const DOWNLOAD_ICON =
+  'path://M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 ' +
+  '.67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z'
+
+const iconStyle = {
+  color: '#152849',
+  borderColor: '#152849',
+  borderWidth: 0.1
+}
+
 export const takeLabelComplement = (item: number, complement: string) => {
   const getComplement = complement
     ? formatValueAxis(item, complement)
@@ -42,12 +59,15 @@ export const takeComplement = (data: string | number, complement: string) =>
     ? ': ' + formatToBRL(data) + '<br>'
     : ': ' + data + complement + '<br>'
 
+export const getPercentage = (value: number, valueTotal: number) =>
+  value !== 0 ? (value * (100 / valueTotal)).toFixed(2) : '0'
+
 export const moneyPercent = (
   value: number,
   valueTotal: number,
   sumDataValues?: boolean
 ) => {
-  const percent = value !== 0 ? (value * (100 / valueTotal)).toFixed(2) : 0
+  const percent = getPercentage(value, valueTotal)
 
   return sumDataValues
     ? formatToBRL(value) + ' (' + percent + '%) <br>'
@@ -59,10 +79,9 @@ export const monuntTimeMessage = (
   stackedValues: number
 ) => {
   const time = timeConvert(Number(item.value))
-  const percent =
-    item.value !== 0
-      ? (Number(item.value) * (100 / stackedValues)).toFixed(2)
-      : 0
+  const percent = item.value !== 0 
+    ? getPercentage((Number(item.value)), stackedValues)
+    : '0'
 
   return item.seriesName + ': ' + time + ' (' + percent + '%) <br>'
 }
@@ -151,18 +170,54 @@ export const fixedDomain = (item: TDomainValues) =>
   item.max >= 90 ? 100 : getDomain(item)
 
 export const getSaveAsImage = (title: string) => ({
+  title,
   type: 'jpeg',
+  show: true,
+  icon: DOWNLOAD_ICON,
+  iconStyle,
+  excludeComponents: ['toolbox', 'dataZoom']
+})
+
+export const getSaveAsImageWithTitle = (
+  title: string,
+  setTitle: (show: boolean) => void
+) => ({
   title,
   show: true,
-  icon:
-    'path://M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 ' +
-    '.67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z',
-  iconStyle: {
-    color: '#152849',
-    borderColor: '#152849',
-    borderWidth: 0.1
-  },
-  excludeComponents: ['toolbox', 'dataZoom']
+  icon: DOWNLOAD_ICON,
+  iconStyle,
+  onclick: (
+    item: { option: { title: { text: string }[] } },
+    chartInfo: { getConnectedDataURL: (opts: TConnectedDataURL) => string }
+  ) => {
+    const title = item.option.title.length > 0
+      ? item.option.title[0].text
+      : 'image'
+
+    setTitle(true)
+
+    const url = chartInfo.getConnectedDataURL({
+      type: 'jpg',
+      backgroundColor: '#fff',
+      connectedBackgroundColor: '#fff',
+      excludeComponents: ['toolbox', 'dataZoom']
+    })
+
+    const a = document.createElement('a')
+    a.download = title + '.jpeg'
+    a.target = '_blank'
+    a.href = url
+
+    const event = new MouseEvent('click', {
+      view: document.defaultView,
+      bubbles: true,
+      cancelable: false
+    })
+
+    a.dispatchEvent(event)
+
+    setTitle(false)
+  }
 })
 
 export const getDataView = (title: string) => ({
@@ -201,3 +256,9 @@ export const getInitialValues = (
 
 export const getEndForecast = (arrayLength: number, lineMarkValue: number) =>
   (lineMarkValue * 250) / arrayLength
+
+// This function take a number and put on this the thousand separator ".", e.g.:
+// 1000 => 1.000
+// 1000000 => 1.000.000 
+export const thousandSeparator = (values: string | number) =>
+  values.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
