@@ -75,10 +75,13 @@ const AreaChart = (props: IDefaultChartProps) => {
     item: TDataZoomEventProps,
     charts: TDataZoomChartProps
   ) => {
+    const isTime = (yType === 'time' ? 3400 : 4500)
     const dataRange = item.end - item.start
-    const dataLimit = (yType === 'time' ? 3400 : 4500) / xData.length
-
-    if (xData.length <= 30 || dataRange < dataLimit) {
+    const dataLimit = scrollStart 
+      ? (scrollStart * 100 + 400) / xData.length
+      : isTime / xData.length
+        
+    if (dataRange < dataLimit) {
       return charts.setOption({
         series: [
           {

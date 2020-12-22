@@ -22,7 +22,7 @@ rules:
   no-unneeded-ternary: error
   no-nested-ternary: error
   "@typescript-eslint/explicit-module-boundary-types": off
-  "@typescript-eslint/ban-ts-comment": 1
+  "@typescript-eslint/ban-ts-comment": off
 
 settings:
   react:
