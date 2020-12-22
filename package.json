@@ -2,23 +2,12 @@
   "name": "amazing-react-charts",
   "version": "0.3.5",
   "description": "An amazing react charts package based in echarts",
-  "author": "Leonardo Filipe Rigon",
   "license": "MIT",
   "main": "dist/index.js",
   "homepage": "https://amazing-react-charts.now.sh/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nginformatica/amazing-react-charts.git"
-  },
+  "repository": "git@github.com:nginformatica//amazing-react-charts.git",
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
-  "keywords": [
-    "nginformatica",
-    "charts",
-    "echarts",
-    "react",
-    "canvas"
-  ],
   "scripts": {
     "start": "tsc --emitDeclarationOnly && docz dev",
     "build:ts": "tsc --emitDeclarationOnly",
@@ -71,6 +60,6 @@
     ]
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/amazing-react-charts@leonardo.rigon"
+    "registry": "https://registry.npmjs.org/"
   }
 }
