@@ -1,6 +1,6 @@
 {
   "name": "amazing-react-charts",
-  "version": "0.2.50",
+  "version": "0.3.4",
   "description": "An amazing react charts package based in echarts",
   "author": "Leonardo Filipe Rigon",
   "license": "MIT",
@@ -69,5 +69,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/amazing-react-charts@leonardo.rigon"
   }
 }
