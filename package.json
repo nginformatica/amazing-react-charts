@@ -9,8 +9,8 @@
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "start": "tsc --emitDeclarationOnly && yarn pre-build && docz dev",
-    "build:ts": "tsc --emitDeclarationOnly",
+    "start": "yarn tsc --emitDeclarationOnly && yarn pre-build && docz dev",
+    "build:ts": "yarn tsc --emitDeclarationOnly",
     "pre-build": "rm -Rf node_modules package-lock.json .docz/ dist/",
     "build": "yarn pre-build && yarn build:ts && yarn build:babel",
     "build:babel": "babel src --out-dir dist --extensions \".ts,.tsx\"",
