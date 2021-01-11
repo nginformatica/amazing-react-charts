@@ -122,9 +122,8 @@ const AreaChart = (props: IDefaultChartProps) => {
   const toolbox = toolboxTooltip && {
     ...TOOLBOX_DEFAULT_PROPS,
     feature: {
-      saveAsImage: toolboxTooltip && toolboxTooltip.saveAsImage && {
-        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
-      },
+      saveAsImage: toolboxTooltip && toolboxTooltip.saveAsImage && 
+        getSaveAsImage(toolboxTooltip.saveAsImage),
       dataView: toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
     }
   }

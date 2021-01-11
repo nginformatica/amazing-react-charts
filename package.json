@@ -1,6 +1,6 @@
 {
   "name": "amazing-react-charts",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "An amazing react charts package based in echarts",
   "license": "MIT",
   "main": "dist/index.js",
@@ -23,7 +23,8 @@
     "date-fns": "2.4.1",
     "echarts": "4.9.0",
     "echarts-for-react": "2.0.16",
-    "ramda": "0.26.1"
+    "ramda": "0.26.1",
+    "react": "17.0.1"
   },
   "devDependencies": {
     "@babel/cli": "7.10.0",
