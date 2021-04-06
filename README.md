@@ -87,7 +87,7 @@ yarn && yarn start
 
 ## Documentation
 
-Check out our [documentation website](https://nginformatica.github.io/amazing-react-charts/).
+Check out our [documentation website](https://amazing-react-charts.now.sh/).
   
 ## Contributing
 
