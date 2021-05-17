@@ -341,7 +341,7 @@ export type TLegendProps = {
   y?: 'center' | 'bottom'
   icon?: 'line' | 'rect' | 'shape'
   top?: number
-  data: string[] | { name: string, icon?: string }[]
+  data: string[] | TSimpleLegend[]
   itemGap?: number
   selectedMode?: boolean
   color?: string[]
@@ -384,7 +384,9 @@ export type TParamsTooltip = {
 
 export type TAudiometryDataTooltip = {
   data?: { value: number | string, boneValue: number | string }
+  seriesName?: string
   axisValue?: string
+  marker?: string
 }
 
 export type TTitleProps = {
@@ -425,3 +427,5 @@ export type TAudiometryDataEntry = {
   boneResult?: number
   boneSymbol?: string
 }
+
+export type TSimpleLegend = { name: string, icon?: string }
