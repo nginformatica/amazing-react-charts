@@ -4,11 +4,10 @@ import {
   IDefaultChartProps,
   TAudiometryDataEntry,
   TAudiometryDataTooltip,
-  TCostumizedSymbolData,
   TLineStyleType,
   TOptionsProps
 } from './types'
-import { map, zipWith } from 'ramda'
+import { filter, map, zipWith } from 'ramda'
 import {
   getDataView,
   getSaveAsImageWithTitle,
@@ -19,10 +18,12 @@ import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 const xFixedData: string[] = ['.25', '.5', '1', '2', '3', '4', '6', '8']
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
-  data: TAudiometryDataEntry[]
+  data: TAudiometryDataEntry[][]
   height?: number
   lineType?: TLineStyleType
   symbolsSize?: number
+  colors?: string[]
+  legends?: [{ name: string, icon?: string }]
 }
 
 const formatTooltip = (items: TAudiometryDataTooltip[]) => {
@@ -49,7 +50,9 @@ const AudiometryChart = (props: IProps) => {
     color,
     grid,
     height,
-    width
+    width,
+    colors,
+    legends
   } = props
 
   const [title, setTitle] = useState(false)
@@ -66,7 +69,7 @@ const AudiometryChart = (props: IProps) => {
     setTitle(show)
   }
 
-  const yData = map(
+  const takeYData = (item: TAudiometryDataEntry[]) => map(
     item => ({
       value: item.result,
       symbol: item.symbol,
@@ -74,10 +77,10 @@ const AudiometryChart = (props: IProps) => {
       name: item.result,
       boneValue: item.boneResult
     }),
-    data
+    item
   )
 
-  const marks: TCostumizedSymbolData[] = zipWith(
+  const getMarks = (item: TAudiometryDataEntry[]) => zipWith(
     (_, data) =>
       data.boneSymbol
         ? {
@@ -87,7 +90,7 @@ const AudiometryChart = (props: IProps) => {
         }
         : {},
     xFixedData,
-    data
+    item
   )
 
   const myTool = toolboxTooltip && toolboxTooltip.saveAsImageWithTitle && {
@@ -117,23 +120,47 @@ const AudiometryChart = (props: IProps) => {
     textStyle: { fontSize: 11.5 }
   }
 
+  // The mark color is always be the fist value on array
+  const seriesMarks = data.map(item => ({
+    data: getMarks(item)
+  }))
+
+  const removedUndefinedMarks = map(
+    item => filter(serie => serie?.value !== undefined, item.data), 
+    seriesMarks
+  )
+
+  const marksWithTypes = map(item => ({
+    name: 'marks',
+    type: 'scatter',
+    data: item
+  }), removedUndefinedMarks.filter(item => item?.length > 0))
+  
+  const seriesData = data.map(item => ({
+    type: 'line' as const,
+    data: takeYData(item),
+    lineStyle: {
+      width: 1,
+      type: lineType || 'solid'
+    }
+  }))
+
+  const legendProps = {
+    top: 30,
+    data: legends,
+    itemGap: 30
+  }
+
+  const dataWithNames = [...marksWithTypes, ...seriesData].map(
+    (item, index) => ({
+      ...item,
+      name: legends?.length > 0 ? legends[index]?.name : 'audiometry-' + index
+    })
+  )
+
+
   const options: TOptionsProps = {
-    series: [
-      {
-        name: 'audiometry',
-        type: 'line',
-        lineStyle: {
-          width: 1,
-          type: lineType || 'solid'
-        },
-        data: yData
-      },
-      {
-        name: 'marks',
-        type: 'scatter',
-        data: marks
-      }
-    ],
+    series: dataWithNames,
     xAxis: {
       boundaryGap: true,
       data: xFixedData,
@@ -195,11 +222,12 @@ const AudiometryChart = (props: IProps) => {
         color: color || 'red'
       }
     },
-    color: [color || 'red'],
+    color: colors,
     grid: {
       ...grid,
       show: false
     },
+    legend: legends?.length ? legendProps : undefined,
     toolbox,
     tooltip
   }
