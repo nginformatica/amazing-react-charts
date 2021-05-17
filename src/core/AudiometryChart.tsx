@@ -5,7 +5,8 @@ import {
   TAudiometryDataEntry,
   TAudiometryDataTooltip,
   TLineStyleType,
-  TOptionsProps
+  TOptionsProps,
+  TSimpleLegend
 } from './types'
 import { filter, map, zipWith } from 'ramda'
 import {
@@ -23,24 +24,14 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
   lineType?: TLineStyleType
   symbolsSize?: number
   colors?: string[]
-  legends?: [{ name: string, icon?: string }]
-}
-
-const formatTooltip = (items: TAudiometryDataTooltip[]) => {
-  const item = items.length > 0 ? items[0].data : { value: 0, boneValue: 0 }
-
-  const result = item.value || item.value === 0
-    ? `Limiar Aéreo: ${item.value} dB <br>`
-    : ''
-
-  const boneResult = item.boneValue || item.boneValue === 0
-    ? `Limiar Ósseo: ${item.boneValue} dB`
-    : ''
-
-  return result + boneResult
+  legends?: TSimpleLegend[]
+  tooltipMarker?: boolean
+  formatTooltip?(items: TAudiometryDataTooltip[]): string
 }
 
 const AudiometryChart = (props: IProps) => {
+  const [title, setTitle] = useState(false)
+
   const {
     title: titleProps,
     symbolsSize,
@@ -52,10 +43,10 @@ const AudiometryChart = (props: IProps) => {
     height,
     width,
     colors,
-    legends
+    legends,
+    tooltipMarker,
+    formatTooltip
   } = props
-
-  const [title, setTitle] = useState(false)
 
   useEffect(() => {
     if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
@@ -69,6 +60,33 @@ const AudiometryChart = (props: IProps) => {
     setTitle(show)
   }
 
+  const defaultToolip = (items: TAudiometryDataTooltip[]) => {
+    if (legends) {
+      const generateTooltip = map(
+        item => {
+          const marker = tooltipMarker ? item.marker : ''
+
+          return `${marker} ${item.seriesName}: ${item.data.value} dB <br>`
+        },
+        items
+      )
+
+      return generateTooltip.join(' ')
+    } else {
+      const item = items.length > 0 ? items[0].data : { value: 0, boneValue: 0 }
+
+      const result = item.value || item.value === 0
+        ? `Limiar Aéreo: ${item.value} dB <br>`
+        : ''
+
+      const boneResult = item.boneValue || item.boneValue === 0
+        ? `Limiar Ósseo: ${item.boneValue} dB`
+        : ''
+
+      return result + boneResult
+    }
+  }
+
   const takeYData = (item: TAudiometryDataEntry[]) => map(
     item => ({
       value: item.result,
@@ -80,7 +98,7 @@ const AudiometryChart = (props: IProps) => {
     item
   )
 
-  const getMarks = (item: TAudiometryDataEntry[]) => zipWith(
+  const takeMarks = (item: TAudiometryDataEntry[]) => zipWith(
     (_, data) =>
       data.boneSymbol
         ? {
@@ -115,18 +133,18 @@ const AudiometryChart = (props: IProps) => {
   }
 
   const tooltip = {
-    formatter: formatTooltip,
+    formatter: formatTooltip ?? defaultToolip,
     trigger: 'axis' as const,
     textStyle: { fontSize: 11.5 }
   }
 
   // The mark color is always be the fist value on array
   const seriesMarks = data.map(item => ({
-    data: getMarks(item)
+    data: takeMarks(item)
   }))
 
   const removedUndefinedMarks = map(
-    item => filter(serie => serie?.value !== undefined, item.data), 
+    item => filter(serie => serie?.value !== undefined, item.data),
     seriesMarks
   )
 
@@ -135,7 +153,7 @@ const AudiometryChart = (props: IProps) => {
     type: 'scatter',
     data: item
   }), removedUndefinedMarks.filter(item => item?.length > 0))
-  
+
   const seriesData = data.map(item => ({
     type: 'line' as const,
     data: takeYData(item),
@@ -157,7 +175,6 @@ const AudiometryChart = (props: IProps) => {
       name: legends?.length > 0 ? legends[index]?.name : 'audiometry-' + index
     })
   )
-
 
   const options: TOptionsProps = {
     series: dataWithNames,
