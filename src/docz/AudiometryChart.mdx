@@ -104,13 +104,20 @@ import { Playground } from 'docz'
     <div style={{ width: 600}}>
         <AudiometryChart
             tooltipMarker
+            legendsPosition="bottom"
+            legendGap={7}
+            grid={{ bottom: 80 }}
             title='right'
             color='black'
             legends={[
                 { name: 'mark', icon: 'path://M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z' }, 
                 { name: 'red',  icon: 'path://M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z' }, 
-                { name: 'blue' }]}
-            colors={['red', 'red', 'blue']}
+                { name: 'blue' },
+                { name: 'item-special-second' },
+                { name: 'item-special-twelve' },
+                { name: 'item-special-bing-bang' }
+                ]}
+            colors={['red', 'red', 'blue', 'green', 'purple', 'yellow']}
             data={ [[
                 { 
                     result: 60,
@@ -149,30 +156,25 @@ import { Playground } from 'docz'
             ],
             [
                 { 
-                    result: 80
-                },
+                    result: 63
+                }           
+            ], 
+            [
                 {
-                    result: 60
-                },
-                {
-                    result: 60
-                },       
-                {
-                    result: 44
-                },
-                {
-                    result: 50
-                },
-                {
-                    result: 75
-                },
-                {
-                    result: 64
-                },
-                {
-                    result: 10
+                    result: 71
                 }
-            ]] }
+            ],
+                [
+                {
+                    result: 90
+                }
+            ],
+               [
+                {
+                    result: 51
+                }
+            ]
+            ]}
         />
     </div>
 </Playground>

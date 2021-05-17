@@ -24,7 +24,13 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
   lineType?: TLineStyleType
   symbolsSize?: number
   colors?: string[]
+  legendsPosition?: 'top' | 'bottom'
+  legendGap?: number
+  legendType: 'scroll' | 'plain'
   legends?: TSimpleLegend[]
+  legendPadding?: number 
+  legendItemWidth?: number 
+  legendItemHeight?: number 
   tooltipMarker?: boolean
   formatTooltip?(items: TAudiometryDataTooltip[]): string
 }
@@ -45,6 +51,12 @@ const AudiometryChart = (props: IProps) => {
     colors,
     legends,
     tooltipMarker,
+    legendType,
+    legendsPosition,
+    legendGap,
+    legendPadding,
+    legendItemWidth,
+    legendItemHeight,
     formatTooltip
   } = props
 
@@ -73,6 +85,7 @@ const AudiometryChart = (props: IProps) => {
 
       return generateTooltip.join(' ')
     } else {
+      // TODO: remove this default tooltip to turn it generic
       const item = items.length > 0 ? items[0].data : { value: 0, boneValue: 0 }
 
       const result = item.value || item.value === 0
@@ -163,11 +176,22 @@ const AudiometryChart = (props: IProps) => {
     }
   }))
 
-  const legendProps = {
-    top: 30,
-    data: legends,
-    itemGap: 30
-  }
+  const legendProps =
+    legendsPosition === 'bottom'
+      ? {
+        data: legends,
+        top: 340,
+        type: legendType,
+        itemGap: legendGap || 5,
+        padding: legendPadding || 4,
+        itemWidth: legendItemWidth || 25,
+        itemHeight: legendItemHeight || 14
+      }
+      : {
+        top: 30,
+        data: legends,
+        itemGap: 30
+      }
 
   const dataWithNames = [...marksWithTypes, ...seriesData].map(
     (item, index) => ({
