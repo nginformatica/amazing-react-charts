@@ -153,8 +153,8 @@ const StackedBarChart = (props: IProps) => {
       )
 
     const tooltipBody = auxData.length > 0 && auxResult
-        ? move(3,4, tooltipValues).join('')
-        : tooltipValues.join('')
+      ? move(3,4, tooltipValues).join('')
+      : tooltipValues.join('')
 
     const verifyFormat = yComplement === 'time'
       ? timeConvert(stackedValues)
