@@ -6,7 +6,7 @@ import {
   TDataZoomChartProps,
   TDataZoomEventProps,
   TEntryData,
-  TEntryDataTuples,
+  TEntryDataNTuples,
   TZoomProps,
   TParamsTooltip
 } from './types'
@@ -29,6 +29,7 @@ import {
   rotatedLabel
 } from './VerticalBarChart'
 import { WIDTH_STYLE } from './DonutChart'
+import { move } from 'ramda'
 
 type TColorNTuples =
   | [string, string]
@@ -36,7 +37,7 @@ type TColorNTuples =
   | [string, string, string, string]
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
-  data: TEntryDataTuples
+  data: TEntryDataNTuples
   tooltipExtra?: string
   sumDataValues?: boolean
   colors?: TColorNTuples
@@ -75,14 +76,18 @@ const StackedBarChart = (props: IProps) => {
     topResult,
     extraResult,
     lineResult,
+    auxResult,
     complement
   } = tooltipProps
 
-  const [bottomData, topData, lineData = [], extraData] = data
+  const [bottomData, topData, lineData = [], extraData, auxData = []] = data
   const yBottomData = bottomData.map(verifyStyleProps)
   const yTopData = topData.map(verifyStyleProps)
   const yExtraData =
-    data.length === 4 && extraData.map((item: TEntryData) => item.result)
+    data.length >= 4 && extraData.map((item: TEntryData) => item.result)
+
+  const yAuxData = data.length === 5 && auxData.length > 0 && 
+    auxData.map((item: TEntryData) => item.result)
 
   const yBottomValue = yBottomData.map(item =>
     typeof item === 'object' ? item.value : item
@@ -134,7 +139,7 @@ const StackedBarChart = (props: IProps) => {
     const valueTop = values[1] ? takeValue(values[1].data) : 0
     const stackedValues = valueBot + valueTop
 
-    const tooltipBody = values
+    const tooltipValues = values
       .map((value: TDataTooltip) =>
         yComplement === 'time'
           ? monuntTimeMessage(value, stackedValues)
@@ -146,7 +151,10 @@ const StackedBarChart = (props: IProps) => {
             sumDataValues
           )
       )
-      .join(' ')
+
+    const tooltipBody = auxData.length > 0 && auxResult
+        ? move(3,4, tooltipValues).join('')
+        : tooltipValues.join('')
 
     const verifyFormat = yComplement === 'time'
       ? timeConvert(stackedValues)
@@ -238,6 +246,15 @@ const StackedBarChart = (props: IProps) => {
     stack: 'stacked'
   }
 
+  // This serie is only used to show values on tooltip.
+  // We need to improve this component to allow users use it better.
+  const auxSerie = auxData && {
+    show: false,
+    type: 'bar',
+    name: auxResult,
+    data: yAuxData
+  }
+
   const legendProps =
     legendType === 'scroll'
       ? {
@@ -286,7 +303,8 @@ const StackedBarChart = (props: IProps) => {
         name: lineResult,
         type: 'line',
         data: yLineData
-      }
+      },
+      auxSerie
     ],
     xAxis: {
       data: xData as string[],
