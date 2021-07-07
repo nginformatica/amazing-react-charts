@@ -74,12 +74,22 @@ export const moneyPercent = (
     : formatToBRL(value) + '<br>'
 }
 
+export const generateAuxMessage = (
+  label: string,
+  result: number,
+  complement: string
+) => {
+  const value = complement === 'money' ? formatToBRL(result) : result
+
+  return `<span style="margin-left: 15.2px;"></span>${label}: ${value}<br>`
+}
+
 export const monuntTimeMessage = (
   item: TDataTooltip,
   stackedValues: number
 ) => {
   const time = timeConvert(Number(item.value))
-  const percent = item.value !== 0 
+  const percent = item.value !== 0
     ? getPercentage((Number(item.value)), stackedValues)
     : '0'
 
@@ -93,9 +103,7 @@ export const mountMessage = (
   stackedValues: number,
   sumDataValues: boolean
 ) => {
-  const seriesLabel = value.seriesIndex === 4 
-    ? `<span style="margin-left: 15.2px;"></span>${value.seriesName}`
-    : value.marker + value.seriesName
+  const seriesLabel = value.marker + value.seriesName
 
   const moneyValue =
     moneyPercent(Number(value.data), stackedValues, sumDataValues)

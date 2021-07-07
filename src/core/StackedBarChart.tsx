@@ -20,7 +20,8 @@ import {
   timeConvert,
   toDate,
   truncateLabel,
-  takeLabelComplement
+  takeLabelComplement,
+  generateAuxMessage,
 } from './auxiliarFunctions'
 import {
   dontShowLabel,
@@ -29,7 +30,7 @@ import {
   rotatedLabel
 } from './VerticalBarChart'
 import { WIDTH_STYLE } from './DonutChart'
-import { move } from 'ramda'
+import { concat, move } from 'ramda'
 
 type TColorNTuples =
   | [string, string]
@@ -86,9 +87,6 @@ const StackedBarChart = (props: IProps) => {
   const yExtraData =
     data.length >= 4 && extraData.map((item: TEntryData) => item.result)
 
-  const yAuxData = data.length === 5 && auxData.length > 0 && 
-    auxData.map((item: TEntryData) => item.result)
-
   const yBottomValue = yBottomData.map(item =>
     typeof item === 'object' ? item.value : item
   )
@@ -139,6 +137,13 @@ const StackedBarChart = (props: IProps) => {
     const valueTop = values[1] ? takeValue(values[1].data) : 0
     const stackedValues = valueBot + valueTop
 
+    // This function is only used to show auxiliary values on tooltip.
+    // We need to improve this component to allow users use it better.
+    const getAuxToolTip = (dataIndex: number) =>
+      auxData?.length && auxData[dataIndex].result
+        ? generateAuxMessage(auxResult, auxData[dataIndex].result, yComplement)
+        : ''
+
     const tooltipValues = values
       .map((value: TDataTooltip) =>
         yComplement === 'time'
@@ -148,12 +153,14 @@ const StackedBarChart = (props: IProps) => {
             yComplement,
             secondYAxisType,
             stackedValues,
-            sumDataValues
+            sumDataValues,
           )
       )
 
+    const auxTooltip = [getAuxToolTip(values[0].dataIndex)]
+
     const tooltipBody = auxData.length > 0 && auxResult
-      ? move(3,4, tooltipValues).join('')
+      ? move(3, 4, concat(tooltipValues, auxTooltip)).join('')
       : tooltipValues.join('')
 
     const verifyFormat = yComplement === 'time'
@@ -246,15 +253,6 @@ const StackedBarChart = (props: IProps) => {
     stack: 'stacked'
   }
 
-  // This serie is only used to show values on tooltip.
-  // We need to improve this component to allow users use it better.
-  const auxSerie = auxData && {
-    show: false,
-    type: 'bar',
-    name: auxResult,
-    data: yAuxData
-  }
-
   const legendProps =
     legendType === 'scroll'
       ? {
@@ -304,7 +302,6 @@ const StackedBarChart = (props: IProps) => {
         type: 'line',
         data: yLineData
       },
-      auxSerie
     ],
     xAxis: {
       data: xData as string[],
@@ -336,7 +333,6 @@ const StackedBarChart = (props: IProps) => {
             takeLabelComplement(Number(item), yComplement),
           fontSize: 11.5,
         },
-        data: yBottomData as number[],
         splitLine: {
           show: true
         }

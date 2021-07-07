@@ -382,6 +382,7 @@ export type TParamsTooltip = {
   name: string
   value: number
   data?: number | string
+  dataIndex?: number
 }
 
 export type TAudiometryDataTooltip = {
