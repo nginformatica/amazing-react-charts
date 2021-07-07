@@ -93,7 +93,10 @@ export const mountMessage = (
   stackedValues: number,
   sumDataValues: boolean
 ) => {
-  const seriesLabel = value.marker + value.seriesName
+  const seriesLabel = value.seriesIndex === 4 
+    ? `<span style="margin-left: 15.2px;"></span>${value.seriesName}`
+    : value.marker + value.seriesName
+
   const moneyValue =
     moneyPercent(Number(value.data), stackedValues, sumDataValues)
 
