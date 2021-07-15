@@ -140,7 +140,7 @@ const StackedBarChart = (props: IProps) => {
     // This function is only used to show auxiliary values on tooltip.
     // We need to improve this component to allow users use it better.
     const getAuxToolTip = (dataIndex: number) =>
-      auxData?.length && auxData[dataIndex].result
+      auxData?.length && auxData[dataIndex].result >= 0
         ? generateAuxMessage(auxResult, auxData[dataIndex].result, yComplement)
         : ''
 
