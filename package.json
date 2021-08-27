@@ -1,6 +1,6 @@
 {
   "name": "amazing-react-charts",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "An amazing react charts package based in echarts",
   "license": "MIT",
   "main": "dist/index.js",
@@ -9,6 +9,7 @@
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
   "scripts": {
+    "prepare": "install-peers",
     "start": "docz dev",
     "build:ts": "yarn tsc --emitDeclarationOnly",
     "pre-build": "rm -Rf node_modules package-lock.json .docz/ dist/",
@@ -22,10 +23,8 @@
   },
   "dependencies": {
     "date-fns": "2.4.1",
-    "echarts": "4.9.0",
     "echarts-for-react": "2.0.16",
-    "ramda": "0.26.1",
-    "react": "17.0.1"
+    "ramda": "0.26.1"
   },
   "devDependencies": {
     "@babel/cli": "7.10.0",
@@ -46,8 +45,13 @@
     "eslint": "7.1.0",
     "eslint-plugin-import": "2.18.2",
     "eslint-plugin-react": "7.20.0",
+    "install-peers-cli": "^2.2.0",
     "react-dom": "16.12.0",
     "typescript": "3.9.5"
+  },
+  "peerDependencies": {
+    "react": "17.0.1",
+    "echarts": "4.9.0"
   },
   "browserslist": {
     "production": [
