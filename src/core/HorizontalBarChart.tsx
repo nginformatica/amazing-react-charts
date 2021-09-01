@@ -44,7 +44,8 @@ const HorizontalBarChart = (props: IProps) => {
     onClickBar,
     xType,
     toolboxTooltip,
-    marginRightToolbox
+    marginRightToolbox,
+    formatterMoney
   } = props
 
   const [title, setTitle] = useState(false)
@@ -117,7 +118,7 @@ const HorizontalBarChart = (props: IProps) => {
 
     return xType === 'time'
       ? timeConvert(Number(value)) + 'h'
-      : takeLabelComplement(Number(value), xComplement)
+      : takeLabelComplement(Number(value), xComplement, formatterMoney)
   }
 
   const myTool = toolboxTooltip && toolboxTooltip.saveAsImageWithTitle && {

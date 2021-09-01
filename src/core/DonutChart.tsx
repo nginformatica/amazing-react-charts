@@ -11,7 +11,6 @@ import {
   getPercentage
 } from './auxiliarFunctions'
 import { map, sum } from 'ramda'
-import { formatToBRL } from 'brazilian-values'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 interface IDonutProps extends IProps {
@@ -37,7 +36,8 @@ export const DonutChart = (props: IDonutProps) => {
     legendPosition,
     labelFontColor,
     centerPieValueFontSize,
-    selectedMode
+    selectedMode,
+    formatterMoney
   } = props
 
   const [title, setTitle] = useState(false)
@@ -85,7 +85,7 @@ export const DonutChart = (props: IDonutProps) => {
       : value
 
     const valueToShow = resultFormatType === 'money'
-      ? formatToBRL(value)
+      ? formatterMoney(value)
       : valueWithPercent
 
     const label =
@@ -101,7 +101,7 @@ export const DonutChart = (props: IDonutProps) => {
 
   const formatDonutLabel = (value: number) =>
     resultFormatType === 'money'
-      ? formatToBRL(value)
+      ? formatterMoney(value)
       : takeDonutComplement(value, yComplement)
 
 

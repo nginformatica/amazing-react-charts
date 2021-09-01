@@ -13,7 +13,6 @@ import {
   getSaveAsImageWithTitle,
   getPercentage
 } from './auxiliarFunctions'
-import { formatToBRL } from 'brazilian-values'
 import { WIDTH_STYLE } from './DonutChart'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
@@ -47,7 +46,8 @@ export const PieChart = (props: IProps) => {
     labelFontColor,
     noAnimation,
     pieceBorderColor,
-    tooltipTitle
+    tooltipTitle,
+    formatterMoney
   } = props
 
   const names = map(item => item.name, data)
@@ -91,8 +91,9 @@ export const PieChart = (props: IProps) => {
   const formatTooltip = ({ name, value, marker }: TPieChartData) => {
     const title = tooltipTitle ? tooltipTitle + '<br>' : ''
     const percent = getPercentage(value, totalValues)
-    const valuePrint =
-      resultFormatType === 'money' ? formatToBRL(value) : value
+    const valuePrint = resultFormatType === 'money' && formatterMoney
+      ? formatterMoney(value) 
+      : value
 
     return (
       title +
@@ -108,7 +109,7 @@ export const PieChart = (props: IProps) => {
   const formatPieLabel = ({ data }: TPieDataLabel) =>
     data.value === 0 && legendPosition === 'inside'
       ? ''
-      : takeLabelComplement(data.value, resultFormatType)
+      : takeLabelComplement(data.value, resultFormatType, formatterMoney)
 
   const options = {
     grid: gridProps,

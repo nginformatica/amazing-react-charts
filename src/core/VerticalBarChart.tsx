@@ -111,7 +111,8 @@ const VerticalBarChart = (props: IProps) => {
     rotateLabel,
     onClickBar,
     marginRightToolbox,
-    customMaxDomain
+    customMaxDomain,
+    formatterMoney
   } = props
 
   const isCustomDomain = customMaxDomain
@@ -193,7 +194,7 @@ const VerticalBarChart = (props: IProps) => {
   const formatLabel = (chartValues: TDataTooltip) => {
     const { value } = chartValues
 
-    return takeLabelComplement(Number(value), yComplement)
+    return takeLabelComplement(Number(value), yComplement, formatterMoney)
   }
 
   const toolbox = toolboxTooltip && {

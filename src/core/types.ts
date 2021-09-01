@@ -28,6 +28,7 @@ export interface IDefaultChartProps {
   marginRightToolbox?: string
   titleFontSize?: number
   scrollStart?: number
+  formatterMoney?(value: string | number): string
   onClickBar?(
     itemProps?: Record<string, unknown>,
     itemFunctions?: Record<string, unknown>

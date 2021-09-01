@@ -1,4 +1,3 @@
-import { formatToBRL } from 'brazilian-values'
 import { format, parse } from 'date-fns'
 import { takeLast } from 'ramda'
 import ptBR from 'date-fns/locale/pt-BR'
@@ -21,13 +20,17 @@ const iconStyle = {
   borderWidth: 0.1
 }
 
-export const takeLabelComplement = (item: number, complement: string) => {
+export const takeLabelComplement = (
+  item: number,
+  complement: string,
+  formatterMoney?: (value: string | number) => string
+) => {
   const getComplement = complement
     ? formatValueAxis(item, complement)
     : item
 
-  return complement === 'money'
-    ? formatToBRL(item)
+  return complement === 'money' && formatterMoney
+    ? formatterMoney(item)
     : getComplement
 }
 
@@ -54,9 +57,13 @@ export const formatValueAxis = (value: number, complement: string) => {
     : getTime
 }
 
-export const takeComplement = (data: string | number, complement: string) =>
+export const takeComplement = (
+  data: string | number,
+  complement: string,
+  formatterMoney: (value: string | number) => string
+) =>
   complement === 'money'
-    ? ': ' + formatToBRL(data) + '<br>'
+    ? ': ' + formatterMoney(data) + '<br>'
     : ': ' + data + complement + '<br>'
 
 export const getPercentage = (value: number, valueTotal: number) =>
@@ -65,21 +72,25 @@ export const getPercentage = (value: number, valueTotal: number) =>
 export const moneyPercent = (
   value: number,
   valueTotal: number,
+  formatterMoney: (value: string | number) => string,
   sumDataValues?: boolean
 ) => {
   const percent = getPercentage(value, valueTotal)
 
   return sumDataValues
-    ? formatToBRL(value) + ' (' + percent + '%) <br>'
-    : formatToBRL(value) + '<br>'
+    ? formatterMoney(value) + ' (' + percent + '%) <br>'
+    : formatterMoney(value) + '<br>'
 }
 
 export const generateAuxMessage = (
   label: string,
   result: number,
-  complement: string
+  complement: string,
+  formatterMoney?: (value: string | number) => string
 ) => {
-  const value = complement === 'money' ? formatToBRL(result) : result
+  const value = complement === 'money' && formatterMoney 
+    ? formatterMoney(result) 
+    : result
 
   return `<span style="margin-left: 15.2px;"></span>${label}: ${value}<br>`
 }
@@ -101,18 +112,24 @@ export const mountMessage = (
   complement: string,
   axisType: string,
   stackedValues: number,
-  sumDataValues: boolean
+  sumDataValues: boolean,
+  formatterMoney?: (value: string | number) => string
 ) => {
   const seriesLabel = value.marker + value.seriesName
 
   const moneyValue =
-    moneyPercent(Number(value.data), stackedValues, sumDataValues)
+    moneyPercent(
+      Number(value.data),
+      stackedValues,
+      formatterMoney,
+      sumDataValues
+    )
 
   const isPercentage = axisType === 'percent' || complement === '%'
     ? seriesLabel + ': ' + (
       formatValueAxis(Number(value.data), '%') + '<br>'
     )
-    : seriesLabel + takeComplement(value.data, complement)
+    : seriesLabel + takeComplement(value.data, complement, formatterMoney)
 
   return complement === 'money' && value.seriesType !== 'line'
     ? seriesLabel + ': ' + moneyValue
@@ -246,8 +263,6 @@ export const getDataView = (title: string) => ({
   lang: [title, 'Voltar', 'Atualizar']
 })
 
-export const formatMoneyLabel = (item: TDataTooltip) => formatToBRL(item.value)
-
 export const getInitialValues = (
   arrayLength: number,
   dateFormat?: string,
@@ -264,9 +279,6 @@ export const getInitialValues = (
 
   return dateFormat !== 'yyyy-MM' ? monthly : yearly
 }
-
-export const getEndForecast = (arrayLength: number, lineMarkValue: number) =>
-  (lineMarkValue * 250) / arrayLength
 
 // This function take a number and put on this the thousand separator ".", e.g.:
 // 1000 => 1.000

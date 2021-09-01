@@ -47,7 +47,8 @@ const LineChart = (props: IProps) => {
     smooth,
     disableMarks,
     noTooltip,
-    scrollStart
+    scrollStart,
+    formatterMoney
   } = props
 
   const yData = data[0].values.map(item => item.result)
@@ -104,7 +105,7 @@ const LineChart = (props: IProps) => {
     const takeComplement = (value: number) =>
       yType === 'time'
         ? timeConvert(Number(value)) + 'h'
-        : takeLabelComplement(Number(value), yComplement)
+        : takeLabelComplement(Number(value), yComplement, formatterMoney)
 
     const linesTooltips = lines.map(
       line =>

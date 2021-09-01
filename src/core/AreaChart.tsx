@@ -2,7 +2,6 @@ import React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   fixedDomain,
-  formatMoneyLabel,
   formatTime,
   formatTooltip,
   getDataView,
@@ -53,7 +52,8 @@ const AreaChart = (props: IDefaultChartProps) => {
     fontLabelSize,
     title: titleProps,
     toolboxTooltip,
-    scrollStart
+    scrollStart,
+    formatterMoney
   } = props
 
   const markLine = lineMarkValue && data.map(() => lineMarkValue)
@@ -159,7 +159,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         type: 'line' as const,
         data: yData,
         label: {
-          formatter: yComplement === 'money' ? formatMoneyLabel : formatLabel,
+          formatter: yComplement === 'money' ? formatterMoney : formatLabel,
           show: true,
           position: 'top',
           fontSize: yType === 'time' ? 10 : 11.5,
@@ -229,7 +229,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         formatter: (item: number) =>
           yType === 'time'
             ? timeConvert(item) + 'h'
-            : takeLabelComplement(item, yComplement),
+            : takeLabelComplement(item, yComplement, formatterMoney),
         textStyle: {
           fontSize: fontLabelSize || 11.5
         }

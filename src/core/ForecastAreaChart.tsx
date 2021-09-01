@@ -1,7 +1,6 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
-  formatMoneyLabel,
   formatTime,
   formatTooltipWithHours,
   getDataView,
@@ -54,7 +53,8 @@ const ForecastAreaChart = (props: IProps) => {
     fontLabelSize,
     title: titleProps,
     toolboxTooltip,
-    forecastChartLegends
+    forecastChartLegends,
+    formatterMoney
   } = props
 
   const yData = data.map((item: TEntryData) => item.result)
@@ -109,7 +109,11 @@ const ForecastAreaChart = (props: IProps) => {
 
     const values = yType === 'time'
       ? timeConvert(Number(data))
-      : takeLabelComplement(Number(Number(data).toFixed(2)), yComplement)
+      : takeLabelComplement(
+        Number(Number(data).toFixed(2)), 
+        yComplement, 
+        formatterMoney
+      )
 
     return (
       `${label}: ${formatTooltipWithHours(axisValueLabel)} <br>
@@ -164,7 +168,7 @@ const ForecastAreaChart = (props: IProps) => {
         name: forecastChartLegends ? forecastChartLegends.forecast : '',
         data: yData,
         label: {
-          formatter: yComplement === 'money' ? formatMoneyLabel : formatLabel,
+          formatter: yComplement === 'money' ? formatterMoney : formatLabel,
           show: true,
           position: 'top',
           fontSize: yType === 'time' ? 10 : 11.5,
@@ -214,7 +218,7 @@ const ForecastAreaChart = (props: IProps) => {
         name: forecastChartLegends.current || '',
         data: take(lineMarkValue, yData),
         label: {
-          formatter: yComplement === 'money' ? formatMoneyLabel : formatLabel,
+          formatter: yComplement === 'money' ? formatterMoney : formatLabel,
           show: false,
           position: 'top',
           fontSize: yType === 'time' ? 10 : 11.5,

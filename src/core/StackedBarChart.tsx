@@ -10,7 +10,6 @@ import {
   TZoomProps,
   TParamsTooltip
 } from './types'
-import { formatToBRL } from 'brazilian-values'
 import {
   formatTime,
   getDataView,
@@ -68,7 +67,8 @@ const StackedBarChart = (props: IProps) => {
     tooltipExtra,
     legendType,
     legendScrollGap,
-    showBarLabel
+    showBarLabel,
+    formatterMoney
   } = props
 
   const {
@@ -101,7 +101,7 @@ const StackedBarChart = (props: IProps) => {
     const { dataIndex } = chartValues
     const value = topLabels[dataIndex]
 
-    return takeLabelComplement(Number(value), yComplement)
+    return takeLabelComplement(Number(value), yComplement, formatterMoney)
   }
 
   const yLineData = lineData.map((item: TEntryData) => item.result)
@@ -165,7 +165,7 @@ const StackedBarChart = (props: IProps) => {
 
     const verifyFormat = yComplement === 'time'
       ? timeConvert(stackedValues)
-      : formatToBRL(stackedValues)
+      : formatterMoney(stackedValues)
 
     const labelResult =
       xType === 'time'
@@ -179,7 +179,7 @@ const StackedBarChart = (props: IProps) => {
 
     const tooltipSumValues =
       sumDataValues && values.length === 3 && secondYAxisType
-        ? complement + ': ' + formatToBRL(stackedValues)
+        ? complement + ': ' + formatterMoney(stackedValues)
         : valueWithoutSecondYAxis
 
     const tooltipFooter =
@@ -376,3 +376,4 @@ const StackedBarChart = (props: IProps) => {
 }
 
 export default StackedBarChart
+
