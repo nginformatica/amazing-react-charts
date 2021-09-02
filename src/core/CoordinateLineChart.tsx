@@ -5,12 +5,13 @@ import {
   TCoordinates,
   TOptionsProps,
   TTuple
-} from './types'
+} from '../lib/types'
 import { map } from 'ramda'
 import {
-  getSaveAsImageWithTitle,
-  getSaveAsImage, getDataView
-} from './auxiliarFunctions'
+  getSaveAsImageWithTitle, 
+  getSaveAsImage, 
+  getDataView
+} from '../lib/auxiliarFunctions'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {

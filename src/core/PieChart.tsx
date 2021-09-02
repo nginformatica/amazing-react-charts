@@ -3,7 +3,7 @@ import {
   IDefaultChartProps,
   TPieChartData,
   TPieDataLabel,
-} from './types'
+} from '../lib/types'
 import ReactEcharts from 'echarts-for-react'
 import { map, sum } from 'ramda'
 import {
@@ -12,7 +12,7 @@ import {
   takeLabelComplement,
   getSaveAsImageWithTitle,
   getPercentage
-} from './auxiliarFunctions'
+} from '../lib/auxiliarFunctions'
 import { WIDTH_STYLE } from './DonutChart'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 

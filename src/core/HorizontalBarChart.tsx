@@ -7,7 +7,7 @@ import {
   TEntryWithStyleData,
   TLabelProps,
   TParamsTooltip,
-} from './types'
+} from '../lib/types'
 import {
   getDataView,
   getDomain,
@@ -16,7 +16,7 @@ import {
   truncateLabel,
   takeLabelComplement,
   getSaveAsImageWithTitle
-} from './auxiliarFunctions'
+} from '../lib/auxiliarFunctions'
 import { reverse } from 'ramda'
 import { WIDTH_STYLE } from './DonutChart'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'

@@ -5,7 +5,7 @@ import {
   TEntryData,
   TEntryDataLine,
   TZoomProps
-} from './types'
+} from '../lib/types'
 import {
   formatTime,
   getDataView,
@@ -13,7 +13,7 @@ import {
   getSaveAsImage,
   takeLabelComplement,
   timeConvert
-} from './auxiliarFunctions'
+} from '../lib/auxiliarFunctions'
 import { WIDTH_STYLE } from './DonutChart'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {

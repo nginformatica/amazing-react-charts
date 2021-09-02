@@ -9,7 +9,7 @@ import {
   TEntryDataNTuples,
   TZoomProps,
   TParamsTooltip
-} from './types'
+} from '../lib/types'
 import {
   formatTime,
   getDataView,
@@ -21,7 +21,7 @@ import {
   truncateLabel,
   takeLabelComplement,
   generateAuxMessage,
-} from './auxiliarFunctions'
+} from '../lib/auxiliarFunctions'
 import {
   dontShowLabel,
   fullText,

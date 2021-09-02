@@ -9,7 +9,7 @@ import {
   TLabelProps,
   TOptionsProps,
   TZoomProps
-} from './types'
+} from '../lib/types'
 import {
   formatTime,
   formatTooltip,
@@ -20,7 +20,7 @@ import {
   toDate,
   truncateSpecialLabel,
   takeLabelComplement
-} from './auxiliarFunctions'
+} from '../lib/auxiliarFunctions'
 import { WIDTH_STYLE } from './DonutChart'
 
 export const fullText = {

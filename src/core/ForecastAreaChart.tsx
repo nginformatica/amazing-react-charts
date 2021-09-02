@@ -9,7 +9,7 @@ import {
   timeConvert,
   toDate,
   takeLabelComplement
-} from './auxiliarFunctions'
+} from '../lib/auxiliarFunctions'
 import {
   IDefaultChartProps,
   TDataTooltip,
@@ -19,7 +19,7 @@ import {
   TOptionsProps,
   TTooltipEntryProps,
   TZoomProps
-} from './types'
+} from '../lib/types'
 import { take } from 'ramda'
 import { STYLES } from './AreaChart'
 

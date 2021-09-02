@@ -11,14 +11,14 @@ import {
   timeConvert,
   toDate,
   takeLabelComplement
-} from './auxiliarFunctions'
+} from '../lib/auxiliarFunctions'
 import {
   IDefaultChartProps,
   TDataZoomChartProps,
   TDataZoomEventProps,
   TEntryData,
   TZoomProps
-} from './types'
+} from '../lib/types'
 
 export const STYLES = { width: '99.9%', height: 300 }
 export const TOOLBOX_DEFAULT_PROPS = {

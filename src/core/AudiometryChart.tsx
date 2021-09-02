@@ -7,13 +7,13 @@ import {
   TLineStyleType,
   TOptionsProps,
   TSimpleLegend
-} from './types'
+} from '../lib/types'
 import { filter, map, zipWith } from 'ramda'
 import {
   getDataView,
   getSaveAsImageWithTitle,
   getSaveAsImage
-} from './auxiliarFunctions'
+} from '../lib/auxiliarFunctions'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 const xFixedData: string[] = ['.25', '.5', '1', '2', '3', '4', '6', '8']

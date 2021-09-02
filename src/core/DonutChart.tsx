@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { IProps } from './PieChart'
-import { TPieChartData, TPieDataLabel } from './types'
+import { TPieChartData, TPieDataLabel } from '../lib/types'
 import {
   getDataView,
   getSaveAsImage,
@@ -9,7 +9,7 @@ import {
   getSaveAsImageWithTitle,
   thousandSeparator,
   getPercentage
-} from './auxiliarFunctions'
+} from '../lib/auxiliarFunctions'
 import { map, sum } from 'ramda'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 

@@ -4,7 +4,7 @@ import {
   IDefaultChartProps,
   TOptionsProps,
   TPictorialEntryData
-} from './types'
+} from '../lib/types'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: TPictorialEntryData[]
