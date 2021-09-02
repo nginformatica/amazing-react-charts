@@ -2,13 +2,14 @@ import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
-  TDataTooltip,
+  DataTooltip,
   TDataZoomChartProps,
-  TDataZoomEventProps,
-  TEntryData,
-  TEntryDataNTuples,
-  TZoomProps,
-  TParamsTooltip
+  DataZoomEventProps,
+  EntryData,
+  EntryDataNTuples,
+  ZoomProps,
+  ParamsTooltip,
+  ColorNTuples
 } from '../lib/types'
 import {
   formatTime,
@@ -30,23 +31,17 @@ import {
 } from './VerticalBarChart'
 import { WIDTH_STYLE } from './DonutChart'
 import { concat, move } from 'ramda'
-
-type TColorNTuples =
-  | [string, string]
-  | [string, string, string]
-  | [string, string, string, string]
-
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
-  data: TEntryDataNTuples
+  data: EntryDataNTuples
   tooltipExtra?: string
   sumDataValues?: boolean
-  colors?: TColorNTuples
+  colors?: ColorNTuples
   legendType?: 'scroll' | 'none'
   legendScrollGap?: number
   secondYAxisType?: 'percent' | string
 }
 
-const verifyStyleProps = (data: TEntryData) =>
+const verifyStyleProps = (data: EntryData) =>
   data.style ? { value: data.result, itemStyle: data.style } : data.result
 
 const StackedBarChart = (props: IProps) => {
@@ -85,7 +80,7 @@ const StackedBarChart = (props: IProps) => {
   const yBottomData = bottomData.map(verifyStyleProps)
   const yTopData = topData.map(verifyStyleProps)
   const yExtraData =
-    data.length >= 4 && extraData.map((item: TEntryData) => item.result)
+    data.length >= 4 && extraData.map((item: EntryData) => item.result)
 
   const yBottomValue = yBottomData.map(item =>
     typeof item === 'object' ? item.value : item
@@ -97,21 +92,21 @@ const StackedBarChart = (props: IProps) => {
 
   const topLabels = yBottomValue.map((item, index) => item + yTopValue[index])
 
-  const formatLabel = (chartValues: TDataTooltip) => {
+  const formatLabel = (chartValues: DataTooltip) => {
     const { dataIndex } = chartValues
     const value = topLabels[dataIndex]
 
     return takeLabelComplement(Number(value), yComplement, formatterMoney)
   }
 
-  const yLineData = lineData.map((item: TEntryData) => item.result)
+  const yLineData = lineData.map((item: EntryData) => item.result)
   const xData =
     xType === 'time'
-      ? bottomData.map((item: TEntryData) => toDate(item.label, dateFormat))
-      : bottomData.map((item: TEntryData) => item.label)
+      ? bottomData.map((item: EntryData) => toDate(item.label, dateFormat))
+      : bottomData.map((item: EntryData) => item.label)
 
   const dynamicDataZoom = (
-    item: TDataZoomEventProps,
+    item: DataZoomEventProps,
     charts: TDataZoomChartProps
   ) => {
     const dataRange = item.end - item.start
@@ -129,7 +124,7 @@ const StackedBarChart = (props: IProps) => {
     }
   }
 
-  const formatTooltip = (values: TParamsTooltip[]): string => {
+  const formatTooltip = (values: ParamsTooltip[]): string => {
     const takeValue = (data: { value: number | string } | string | number) =>
       typeof data === 'object' ? Number(data.value) : Number(data)
 
@@ -145,7 +140,7 @@ const StackedBarChart = (props: IProps) => {
         : ''
 
     const tooltipValues = values
-      .map((value: TDataTooltip) =>
+      .map((value: DataTooltip) =>
         yComplement === 'time'
           ? monuntTimeMessage(value, stackedValues)
           : mountMessage(
@@ -209,7 +204,7 @@ const StackedBarChart = (props: IProps) => {
       }
       : {}
 
-  const scrollable: TZoomProps[] =
+  const scrollable: ZoomProps[] =
     data[0].length > 12
       ? [
         {

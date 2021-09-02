@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { IProps } from './PieChart'
-import { TPieChartData, TPieDataLabel } from '../lib/types'
+import { PieChartData, PieDataLabel } from '../lib/types'
 import {
   getDataView,
   getSaveAsImage,
-  takeDonutComplement,
+  takeDonutChartComplement,
   getSaveAsImageWithTitle,
   thousandSeparator,
   getPercentage
@@ -78,7 +78,7 @@ export const DonutChart = (props: IDonutProps) => {
   const xData = map(item => item.name, props.data)
   const totalValues = sum(map(item => item.value, props.data))
 
-  const formatTooltip = ({ name, value, marker }: TPieChartData) => {
+  const formatTooltip = ({ name, value, marker }: PieChartData) => {
     const percent = getPercentage(value, totalValues)
     const valueWithPercent = resultFormatType === 'percent'
       ? value + ' (' + percent + '%)'
@@ -102,7 +102,7 @@ export const DonutChart = (props: IDonutProps) => {
   const formatDonutLabel = (value: number) =>
     resultFormatType === 'money'
       ? formatterMoney(value)
-      : takeDonutComplement(value, yComplement)
+      : takeDonutChartComplement(value, yComplement)
 
 
   const options = {
@@ -160,7 +160,7 @@ export const DonutChart = (props: IDonutProps) => {
         label: {
           position: legendPosition || 'outside',
           color: labelFontColor || 'black',
-          formatter: (item: TPieDataLabel) =>
+          formatter: (item: PieDataLabel) =>
             yComplement || resultFormatType
               ? formatDonutLabel(item.data.value)
               : item.data.value,

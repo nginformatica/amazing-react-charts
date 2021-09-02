@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
-  TCoordinates,
-  TOptionsProps,
-  TTuple
+  Coordinates,
+  OptionsProps,
+  NumberTuple
 } from '../lib/types'
 import { map } from 'ramda'
 import {
@@ -15,7 +15,7 @@ import {
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
-  coordinates: [TCoordinates[], TCoordinates[], TCoordinates[]]
+  coordinates: [Coordinates[], Coordinates[], Coordinates[]]
   colors?: string[]
   height?: number
   legendNames?: [string, string, string]
@@ -82,13 +82,13 @@ const CoordinateLineChart = (props: IProps) => {
     }
   }
 
-  const reference: TTuple[] = map(item => [item.x, item.y], ref)
-  const preRespiratory: TTuple[] = map(item => [item.x, item.y], pre)
-  const posResporatory: TTuple[] = map(item => [item.x, item.y], pos)
+  const reference: NumberTuple[] = map(item => [item.x, item.y], ref)
+  const preRespiratory: NumberTuple[] = map(item => [item.x, item.y], pre)
+  const posResporatory: NumberTuple[] = map(item => [item.x, item.y], pos)
 
   const namePadding = yRangeValues ? [150, 0, 0, 0] : [20, 0, 0, 0]
 
-  const options: TOptionsProps = {
+  const options: OptionsProps = {
     color: colors,
     series: [
       {

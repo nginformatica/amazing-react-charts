@@ -3,9 +3,9 @@ import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
   TAudiometryDataEntry,
-  TAudiometryDataTooltip,
-  TLineStyleType,
-  TOptionsProps,
+  AudiometryDataTooltip,
+  LineStyleType,
+  OptionsProps,
   TSimpleLegend
 } from '../lib/types'
 import { filter, map, zipWith } from 'ramda'
@@ -21,7 +21,7 @@ const xFixedData: string[] = ['.25', '.5', '1', '2', '3', '4', '6', '8']
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: TAudiometryDataEntry[][]
   height?: number
-  lineType?: TLineStyleType
+  lineType?: LineStyleType
   symbolsSize?: number
   colors?: string[]
   legendsPosition?: 'top' | 'bottom'
@@ -32,7 +32,7 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
   legendItemWidth?: number 
   legendItemHeight?: number 
   tooltipMarker?: boolean
-  formatTooltip?(items: TAudiometryDataTooltip[]): string
+  formatTooltip?(items: AudiometryDataTooltip[]): string
 }
 
 const AudiometryChart = (props: IProps) => {
@@ -72,7 +72,7 @@ const AudiometryChart = (props: IProps) => {
     setTitle(show)
   }
 
-  const defaultToolip = (items: TAudiometryDataTooltip[]) => {
+  const defaultToolip = (items: AudiometryDataTooltip[]) => {
     if (legends) {
       const generateTooltip = map(
         item => {
@@ -200,7 +200,7 @@ const AudiometryChart = (props: IProps) => {
     })
   )
 
-  const options: TOptionsProps = {
+  const options: OptionsProps = {
     series: dataWithNames,
     xAxis: {
       boundaryGap: true,

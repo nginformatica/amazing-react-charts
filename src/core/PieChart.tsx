@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import {
   IDefaultChartProps,
-  TPieChartData,
-  TPieDataLabel,
+  PieChartData,
+  PieDataLabel,
 } from '../lib/types'
 import ReactEcharts from 'echarts-for-react'
 import { map, sum } from 'ramda'
@@ -17,7 +17,7 @@ import { WIDTH_STYLE } from './DonutChart'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
-  data: TPieChartData[]
+  data: PieChartData[]
   colors?: string[]
   legendPosition?: 'inside' | 'outside'
   legendType?: 'scroll' | 'plain'
@@ -88,7 +88,7 @@ export const PieChart = (props: IProps) => {
   }
 
 
-  const formatTooltip = ({ name, value, marker }: TPieChartData) => {
+  const formatTooltip = ({ name, value, marker }: PieChartData) => {
     const title = tooltipTitle ? tooltipTitle + '<br>' : ''
     const percent = getPercentage(value, totalValues)
     const valuePrint = resultFormatType === 'money' && formatterMoney
@@ -106,7 +106,7 @@ export const PieChart = (props: IProps) => {
     )
   }
 
-  const formatPieLabel = ({ data }: TPieDataLabel) =>
+  const formatPieLabel = ({ data }: PieDataLabel) =>
     data.value === 0 && legendPosition === 'inside'
       ? ''
       : takeLabelComplement(data.value, resultFormatType, formatterMoney)

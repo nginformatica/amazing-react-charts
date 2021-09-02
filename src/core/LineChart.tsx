@@ -2,9 +2,9 @@ import * as React from 'react'
 import ReactCharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
-  TEntryData,
-  TEntryDataLine,
-  TZoomProps
+  EntryData,
+  EntryDataLine,
+  ZoomProps
 } from '../lib/types'
 import {
   formatTime,
@@ -17,7 +17,7 @@ import {
 import { WIDTH_STYLE } from './DonutChart'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
-  data: TEntryDataLine[]
+  data: EntryDataLine[]
   colors?: string[]
   showLabel?: boolean
   smooth?: boolean
@@ -26,7 +26,7 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
   axisNames?: { x: string, y: string }
 }
 
-const takeYdata = (entryData: TEntryData[]) =>
+const takeYdata = (entryData: EntryData[]) =>
   entryData.map(item => item.result)
 
 const LineChart = (props: IProps) => {
@@ -77,7 +77,7 @@ const LineChart = (props: IProps) => {
   const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
   const tooltipLabelFormat = dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
 
-  const scrollable: TZoomProps[] =
+  const scrollable: ZoomProps[] =
     xData.length > arrayInitialSize
       ? [
         {

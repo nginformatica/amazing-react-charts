@@ -15,9 +15,9 @@ import {
 import {
   IDefaultChartProps,
   TDataZoomChartProps,
-  TDataZoomEventProps,
-  TEntryData,
-  TZoomProps
+  DataZoomEventProps,
+  EntryData,
+  ZoomProps
 } from '../lib/types'
 
 export const STYLES = { width: '99.9%', height: 300 }
@@ -57,11 +57,11 @@ const AreaChart = (props: IDefaultChartProps) => {
   } = props
 
   const markLine = lineMarkValue && data.map(() => lineMarkValue)
-  const yData = data.map((item: TEntryData) => item.result)
+  const yData = data.map((item: EntryData) => item.result)
   const xData =
     xType === 'time'
-      ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
-      : data.map((item: TEntryData) => item.label)
+      ? data.map((item: EntryData) => toDate(item.label, dateFormat))
+      : data.map((item: EntryData) => item.label)
 
   const formatLabel = (chartValues: { data: number }) => {
     const { data } = chartValues
@@ -72,7 +72,7 @@ const AreaChart = (props: IDefaultChartProps) => {
   }
 
   const dinamicData = (
-    item: TDataZoomEventProps,
+    item: DataZoomEventProps,
     charts: TDataZoomChartProps
   ) => {
     const isTime = (yType === 'time' ? 3400 : 4500)
@@ -131,7 +131,7 @@ const AreaChart = (props: IDefaultChartProps) => {
   const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
   const tooltipLabelFormat = dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
 
-  const scrollable: TZoomProps[] =
+  const scrollable: ZoomProps[] =
     xData.length > arrayInitialSize
       ? [
         {

@@ -2,12 +2,12 @@ import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
-  TOptionsProps,
-  TPictorialEntryData
+  OptionsProps,
+  PictorialEntryData
 } from '../lib/types'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
-  data: TPictorialEntryData[]
+  data: PictorialEntryData[]
   height?: number | string
 }
 
@@ -24,7 +24,7 @@ const PictorialChart = (props: IProps) => {
     trigger: 'item' as const
   }
 
-  const options: TOptionsProps = {
+  const options: OptionsProps = {
     series: [
       {
         name: 'full',

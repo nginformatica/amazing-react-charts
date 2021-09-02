@@ -1,14 +1,7 @@
 import { format, parse } from 'date-fns'
 import { takeLast } from 'ramda'
 import ptBR from 'date-fns/locale/pt-BR'
-import { TDataTooltip, TDomainValues } from './types'
-
-type TConnectedDataURL = {
-  type?: string
-  backgroundColor?: string
-  connectedBackgroundColor?: string
-  excludeComponents?: string[]
-}
+import { ConnectedDataURL, DataTooltip, DomainValues } from './types'
 
 const DOWNLOAD_ICON =
   'path://M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 ' +
@@ -34,7 +27,7 @@ export const takeLabelComplement = (
     : getComplement
 }
 
-export const takeDonutComplement = (item: number, complement?: string) =>
+export const takeDonutChartComplement = (item: number, complement?: string) =>
   item === 0 ? '' : item + (complement || '')
 
 export const timeConvert = (value: number) => {
@@ -47,7 +40,36 @@ export const timeConvert = (value: number) => {
     : Math.floor(value) + ':00'
 }
 
-export const formatValueAxis = (value: number, complement: string) => {
+export const getPercentage = (value: number, valueTotal: number) =>
+  value !== 0 ? (value * (100 / valueTotal)).toFixed(2) : '0'
+
+export const generateAuxMessage = (
+  label: string,
+  result: number,
+  complement: string,
+  formatterMoney?: (value: string | number) => string
+) => {
+  const value = complement === 'money' && formatterMoney
+    ? formatterMoney(result)
+    : result
+
+  return `<span style="margin-left: 15.2px;"></span>${label}: ${value}<br>`
+}
+
+export const monuntTimeMessage = (
+  item: DataTooltip,
+  stackedValues: number
+) => {
+  const time = timeConvert(Number(item.value))
+  const percent = item.value !== 0
+    ? getPercentage((Number(item.value)), stackedValues)
+    : '0'
+
+  return item.seriesName + ': ' + time + ' (' + percent + '%) <br>'
+}
+
+// These 3 next functions are used on the mountMessage function. 
+const formatValueAxis = (value: number, complement: string) => {
   const getTime = complement === 'time'
     ? timeConvert(value)
     : value + complement
@@ -57,7 +79,7 @@ export const formatValueAxis = (value: number, complement: string) => {
     : getTime
 }
 
-export const takeComplement = (
+const takeComplement = (
   data: string | number,
   complement: string,
   formatterMoney: (value: string | number) => string
@@ -66,10 +88,7 @@ export const takeComplement = (
     ? ': ' + formatterMoney(data) + '<br>'
     : ': ' + data + complement + '<br>'
 
-export const getPercentage = (value: number, valueTotal: number) =>
-  value !== 0 ? (value * (100 / valueTotal)).toFixed(2) : '0'
-
-export const moneyPercent = (
+const moneyPercent = (
   value: number,
   valueTotal: number,
   formatterMoney: (value: string | number) => string,
@@ -82,33 +101,9 @@ export const moneyPercent = (
     : formatterMoney(value) + '<br>'
 }
 
-export const generateAuxMessage = (
-  label: string,
-  result: number,
-  complement: string,
-  formatterMoney?: (value: string | number) => string
-) => {
-  const value = complement === 'money' && formatterMoney 
-    ? formatterMoney(result) 
-    : result
-
-  return `<span style="margin-left: 15.2px;"></span>${label}: ${value}<br>`
-}
-
-export const monuntTimeMessage = (
-  item: TDataTooltip,
-  stackedValues: number
-) => {
-  const time = timeConvert(Number(item.value))
-  const percent = item.value !== 0
-    ? getPercentage((Number(item.value)), stackedValues)
-    : '0'
-
-  return item.seriesName + ': ' + time + ' (' + percent + '%) <br>'
-}
-
+// Specific function only used in the stacked bar chart tooltip
 export const mountMessage = (
-  value: TDataTooltip,
+  value: DataTooltip,
   complement: string,
   axisType: string,
   stackedValues: number,
@@ -159,11 +154,13 @@ export const truncateLabel = (text: string, labelWordSize?: number) => {
     : text
 }
 
-export const truncateSpecialLabel = (text: string, size: number) =>
+export const fixedTruncateLabel = (text: string, size: number) =>
   text.length > size ? text.slice(0, size - 3) + '...' : text
 
-export const getDomain = (item: TDomainValues) => {
-  // TODO: improve this "pattern matching" xgh
+// This is a xgh that needs improvments, it's used to take the domain 
+// of the line and area charts, there is the range of the y axis that 
+// is printed on component.  
+export const getDomain = (item: DomainValues) => {
   switch (true) {
     case item.max >= 2500:
       return item.max + (item.max * 20) / 100
@@ -194,7 +191,7 @@ export const getDomain = (item: TDomainValues) => {
   }
 }
 
-export const fixedDomain = (item: TDomainValues) =>
+export const fixedDomain = (item: DomainValues) =>
   item.max >= 90 ? 100 : getDomain(item)
 
 export const getSaveAsImage = (title: string) => ({
@@ -206,6 +203,50 @@ export const getSaveAsImage = (title: string) => ({
   excludeComponents: ['toolbox', 'dataZoom']
 })
 
+export const getDataView = (title: string) => ({
+  title,
+  show: true,
+  icon:
+    'path://M2 20h20v-4H2v4zm2-3h2v2H4v-2zM2 4v4h20V4H2zm4 ' +
+    '3H4V5h2v2zm-4 7h20v-4H2v4zm2-3h2v2H4v-2z',
+  iconStyle: {
+    color: '#152849',
+    borderColor: '#152849',
+    borderWidth: 0.1
+  },
+  buttonColor: '#152849',
+  // TODO: pass this labels as a props from the component use.
+  lang: [title, 'Voltar', 'Atualizar']
+})
+
+// This function get the initial values, the range of the initial 
+// scroll, that are used at scrollable charts with dates.
+// 30 values for monthly charts, 12 for yearly charts.
+export const getInitialValues = (
+  arrayLength: number,
+  dateFormat?: string,
+  scrollStart?: number
+) => {
+  if (scrollStart) {
+    return arrayLength > scrollStart
+      ? 100 - (scrollStart * 100) / arrayLength
+      : 0
+  }
+
+  const monthly = arrayLength > 30 ? 100 - 3000 / arrayLength : 0
+  const yearly = arrayLength > 12 ? 100 - 1200 / arrayLength : 0
+
+  return dateFormat !== 'yyyy-MM' ? monthly : yearly
+}
+
+// This function take a number and put on this the thousand separator ".", e.g.:
+// 1000 => 1.000
+// 1000000 => 1.000.000 
+export const thousandSeparator = (values: string | number) =>
+  values.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+
+// This function is used to print the title on chart image download even 
+// the chart's title is not rendered on the component.
 export const getSaveAsImageWithTitle = (
   title: string,
   setTitle: (show: boolean) => void
@@ -216,7 +257,7 @@ export const getSaveAsImageWithTitle = (
   iconStyle,
   onclick: (
     item: { option: { title: { text: string }[] } },
-    chartInfo: { getConnectedDataURL: (opts: TConnectedDataURL) => string }
+    chartInfo: { getConnectedDataURL: (opts: ConnectedDataURL) => string }
   ) => {
     const title = item.option.title.length > 0
       ? item.option.title[0].text
@@ -247,41 +288,3 @@ export const getSaveAsImageWithTitle = (
     setTitle(false)
   }
 })
-
-export const getDataView = (title: string) => ({
-  title,
-  show: true,
-  icon:
-    'path://M2 20h20v-4H2v4zm2-3h2v2H4v-2zM2 4v4h20V4H2zm4 ' +
-    '3H4V5h2v2zm-4 7h20v-4H2v4zm2-3h2v2H4v-2z',
-  iconStyle: {
-    color: '#152849',
-    borderColor: '#152849',
-    borderWidth: 0.1
-  },
-  buttonColor: '#152849',
-  lang: [title, 'Voltar', 'Atualizar']
-})
-
-export const getInitialValues = (
-  arrayLength: number,
-  dateFormat?: string,
-  scrollStart?: number
-) => {
-  if (scrollStart) {
-    return arrayLength > scrollStart
-      ? 100 - (scrollStart * 100) / arrayLength
-      : 0
-  }
-
-  const monthly = arrayLength > 30 ? 100 - 3000 / arrayLength : 0
-  const yearly = arrayLength > 12 ? 100 - 1200 / arrayLength : 0
-
-  return dateFormat !== 'yyyy-MM' ? monthly : yearly
-}
-
-// This function take a number and put on this the thousand separator ".", e.g.:
-// 1000 => 1.000
-// 1000000 => 1.000.000 
-export const thousandSeparator = (values: string | number) =>
-  values.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')

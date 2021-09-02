@@ -2,26 +2,26 @@ import { CSSProperties } from 'react'
 import { EChartOption } from 'echarts'
 
 export interface IDefaultChartProps {
-  data: TEntryData[]
+  data: EntryData[]
   lineMarkValue?: number
   lineMarkColor?: string
   lineMakeName?: string
   yComplement?: string | 'money'
   tooltipComplement?: string
-  tooltip?: TTooltipEntryProps
+  tooltip?: TooltipEntryProps
   color?: string
   forecastColor?: string
   xType?: 'time' | 'category'
   yType?: 'time' | 'value'
   barWidth?: number
   dateFormat?: string
-  grid?: TGridProps
-  width?: TWidthProps
+  grid?: GridProps
+  width?: WidthProps
   rotateLabel?: number
   fontLabelSize?: number
   showBarLabel?: boolean
   title?: string
-  toolboxTooltip?: TToolboxEntryProps
+  toolboxTooltip?: ToolboxEntryProps
   isMoreThanHundredPercent?: boolean
   labelWordSize?: number
   marginLeftTitle?: string
@@ -35,22 +35,22 @@ export interface IDefaultChartProps {
   ): void
 }
 
-export type TToolboxEntryProps = {
+type ToolboxEntryProps = {
   saveAsImage?: string
   dataView?: string
   saveAsImageWithTitle?: string
 }
 
-export type TCoordinates = {
+export type Coordinates = {
   x: number
   y: number
 }
 
-export type TTuple = [number, number]
+export type NumberTuple = [number, number]
 
-export type TWidthProps = number | null | undefined | 'auto'
+export type WidthProps = number | null | undefined | 'auto'
 
-export type TTooltipEntryProps = {
+export type TooltipEntryProps = {
   label: string
   result?: string
   topResult?: string
@@ -63,51 +63,51 @@ export type TTooltipEntryProps = {
   resultComplement?: string | number
 }
 
-export type TEntryDataLine = {
+export type EntryDataLine = {
   name?: string
-  values: TEntryData[]
+  values: EntryData[]
 }
 
-export type TEntryData = {
+export type EntryData = {
   label: string
   result: number
   itemId?: string
-  style?: TLabelProps
+  style?: LabelProps
 }
 
-export type TEntryWithStyleData = {
+export type EntryWithStyleData = {
   value: number
-  label?: TLabelProps
+  label?: LabelProps
 }
 
-export type TPictorialEntryData = {
+export type PictorialEntryData = {
   value: number
   symbol: string
 }
 
-export type TEntryDataNTuples =
-  | [TEntryData[], TEntryData[]]
-  | [TEntryData[], TEntryData[], TEntryData[]]
-  | [TEntryData[], TEntryData[], TEntryData[], TEntryData[]]
-  | [TEntryData[], TEntryData[], TEntryData[], TEntryData[], TEntryData[]]
+export type EntryDataNTuples =
+  | [EntryData[], EntryData[]]
+  | [EntryData[], EntryData[], EntryData[]]
+  | [EntryData[], EntryData[], EntryData[], EntryData[]]
+  | [EntryData[], EntryData[], EntryData[], EntryData[], EntryData[]]
 
-export type TSeries = {
+export type Series = {
   stillShowZeroSum?: boolean
   name?: string
   xAxisIndex?: number
   yAxisIndex?: number
-  label?: TLabelProps
+  label?: LabelProps
   labelLine?: { show?: boolean, length?: number, length2?: number }
   areaStyle?: React.CSSProperties
-  lineStyle?: React.CSSProperties & { type?: TLineStyleType }
+  lineStyle?: React.CSSProperties & { type?: LineStyleType }
   barGap?: string
   barCategoryGap?: string
   animation?: boolean
-  itemStyle?: TLabelProps
-  markLine?: TMarkLineProps
-  markPoint?: TMarkPointProps
+  itemStyle?: LabelProps
+  markLine?: MarkLineProps
+  markPoint?: MarkPointProps
   barWidth?: number | string
-  emphasis?: TNormalProps
+  emphasis?: DefaultProps
   stack?: string
   silent?: boolean
   showAllSymbol?: boolean | 'auto'
@@ -126,47 +126,47 @@ export type TSeries = {
   | number[]
   | string[]
   | Date[]
-  | TPieChartData[]
-  | TEntryWithStyleData[]
-  | TPictorialEntryData[]
-  | TCostumizedSymbolData[]
-  | TTuple[]
+  | PieChartData[]
+  | EntryWithStyleData[]
+  | PictorialEntryData[]
+  | CostumizedSymbolData[]
+  | NumberTuple[]
 }
 
-export type TCostumizedSymbolData = {
+export type CostumizedSymbolData = {
   value?: string | number
   symbol?: string
   symbolSize?: number
 }
 
-export type TDomainValues = {
+export type DomainValues = {
   min: number
   max: number
 }
 
-export type TPieDataLabel = {
-  data: TPieChartData
+export type PieDataLabel = {
+  data: PieChartData
 }
 
-type TFormatterReturn = string[] | string | number
+type FormatterReturn = string[] | string | number
 
-type TFormatterEntry =
+type FormatterEntry =
   | string
   | number
-  | TDomainValues
-  | TDataTooltip
-  | TDataTooltip[]
-  | TPieDataLabel
+  | DomainValues
+  | DataTooltip
+  | DataTooltip[]
+  | PieDataLabel
 
-export type TFormatterType =
+export type FormatterType =
   | string
-  | ((item: TFormatterEntry | TAudiometryDataTooltip[]) => TFormatterReturn)
+  | ((item: FormatterEntry | AudiometryDataTooltip[]) => FormatterReturn)
 
-export type TFormatterSliderType =
+export type FormatterSliderType =
   | string
-  | ((yValue: string, xValue: string) => TFormatterReturn)
+  | ((yValue: string, xValue: string) => FormatterReturn)
 
-export type TPositionType =
+export type PositionType =
   | 'top'
   | 'bottom'
   | 'left'
@@ -180,63 +180,63 @@ export type TPositionType =
   | 'center'
   | [number, number]
 
-export type TChartType = 'time' | 'category' | 'value' | 'log'
+export type ChartType = 'time' | 'category' | 'value' | 'log'
 
-export type TLineStyleType = 'solid' | 'dashed' | 'dotted'
+export type LineStyleType = 'solid' | 'dashed' | 'dotted'
 
-export type TLabelProps = {
-  normal?: TNormalProps
+export type LabelProps = {
+  normal?: DefaultProps
   opacity?: number
   color?: string
-  formatter?: TFormatterType | undefined | string | number
+  formatter?: FormatterType | undefined | string | number
   show?: boolean
-  position?: TPositionType
+  position?: PositionType
   fontSize?: number
   fontWeight?: number
   distance?: number
   borderColor?: string
   barBorderRadius?: number
-  itemStyle?: TLabelProps
+  itemStyle?: LabelProps
   margin?: string
   distanceToLabelLine?: number
   fontFamily?: string
 }
 
-export type TDataMarkLine = {
+export type DataMarkLine = {
   name?: string
   xAxis?: string
   yAxis?: string | number
   type?: string
 }
 
-export type TMarkLineProps = {
+export type MarkLineProps = {
   silent?: boolean
   symbol?: string
-  label?: TLabelProps
+  label?: LabelProps
   animation?: boolean
-  data: TDataMarkLine[]
-  lineStyle: TLineStyle
+  data: DataMarkLine[]
+  lineStyle: LineStyle
 }
 
-export type TMarkPointProps = {
+export type MarkPointProps = {
   symbolSize?: number
   hoverAnimation?: boolean
-  data: TDataMarkLine[]
+  data: DataMarkLine[]
 }
 
-export type TLineStyle = {
+export type LineStyle = {
   width?: number
   type?: string
   color?: string
   emphasis?: {
-    lineStyle?: TLineStyle
+    lineStyle?: LineStyle
   }
 }
 
-export type TNormalProps = {
-  formatter?: TFormatterType
+export type DefaultProps = {
+  formatter?: FormatterType
   show?: boolean
-  position?: TPositionType
+  position?: PositionType
   fontSize?: number
   fontWeight?: number
   color?: string
@@ -244,10 +244,10 @@ export type TNormalProps = {
   borderColor?: string
   barBorderRadius?: number
   opacity?: number
-  itemStyle?: TLabelProps
+  itemStyle?: LabelProps
 }
 
-export type TGridProps = {
+export type GridProps = {
   show?: boolean
   right?: string | number
   left?: string | number
@@ -257,9 +257,9 @@ export type TGridProps = {
   containLabel?: boolean
 }
 
-export type TAxisLabelProps = {
-  type?: TChartType
-  formatter?: TFormatterType
+export type AxisLabelProps = {
+  type?: ChartType
+  formatter?: FormatterType
   textStyle?: React.CSSProperties
   interval?: number | string | 'auto'
   rotate?: number
@@ -270,7 +270,7 @@ export type TAxisLabelProps = {
   align?: 'left' | 'right' | 'center'
 }
 
-type TSplitLineProps = {
+type SplitLineProps = {
   show?: boolean
   onZeroAxisIndex?: string
   alignWithLabel?: boolean
@@ -278,60 +278,57 @@ type TSplitLineProps = {
     color?: string | string[]
     width?: number
     opacity?: number
-    type?: TLineStyleType
+    type?: LineStyleType
   }
 }
 
-export type TPieChartData = {
+export type PieChartData = {
   name: string
   value: number
   marker?: string
 }
 
-export type TAxisProps = {
+export type AxisProps = {
   name?: string
   nameGap?: number
-  type?: TChartType
-  nameTextStyle?: { padding?: number[], verticalAlign?: string }
+  type?: ChartType
+  nameTextStyle?: {
+    padding?: number[],
+    verticalAlign?: string
+  }
   boundaryGap?: boolean
   data?:
   | number[]
   | string[]
   | Date[]
-  | TPieChartData[]
-  | TEntryWithStyleData[]
+  | PieChartData[]
+  | EntryWithStyleData[]
   | { name: string }[]
   gridIndex?: number
   showGrid?: boolean
-  splitLine?: TSplitLineProps
-  axisLabel?: TAxisLabelProps
-  axisTick?: TAxisTickProps
+  splitLine?: SplitLineProps
+  axisLabel?: AxisLabelProps
+  axisTick?: {
+    show?: boolean
+    alignWithLabel?: boolean
+    interval?: number
+  }
   min?: number
-  max?: number | string | TFormatterType
-  position?: TPositionType
-  axisLine?: TSplitLineProps
+  max?: number | string | FormatterType
+  position?: PositionType
+  axisLine?: SplitLineProps
   interval?: number | string[]
   inverse?: boolean
 }
 
-export type TAxisLineProps = {
-  show?: boolean
-}
+export type OptionsProps = EChartOption
 
-export type TAxisTickProps = {
-  show?: boolean
-  alignWithLabel?: boolean
-  interval?: number
-}
-
-export type TOptionsProps = EChartOption
-
-export type TZoomProps = {
+export type ZoomProps = {
   bottom?: number
   show?: boolean
   zoomLock?: boolean
   start?: number
-  labelFormatter?: TFormatterSliderType
+  labelFormatter?: FormatterSliderType
   type: 'inside' | 'slider'
   end?: number
   zoomOnMouseWheel?: 'ctrl' | 'shift' | boolean
@@ -339,7 +336,7 @@ export type TZoomProps = {
   endValue?: number | Date | string
 }
 
-export type TLegendProps = {
+export type LegendProps = {
   x?: 'center' | 'bottom'
   y?: 'center' | 'bottom'
   icon?: 'line' | 'rect' | 'shape'
@@ -353,20 +350,20 @@ export type TLegendProps = {
   left?: number | string
 }
 
-export type TTooltipProps = {
-  formatter: TFormatterType
+export type TooltipProps = {
+  formatter: FormatterType
   trigger?: 'axis' | 'item'
   textStyle?: React.CSSProperties
-  axisPointer?: TAxisPointerProps
+  axisPointer?: AxisPointerProps
 }
 
-export type TAxisPointerProps = {
+export type AxisPointerProps = {
   type?: 'cross' | 'none' | 'shadow'
   label?: CSSProperties
   shadowStyle?: CSSProperties
 }
 
-export type TDataTooltip = {
+export type DataTooltip = {
   name?: string
   marker?: string
   seriesName?: string
@@ -379,50 +376,35 @@ export type TDataTooltip = {
   seriesIndex?: number
 }
 
-export type TParamsTooltip = {
+export type ParamsTooltip = {
   name: string
   value: number
   data?: number | string
   dataIndex?: number
 }
 
-export type TAudiometryDataTooltip = {
-  data?: { value: number | string, boneValue: number | string }
+export type AudiometryDataTooltip = {
+  data?: {
+    value: number | string,
+    boneValue: number | string
+  }
   seriesName?: string
   axisValue?: string
   marker?: string
 }
 
-export type TTitleProps = {
-  id?: string
-  text?: string
-  show?: boolean
-  textAlign?: 'left' | 'right' | 'auto'
-  textStyle?: CSSProperties
-  left?: number | string
-  top?: number | string
-}
-
-export type TDataView = {
-  buttonColor?: string
-  lang?: string[]
-  title?: string
-  icon?: string
-  iconStyle?: CSSProperties
-}
-
-export type TDataZoomEventProps = {
+export type DataZoomEventProps = {
   start: number
   end: number
 }
 
 export type TDataZoomChartProps = {
-  setOption(option: TOptionsProps): void
+  setOption(option: OptionsProps): void
 }
 
 export type TForecastAreaChartData = {
-  current: TEntryData[]
-  forecast: TEntryData[]
+  current: EntryData[]
+  forecast: EntryData[]
 }
 
 export type TAudiometryDataEntry = {
@@ -432,4 +414,19 @@ export type TAudiometryDataEntry = {
   boneSymbol?: string
 }
 
-export type TSimpleLegend = { name: string, icon?: string }
+export type TSimpleLegend = {
+  name: string,
+  icon?: string
+}
+
+export type ColorNTuples =
+  | [string, string]
+  | [string, string, string]
+  | [string, string, string, string]
+
+export type ConnectedDataURL = {
+    type?: string
+    backgroundColor?: string
+    connectedBackgroundColor?: string
+    excludeComponents?: string[]
+  }

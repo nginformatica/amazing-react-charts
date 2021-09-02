@@ -12,21 +12,21 @@ import {
 } from '../lib/auxiliarFunctions'
 import {
   IDefaultChartProps,
-  TDataTooltip,
+  DataTooltip,
   TDataZoomChartProps,
-  TDataZoomEventProps,
-  TEntryData,
-  TOptionsProps,
-  TTooltipEntryProps,
-  TZoomProps
+  DataZoomEventProps,
+  EntryData,
+  OptionsProps,
+  TooltipEntryProps,
+  ZoomProps
 } from '../lib/types'
 import { take } from 'ramda'
 import { STYLES } from './AreaChart'
 
 interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
   tooltip: {
-    current: TTooltipEntryProps
-    forecast: TTooltipEntryProps
+    current: TooltipEntryProps
+    forecast: TooltipEntryProps
   }
   forecastChartLegends?: {
     current?: string
@@ -57,12 +57,12 @@ const ForecastAreaChart = (props: IProps) => {
     formatterMoney
   } = props
 
-  const yData = data.map((item: TEntryData) => item.result)
-  const xData = data.map((item: TEntryData) =>
+  const yData = data.map((item: EntryData) => item.result)
+  const xData = data.map((item: EntryData) =>
     toDate(item.label, 'yyyy-MM-dd HH:mm').toString()
   )
 
-  const formatLabel = (chartValues: TDataTooltip) => {
+  const formatLabel = (chartValues: DataTooltip) => {
     const { data } = chartValues
 
     return yType === 'time'
@@ -71,7 +71,7 @@ const ForecastAreaChart = (props: IProps) => {
   }
 
   const dinamicData = (
-    item: TDataZoomEventProps,
+    item: DataZoomEventProps,
     charts: TDataZoomChartProps
   ) => {
     const dataRange = item.end - item.start
@@ -139,7 +139,7 @@ const ForecastAreaChart = (props: IProps) => {
       }
     }
   }
-  const scrollable: TZoomProps[] =
+  const scrollable: ZoomProps[] =
     xData.length > 5
       ? [
         {
@@ -161,7 +161,7 @@ const ForecastAreaChart = (props: IProps) => {
       ]
       : []
 
-  const options: TOptionsProps = {
+  const options: OptionsProps = {
     series: [
       {
         type: 'line',
