@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { IProps } from './PieChart'
-import { TPieChartData, TPieDataLabel } from './types'
+import { PieChartData, PieDataLabel } from './types'
 import {
   getDataView,
   getSaveAsImage,
-  takeDonutComplement,
+  takeDonutChartComplement,
   getSaveAsImageWithTitle,
   thousandSeparator,
-  getPercentage
-} from './auxiliarFunctions'
+  getPercentage,
+  getWidthOpts
+} from '../lib/auxiliarFunctions'
 import { map, sum } from 'ramda'
-import { formatToBRL } from 'brazilian-values'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 interface IDonutProps extends IProps {
@@ -37,7 +37,11 @@ export const DonutChart = (props: IDonutProps) => {
     legendPosition,
     labelFontColor,
     centerPieValueFontSize,
-    selectedMode
+    selectedMode,
+    data,
+    grid,
+    colors,
+    width
   } = props
 
   const [title, setTitle] = useState(false)
@@ -75,17 +79,17 @@ export const DonutChart = (props: IDonutProps) => {
     }
   }
 
-  const xData = map(item => item.name, props.data)
-  const totalValues = sum(map(item => item.value, props.data))
+  const xData = map(item => item.name, data)
+  const totalValues = sum(map(item => item.value, data))
 
-  const formatTooltip = ({ name, value, marker }: TPieChartData) => {
+  const formatTooltip = ({ name, value, marker }: PieChartData) => {
     const percent = getPercentage(value, totalValues)
     const valueWithPercent = resultFormatType === 'percent'
       ? value + ' (' + percent + '%)'
       : value
 
-    const valueToShow = resultFormatType === 'money'
-      ? formatToBRL(value)
+    const valueToShow = typeof resultFormatType === 'function'
+      ? resultFormatType(value)
       : valueWithPercent
 
     const label =
@@ -100,14 +104,14 @@ export const DonutChart = (props: IDonutProps) => {
   }
 
   const formatDonutLabel = (value: number) =>
-    resultFormatType === 'money'
-      ? formatToBRL(value)
-      : takeDonutComplement(value, yComplement)
+    typeof resultFormatType === 'function'
+      ? resultFormatType(value)
+      : takeDonutChartComplement(value, yComplement)
 
 
   const options = {
-    grid: props.grid,
-    color: props.colors,
+    grid: grid,
+    color: colors,
     title: {
       left: resultFormatType ? '0.1%' : '6.2%',
       top: resultFormatType && '5.7%',
@@ -138,7 +142,7 @@ export const DonutChart = (props: IDonutProps) => {
         name: 'background',
         type: 'pie',
         radius: donutRadius,
-        data: props.data,
+        data: data,
         animation: false,
         center: center || ['50%', '50%'],
         label: {
@@ -154,13 +158,13 @@ export const DonutChart = (props: IDonutProps) => {
         name: 'first',
         type: 'pie',
         radius: donutRadius,
-        data: props.data,
+        data: data,
         animation: false,
         center: center || ['50%', '50%'],
         label: {
           position: legendPosition || 'outside',
           color: labelFontColor || 'black',
-          formatter: (item: TPieDataLabel) =>
+          formatter: (item: PieDataLabel) =>
             yComplement || resultFormatType
               ? formatDonutLabel(item.data.value)
               : item.data.value,
@@ -177,12 +181,10 @@ export const DonutChart = (props: IDonutProps) => {
     }
   }
 
-  const widthOpts = { width: props.width }
-
   return (
     <ReactEcharts
       style={WIDTH_STYLE}
-      opts={widthOpts}
+      opts={getWidthOpts(width)}
       option={options}
     />
   )

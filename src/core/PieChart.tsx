@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import {
   IDefaultChartProps,
-  TPieChartData,
-  TPieDataLabel,
+  PieChartData,
+  PieDataLabel,
 } from './types'
 import ReactEcharts from 'echarts-for-react'
 import { map, sum } from 'ramda'
@@ -11,19 +11,19 @@ import {
   getSaveAsImage,
   takeLabelComplement,
   getSaveAsImageWithTitle,
-  getPercentage
-} from './auxiliarFunctions'
-import { formatToBRL } from 'brazilian-values'
+  getPercentage,
+  getWidthOpts
+} from '../lib/auxiliarFunctions'
 import { WIDTH_STYLE } from './DonutChart'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
-  data: TPieChartData[]
+  data: PieChartData[]
   colors?: string[]
   legendPosition?: 'inside' | 'outside'
   legendType?: 'scroll' | 'plain'
   radius?: string
-  resultFormatType?: 'money' | 'percent'
+  resultFormatType?: 'percent' |  ((value: string | number) => string)
   labelFontColor?: string
   noAnimation?: boolean
   pieceBorderColor?: string
@@ -88,11 +88,12 @@ export const PieChart = (props: IProps) => {
   }
 
 
-  const formatTooltip = ({ name, value, marker }: TPieChartData) => {
+  const formatTooltip = ({ name, value, marker }: PieChartData) => {
     const title = tooltipTitle ? tooltipTitle + '<br>' : ''
     const percent = getPercentage(value, totalValues)
-    const valuePrint =
-      resultFormatType === 'money' ? formatToBRL(value) : value
+    const valuePrint = typeof resultFormatType === 'function' 
+      ? resultFormatType(value)  
+      : value
 
     return (
       title +
@@ -105,7 +106,7 @@ export const PieChart = (props: IProps) => {
     )
   }
 
-  const formatPieLabel = ({ data }: TPieDataLabel) =>
+  const formatPieLabel = ({ data }: PieDataLabel) =>
     data.value === 0 && legendPosition === 'inside'
       ? ''
       : takeLabelComplement(data.value, resultFormatType)
@@ -159,12 +160,10 @@ export const PieChart = (props: IProps) => {
     toolbox
   }
 
-  const widthOpts = { width: width || 'auto' }
-
   return (
     <ReactEcharts
       style={WIDTH_STYLE}
-      opts={widthOpts}
+      opts={getWidthOpts(width || 'auto')}
       option={options}
     />
   )

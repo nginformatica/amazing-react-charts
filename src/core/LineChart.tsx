@@ -2,22 +2,23 @@ import * as React from 'react'
 import ReactCharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
-  TEntryData,
-  TEntryDataLine,
-  TZoomProps
+  EntryData,
+  EntryDataLine,
+  ZoomProps
 } from './types'
 import {
   formatTime,
   getDataView,
   getInitialValues,
   getSaveAsImage,
+  getWidthOpts,
   takeLabelComplement,
   timeConvert
-} from './auxiliarFunctions'
+} from '../lib/auxiliarFunctions'
 import { WIDTH_STYLE } from './DonutChart'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
-  data: TEntryDataLine[]
+  data: EntryDataLine[]
   colors?: string[]
   showLabel?: boolean
   smooth?: boolean
@@ -26,7 +27,7 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
   axisNames?: { x: string, y: string }
 }
 
-const takeYdata = (entryData: TEntryData[]) =>
+const takeYdata = (entryData: EntryData[]) =>
   entryData.map(item => item.result)
 
 const LineChart = (props: IProps) => {
@@ -47,7 +48,7 @@ const LineChart = (props: IProps) => {
     smooth,
     disableMarks,
     noTooltip,
-    scrollStart
+    scrollStart,
   } = props
 
   const yData = data[0].values.map(item => item.result)
@@ -76,7 +77,7 @@ const LineChart = (props: IProps) => {
   const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
   const tooltipLabelFormat = dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
 
-  const scrollable: TZoomProps[] =
+  const scrollable: ZoomProps[] =
     xData.length > arrayInitialSize
       ? [
         {
@@ -184,7 +185,7 @@ const LineChart = (props: IProps) => {
         formatter: (item: number) =>
           yType === 'time'
             ? timeConvert(item) + 'h'
-            : item + (yComplement || ''),
+            : item + (typeof yComplement !== 'function' ? yComplement : ''),
         textStyle: {
           fontSize: fontLabelSize || 11.5
         }
@@ -214,14 +215,12 @@ const LineChart = (props: IProps) => {
     toolbox
   }
 
-  const widthOpts = { width: width || 'auto' }
-
   return (
     <ReactCharts
       lazyUpdate
       notMerge
       style={WIDTH_STYLE}
-      opts={widthOpts}
+      opts={getWidthOpts(width || 'auto')}
       option={options}
     />
   )

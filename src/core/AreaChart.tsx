@@ -2,7 +2,6 @@ import React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   fixedDomain,
-  formatMoneyLabel,
   formatTime,
   formatTooltip,
   getDataView,
@@ -12,13 +11,13 @@ import {
   timeConvert,
   toDate,
   takeLabelComplement
-} from './auxiliarFunctions'
+} from '../lib/auxiliarFunctions'
 import {
   IDefaultChartProps,
   TDataZoomChartProps,
-  TDataZoomEventProps,
-  TEntryData,
-  TZoomProps
+  DataZoomEventProps,
+  EntryData,
+  ZoomProps
 } from './types'
 
 export const STYLES = { width: '99.9%', height: 300 }
@@ -53,15 +52,15 @@ const AreaChart = (props: IDefaultChartProps) => {
     fontLabelSize,
     title: titleProps,
     toolboxTooltip,
-    scrollStart
+    scrollStart,
   } = props
 
   const markLine = lineMarkValue && data.map(() => lineMarkValue)
-  const yData = data.map((item: TEntryData) => item.result)
+  const yData = data.map((item: EntryData) => item.result)
   const xData =
     xType === 'time'
-      ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
-      : data.map((item: TEntryData) => item.label)
+      ? data.map((item: EntryData) => toDate(item.label, dateFormat))
+      : data.map((item: EntryData) => item.label)
 
   const formatLabel = (chartValues: { data: number }) => {
     const { data } = chartValues
@@ -72,7 +71,7 @@ const AreaChart = (props: IDefaultChartProps) => {
   }
 
   const dinamicData = (
-    item: TDataZoomEventProps,
+    item: DataZoomEventProps,
     charts: TDataZoomChartProps
   ) => {
     const isTime = (yType === 'time' ? 3400 : 4500)
@@ -131,7 +130,7 @@ const AreaChart = (props: IDefaultChartProps) => {
   const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
   const tooltipLabelFormat = dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
 
-  const scrollable: TZoomProps[] =
+  const scrollable: ZoomProps[] =
     xData.length > arrayInitialSize
       ? [
         {
@@ -159,7 +158,9 @@ const AreaChart = (props: IDefaultChartProps) => {
         type: 'line' as const,
         data: yData,
         label: {
-          formatter: yComplement === 'money' ? formatMoneyLabel : formatLabel,
+          formatter: typeof yComplement === 'function' 
+            ? yComplement 
+            : formatLabel,
           show: true,
           position: 'top',
           fontSize: yType === 'time' ? 10 : 11.5,

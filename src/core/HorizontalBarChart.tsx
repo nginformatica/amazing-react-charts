@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
-  TDataTooltip,
-  TEntryData,
-  TEntryWithStyleData,
-  TLabelProps,
-  TParamsTooltip,
+  DataTooltip,
+  EntryData,
+  EntryWithStyleData,
+  LabelProps,
+  ParamsTooltip,
 } from './types'
 import {
   getDataView,
@@ -15,8 +15,9 @@ import {
   timeConvert,
   truncateLabel,
   takeLabelComplement,
-  getSaveAsImageWithTitle
-} from './auxiliarFunctions'
+  getSaveAsImageWithTitle,
+  getWidthOpts
+} from '../lib/auxiliarFunctions'
 import { reverse } from 'ramda'
 import { WIDTH_STYLE } from './DonutChart'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
@@ -44,7 +45,7 @@ const HorizontalBarChart = (props: IProps) => {
     onClickBar,
     xType,
     toolboxTooltip,
-    marginRightToolbox
+    marginRightToolbox,
   } = props
 
   const [title, setTitle] = useState(false)
@@ -61,19 +62,19 @@ const HorizontalBarChart = (props: IProps) => {
     setTitle(show)
   }
 
-  const xData: TEntryWithStyleData[] = reverse(
-    data.map((item: TEntryData) => {
+  const xData: EntryWithStyleData[] = reverse(
+    data.map((item: EntryData) => {
       const results = data.map(item => item.result)
       const maxValue = Math.max(...results)
 
-      const label: TLabelProps = item.result <= (!showTickInfos ? 50 : 15) && {
+      const label: LabelProps = item.result <= (!showTickInfos ? 50 : 15) && {
         position: 'right',
         distance: 1
       }
 
       if (maxValue !== item.result && xType === 'time') {
         const mainPercentage = (item.result * 100) / maxValue
-        const label: TLabelProps =
+        const label: LabelProps =
           mainPercentage < 15
             ? { position: 'right' as const, distance: 1 }
             : {}
@@ -95,13 +96,13 @@ const HorizontalBarChart = (props: IProps) => {
     })
   )
 
-  const yData = reverse(data.map((item: TEntryData) => item.label))
+  const yData = reverse(data.map((item: EntryData) => item.label))
   const domain = { min: 0, max: Math.max(...data.map(item => item.result)) }
   const backgroundBar = data.map(() =>
     xComplement === '%' ? 100 : getDomain(domain)
   )
 
-  const formatTooltip = (chartValues: TParamsTooltip[]) => {
+  const formatTooltip = (chartValues: ParamsTooltip[]) => {
     const { label, result } = tooltipProps
     const { name, value } = chartValues[1]
 
@@ -112,7 +113,7 @@ const HorizontalBarChart = (props: IProps) => {
     return `${label}: ${name} <br>` + `${result}: ${dataValue} <br>`
   }
 
-  const formatLabel = (chartValues: TDataTooltip) => {
+  const formatLabel = (chartValues: DataTooltip) => {
     const { value } = chartValues
 
     return xType === 'time'
@@ -257,13 +258,12 @@ const HorizontalBarChart = (props: IProps) => {
     toolbox
   }
 
-  const widthOpts = { width: width || 'auto' }
   const clickEvent = { click: onClickBar }
 
   return (
     <ReactEcharts
       style={WIDTH_STYLE}
-      opts={widthOpts}
+      opts={getWidthOpts(width || 'auto')}
       onEvents={clickEvent}
       option={options}
     />

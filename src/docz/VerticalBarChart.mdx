@@ -167,7 +167,7 @@ import { Playground } from 'docz'
 <Playground>
     <VerticalBarChart
         showBarLabel
-        yComplement='money'
+        yComplement={value => `R$ ${value},00`}
         xType='category'
         yType='value'
         color='blue'

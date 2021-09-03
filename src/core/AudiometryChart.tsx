@@ -3,9 +3,9 @@ import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
   TAudiometryDataEntry,
-  TAudiometryDataTooltip,
-  TLineStyleType,
-  TOptionsProps,
+  AudiometryDataTooltip,
+  LineStyleType,
+  OptionsProps,
   TSimpleLegend
 } from './types'
 import { filter, map, zipWith } from 'ramda'
@@ -13,15 +13,12 @@ import {
   getDataView,
   getSaveAsImageWithTitle,
   getSaveAsImage
-} from './auxiliarFunctions'
+} from '../lib/auxiliarFunctions'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
-
-const xFixedData: string[] = ['.25', '.5', '1', '2', '3', '4', '6', '8']
-
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: TAudiometryDataEntry[][]
   height?: number
-  lineType?: TLineStyleType
+  lineType?: LineStyleType
   symbolsSize?: number
   colors?: string[]
   legendsPosition?: 'top' | 'bottom'
@@ -32,8 +29,10 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
   legendItemWidth?: number 
   legendItemHeight?: number 
   tooltipMarker?: boolean
-  formatTooltip?(items: TAudiometryDataTooltip[]): string
+  formatTooltip?(items: AudiometryDataTooltip[]): string
 }
+
+const X_FIXED_DATA = ['.25', '.5', '1', '2', '3', '4', '6', '8']
 
 const AudiometryChart = (props: IProps) => {
   const [title, setTitle] = useState(false)
@@ -72,7 +71,7 @@ const AudiometryChart = (props: IProps) => {
     setTitle(show)
   }
 
-  const defaultToolip = (items: TAudiometryDataTooltip[]) => {
+  const defaultToolip = (items: AudiometryDataTooltip[]) => {
     if (legends) {
       const generateTooltip = map(
         item => {
@@ -120,7 +119,7 @@ const AudiometryChart = (props: IProps) => {
           symbolSize: symbolsSize || 12
         }
         : {},
-    xFixedData,
+    X_FIXED_DATA,
     item
   )
 
@@ -200,11 +199,11 @@ const AudiometryChart = (props: IProps) => {
     })
   )
 
-  const options: TOptionsProps = {
+  const options: OptionsProps = {
     series: dataWithNames,
     xAxis: {
       boundaryGap: true,
-      data: xFixedData,
+      data: X_FIXED_DATA,
       type: 'category',
       splitLine: {
         show: true,

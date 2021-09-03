@@ -2,19 +2,20 @@ import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
-  TCoordinates,
-  TOptionsProps,
-  TTuple
+  Coordinates,
+  OptionsProps,
+  WidthProps 
 } from './types'
 import { map } from 'ramda'
 import {
-  getSaveAsImageWithTitle,
-  getSaveAsImage, getDataView
-} from './auxiliarFunctions'
+  getSaveAsImageWithTitle, 
+  getSaveAsImage, 
+  getDataView
+} from '../lib/auxiliarFunctions'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
-  coordinates: [TCoordinates[], TCoordinates[], TCoordinates[]]
+  coordinates: [Coordinates[], Coordinates[], Coordinates[]]
   colors?: string[]
   height?: number
   legendNames?: [string, string, string]
@@ -24,10 +25,22 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
   legendPosition?: number
 }
 
-export const DASHED_ICON =
+const DASHED_ICON =
   'path://M180 1000 l0 -40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40z, M810 ' +
   '1000 l0 -40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40zm, M1440 1000 l0 ' +
   '-40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40z'
+
+const getPadding = (rangeValues?: number) => rangeValues 
+  ? [150, 0, 0, 0] 
+  : [20, 0, 0, 0]
+
+const getWidthStyle = (width: WidthProps, height: WidthProps) => ({ 
+  width: width || 'auto', 
+  height: height 
+})
+
+const toTuples = (args: Coordinates[]) =>  
+  map(item => [item.x, item.y], args)
 
 const CoordinateLineChart = (props: IProps) => {
   const {
@@ -81,13 +94,13 @@ const CoordinateLineChart = (props: IProps) => {
     }
   }
 
-  const reference: TTuple[] = map(item => [item.x, item.y], ref)
-  const preRespiratory: TTuple[] = map(item => [item.x, item.y], pre)
-  const posResporatory: TTuple[] = map(item => [item.x, item.y], pos)
+  const reference = toTuples(ref)
+  const preRespiratory = toTuples(pre)
+  const posResporatory = toTuples(pos)
 
-  const namePadding = yRangeValues ? [150, 0, 0, 0] : [20, 0, 0, 0]
-
-  const options: TOptionsProps = {
+  // The legendNames prop is a 3-tuple typed correctly, so we can use 
+  // index access with safety here.
+  const options: OptionsProps = {
     color: colors,
     series: [
       {
@@ -129,7 +142,7 @@ const CoordinateLineChart = (props: IProps) => {
       name: coordinateNames.x,
       nameTextStyle: {
         verticalAlign: yRangeValues ? 'top' : 'end',
-        padding: namePadding
+        padding: getPadding(yRangeValues) 
       },
       nameGap: -56,
       min: 0,
@@ -170,7 +183,7 @@ const CoordinateLineChart = (props: IProps) => {
     toolbox
   }
 
-  const widthStyle = { width: width || 'auto', height: height }
+  const widthStyle = getWidthStyle(width, height)
 
   return (
     <ReactEcharts style={widthStyle} option={options} />

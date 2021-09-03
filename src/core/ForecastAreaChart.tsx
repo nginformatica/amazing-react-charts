@@ -1,7 +1,6 @@
 import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
-  formatMoneyLabel,
   formatTime,
   formatTooltipWithHours,
   getDataView,
@@ -9,25 +8,26 @@ import {
   getSaveAsImage,
   timeConvert,
   toDate,
-  takeLabelComplement
-} from './auxiliarFunctions'
+  takeLabelComplement,
+  getWidthOpts
+} from '../lib/auxiliarFunctions'
 import {
   IDefaultChartProps,
-  TDataTooltip,
+  DataTooltip,
   TDataZoomChartProps,
-  TDataZoomEventProps,
-  TEntryData,
-  TOptionsProps,
-  TTooltipEntryProps,
-  TZoomProps
+  DataZoomEventProps,
+  EntryData,
+  OptionsProps,
+  TooltipEntryProps,
+  ZoomProps
 } from './types'
 import { take } from 'ramda'
 import { STYLES } from './AreaChart'
 
 interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
   tooltip: {
-    current: TTooltipEntryProps
-    forecast: TTooltipEntryProps
+    current: TooltipEntryProps
+    forecast: TooltipEntryProps
   }
   forecastChartLegends?: {
     current?: string
@@ -57,12 +57,12 @@ const ForecastAreaChart = (props: IProps) => {
     forecastChartLegends
   } = props
 
-  const yData = data.map((item: TEntryData) => item.result)
-  const xData = data.map((item: TEntryData) =>
+  const yData = data.map((item: EntryData) => item.result)
+  const xData = data.map((item: EntryData) =>
     toDate(item.label, 'yyyy-MM-dd HH:mm').toString()
   )
 
-  const formatLabel = (chartValues: TDataTooltip) => {
+  const formatLabel = (chartValues: DataTooltip) => {
     const { data } = chartValues
 
     return yType === 'time'
@@ -71,7 +71,7 @@ const ForecastAreaChart = (props: IProps) => {
   }
 
   const dinamicData = (
-    item: TDataZoomEventProps,
+    item: DataZoomEventProps,
     charts: TDataZoomChartProps
   ) => {
     const dataRange = item.end - item.start
@@ -135,7 +135,8 @@ const ForecastAreaChart = (props: IProps) => {
       }
     }
   }
-  const scrollable: TZoomProps[] =
+  
+  const scrollable: ZoomProps[] =
     xData.length > 5
       ? [
         {
@@ -157,14 +158,15 @@ const ForecastAreaChart = (props: IProps) => {
       ]
       : []
 
-  const options: TOptionsProps = {
+  const options: OptionsProps = {
     series: [
       {
         type: 'line',
         name: forecastChartLegends ? forecastChartLegends.forecast : '',
         data: yData,
         label: {
-          formatter: yComplement === 'money' ? formatMoneyLabel : formatLabel,
+          formatter: 
+            typeof yComplement === 'function' ? yComplement : formatLabel,
           show: true,
           position: 'top',
           fontSize: yType === 'time' ? 10 : 11.5,
@@ -214,7 +216,8 @@ const ForecastAreaChart = (props: IProps) => {
         name: forecastChartLegends.current || '',
         data: take(lineMarkValue, yData),
         label: {
-          formatter: yComplement === 'money' ? formatMoneyLabel : formatLabel,
+          formatter: 
+            typeof yComplement === 'function' ? yComplement : formatLabel,
           show: false,
           position: 'top',
           fontSize: yType === 'time' ? 10 : 11.5,
@@ -297,7 +300,6 @@ const ForecastAreaChart = (props: IProps) => {
     toolbox
   }
 
-  const widthOpts = { width: width || 'auto' }
   const zoomEvent = { dataZoom: dinamicData }
 
   return (
@@ -305,7 +307,7 @@ const ForecastAreaChart = (props: IProps) => {
       lazyUpdate
       notMerge
       style={STYLES}
-      opts={widthOpts}
+      opts={getWidthOpts(width || 'auto')}
       onEvents={zoomEvent}
       option={options}
     />

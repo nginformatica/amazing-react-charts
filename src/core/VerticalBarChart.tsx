@@ -2,13 +2,13 @@ import * as React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
-  TDataTooltip,
+  DataTooltip,
   TDataZoomChartProps,
-  TDataZoomEventProps,
-  TEntryData,
-  TLabelProps,
-  TOptionsProps,
-  TZoomProps
+  DataZoomEventProps,
+  EntryData,
+  LabelProps,
+  OptionsProps,
+  ZoomProps
 } from './types'
 import {
   formatTime,
@@ -18,10 +18,16 @@ import {
   getSaveAsImage,
   timeConvert,
   toDate,
-  truncateSpecialLabel,
-  takeLabelComplement
-} from './auxiliarFunctions'
+  fixedTruncateLabel,
+  takeLabelComplement,
+  getWidthOpts
+} from '../lib/auxiliarFunctions'
 import { WIDTH_STYLE } from './DonutChart'
+
+interface IProps extends IDefaultChartProps {
+  rotateTickLabel?: number
+  customMaxDomain?: number
+}
 
 export const fullText = {
   xAxis: {
@@ -29,7 +35,7 @@ export const fullText = {
       rotate: 0,
       show: true,
       interval: 0,
-      formatter: (item: string) => truncateSpecialLabel(item, 16)
+      formatter: (item: string) => fixedTruncateLabel(item, 16)
     }
   },
   grid: { bottom: 60 }
@@ -41,19 +47,19 @@ export const rotatedLabel = {
       rotate: 315,
       show: true,
       interval: 0,
-      formatter: (item: string) => truncateSpecialLabel(item, 9)
+      formatter: (item: string) => fixedTruncateLabel(item, 9)
     }
   },
   grid: { bottom: 98 }
 }
 
-export const rotatedLabelSpecial = (rotate: number) => ({
+const rotatedLabelSpecial = (rotate: number) => ({
   xAxis: {
     axisLabel: {
       rotate: rotate,
       show: true,
       interval: 0,
-      formatter: (item: string) => truncateSpecialLabel(item, 9),
+      formatter: (item: string) => fixedTruncateLabel(item, 9),
       textStyle: {
         fontSize: 11
       }
@@ -68,7 +74,7 @@ export const normalLabel = {
       rotate: 0,
       show: true,
       interval: 0,
-      formatter: (item: string) => truncateSpecialLabel(item, 9)
+      formatter: (item: string) => fixedTruncateLabel(item, 9)
     }
   },
   grid: { bottom: 60 }
@@ -82,11 +88,6 @@ export const dontShowLabel = {
     }
   },
   grid: { bottom: 60 }
-}
-
-interface IProps extends IDefaultChartProps {
-  rotateTickLabel?: number
-  customMaxDomain?: number
 }
 
 const VerticalBarChart = (props: IProps) => {
@@ -111,18 +112,18 @@ const VerticalBarChart = (props: IProps) => {
     rotateLabel,
     onClickBar,
     marginRightToolbox,
-    customMaxDomain
+    customMaxDomain,
   } = props
 
   const isCustomDomain = customMaxDomain
     ? customMaxDomain
     : getDomain
 
-  const yData = data.map((item: TEntryData) => {
+  const yData = data.map((item: EntryData) => {
     const results = data.map(item => item.result)
     const maxValue = Math.max(...results)
 
-    const label: TLabelProps = showBarLabel &&
+    const label: LabelProps = showBarLabel &&
       item.result <= 10 && {
       position: 'top',
       distance: 1
@@ -131,7 +132,7 @@ const VerticalBarChart = (props: IProps) => {
     if (maxValue !== item.result) {
       const mainPercentage = (item.result * 100) / maxValue
 
-      const label: TLabelProps =
+      const label: LabelProps =
         mainPercentage < 15 ? { position: 'top', distance: 1 } : {}
 
       return {
@@ -151,14 +152,14 @@ const VerticalBarChart = (props: IProps) => {
 
   const xData =
     xType === 'time'
-      ? data.map((item: TEntryData) => toDate(item.label, dateFormat))
-      : data.map((item: TEntryData) => item.label)
+      ? data.map((item: EntryData) => toDate(item.label, dateFormat))
+      : data.map((item: EntryData) => item.label)
 
   const specialLabel = (item: string) =>
-    truncateSpecialLabel(item, xData.length <= 5 ? 16 : 9)
+    fixedTruncateLabel(item, xData.length <= 5 ? 16 : 9)
 
   const dynamicDataZoom = (
-    item: TDataZoomEventProps,
+    item: DataZoomEventProps,
     charts: TDataZoomChartProps
   ) => {
     const dataRange = item.end - item.start
@@ -190,7 +191,7 @@ const VerticalBarChart = (props: IProps) => {
     }
   }
 
-  const formatLabel = (chartValues: TDataTooltip) => {
+  const formatLabel = (chartValues: DataTooltip) => {
     const { value } = chartValues
 
     return takeLabelComplement(Number(value), yComplement)
@@ -232,7 +233,7 @@ const VerticalBarChart = (props: IProps) => {
     )
   }
 
-  const scrollable: TZoomProps[] =
+  const scrollable: ZoomProps[] =
     data.length > 12
       ? [
         {
@@ -248,7 +249,7 @@ const VerticalBarChart = (props: IProps) => {
       ]
       : []
 
-  const options: TOptionsProps = {
+  const options: OptionsProps = {
     grid: { ...gridProps },
     color: [color],
     series: [
@@ -334,7 +335,6 @@ const VerticalBarChart = (props: IProps) => {
     toolbox
   }
 
-  const widthOpts = { width: width || 'auto' }
   const events = { dataZoom: dynamicDataZoom, click: onClickBar }
 
   return (
@@ -342,7 +342,7 @@ const VerticalBarChart = (props: IProps) => {
       lazyUpdate
       notMerge
       style={WIDTH_STYLE}
-      opts={widthOpts}
+      opts={getWidthOpts(width || 'auto')}
       onEvents={events}
       option={options}
     />

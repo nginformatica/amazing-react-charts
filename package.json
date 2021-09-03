@@ -1,6 +1,6 @@
 {
   "name": "amazing-react-charts",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "An amazing react charts package based in echarts",
   "license": "MIT",
   "main": "dist/index.js",
@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "date-fns": "2.4.1",
+    "echarts": "4.9.0",
     "echarts-for-react": "2.0.16",
     "ramda": "0.26.1"
   },
@@ -36,22 +37,20 @@
     "@types/echarts": "4.6.1",
     "@types/ramda": "0.26.36",
     "@types/react": "16.9.14",
-    "@typescript-eslint/eslint-plugin": "4.3.0",
-    "@typescript-eslint/parser": "4.3.0",
+    "@typescript-eslint/eslint-plugin": "4.29.0",
+    "@typescript-eslint/parser": "4.29.0",
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-imports": "2.0.0",
-    "brazilian-values": "0.7.0",
     "docz": "2.3.1",
     "eslint": "7.1.0",
     "eslint-plugin-import": "2.18.2",
     "eslint-plugin-react": "7.20.0",
     "install-peers-cli": "2.2.0",
     "react-dom": "16.12.0",
-    "typescript": "3.9.5"
+    "typescript": "4.3.5"
   },
   "peerDependencies": {
-    "echarts": "4.9.0",
-    "react": "17.0.1"
+    "react": "^17.0.1"
   },
   "browserslist": {
     "production": [
