@@ -98,8 +98,8 @@ const CoordinateLineChart = (props: IProps) => {
   const preRespiratory = toTuples(pre)
   const posResporatory = toTuples(pos)
 
-  // The prop legendNames is a 3-tuple typed correctly, so we can use 
-  // index access with safet here.
+  // The legendNames prop is a 3-tuple typed correctly, so we can use 
+  // index access with safety here.
   const options: OptionsProps = {
     color: colors,
     series: [

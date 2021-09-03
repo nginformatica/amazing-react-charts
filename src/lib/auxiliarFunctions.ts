@@ -94,13 +94,15 @@ const takeComplement = (
     ? ': ' + complement(data) + '<br>'
     : ': ' + data + complement + '<br>'
 
-const moneyPercent = (
-  value: number,
-  valueTotal: number,
+const moneyWithPercentage = (
+  moneyValue: number | { value: number | string } | string,
+  moneyValueTotal: number,
   complement: (value: string | number) => string,
   sumDataValues?: boolean
 ) => {
-  const percent = getPercentage(value, valueTotal)
+  const value = typeof moneyValue === 'object' ? moneyValue.value : moneyValue
+
+  const percent = getPercentage(Number(value), moneyValueTotal)
 
   return sumDataValues
     ? complement(value) + ' (' + percent + '%) <br>'
@@ -114,13 +116,12 @@ export const mountMessage = (
   axisType: string,
   stackedValues: number,
   sumDataValues: boolean,
-
 ) => {
   const seriesLabel = value.marker + value.seriesName
 
   const moneyValue = typeof complement === 'function'
-    ? moneyPercent(
-      Number(value.data),
+    ? moneyWithPercentage(
+      value.data,
       stackedValues,
       complement,
       sumDataValues
@@ -133,7 +134,7 @@ export const mountMessage = (
     )
     : seriesLabel + takeComplement(value.data, complement)
 
-  return complement === 'money' && value.seriesType !== 'line'
+  return typeof complement === 'function' && value.seriesType !== 'line'
     ? seriesLabel + ': ' + moneyValue
     : isPercentage
 }
