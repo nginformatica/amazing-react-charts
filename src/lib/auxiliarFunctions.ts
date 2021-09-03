@@ -1,7 +1,13 @@
 import { format, parse } from 'date-fns'
 import { takeLast } from 'ramda'
 import ptBR from 'date-fns/locale/pt-BR'
-import { ConnectedDataURL, DataTooltip, DomainValues } from './types'
+import {
+  Complement,
+  ConnectedDataURL,
+  DataTooltip,
+  DomainValues,
+  WidthProps
+} from '../core/types'
 
 const DOWNLOAD_ICON =
   'path://M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 ' +
@@ -13,22 +19,22 @@ const iconStyle = {
   borderWidth: 0.1
 }
 
-export const takeLabelComplement = (
-  item: number,
-  complement: string,
-  formatterMoney?: (value: string | number) => string
-) => {
-  const getComplement = complement
+export const takeLabelComplement = (item: number, yComplement: Complement) => {
+  const getComplement = (complement?: string) => complement
     ? formatValueAxis(item, complement)
     : item
 
-  return complement === 'money' && formatterMoney
-    ? formatterMoney(item)
-    : getComplement
+  return typeof yComplement === 'function'
+    ? yComplement(item)
+    : getComplement(yComplement)
 }
 
-export const takeDonutChartComplement = (item: number, complement?: string) =>
-  item === 0 ? '' : item + (complement || '')
+export const takeDonutChartComplement = (
+  item: number,
+  complement?: Complement
+) => item === 0 && typeof complement === 'function'
+  ? ''
+  : `${item} (${complement || ''})`
 
 export const timeConvert = (value: number) => {
   const seconds = Math.round((value % 1) * 3600)
@@ -46,11 +52,10 @@ export const getPercentage = (value: number, valueTotal: number) =>
 export const generateAuxMessage = (
   label: string,
   result: number,
-  complement: string,
-  formatterMoney?: (value: string | number) => string
+  complement: Complement
 ) => {
-  const value = complement === 'money' && formatterMoney
-    ? formatterMoney(result)
+  const value = typeof complement === 'function'
+    ? complement(result)
     : result
 
   return `<span style="margin-left: 15.2px;"></span>${label}: ${value}<br>`
@@ -69,10 +74,12 @@ export const monuntTimeMessage = (
 }
 
 // These 3 next functions are used on the mountMessage function. 
-const formatValueAxis = (value: number, complement: string) => {
-  const getTime = complement === 'time'
-    ? timeConvert(value)
+const formatValueAxis = (value: number, complement: Complement) => {
+  const isMoney = typeof complement === 'function'
+    ? complement(value)
     : value + complement
+
+  const getTime = complement === 'time' ? timeConvert(value) : isMoney
 
   return complement === '%' || complement === 'percent'
     ? (value.toFixed(2) + '%').replace('.', ',')
@@ -81,50 +88,50 @@ const formatValueAxis = (value: number, complement: string) => {
 
 const takeComplement = (
   data: string | number,
-  complement: string,
-  formatterMoney: (value: string | number) => string
+  complement: Complement,
 ) =>
-  complement === 'money'
-    ? ': ' + formatterMoney(data) + '<br>'
+  typeof complement === 'function'
+    ? ': ' + complement(data) + '<br>'
     : ': ' + data + complement + '<br>'
 
 const moneyPercent = (
   value: number,
   valueTotal: number,
-  formatterMoney: (value: string | number) => string,
+  complement: (value: string | number) => string,
   sumDataValues?: boolean
 ) => {
   const percent = getPercentage(value, valueTotal)
 
   return sumDataValues
-    ? formatterMoney(value) + ' (' + percent + '%) <br>'
-    : formatterMoney(value) + '<br>'
+    ? complement(value) + ' (' + percent + '%) <br>'
+    : complement(value) + '<br>'
 }
 
 // Specific function only used in the stacked bar chart tooltip
 export const mountMessage = (
   value: DataTooltip,
-  complement: string,
+  complement: Complement,
   axisType: string,
   stackedValues: number,
   sumDataValues: boolean,
-  formatterMoney?: (value: string | number) => string
+
 ) => {
   const seriesLabel = value.marker + value.seriesName
 
-  const moneyValue =
-    moneyPercent(
+  const moneyValue = typeof complement === 'function'
+    ? moneyPercent(
       Number(value.data),
       stackedValues,
-      formatterMoney,
+      complement,
       sumDataValues
     )
+    : ''
 
   const isPercentage = axisType === 'percent' || complement === '%'
     ? seriesLabel + ': ' + (
       formatValueAxis(Number(value.data), '%') + '<br>'
     )
-    : seriesLabel + takeComplement(value.data, complement, formatterMoney)
+    : seriesLabel + takeComplement(value.data, complement)
 
   return complement === 'money' && value.seriesType !== 'line'
     ? seriesLabel + ': ' + moneyValue
@@ -288,3 +295,5 @@ export const getSaveAsImageWithTitle = (
     setTitle(false)
   }
 })
+
+export const getWidthOpts = (width: WidthProps) => ({ width })

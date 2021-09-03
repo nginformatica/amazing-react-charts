@@ -7,7 +7,7 @@ import {
   LineStyleType,
   OptionsProps,
   TSimpleLegend
-} from '../lib/types'
+} from './types'
 import { filter, map, zipWith } from 'ramda'
 import {
   getDataView,
@@ -15,9 +15,6 @@ import {
   getSaveAsImage
 } from '../lib/auxiliarFunctions'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
-
-const xFixedData: string[] = ['.25', '.5', '1', '2', '3', '4', '6', '8']
-
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: TAudiometryDataEntry[][]
   height?: number
@@ -34,6 +31,8 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
   tooltipMarker?: boolean
   formatTooltip?(items: AudiometryDataTooltip[]): string
 }
+
+const X_FIXED_DATA = ['.25', '.5', '1', '2', '3', '4', '6', '8']
 
 const AudiometryChart = (props: IProps) => {
   const [title, setTitle] = useState(false)
@@ -120,7 +119,7 @@ const AudiometryChart = (props: IProps) => {
           symbolSize: symbolsSize || 12
         }
         : {},
-    xFixedData,
+    X_FIXED_DATA,
     item
   )
 
@@ -204,7 +203,7 @@ const AudiometryChart = (props: IProps) => {
     series: dataWithNames,
     xAxis: {
       boundaryGap: true,
-      data: xFixedData,
+      data: X_FIXED_DATA,
       type: 'category',
       splitLine: {
         show: true,

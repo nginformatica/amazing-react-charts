@@ -9,8 +9,9 @@ import {
   EntryDataNTuples,
   ZoomProps,
   ParamsTooltip,
-  ColorNTuples
-} from '../lib/types'
+  ColorNTuples,
+  Complement
+} from './types'
 import {
   formatTime,
   getDataView,
@@ -22,6 +23,7 @@ import {
   truncateLabel,
   takeLabelComplement,
   generateAuxMessage,
+  getWidthOpts,
 } from '../lib/auxiliarFunctions'
 import {
   dontShowLabel,
@@ -31,6 +33,7 @@ import {
 } from './VerticalBarChart'
 import { WIDTH_STYLE } from './DonutChart'
 import { concat, move } from 'ramda'
+
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: EntryDataNTuples
   tooltipExtra?: string
@@ -63,7 +66,6 @@ const StackedBarChart = (props: IProps) => {
     legendType,
     legendScrollGap,
     showBarLabel,
-    formatterMoney
   } = props
 
   const {
@@ -96,7 +98,7 @@ const StackedBarChart = (props: IProps) => {
     const { dataIndex } = chartValues
     const value = topLabels[dataIndex]
 
-    return takeLabelComplement(Number(value), yComplement, formatterMoney)
+    return takeLabelComplement(Number(value), yComplement)
   }
 
   const yLineData = lineData.map((item: EntryData) => item.result)
@@ -158,9 +160,14 @@ const StackedBarChart = (props: IProps) => {
       ? move(3, 4, concat(tooltipValues, auxTooltip)).join('')
       : tooltipValues.join('')
 
+    const isMoney = (complement: Complement) =>
+      typeof yComplement === 'function'
+        ? yComplement(stackedValues)
+        : `${stackedValues} ${complement}`
+
     const verifyFormat = yComplement === 'time'
       ? timeConvert(stackedValues)
-      : formatterMoney(stackedValues)
+      : isMoney(yComplement)
 
     const labelResult =
       xType === 'time'
@@ -173,8 +180,9 @@ const StackedBarChart = (props: IProps) => {
         : ''
 
     const tooltipSumValues =
-      sumDataValues && values.length === 3 && secondYAxisType
-        ? complement + ': ' + formatterMoney(stackedValues)
+      sumDataValues && values.length === 3 && secondYAxisType && 
+        typeof yComplement === 'function'
+        ? complement + ': ' + yComplement(stackedValues)
         : valueWithoutSecondYAxis
 
     const tooltipFooter =
@@ -356,14 +364,13 @@ const StackedBarChart = (props: IProps) => {
     toolbox
   }
 
-  const widthOpts = { width: width || 'auto' }
   const zoomEvent = { dataZoom: dynamicDataZoom }
 
   return (
     <ReactEcharts
       notMerge
       style={WIDTH_STYLE}
-      opts={widthOpts}
+      opts={getWidthOpts(width || 'auto')}
       onEvents={zoomEvent}
       option={options}
     />

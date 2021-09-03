@@ -6,12 +6,12 @@ export interface IDefaultChartProps {
   lineMarkValue?: number
   lineMarkColor?: string
   lineMakeName?: string
-  yComplement?: string | 'money'
+  yComplement?: Complement
   tooltipComplement?: string
   tooltip?: TooltipEntryProps
   color?: string
   forecastColor?: string
-  xType?: 'time' | 'category'
+  xType?: 'time' | 'category' | 'value'
   yType?: 'time' | 'value'
   barWidth?: number
   dateFormat?: string
@@ -28,12 +28,13 @@ export interface IDefaultChartProps {
   marginRightToolbox?: string
   titleFontSize?: number
   scrollStart?: number
-  formatterMoney?(value: string | number): string
   onClickBar?(
     itemProps?: Record<string, unknown>,
     itemFunctions?: Record<string, unknown>
   ): void
 }
+
+export type Complement = string | 'money' | ((value: string | number) => string)
 
 type ToolboxEntryProps = {
   saveAsImage?: string

@@ -18,7 +18,7 @@ import {
   DataZoomEventProps,
   EntryData,
   ZoomProps
-} from '../lib/types'
+} from './types'
 
 export const STYLES = { width: '99.9%', height: 300 }
 export const TOOLBOX_DEFAULT_PROPS = {
@@ -53,7 +53,6 @@ const AreaChart = (props: IDefaultChartProps) => {
     title: titleProps,
     toolboxTooltip,
     scrollStart,
-    formatterMoney
   } = props
 
   const markLine = lineMarkValue && data.map(() => lineMarkValue)
@@ -159,7 +158,9 @@ const AreaChart = (props: IDefaultChartProps) => {
         type: 'line' as const,
         data: yData,
         label: {
-          formatter: yComplement === 'money' ? formatterMoney : formatLabel,
+          formatter: typeof yComplement === 'function' 
+            ? yComplement 
+            : formatLabel,
           show: true,
           position: 'top',
           fontSize: yType === 'time' ? 10 : 11.5,
@@ -229,7 +230,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         formatter: (item: number) =>
           yType === 'time'
             ? timeConvert(item) + 'h'
-            : takeLabelComplement(item, yComplement, formatterMoney),
+            : takeLabelComplement(item, yComplement),
         textStyle: {
           fontSize: fontLabelSize || 11.5
         }

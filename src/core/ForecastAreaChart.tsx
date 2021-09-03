@@ -8,7 +8,8 @@ import {
   getSaveAsImage,
   timeConvert,
   toDate,
-  takeLabelComplement
+  takeLabelComplement,
+  getWidthOpts
 } from '../lib/auxiliarFunctions'
 import {
   IDefaultChartProps,
@@ -19,7 +20,7 @@ import {
   OptionsProps,
   TooltipEntryProps,
   ZoomProps
-} from '../lib/types'
+} from './types'
 import { take } from 'ramda'
 import { STYLES } from './AreaChart'
 
@@ -53,8 +54,7 @@ const ForecastAreaChart = (props: IProps) => {
     fontLabelSize,
     title: titleProps,
     toolboxTooltip,
-    forecastChartLegends,
-    formatterMoney
+    forecastChartLegends
   } = props
 
   const yData = data.map((item: EntryData) => item.result)
@@ -109,11 +109,7 @@ const ForecastAreaChart = (props: IProps) => {
 
     const values = yType === 'time'
       ? timeConvert(Number(data))
-      : takeLabelComplement(
-        Number(Number(data).toFixed(2)), 
-        yComplement, 
-        formatterMoney
-      )
+      : takeLabelComplement(Number(Number(data).toFixed(2)), yComplement)
 
     return (
       `${label}: ${formatTooltipWithHours(axisValueLabel)} <br>
@@ -139,6 +135,7 @@ const ForecastAreaChart = (props: IProps) => {
       }
     }
   }
+  
   const scrollable: ZoomProps[] =
     xData.length > 5
       ? [
@@ -168,7 +165,8 @@ const ForecastAreaChart = (props: IProps) => {
         name: forecastChartLegends ? forecastChartLegends.forecast : '',
         data: yData,
         label: {
-          formatter: yComplement === 'money' ? formatterMoney : formatLabel,
+          formatter: 
+            typeof yComplement === 'function' ? yComplement : formatLabel,
           show: true,
           position: 'top',
           fontSize: yType === 'time' ? 10 : 11.5,
@@ -218,7 +216,8 @@ const ForecastAreaChart = (props: IProps) => {
         name: forecastChartLegends.current || '',
         data: take(lineMarkValue, yData),
         label: {
-          formatter: yComplement === 'money' ? formatterMoney : formatLabel,
+          formatter: 
+            typeof yComplement === 'function' ? yComplement : formatLabel,
           show: false,
           position: 'top',
           fontSize: yType === 'time' ? 10 : 11.5,
@@ -301,7 +300,6 @@ const ForecastAreaChart = (props: IProps) => {
     toolbox
   }
 
-  const widthOpts = { width: width || 'auto' }
   const zoomEvent = { dataZoom: dinamicData }
 
   return (
@@ -309,7 +307,7 @@ const ForecastAreaChart = (props: IProps) => {
       lazyUpdate
       notMerge
       style={STYLES}
-      opts={widthOpts}
+      opts={getWidthOpts(width || 'auto')}
       onEvents={zoomEvent}
       option={options}
     />

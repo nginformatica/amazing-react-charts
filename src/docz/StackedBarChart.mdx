@@ -12,7 +12,7 @@ import { Playground } from 'docz'
 <Playground>
     <StackedBarChart
         xType='time'
-        yComplement='money'
+        yComplement={value => `R$ ${value},00`}
         title='iOS'
         toolboxTooltip={{ saveAsImage: 'save' }}
         colors={ ['#30D2D6', '#9F88FB', '#F09B1B'] }
@@ -57,7 +57,7 @@ import { Playground } from 'docz'
 <Playground>
     <StackedBarChart
         xType='time'
-        yComplement='money'
+        yComplement={value => `R$ ${value},00`}
         title='Custo por manutenção'
         toolboxTooltip={{ saveAsImage: 'save' }}
         colors={ ['#30D2D6', '#9F88FB', '#C5F3C2', '#F09B1B'] }
@@ -111,7 +111,7 @@ import { Playground } from 'docz'
 <Playground>
     <StackedBarChart
         xType='time'
-        yComplement='money'
+        yComplement={value => `R$ ${value},00`}
         title='Custo por manutenção'
         toolboxTooltip={{ saveAsImage: 'save' }}
         colors={ ['#30D2D6', '#9F88FB', '#C5F3C2', '#F09B1B'] }
@@ -174,7 +174,7 @@ import { Playground } from 'docz'
 <Playground>
     <StackedBarChart
         sumDataValues
-        yComplement='money'
+        yComplement={value => `R$ ${value},00`}
         colors={ ['#487086', '#87C4CB', '#E97551'] }
         secondYAxisType='percent'
         tooltip={ { 
@@ -274,7 +274,7 @@ import { Playground } from 'docz'
     sumDataValues
     showBarLabel
     barWidth={ 80 }
-    yComplement='time'
+    yComplement={value => `R$ ${value},00`}
     legendType='none'
     tooltip={{
         label: 'Criticidade',

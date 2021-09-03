@@ -9,7 +9,7 @@ import {
   LabelProps,
   OptionsProps,
   ZoomProps
-} from '../lib/types'
+} from './types'
 import {
   formatTime,
   formatTooltip,
@@ -19,9 +19,15 @@ import {
   timeConvert,
   toDate,
   fixedTruncateLabel,
-  takeLabelComplement
+  takeLabelComplement,
+  getWidthOpts
 } from '../lib/auxiliarFunctions'
 import { WIDTH_STYLE } from './DonutChart'
+
+interface IProps extends IDefaultChartProps {
+  rotateTickLabel?: number
+  customMaxDomain?: number
+}
 
 export const fullText = {
   xAxis: {
@@ -47,7 +53,7 @@ export const rotatedLabel = {
   grid: { bottom: 98 }
 }
 
-export const rotatedLabelSpecial = (rotate: number) => ({
+const rotatedLabelSpecial = (rotate: number) => ({
   xAxis: {
     axisLabel: {
       rotate: rotate,
@@ -84,11 +90,6 @@ export const dontShowLabel = {
   grid: { bottom: 60 }
 }
 
-interface IProps extends IDefaultChartProps {
-  rotateTickLabel?: number
-  customMaxDomain?: number
-}
-
 const VerticalBarChart = (props: IProps) => {
   const {
     data,
@@ -112,7 +113,6 @@ const VerticalBarChart = (props: IProps) => {
     onClickBar,
     marginRightToolbox,
     customMaxDomain,
-    formatterMoney
   } = props
 
   const isCustomDomain = customMaxDomain
@@ -194,7 +194,7 @@ const VerticalBarChart = (props: IProps) => {
   const formatLabel = (chartValues: DataTooltip) => {
     const { value } = chartValues
 
-    return takeLabelComplement(Number(value), yComplement, formatterMoney)
+    return takeLabelComplement(Number(value), yComplement)
   }
 
   const toolbox = toolboxTooltip && {
@@ -335,7 +335,6 @@ const VerticalBarChart = (props: IProps) => {
     toolbox
   }
 
-  const widthOpts = { width: width || 'auto' }
   const events = { dataZoom: dynamicDataZoom, click: onClickBar }
 
   return (
@@ -343,7 +342,7 @@ const VerticalBarChart = (props: IProps) => {
       lazyUpdate
       notMerge
       style={WIDTH_STYLE}
-      opts={widthOpts}
+      opts={getWidthOpts(width || 'auto')}
       onEvents={events}
       option={options}
     />

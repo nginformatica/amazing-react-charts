@@ -7,7 +7,7 @@ import {
   EntryWithStyleData,
   LabelProps,
   ParamsTooltip,
-} from '../lib/types'
+} from './types'
 import {
   getDataView,
   getDomain,
@@ -15,7 +15,8 @@ import {
   timeConvert,
   truncateLabel,
   takeLabelComplement,
-  getSaveAsImageWithTitle
+  getSaveAsImageWithTitle,
+  getWidthOpts
 } from '../lib/auxiliarFunctions'
 import { reverse } from 'ramda'
 import { WIDTH_STYLE } from './DonutChart'
@@ -45,7 +46,6 @@ const HorizontalBarChart = (props: IProps) => {
     xType,
     toolboxTooltip,
     marginRightToolbox,
-    formatterMoney
   } = props
 
   const [title, setTitle] = useState(false)
@@ -118,7 +118,7 @@ const HorizontalBarChart = (props: IProps) => {
 
     return xType === 'time'
       ? timeConvert(Number(value)) + 'h'
-      : takeLabelComplement(Number(value), xComplement, formatterMoney)
+      : takeLabelComplement(Number(value), xComplement)
   }
 
   const myTool = toolboxTooltip && toolboxTooltip.saveAsImageWithTitle && {
@@ -258,13 +258,12 @@ const HorizontalBarChart = (props: IProps) => {
     toolbox
   }
 
-  const widthOpts = { width: width || 'auto' }
   const clickEvent = { click: onClickBar }
 
   return (
     <ReactEcharts
       style={WIDTH_STYLE}
-      opts={widthOpts}
+      opts={getWidthOpts(width || 'auto')}
       onEvents={clickEvent}
       option={options}
     />

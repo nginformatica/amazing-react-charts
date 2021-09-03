@@ -5,12 +5,13 @@ import {
   EntryData,
   EntryDataLine,
   ZoomProps
-} from '../lib/types'
+} from './types'
 import {
   formatTime,
   getDataView,
   getInitialValues,
   getSaveAsImage,
+  getWidthOpts,
   takeLabelComplement,
   timeConvert
 } from '../lib/auxiliarFunctions'
@@ -48,7 +49,6 @@ const LineChart = (props: IProps) => {
     disableMarks,
     noTooltip,
     scrollStart,
-    formatterMoney
   } = props
 
   const yData = data[0].values.map(item => item.result)
@@ -105,7 +105,7 @@ const LineChart = (props: IProps) => {
     const takeComplement = (value: number) =>
       yType === 'time'
         ? timeConvert(Number(value)) + 'h'
-        : takeLabelComplement(Number(value), yComplement, formatterMoney)
+        : takeLabelComplement(Number(value), yComplement)
 
     const linesTooltips = lines.map(
       line =>
@@ -185,7 +185,7 @@ const LineChart = (props: IProps) => {
         formatter: (item: number) =>
           yType === 'time'
             ? timeConvert(item) + 'h'
-            : item + (yComplement || ''),
+            : item + (typeof yComplement !== 'function' ? yComplement : ''),
         textStyle: {
           fontSize: fontLabelSize || 11.5
         }
@@ -215,14 +215,12 @@ const LineChart = (props: IProps) => {
     toolbox
   }
 
-  const widthOpts = { width: width || 'auto' }
-
   return (
     <ReactCharts
       lazyUpdate
       notMerge
       style={WIDTH_STYLE}
-      opts={widthOpts}
+      opts={getWidthOpts(width || 'auto')}
       option={options}
     />
   )
