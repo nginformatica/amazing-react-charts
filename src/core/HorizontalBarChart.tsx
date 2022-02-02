@@ -158,12 +158,10 @@ const HorizontalBarChart = (props: IProps) => {
         silent: true,
         data: backgroundBar,
         itemStyle: {
-          normal: {
-            color: '#ececec',
-            barBorderRadius: showTickInfos ? 0 : 10,
-            opacity: showTickInfos && 0.5,
-            borderColor: showTickInfos ? undefined : props.color
-          }
+          color: '#ececec',
+          borderRadius: showTickInfos ? 0 : 10,
+          opacity: showTickInfos && 0.5,
+          borderColor: showTickInfos ? undefined : props.color
         }
       },
       {
@@ -174,7 +172,7 @@ const HorizontalBarChart = (props: IProps) => {
         barMaxWidth: !showTickInfos && 20,
         itemStyle: {
           color: color,
-          barBorderRadius: showTickInfos ? 0 : 10
+          borderRadius: showTickInfos ? 0 : 10
         },
         label: {
           formatter: formatLabel,
@@ -183,7 +181,7 @@ const HorizontalBarChart = (props: IProps) => {
           fontWeight: '400' as const,
           color: 'black',
           show: true
-        }
+        },
       }
     ],
     xAxis: {
@@ -246,6 +244,8 @@ const HorizontalBarChart = (props: IProps) => {
     },
     tooltip: tooltipProps && {
       trigger: 'axis' as const,
+      backgroundColor: 'rgba(50,50,50,0.7)',
+      borderWidth: 0,
       axisPointer: {
         type: 'shadow' as const,
         shadowStyle: {
@@ -253,7 +253,7 @@ const HorizontalBarChart = (props: IProps) => {
         }
       },
       formatter: formatTooltip,
-      textStyle: { fontSize: 11.5 }
+      textStyle: { fontSize: 11.5, color: '#fff' }
     },
     toolbox
   }
