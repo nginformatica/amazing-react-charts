@@ -203,11 +203,11 @@ const ForecastAreaChart = (props: IProps) => {
             width: 1,
             type: 'solid',
             color: lineMarkColor || 'red',
-            emphasis: {
-              type: 'solid',
-              width: 50,
-              color: lineMarkColor || 'red'
-            }
+          },
+          emphasis: {
+            type: 'solid',
+            width: 50,
+            color: lineMarkColor || 'red'
           }
         }
       },
@@ -295,7 +295,9 @@ const ForecastAreaChart = (props: IProps) => {
     tooltip: tooltipProps && {
       formatter: formatSingleTooltip,
       trigger: 'axis' as const,
-      textStyle: { fontSize: 11.5 }
+      backgroundColor: 'rgba(50,50,50,0.7)',
+      borderWidth: 0,
+      textStyle: { fontSize: 11.5, color: '#fff' }
     },
     toolbox
   }
