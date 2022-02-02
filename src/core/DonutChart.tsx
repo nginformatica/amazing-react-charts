@@ -41,7 +41,8 @@ export const DonutChart = (props: IDonutProps) => {
     data,
     grid,
     colors,
-    width
+    width,
+    noAnimation
   } = props
 
   const [title, setTitle] = useState(false)
@@ -127,8 +128,10 @@ export const DonutChart = (props: IDonutProps) => {
     toolbox,
     tooltip: {
       trigger: 'item' as const,
+      backgroundColor: 'rgba(50,50,50,0.7)',
+      borderWidth: 0,
       formatter: formatTooltip,
-      textStyle: { fontSize: 11.5 }
+      textStyle: { fontSize: 11.5, color: '#fff' }
     },
     legend: {
       selectedMode: selectedMode || false,
@@ -159,7 +162,7 @@ export const DonutChart = (props: IDonutProps) => {
         type: 'pie',
         radius: donutRadius,
         data: data,
-        animation: false,
+        animation: !noAnimation,
         center: center || ['50%', '50%'],
         label: {
           position: legendPosition || 'outside',
