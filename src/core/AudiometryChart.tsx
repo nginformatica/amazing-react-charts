@@ -147,7 +147,9 @@ const AudiometryChart = (props: IProps) => {
   const tooltip = {
     formatter: formatTooltip ?? defaultToolip,
     trigger: 'axis' as const,
-    textStyle: { fontSize: 11.5 }
+    backgroundColor: 'rgba(50,50,50,0.7)',
+    borderWidth: 0,
+    textStyle: { fontSize: 11.5, color: '#fff' }
   }
 
   // The mark color is always be the fist value on array
@@ -202,7 +204,7 @@ const AudiometryChart = (props: IProps) => {
   const options: OptionsProps = {
     series: dataWithNames,
     xAxis: {
-      boundaryGap: true,
+      boundaryGap: 1,
       data: X_FIXED_DATA,
       type: 'category',
       splitLine: {
@@ -226,7 +228,7 @@ const AudiometryChart = (props: IProps) => {
       }
     },
     yAxis: {
-      boundaryGap: true,
+      boundaryGap: 1,
       min: 0,
       max: 130,
       interval: 10,
