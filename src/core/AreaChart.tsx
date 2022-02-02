@@ -176,13 +176,15 @@ const AreaChart = (props: IDefaultChartProps) => {
         },
         itemStyle: {
           color: color
+        },
+        emphasis: {
+          scale: false
         }
       },
       {
         name: lineMakeName,
         symbolSize: 0,
         showSymbol: false,
-        hoverAnimation: false,
         type: 'line' as const,
         data: markLine,
         lineStyle: {
@@ -231,9 +233,7 @@ const AreaChart = (props: IDefaultChartProps) => {
           yType === 'time'
             ? timeConvert(item) + 'h'
             : takeLabelComplement(item, yComplement),
-        textStyle: {
-          fontSize: fontLabelSize || 11.5
-        }
+        fontSize: fontLabelSize || 11.5
       }
     },
     color: [lineMarkColor],
@@ -241,7 +241,6 @@ const AreaChart = (props: IDefaultChartProps) => {
     legend: {
       x: 'center',
       y: 'bottom',
-      icon: 'line',
       top: 30,
       data: [lineMakeName],
       itemGap: 30
@@ -260,7 +259,9 @@ const AreaChart = (props: IDefaultChartProps) => {
     tooltip: tooltipProps && {
       formatter: formatSingleTooltip,
       trigger: 'axis' as const,
-      textStyle: { fontSize: 11.5 }
+      backgroundColor: 'rgba(50,50,50,0.7)',
+      borderWidth: 0,
+      textStyle: { fontSize: 11.5, color: '#fff' }
     },
     dataZoom: scrollable,
     toolbox
