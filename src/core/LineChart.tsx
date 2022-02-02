@@ -4,7 +4,8 @@ import {
   IDefaultChartProps,
   EntryData,
   EntryDataLine,
-  ZoomProps
+  ZoomProps,
+  OptionsProps
 } from './types'
 import {
   formatTime,
@@ -141,7 +142,7 @@ const LineChart = (props: IProps) => {
     }
   }
 
-  const options = {
+  const options: OptionsProps = {
     color: colors,
     series: series,
     xAxis: {
@@ -154,7 +155,7 @@ const LineChart = (props: IProps) => {
         lineStyle: {
           type: 'dotted' as const,
           opacity: 0.8
-        }
+        },
       },
       axisLabel: {
         formatter: (item: string) =>
@@ -165,9 +166,7 @@ const LineChart = (props: IProps) => {
             )
             : item,
         rotate: rotateLabel || 0,
-        textStyle: {
-          fontSize: fontLabelSize || 11.5
-        }
+        fontSize: fontLabelSize || 11.5
       }
     },
     yAxis: {
@@ -186,19 +185,19 @@ const LineChart = (props: IProps) => {
           yType === 'time'
             ? timeConvert(item) + 'h'
             : item + (typeof yComplement !== 'function' ? yComplement : ''),
-        textStyle: {
-          fontSize: fontLabelSize || 11.5
-        }
+        fontSize: fontLabelSize || 11.5
       }
     },
     grid: { ...(gridProps || { bottom: 60 }), show: true },
     legend: {
-      data: names, icon: 'line'
+      data: names
     },
     tooltip: !noTooltip && {
       formatter: formatTooltip,
       trigger: 'axis' as const,
-      textStyle: { fontSize: 11.5 }
+      textStyle: { fontSize: 11.5, color: '#fff' },
+      backgroundColor: 'rgba(50,50,50,0.7)',
+      borderWidth: 0,
     },
     title: {
       left: '6.2%',
