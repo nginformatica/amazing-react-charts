@@ -116,8 +116,10 @@ export const PieChart = (props: IProps) => {
     color: colors,
     tooltip: {
       trigger: 'item' as const,
+      backgroundColor: 'rgba(50,50,50,0.7)',
+      borderWidth: 0,
       formatter: formatTooltip,
-      textStyle: { fontSize: 11.5 }
+      textStyle: { fontSize: 11.5, color: '#fff' }
     },
     series: [
       {
