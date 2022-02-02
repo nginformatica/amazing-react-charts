@@ -329,7 +329,9 @@ const VerticalBarChart = (props: IProps) => {
     tooltip: tooltipProps && {
       formatter: formatSingleTooltip,
       trigger: 'axis',
-      textStyle: { fontSize: 11 }
+      backgroundColor: 'rgba(50,50,50,0.7)',
+      borderWidth: 0,
+      textStyle: { fontSize: 11, color: '#fff' }
     },
     dataZoom: scrollable,
     toolbox
