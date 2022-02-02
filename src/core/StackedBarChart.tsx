@@ -358,7 +358,9 @@ const StackedBarChart = (props: IProps) => {
     },
     tooltip: tooltipProps && {
       formatter: formatTooltip,
-      textStyle: { fontSize: 11.5 },
+      backgroundColor: 'rgba(50,50,50,0.7)',
+      borderWidth: 0,
+      textStyle: { fontSize: 11.5, color: '#fff' },
       trigger: 'axis' as const
     },
     toolbox
