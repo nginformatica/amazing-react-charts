@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react'
-import { EChartOption } from 'echarts'
+import { EChartsCoreOption } from 'echarts'
 
 export interface IDefaultChartProps {
   data: EntryData[]
@@ -322,7 +322,7 @@ export type AxisProps = {
   inverse?: boolean
 }
 
-export type OptionsProps = EChartOption
+export type OptionsProps = EChartsCoreOption
 
 export type ZoomProps = {
   bottom?: number
@@ -334,7 +334,8 @@ export type ZoomProps = {
   end?: number
   zoomOnMouseWheel?: 'ctrl' | 'shift' | boolean
   startValue?: number
-  endValue?: number | Date | string
+  endValue?: number | Date | string,
+  filterMode?: 'filter' | 'empty' 
 }
 
 export type LegendProps = {
