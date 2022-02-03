@@ -113,6 +113,7 @@ const VerticalBarChart = (props: IProps) => {
     onClickBar,
     marginRightToolbox,
     customMaxDomain,
+    focus
   } = props
 
   const isCustomDomain = customMaxDomain
@@ -264,6 +265,9 @@ const VerticalBarChart = (props: IProps) => {
           fontSize: 12,
           color: 'black',
           distance: 6
+        },
+        emphasis: {
+          focus: focus ?? 'none'
         }
       }
     ],

@@ -14,6 +14,7 @@ import { Playground } from 'docz'
         <AudiometryChart
             toolboxTooltip={{ saveAsImageWithTitle: 'save as image' }}
             title='left'
+            focus="self"
             symbolsSize={ 16 }
             colors={['red', 'red']}
             grid={ { left: "10%" } }
@@ -59,6 +60,7 @@ import { Playground } from 'docz'
         <AudiometryChart
             title='right'
             color='blue'
+            focus="self"
             colors={['blue']}
             lineType='dashed'
             data={ [[
@@ -105,6 +107,7 @@ import { Playground } from 'docz'
         <AudiometryChart
             tooltipMarker
             legendsPosition="bottom"
+            focus="self"
             legendGap={7}
             grid={{ bottom: 80 }}
             title='right'

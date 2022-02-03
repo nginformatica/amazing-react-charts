@@ -47,7 +47,8 @@ export const PieChart = (props: IProps) => {
     labelFontColor,
     noAnimation,
     pieceBorderColor,
-    tooltipTitle
+    tooltipTitle,
+    focus
   } = props
 
   const names = map(item => item.name, data)
@@ -134,7 +135,10 @@ export const PieChart = (props: IProps) => {
         type: 'pie',
         data: data,
         radius: radius || '50%',
-        center: center || ['50%', '50%']
+        center: center || ['50%', '50%'],
+        emphasis: {
+          focus: focus ?? 'none'
+        }
       }
     ],
     legend: {

@@ -45,7 +45,7 @@ const HorizontalBarChart = (props: IProps) => {
     onClickBar,
     xType,
     toolboxTooltip,
-    marginRightToolbox,
+    marginRightToolbox
   } = props
 
   const [title, setTitle] = useState(false)

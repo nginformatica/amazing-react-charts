@@ -28,6 +28,7 @@ export interface IDefaultChartProps {
   marginRightToolbox?: string
   titleFontSize?: number
   scrollStart?: number
+  focus?: Focus
   onClickBar?(
     itemProps?: Record<string, unknown>,
     itemFunctions?: Record<string, unknown>
@@ -50,6 +51,8 @@ export type Coordinates = {
 export type NumberTuple = [number, number]
 
 export type WidthProps = number | null | undefined | 'auto'
+
+export type Focus = 'none' | 'self' | 'series'
 
 export type TooltipEntryProps = {
   label: string

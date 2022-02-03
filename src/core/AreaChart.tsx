@@ -53,6 +53,7 @@ const AreaChart = (props: IDefaultChartProps) => {
     title: titleProps,
     toolboxTooltip,
     scrollStart,
+    focus
   } = props
 
   const markLine = lineMarkValue && data.map(() => lineMarkValue)
@@ -178,7 +179,7 @@ const AreaChart = (props: IDefaultChartProps) => {
           color: color
         },
         emphasis: {
-          scale: false
+          focus: focus ?? 'none'
         }
       },
       {
@@ -189,6 +190,9 @@ const AreaChart = (props: IDefaultChartProps) => {
         data: markLine,
         lineStyle: {
           color: lineMarkColor
+        },
+        emphasis: {
+          focus: focus ?? 'none'
         }
       }
     ],

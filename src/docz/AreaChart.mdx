@@ -42,6 +42,41 @@ import { Playground } from 'docz'
     />
 </Playground>
 
+## With Focus
+<Playground>
+    <AreaChart
+        color='#3e2723'
+        xType='time'
+        focus='series'
+        lineMarkValue={ 3 }
+        lineMarkColor='#E65100'
+        lineMakeName='mark'
+        title='mark'
+        toolboxTooltip={{ saveAsImage: 'Save as image' }}
+        yComplement='%'
+        dateFormat={ 'yyyy-MM' }
+        tooltipComplement='goals'
+        tooltip={ { label: 'Data', result: 'RAV' } }
+        data={ 
+            [ 
+                { label: '2019-01', result: 0.7514285714285713 }, 
+                { label: '2019-02', result: 1 },
+                { label: '2019-03', result: 1 }, 
+                { label: '2019-04', result: 0 },
+                { label: '2019-05', result: 1 },
+                { label: '2019-06', result: 1 },
+                { label: '2019-07', result: 49 },
+                { label: '2019-08', result: 1 },
+                { label: '2019-09', result: 1 },
+                { label: '2019-10', result: 1 },
+                { label: '2019-11', result: 1 },
+                { label: '2019-12', result: 1 },
+                { label: '2020-01', result: 1 }
+            ] 
+        }
+    />
+</Playground>
+
 <Playground>
     <AreaChart 
         color='#74007c'

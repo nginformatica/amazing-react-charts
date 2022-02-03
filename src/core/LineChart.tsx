@@ -50,6 +50,7 @@ const LineChart = (props: IProps) => {
     disableMarks,
     noTooltip,
     scrollStart,
+    focus
   } = props
 
   const yData = data[0].values.map(item => item.result)
@@ -71,7 +72,10 @@ const LineChart = (props: IProps) => {
       position: 'top',
       fontSize: yType === 'time' ? 10 : 11.5,
       color: 'black',
-      distance: 1.1
+      distance: 1.1,
+    },
+    emphasis: {
+      focus: focus ?? 'none'
     }
   }))
 

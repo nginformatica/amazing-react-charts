@@ -56,7 +56,8 @@ const AudiometryChart = (props: IProps) => {
     legendPadding,
     legendItemWidth,
     legendItemHeight,
-    formatTooltip
+    formatTooltip,
+    focus
   } = props
 
   useEffect(() => {
@@ -174,6 +175,9 @@ const AudiometryChart = (props: IProps) => {
     lineStyle: {
       width: 1,
       type: lineType || 'solid'
+    },
+    emphasis: {
+      focus: focus ?? 'none'
     }
   }))
 

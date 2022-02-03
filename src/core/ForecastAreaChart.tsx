@@ -54,7 +54,8 @@ const ForecastAreaChart = (props: IProps) => {
     fontLabelSize,
     title: titleProps,
     toolboxTooltip,
-    forecastChartLegends
+    forecastChartLegends,
+    focus
   } = props
 
   const yData = data.map((item: EntryData) => item.result)
@@ -88,8 +89,11 @@ const ForecastAreaChart = (props: IProps) => {
               fontSize: yType === 'time' ? 10 : 11.5,
               color: 'black',
               distance: 1.1
+            },
+            emphasis: {
+              focus: focus ?? 'none'
             }
-          }
+          },
         ]
       })
     } else {

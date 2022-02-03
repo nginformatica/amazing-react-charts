@@ -42,7 +42,8 @@ export const DonutChart = (props: IDonutProps) => {
     grid,
     colors,
     width,
-    noAnimation
+    noAnimation,
+    focus
   } = props
 
   const [title, setTitle] = useState(false)
@@ -155,6 +156,9 @@ export const DonutChart = (props: IDonutProps) => {
           fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
           fontSize: centerPieValueFontSize || 24,
           fontWeight: '300' as const
+        },
+        emphasis: {
+          focus: focus ?? 'none'
         }
       },
       {
@@ -176,6 +180,9 @@ export const DonutChart = (props: IDonutProps) => {
         labelLine: {
           length: 4,
           length2: 4
+        },
+        emphasis: {
+          focus: focus ?? 'none'
         }
       }
     ],

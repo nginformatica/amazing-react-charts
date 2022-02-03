@@ -66,6 +66,7 @@ const StackedBarChart = (props: IProps) => {
     legendType,
     legendScrollGap,
     showBarLabel,
+    focus
   } = props
 
   const {
@@ -253,7 +254,10 @@ const StackedBarChart = (props: IProps) => {
     name: extraResult,
     type: 'bar',
     data: yExtraData,
-    stack: 'stacked'
+    stack: 'stacked',
+    emphasis: {
+      focus: focus ?? 'none'
+    }
   }
 
   const legendProps =
@@ -280,7 +284,10 @@ const StackedBarChart = (props: IProps) => {
         name: topResult,
         type: 'bar',
         data: yTopData,
-        stack: 'stacked'
+        stack: 'stacked',
+        emphasis: {
+          focus: focus ?? 'none'
+        }
       },
       {
         barWidth: barWidth,
@@ -296,6 +303,9 @@ const StackedBarChart = (props: IProps) => {
           fontSize: 12,
           color: 'black',
           distance: 2
+        },
+        emphasis: {
+          focus: focus ?? 'none'
         }
       },
       extraStackedSerie,
@@ -303,7 +313,10 @@ const StackedBarChart = (props: IProps) => {
         yAxisIndex: secondYAxisType === 'percent' ? 1 : 0,
         name: lineResult,
         type: 'line',
-        data: yLineData
+        data: yLineData,
+        emphasis: {
+          focus: focus ?? 'none'
+        }
       },
     ],
     xAxis: {

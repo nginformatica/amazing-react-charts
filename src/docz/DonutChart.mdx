@@ -33,6 +33,32 @@ import { Playground } from 'docz'
     />
 </Playground>
 
+## With Focus
+<Playground>
+    <DonutChart
+        colors={ ['red', 'orange', 'yellow', 'green'] }
+        focus='self'
+        legendPosition='outside'
+        resultFormatType="percent"
+        toolboxTooltip={{ saveAsImage: 'saving'}}
+        title='Total de S.S. por criticidade'
+        center={ ['50%', '50%'] }
+        donutRadius={ ['58%' , '70%'] }
+        tooltip={{
+            label: 'Criticidade',
+            result: 'Total de SSs'
+        }}
+        data={ 
+            [ 
+                { name: "Emergencial", value: 120 },
+                { name: "Alta", value: 234 },
+                { name: "Média", value: 500 },
+                { name: "Baixa", value: 440 }
+            ] 
+        }
+    />
+</Playground>
+
 ## Demo
 <Playground>
     <DonutChart

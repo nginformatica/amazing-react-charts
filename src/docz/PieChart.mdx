@@ -34,6 +34,31 @@ import { Playground } from 'docz'
     />
 </Playground>
 
+## Pie chart Focus
+<Playground>
+    <PieChart
+        noAnimation
+        colors={ ['red', 'yellow', 'green', 'blue'] }
+        legendPosition='inside'
+        focus='self'
+        radius='75%'
+        toolboxTooltip={{ saveAsImage: 'saving'}}
+        title='pie chart'
+        resultFormatType='percent'
+        labelFontColor='black'
+        tooltipTitle='title'
+        center={ ['50%', '50%'] }
+        data={ 
+            [ 
+                { name: 'Ruim', value: 25 },
+                { name: 'Satisfatório', value: 10 },
+                { name: 'Bom', value: 45 },
+                { name: 'Ótimo', value: 10 },
+            ] 
+        }
+    />
+</Playground>
+
 ## Pie chart with scrollable legend
 <Playground>
     <div style={ { width: '300px'} }>
