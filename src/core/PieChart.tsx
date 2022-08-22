@@ -109,7 +109,7 @@ export const PieChart = (props: IProps) => {
   const formatPieLabel = ({ data }: PieDataLabel) =>
     data.value === 0 && legendPosition === 'inside'
       ? ''
-      : takeLabelComplement(data.value, resultFormatType)
+      : takeLabelComplement(data.value, resultFormatType, 'pie')
 
   const options = {
     grid: gridProps,

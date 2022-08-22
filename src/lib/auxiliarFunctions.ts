@@ -6,6 +6,7 @@ import {
   ConnectedDataURL,
   DataTooltip,
   DomainValues,
+  TypeChart,
   WidthProps
 } from '../core/types'
 
@@ -19,9 +20,13 @@ const iconStyle = {
   borderWidth: 0.1
 }
 
-export const takeLabelComplement = (item: number, yComplement: Complement) => {
+export const takeLabelComplement = (
+  item: number,
+  yComplement: Complement, 
+  typeChart?: TypeChart,
+) => {
   const getComplement = (complement?: string) => complement
-    ? formatValueAxis(item, complement)
+    ? formatValueAxis(item, complement, typeChart)
     : item
 
   return typeof yComplement === 'function'
@@ -74,15 +79,23 @@ export const monuntTimeMessage = (
 }
 
 // These 3 next functions are used on the mountMessage function. 
-const formatValueAxis = (value: number, complement: Complement) => {
+const formatValueAxis = (
+  value: number,
+  complement: Complement,
+  typeChart?: TypeChart,
+) => {
   const isMoney = typeof complement === 'function'
     ? complement(value)
     : value + complement
 
   const getTime = complement === 'time' ? timeConvert(value) : isMoney
+  const formatValueIfComplementPercent =
+    typeChart == 'pie'
+      ? value.toFixed(2).replace('.', ',')
+      : (value.toFixed(2) + '%').replace('.', ',')
 
   return complement === '%' || complement === 'percent'
-    ? (value.toFixed(2) + '%').replace('.', ',')
+    ? formatValueIfComplementPercent
     : getTime
 }
 

@@ -149,6 +149,8 @@ export type PieDataLabel = {
   data: PieChartData
 }
 
+export type TypeChart = 'line' | 'bar' | 'pie' | 'pictorialBar' | 'scatter'
+
 type FormatterReturn = string[] | string | number
 
 type FormatterEntry =
