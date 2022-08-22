@@ -284,7 +284,7 @@ const VerticalBarChart = (props: IProps) => {
       axisLabel: {
         rotate: rotateLabel && rotateLabel,
         formatter: (item: string) => xType === 'time'
-          ? formatTime(item, 'dd MMM')
+          ? formatTime(item, dateFormat != null ? dateFormat : 'dd MMM')
           : specialLabel(item),
         interval: 0,
         fontSize: 11
