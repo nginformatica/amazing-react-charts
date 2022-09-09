@@ -226,7 +226,12 @@ const VerticalBarChart = (props: IProps) => {
         : takeLabelComplement(Number(value), yComplement)
 
     const labelPrint =
-      xType === 'time' ? formatTooltip(axisValueLabel) : axisValueLabel
+      xType === 'time' 
+        ? formatTooltip(
+          axisValueLabel,
+          dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
+        )
+        : axisValueLabel
 
     return (
       `${label}: ${labelPrint} <br>` + `${result}: ${values} <br>` + complement
@@ -284,7 +289,7 @@ const VerticalBarChart = (props: IProps) => {
       axisLabel: {
         rotate: rotateLabel && rotateLabel,
         formatter: (item: string) => xType === 'time'
-          ? formatTime(item, dateFormat != null ? dateFormat : 'dd MMM')
+          ? formatTime(item, dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy')
           : specialLabel(item),
         interval: 0,
         fontSize: 11
