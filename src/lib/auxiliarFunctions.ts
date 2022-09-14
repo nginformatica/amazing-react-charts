@@ -1,5 +1,4 @@
 import { format, parse } from 'date-fns'
-import { takeLast } from 'ramda'
 import ptBR from 'date-fns/locale/pt-BR'
 import {
   Complement,
@@ -22,7 +21,7 @@ const iconStyle = {
 
 export const takeLabelComplement = (
   item: number,
-  yComplement: Complement, 
+  yComplement: Complement,
   typeChart?: TypeChart,
 ) => {
   const getComplement = (complement?: string) => complement
@@ -42,13 +41,13 @@ export const takeDonutChartComplement = (
   : `${item} (${complement || ''})`
 
 export const timeConvert = (value: number) => {
-  const seconds = Math.round((value % 1) * 3600)
-  const minutes = Math.trunc(seconds / 60)
-  const formatedMinutes = takeLast(2, '0' + minutes)
+  const hrs = Math.floor(value)
+  const min = Math.round((value - hrs) * 60)
 
-  return minutes > 0
-    ? Math.floor(value) + ':' + formatedMinutes
-    : Math.floor(value) + ':00'
+  const hours = hrs.toString().length > 1 ? hrs : `0${hrs}`
+  const minutes = min.toString().length > 1 ? min : `0${min}`
+
+  return `${hours}:${minutes}`
 }
 
 export const getPercentage = (value: number, valueTotal: number) =>
