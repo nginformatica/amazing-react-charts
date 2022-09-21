@@ -37,6 +37,7 @@ const HorizontalBarChart = (props: IProps) => {
     grid: gridProps,
     width,
     labelWordSize,
+    rotateLabel,
     showTickInfos,
     boldTickLabel,
     title: titleProps,
@@ -197,6 +198,7 @@ const HorizontalBarChart = (props: IProps) => {
         show: showTickInfos || false
       },
       axisLabel: {
+        rotate: rotateLabel,
         show: showTickInfos || false,
         formatter: (item: string) =>
           xType === 'time'
