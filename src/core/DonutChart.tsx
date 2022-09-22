@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { CSSProperties, useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { IProps } from './PieChart'
 import { PieChartData, PieDataLabel } from './types'
@@ -22,6 +22,15 @@ interface IDonutProps extends IProps {
 }
 
 export const WIDTH_STYLE = { width: '99.9%' }
+
+const titleStyle: CSSProperties = {
+  position: 'absolute',
+  top: 5,
+  margin: 0,
+  fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+  fontSize: 16,
+  fontWeight: 300
+}
 
 export const DonutChart = (props: IDonutProps) => {
   const {
@@ -113,14 +122,13 @@ export const DonutChart = (props: IDonutProps) => {
     grid: grid,
     color: colors,
     title: {
-      left: resultFormatType ? '0.1%' : '6.2%',
-      top: resultFormatType && '5.7%',
-      show: title,
-      text: titleProps,
+      top: 'middle',
+      left: 'center',
+      text: donutCenterValue || thousandSeparator(totalValues),
       textAlign: 'left',
       textStyle: {
         fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-        fontSize: 16,
+        fontSize: centerPieValueFontSize || 24,
         fontWeight: '300' as const
       }
     },
@@ -138,22 +146,6 @@ export const DonutChart = (props: IDonutProps) => {
       icon: 'shape'
     },
     series: [
-      {
-        name: 'background',
-        type: 'pie',
-        radius: donutRadius,
-        data: data,
-        animation: false,
-        center: center || ['50%', '50%'],
-        label: {
-          color: 'black',
-          position: 'center',
-          formatter: donutCenterValue || thousandSeparator(totalValues),
-          fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-          fontSize: centerPieValueFontSize || 24,
-          fontWeight: '300' as const
-        }
-      },
       {
         name: 'first',
         type: 'pie',
@@ -174,19 +166,24 @@ export const DonutChart = (props: IDonutProps) => {
           length: 4,
           length2: 4
         }
-      }
+      },
     ],
     itemStyle: {
       borderColor: pieceBorderColor || 'white'
     }
   }
 
+  const TitleChart = () =>  <h1 style={titleStyle}>{titleProps}</h1>
+
   return (
-    <ReactEcharts
-      style={WIDTH_STYLE}
-      opts={getWidthOpts(width)}
-      option={options}
-    />
+    <div style={{ position: 'relative'}}>
+      {title && <TitleChart />}
+      <ReactEcharts
+        style={{...WIDTH_STYLE}}
+        opts={getWidthOpts(width)}
+        option={options}
+      />
+    </div>
   )
 }
 
