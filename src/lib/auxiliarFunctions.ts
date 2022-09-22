@@ -38,7 +38,7 @@ export const takeDonutChartComplement = (
   complement?: Complement
 ) => item === 0 && typeof complement === 'function'
   ? ''
-  : `${item} (${complement || ''})`
+  : `${item}  ${complement ? `(${complement})` : ''}`
 
 export const timeConvert = (value: number) => {
   const hrs = Math.floor(value)
