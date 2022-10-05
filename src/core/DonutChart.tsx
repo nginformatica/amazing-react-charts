@@ -29,7 +29,8 @@ const titleStyle: CSSProperties = {
   margin: 0,
   fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
   fontSize: 16,
-  fontWeight: 300
+  fontWeight: 300,
+  color: 'black'
 }
 
 export const DonutChart = (props: IDonutProps) => {
