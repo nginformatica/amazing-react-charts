@@ -144,6 +144,7 @@ export const DonutChart = (props: IDonutProps) => {
       orient: 'horizontal' as const,
       top: 270,
       data: xData,
+      icon: 'shape'
     },
     series: [
       {
