@@ -86,11 +86,7 @@ export type PictorialEntryData = {
   symbol: string
 }
 
-export type EntryDataNTuples =
-  | [EntryData[], EntryData[]]
-  | [EntryData[], EntryData[], EntryData[]]
-  | [EntryData[], EntryData[], EntryData[], EntryData[]]
-  | [EntryData[], EntryData[], EntryData[], EntryData[], EntryData[]]
+export type EntryDataNTuples = Array<EntryData[]>
 
 export type Series = {
   stillShowZeroSum?: boolean
@@ -433,3 +429,8 @@ export type ConnectedDataURL = {
     connectedBackgroundColor?: string
     excludeComponents?: string[]
   }
+
+export type Tooltip = {
+  type: 'line' | 'bar',
+  name: string
+}

@@ -10,7 +10,8 @@ import {
   ZoomProps,
   ParamsTooltip,
   ColorNTuples,
-  Complement
+  Complement,
+  Tooltip
 } from './types'
 import {
   formatTime,
@@ -42,6 +43,7 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
   legendType?: 'scroll' | 'none'
   legendScrollGap?: number
   secondYAxisType?: 'percent' | string
+  additionalResults?: Tooltip[]
 }
 
 const verifyStyleProps = (data: EntryData) =>
@@ -66,6 +68,7 @@ const StackedBarChart = (props: IProps) => {
     legendType,
     legendScrollGap,
     showBarLabel,
+    additionalResults
   } = props
 
   const {
@@ -78,7 +81,14 @@ const StackedBarChart = (props: IProps) => {
     complement
   } = tooltipProps
 
-  const [bottomData, topData, lineData = [], extraData, auxData = []] = data
+  const [
+    bottomData, 
+    topData, 
+    lineData = [], 
+    extraData, 
+    auxData = [], 
+    ...additionalData
+  ] = data
   const yBottomData = bottomData.map(verifyStyleProps)
   const yTopData = topData.map(verifyStyleProps)
   const yExtraData =
@@ -256,17 +266,52 @@ const StackedBarChart = (props: IProps) => {
     stack: 'stacked'
   }
 
+  const additionalResultsMap = additionalResults
+    ? additionalResults.map(it => it.name)
+    : []
+
+  const additionalSeries = additionalData
+    ? additionalData.map((it, i) => additionalResults[i].type === 'bar' 
+      ? ({
+        barWidth,
+        yAxisIndex: 0,
+        name: additionalResults[i].name,
+        type: 'bar',
+        data: it.map(verifyStyleProps),
+        stack: 'stacked'
+      })
+      : ({
+        yAxisIndex: secondYAxisType === 'percent' ? 1 : 0,
+        name: additionalResults[i].name,
+        type: 'line',
+        data: it.map(verifyStyleProps)
+      })
+    )
+    : []
+
   const legendProps =
     legendType === 'scroll'
       ? {
-        data: [topResult, bottomResult, extraResult, lineResult],
+        data: [
+          topResult, 
+          bottomResult, 
+          extraResult, 
+          lineResult, 
+          ...additionalResultsMap
+        ],
         top: 270,
         type: legendType,
         itemGap: legendScrollGap || 60
       }
       : {
         top: 30,
-        data: [topResult, bottomResult, extraResult, lineResult],
+        data: [
+          topResult, 
+          bottomResult, 
+          extraResult, 
+          lineResult, 
+          ...additionalResultsMap
+        ],
         itemGap: 30
       }
 
@@ -305,6 +350,7 @@ const StackedBarChart = (props: IProps) => {
         type: 'line',
         data: yLineData
       },
+      ...additionalSeries
     ],
     xAxis: {
       data: xData as string[],
