@@ -418,11 +418,6 @@ export type TSimpleLegend = {
   icon?: string
 }
 
-export type ColorNTuples =
-  | [string, string]
-  | [string, string, string]
-  | [string, string, string, string]
-
 export type ConnectedDataURL = {
     type?: string
     backgroundColor?: string

@@ -9,7 +9,6 @@ import {
   EntryDataNTuples,
   ZoomProps,
   ParamsTooltip,
-  ColorNTuples,
   Complement,
   Tooltip
 } from './types'
@@ -39,7 +38,7 @@ interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: EntryDataNTuples
   tooltipExtra?: string
   sumDataValues?: boolean
-  colors?: ColorNTuples
+  colors?: string[]
   legendType?: 'scroll' | 'none'
   legendScrollGap?: number
   secondYAxisType?: 'percent' | string
