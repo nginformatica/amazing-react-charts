@@ -22,6 +22,7 @@ interface MultipurposeChartProps {
   width?: WidthProps
   dateFormat?: string
   yComplement?: (input: string) => string
+  rangeSelector?: boolean
 }
 
 export const WIDTH_STYLE = { width: '99.9%' }
@@ -41,7 +42,8 @@ const isDarkColor = (color: string) => {
 const MAGIC_TYPE = ['line', 'bar', 'stack']
 
 const MultipurposeChart = (props: MultipurposeChartProps) => {
-  const {series, yType, xData, xType, width, yComplement, dateFormat} = props
+  const {series, yType, xData, xType, 
+    width, yComplement, dateFormat, rangeSelector} = props
   const ref = useRef<ReactEcharts>(null)
   const actualGraph = useRef('bar')
   const isStacked = useRef(false)
@@ -90,8 +92,18 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
     return `${tooltipTitle} <br> ${linesTooltips.join(' ')}`
   }
 
+  const slider = rangeSelector ?
+    [
+      {
+        type: 'slider',
+        xAxisIndex: 0,
+        filterMode: 'none'
+      },
+    ]: []
+
   const options: EChartOption = {
     color: [...series.map(it => it.color)],
+    dataZoom: [...slider],
     tooltip: {
       formatter: formatTooltip,
       trigger: 'axis',
@@ -194,8 +206,8 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
         if(i === e.componentIndex)
           return
 
-        it.label.rich.name.color = '#00000066'
-        it.label.color = '#00000066'
+        it.label.rich.name.color = '#00000000'
+        it.label.color = '#00000000'
       })
 
       echartsInstance.setOption({...actualOptions})
