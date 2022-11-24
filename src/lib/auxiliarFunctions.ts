@@ -310,3 +310,38 @@ export const getSaveAsImageWithTitle = (
 })
 
 export const getWidthOpts = (width: WidthProps) => ({ width })
+
+export const convertImageToBase64FromUrl = (imgUrl: string) => {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.src= imgUrl
+    img.setAttribute('crossOrigin', 'anonymous')
+    
+    img.onload = function() {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      canvas.width = 40
+      canvas.height = 40
+
+      ctx.save()
+      ctx.beginPath()
+      ctx.arc(40 / 2, 40 / 2, 40 / 2, 0, Math.PI * 2)
+      ctx.clip()
+      ctx.drawImage(img,0 , 0, 40, 40)
+      ctx.restore()
+
+      const dataUrl = ctx.canvas.toDataURL('image/png')
+      resolve(dataUrl)
+    }
+  })
+}
+
+export const changeSpaceForUnderline = 
+  (value: string) => value.replace(' ', '_')
+
+export const formatLabelWithImage = (text: string) => {
+  const textFormatted =
+    '{value|' + text + '} {' + changeSpaceForUnderline(text) + '| }'
+
+  return textFormatted
+}
