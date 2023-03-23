@@ -135,7 +135,7 @@ const ForecastAreaChart = (props: IProps) => {
       }
     }
   }
-  
+
   const scrollable: ZoomProps[] =
     xData.length > 5
       ? [
@@ -165,7 +165,7 @@ const ForecastAreaChart = (props: IProps) => {
         name: forecastChartLegends ? forecastChartLegends.forecast : '',
         data: yData,
         label: {
-          formatter: 
+          formatter:
             typeof yComplement === 'function' ? yComplement : formatLabel,
           show: true,
           position: 'top',
@@ -216,7 +216,7 @@ const ForecastAreaChart = (props: IProps) => {
         name: forecastChartLegends.current || '',
         data: take(lineMarkValue, yData),
         label: {
-          formatter: 
+          formatter:
             typeof yComplement === 'function' ? yComplement : formatLabel,
           show: false,
           position: 'top',
@@ -268,7 +268,7 @@ const ForecastAreaChart = (props: IProps) => {
         margin: yType === 'time' ? 16 : 14,
         formatter: (item: number) =>
           yType === 'time'
-            ? timeConvert(Number(data))
+            ? timeConvert(Number(item))
             : takeLabelComplement(Number(item.toFixed(2)), yComplement),
         fontSize: fontLabelSize || 11.5
       }
