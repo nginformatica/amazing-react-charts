@@ -193,8 +193,11 @@ const VerticalBarChart = (props: IProps) => {
 
   const formatLabel = (chartValues: DataTooltip) => {
     const { value } = chartValues
+    const isTimeType = yType === 'time'
 
-    return takeLabelComplement(Number(value), yComplement)
+    return isTimeType
+      ? timeConvert(Number(value)) + yComplement
+      : takeLabelComplement(Number(value), yComplement)
   }
 
   const toolbox = toolboxTooltip && {
