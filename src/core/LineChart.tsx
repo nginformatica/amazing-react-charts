@@ -9,6 +9,7 @@ import {
 import {
   formatTime,
   getDataView,
+  getDateFormatType,
   getInitialValues,
   getSaveAsImage,
   getWidthOpts,
@@ -161,7 +162,7 @@ const LineChart = (props: IProps) => {
           xType === 'time'
             ? formatTime(
               dateFormat === 'yyyy-MM' ? item + '-02' : item,
-              dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd MMM'
+              getDateFormatType(dateFormat)
             )
             : item,
         rotate: rotateLabel || 0,
@@ -185,7 +186,7 @@ const LineChart = (props: IProps) => {
         formatter: (item: number) =>
           yType === 'time'
             ? timeConvert(item) + 'h'
-            : item + (typeof yComplement !== 'function' ? yComplement : ''),
+            : takeLabelComplement(item, yComplement),
         textStyle: {
           fontSize: fontLabelSize || 11.5
         }

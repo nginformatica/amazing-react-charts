@@ -6,9 +6,9 @@ route: /areachart
 import AreaChart from '../core/AreaChart'
 import { Playground } from 'docz'
 
-# Area chart example
+# Demo
 
-## Demo
+## Area chart example
 <Playground>
     <AreaChart
         color='#3e2723'
@@ -42,6 +42,7 @@ import { Playground } from 'docz'
     />
 </Playground>
 
+## Area chart example with time
 <Playground>
     <AreaChart 
         color='#74007c'
@@ -65,6 +66,7 @@ import { Playground } from 'docz'
     />
 </Playground>
 
+## Area chart example with date
 <Playground>
     <AreaChart 
         xType='time'
@@ -134,3 +136,22 @@ import { Playground } from 'docz'
     />
 </Playground>
 
+## Area chart example with date and time
+<Playground>
+    <AreaChart 
+        xType='time'
+        dateFormat="MMM/dd HH:mm"
+        title='area chart data'
+        toolboxTooltip={{ saveAsImage: 'saving'}}
+        tooltip={ { label: 'Data', result: 'O.S. em aberto' } }
+        color='#E65100'
+        data={ 
+            [ 
+                { label: '2019-09-01 08:40', result: 1 }, 
+                { label: '2019-09-02 12:32', result: 4 },
+                { label: '2019-09-03 14:20', result: 3 }, 
+                { label: '2019-09-04 19:25', result: 2 },
+            ] 
+        }
+    />
+</Playground>

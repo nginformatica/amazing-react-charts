@@ -9,8 +9,8 @@ import {
   getInitialValues,
   getSaveAsImage,
   timeConvert,
-  toDate,
-  takeLabelComplement
+  takeLabelComplement,
+  getDateFormatType
 } from '../lib/auxiliarFunctions'
 import {
   IDefaultChartProps,
@@ -57,10 +57,7 @@ const AreaChart = (props: IDefaultChartProps) => {
 
   const markLine = lineMarkValue && data.map(() => lineMarkValue)
   const yData = data.map((item: EntryData) => item.result)
-  const xData =
-    xType === 'time'
-      ? data.map((item: EntryData) => toDate(item.label, dateFormat))
-      : data.map((item: EntryData) => item.label)
+  const xData = data.map((item: EntryData) => item.label)
 
   const formatLabel = (chartValues: { data: number }) => {
     const { data } = chartValues
@@ -205,7 +202,7 @@ const AreaChart = (props: IDefaultChartProps) => {
       axisLabel: {
         formatter: (item: string) =>
           xType === 'time'
-            ? formatTime(item, dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd MMM')
+            ? formatTime(item, getDateFormatType(dateFormat))
             : item,
         rotate: rotateLabel || 0,
         rich: {

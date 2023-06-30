@@ -17,10 +17,10 @@ import {
   getDomain,
   getSaveAsImage,
   timeConvert,
-  toDate,
   fixedTruncateLabel,
   takeLabelComplement,
-  getWidthOpts
+  getWidthOpts,
+  getDateFormatType
 } from '../lib/auxiliarFunctions'
 import { WIDTH_STYLE } from './DonutChart'
 
@@ -146,14 +146,12 @@ const VerticalBarChart = (props: IProps) => {
     return {
       value: item.result,
       label: label,
+      itemStyle: item.style,
       itemId: item.itemId && item.itemId
     }
   })
 
-  const xData =
-    xType === 'time'
-      ? data.map((item: EntryData) => toDate(item.label, dateFormat))
-      : data.map((item: EntryData) => item.label)
+  const xData = data.map((item: EntryData) => item.label)
 
   const specialLabel = (item: string) =>
     fixedTruncateLabel(item, xData.length <= 5 ? 16 : 9)
@@ -292,7 +290,7 @@ const VerticalBarChart = (props: IProps) => {
       axisLabel: {
         rotate: rotateLabel && rotateLabel,
         formatter: (item: string) => xType === 'time'
-          ? formatTime(item, dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy')
+          ? formatTime(item, getDateFormatType(dateFormat, 'dd/MM/yyyy'))
           : specialLabel(item),
         interval: 0,
         fontSize: 11
