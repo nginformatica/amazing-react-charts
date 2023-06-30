@@ -154,7 +154,7 @@ export const mountMessage = (
 export const toDate = (text: string, format?: string) =>
   parse(text, format ? format : 'yyyy-MM-dd', new Date())
 
-export const formatTime = (text: string, dateFormat: string) =>
+export const formatTime = (text: string, dateFormat = 'dd MMM') =>
   format(new Date(text), dateFormat, { locale: ptBR })
 
 export const formatTooltip = (text: string, dateFormat?: string) =>
@@ -344,4 +344,12 @@ export const formatLabelWithImage = (text: string) => {
     '{value|' + text + '} {' + changeSpaceForUnderline(text) + '| }'
 
   return textFormatted
+}
+
+export const getDateFormatType = (dateFormat: string, baseFormat?: string) => {
+  if (dateFormat === 'yyyy-MM') {
+    return baseFormat ? baseFormat : 'MMM/yy'
+  }
+  
+  return dateFormat
 }

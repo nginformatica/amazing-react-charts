@@ -6,8 +6,9 @@ route: /vertical-bar-chart
 import VerticalBarChart from "../core/VerticalBarChart";
 import { Playground } from "docz";
 
-# Vertical bar chart example
+# Demo
 
+## Vertical bar chart example
 <Playground>
   <VerticalBarChart
     showBarLabel
@@ -163,8 +164,7 @@ import { Playground } from "docz";
   />
 </Playground>
 
-# Vertical bar chart example with customMaxDomain
-
+## Vertical bar chart example with customMaxDomain
 <Playground>
   <VerticalBarChart
     showBarLabel
@@ -189,8 +189,7 @@ import { Playground } from "docz";
   />
 </Playground>
 
-# Vertical bar chart with dateFormat
-
+## Vertical bar chart with dateFormat
 <Playground>
   <VerticalBarChart
     showBarLabel
@@ -211,8 +210,7 @@ import { Playground } from "docz";
   />
 </Playground>
 
-# Vertical bar chart with time format
-
+## Vertical bar chart with time format
 <Playground>
   <VerticalBarChart
     showBarLabel
@@ -239,4 +237,37 @@ import { Playground } from "docz";
       },
     ]}
   />
+</Playground>
+
+## Vertical bar chart with yComplement like a function
+<Playground>
+        <VerticalBarChart
+  yComplement={value => value === 1 ? 'Saudavel' : value ===  2 ? 'Alerta' : value === 3 ? 'Crítico' : ''}
+  xType="time"
+  yType="value"
+  color="green"
+  customMaxDomain={3}
+  dateFormat='yyyy-MM-dd'
+  tooltip={{ label: 'Data', result: 'Sáude' }}
+  data={[
+    {
+      label: '2023-06-29',
+      result: '1',
+      itemId: 1,
+      style: { color: 'green' }
+    },
+    {
+      label: '2023-06-30',
+      result: '3',
+      itemId: 1,
+      style: { color: 'red' }
+    }, 
+    {
+      label: '2023-07-01',
+      result: '2',
+      itemId: 1,
+      style: { color: 'yellow' }
+    }
+  ]}
+/>
 </Playground>

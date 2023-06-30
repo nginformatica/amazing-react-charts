@@ -6,9 +6,9 @@ route: /line-charts
 import LineChart from '../core/LineChart'
 import { Playground } from 'docz'
 
-# line chart example
+# Demo
 
-## Demo
+## line chart example
 <Playground>
     <LineChart
         showLabel
@@ -52,6 +52,43 @@ import { Playground } from 'docz'
                     { label: '2019-11', result: 70 },
                     { label: '2019-12', result: 80 },
                     { label: '2019-01', result: 90 }
+                ]
+            }
+        ] }
+    />
+</Playground>
+
+
+## line chart example with date and time
+<Playground>
+    <LineChart
+        showLabel
+        title='Concurrent lines'
+        xType='time'
+        toolboxTooltip={{ saveAsImage: 'saving'}}
+        dateFormat='MMM/dd HH:mm'
+        colors={ ['red', 'green', 'blue'] }
+        data={ [ 
+            {
+                name: 'top line',
+                values: [
+                    { label: '2019-01 08:40', result: 10 }, 
+                    { label: '2019-02 09:12', result: 40 },
+                    { label: '2019-03 10:25', result: 30 }, 
+                    { label: '2019-04 12:30', result: 20 },
+                    { label: '2019-05 14:30', result: 40 },
+                    { label: '2019-06 18:45', result: 50 }
+                ]
+            },
+             {
+                name: 'bottom line',
+                values: [
+                    { label: '2019-01 08:40', result: 1 }, 
+                    { label: '2019-02 09:12', result: 4 },
+                    { label: '2019-03 10:25', result: 3 }, 
+                    { label: '2019-04 12:30', result: 2 },
+                    { label: '2019-05 14:30', result: 4 },
+                    { label: '2019-06 18:45', result: 5 }
                 ]
             }
         ] }
