@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
@@ -122,7 +122,7 @@ const HorizontalBarChart = (props: IProps) => {
     })
   )
 
-  const yData = data.map((item: EntryData) => item.label)
+  const yData = reverse(data.map((item: EntryData) => item.label))
   
   const domain = { min: 0, max: Math.max(...data.map((item) => item.result)) }
   const backgroundBar = data.map(() =>
