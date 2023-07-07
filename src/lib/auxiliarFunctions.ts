@@ -158,9 +158,10 @@ export const formatTime = (text: string, dateFormat = 'dd MMM') =>
   format(new Date(text), dateFormat, { locale: ptBR })
 
 export const formatTooltip = (text: string, dateFormat?: string) =>
-  format(new Date(text), dateFormat ? 'MMM/yy' : 'dd/MM/yyyy', {
-    locale: ptBR
-  })
+  format(
+    new Date(text), getDateFormatType(dateFormat, 'dd/MM/yyyy'), {
+      locale: ptBR
+    })
 
 export const formatTooltipWithHours = (text: string) =>
   format(new Date(text), 'dd/MM/yyyy HH:mm', { locale: ptBR })

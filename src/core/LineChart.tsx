@@ -117,7 +117,7 @@ const LineChart = (props: IProps) => {
       xType === 'time'
         ? formatTime(
           dateFormat === 'yyyy-MM' ? lines[0].name + '-02' : lines[0].name,
-          dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd MMM'
+          getDateFormatType(dateFormat)
         )
         : lines[0].name
 
