@@ -27,6 +27,7 @@ import { WIDTH_STYLE } from './DonutChart'
 interface IProps extends IDefaultChartProps {
   rotateTickLabel?: number
   customMaxDomain?: number
+  interval?: number
 }
 
 export const fullText = {
@@ -113,6 +114,7 @@ const VerticalBarChart = (props: IProps) => {
     onClickBar,
     marginRightToolbox,
     customMaxDomain,
+    interval,
   } = props
 
   const isCustomDomain = customMaxDomain
@@ -230,7 +232,7 @@ const VerticalBarChart = (props: IProps) => {
       xType === 'time' 
         ? formatTooltip(
           axisValueLabel,
-          dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
+          dateFormat
         )
         : axisValueLabel
 
@@ -258,6 +260,7 @@ const VerticalBarChart = (props: IProps) => {
   const options: OptionsProps = {
     grid: { ...gridProps },
     color: [color],
+    interval,
     series: [
       {
         barWidth: barWidth || 'auto',
