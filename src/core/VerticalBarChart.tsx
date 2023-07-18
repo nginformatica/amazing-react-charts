@@ -22,7 +22,8 @@ import {
   getWidthOpts,
   getDateFormatType
 } from '../lib/auxiliarFunctions'
-import { WIDTH_STYLE } from './DonutChart'
+
+const WIDTH_STYLE = { width: '99.9%' }
 
 interface IProps extends IDefaultChartProps {
   rotateTickLabel?: number
@@ -196,7 +197,7 @@ const VerticalBarChart = (props: IProps) => {
     const isTimeType = yType === 'time'
 
     return isTimeType
-      ? timeConvert(Number(value)) + yComplement
+      ? timeConvert(Number(value)) + 'h'
       : takeLabelComplement(Number(value), yComplement)
   }
 

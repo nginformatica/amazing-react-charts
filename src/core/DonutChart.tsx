@@ -21,8 +21,6 @@ interface IDonutProps extends IProps {
   selectedMode?: boolean
 }
 
-export const WIDTH_STYLE = { width: '99.9%' }
-
 const titleStyle: CSSProperties = {
   position: 'absolute',
   top: 5,
@@ -177,10 +175,10 @@ export const DonutChart = (props: IDonutProps) => {
   const TitleChart = () =>  <h1 style={titleStyle}>{titleProps}</h1>
 
   return (
-    <div style={{ position: 'relative'}}>
+    <div style={{ position: 'relative', width: '100%'}}>
       {title && <TitleChart />}
       <ReactEcharts
-        style={{...WIDTH_STYLE}}
+        style={{ minWidth: '100%' }}
         opts={getWidthOpts(width)}
         option={options}
       />
