@@ -9,6 +9,7 @@ import {
   timeConvert 
 } from '../lib/auxiliarFunctions'
 import { IDefaultChartProps, WidthProps } from './types'
+import { WIDTH_STYLE } from '../lib/constants'
 
 interface MultipurposeChartProps {
   series: Array<{
