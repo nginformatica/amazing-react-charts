@@ -22,7 +22,8 @@ import {
   ZoomProps
 } from './types'
 import { take } from 'ramda'
-import { STYLES } from './AreaChart'
+
+const STYLES = { width: '99.9%', height: 300 }
 
 interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
   tooltip: {

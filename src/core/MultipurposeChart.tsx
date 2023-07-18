@@ -25,9 +25,6 @@ interface MultipurposeChartProps {
   rangeSelector?: boolean
 }
 
-export const WIDTH_STYLE = { width: '99.9%' }
-
-
 const isDarkColor = (color: string) => {
   const c = color.substring(1)
   const rgb = parseInt(c, 16)

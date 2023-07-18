@@ -22,8 +22,8 @@ import {
   formatLabelWithImage,
 } from '../lib/auxiliarFunctions'
 import { reverse } from 'ramda'
-import { WIDTH_STYLE } from './DonutChart'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
+import { WIDTH_STYLE } from '../lib/constants'
 
 interface IProps extends IDefaultChartProps {
   showTickInfos?: boolean;

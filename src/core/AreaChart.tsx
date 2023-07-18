@@ -20,7 +20,7 @@ import {
   ZoomProps
 } from './types'
 
-export const STYLES = { width: '99.9%', height: 300 }
+const STYLES = { width: '99.9%', height: 300 }
 export const TOOLBOX_DEFAULT_PROPS = {
   showTitle: false,
   right: '9.52%',

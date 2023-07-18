@@ -2,8 +2,8 @@ import ReactEcharts from 'echarts-for-react'
 import { EChartOption } from 'echarts/lib/echarts'
 import React from 'react'
 import { getWidthOpts, takeLabelComplement } from '../lib/auxiliarFunctions'
-import { WIDTH_STYLE } from './DonutChart'
 import { WidthProps } from './types'
+import { WIDTH_STYLE } from '../lib/constants'
 
 interface RadarChartProps {
   series: Array<{
