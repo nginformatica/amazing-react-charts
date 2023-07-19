@@ -21,6 +21,7 @@ import {
 } from './types'
 
 const STYLES = { width: '99.9%', height: 300 }
+
 export const TOOLBOX_DEFAULT_PROPS = {
   showTitle: false,
   right: '9.52%',
@@ -155,9 +156,17 @@ const AreaChart = (props: IDefaultChartProps) => {
         type: 'line' as const,
         data: yData,
         label: {
-          formatter: typeof yComplement === 'function' 
-            ? yComplement 
-            : formatLabel,
+          formatter: (item: number | string | {data: number}) => {
+            if(typeof yComplement === 'function' && typeof item === 'object') {
+              return yComplement(item.data)
+            } 
+              
+            
+            typeof yComplement === 'function' 
+              ? yComplement 
+              : formatLabel
+    
+          },
           show: true,
           position: 'top',
           fontSize: yType === 'time' ? 10 : 11.5,

@@ -34,7 +34,8 @@ export interface IDefaultChartProps {
   ): void;
 }
 
-export type Complement = string | ((value: string | number) => string);
+export type Complement =
+  string | ((value: string | number | {data: number}) => string);
 
 type ToolboxEntryProps = {
   saveAsImage?: string;
