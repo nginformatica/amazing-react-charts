@@ -9,6 +9,7 @@ import {
   timeConvert 
 } from '../lib/auxiliarFunctions'
 import { IDefaultChartProps, WidthProps } from './types'
+import { WIDTH_STYLE } from '../lib/constants'
 
 interface MultipurposeChartProps {
   series: Array<{
@@ -24,9 +25,6 @@ interface MultipurposeChartProps {
   yComplement?: (input: string) => string
   rangeSelector?: boolean
 }
-
-export const WIDTH_STYLE = { width: '99.9%' }
-
 
 const isDarkColor = (color: string) => {
   const c = color.substring(1)

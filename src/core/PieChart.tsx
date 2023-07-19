@@ -14,8 +14,8 @@ import {
   getPercentage,
   getWidthOpts
 } from '../lib/auxiliarFunctions'
-import { WIDTH_STYLE } from './DonutChart'
 import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
+import { WIDTH_STYLE } from '../lib/constants'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: PieChartData[]

@@ -31,8 +31,8 @@ import {
   normalLabel,
   rotatedLabel
 } from './VerticalBarChart'
-import { WIDTH_STYLE } from './DonutChart'
 import { concat, move } from 'ramda'
+import { WIDTH_STYLE } from '../lib/constants'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: EntryDataNTuples

@@ -16,7 +16,7 @@ import {
   takeLabelComplement,
   timeConvert
 } from '../lib/auxiliarFunctions'
-import { WIDTH_STYLE } from './DonutChart'
+import { WIDTH_STYLE } from '../lib/constants'
 
 interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: EntryDataLine[]

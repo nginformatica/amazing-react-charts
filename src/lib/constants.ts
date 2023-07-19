@@ -1,0 +1,1 @@
+export const WIDTH_STYLE = { width: '99.9%' }

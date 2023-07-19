@@ -22,8 +22,7 @@ import {
   getWidthOpts,
   getDateFormatType
 } from '../lib/auxiliarFunctions'
-
-const WIDTH_STYLE = { width: '99.9%' }
+import { WIDTH_STYLE } from '../lib/constants'
 
 interface IProps extends IDefaultChartProps {
   rotateTickLabel?: number
