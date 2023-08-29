@@ -55,6 +55,14 @@ const LineChart = (props: IProps) => {
   const yData = data[0].values.map(item => item.result)
   const xData = data[0].values.map(item => item.label)
   const names = data.map(item => item.name)
+  
+  const formatLabel = (chartValues: { data: number }) => {
+    const { data } = chartValues
+
+    return yType === 'time'
+      ? timeConvert(Number(data as number)) + 'h'
+      : takeLabelComplement(Number(data), yComplement)
+  }
 
   const series = data.map(item => ({
     name: item.name,
@@ -71,7 +79,18 @@ const LineChart = (props: IProps) => {
       position: 'top',
       fontSize: yType === 'time' ? 10 : 11.5,
       color: 'black',
-      distance: 1.1
+      distance: 1.1,
+      formatter: (item: number | string | {data: number}) => {
+        if(typeof yComplement === 'function' && typeof item === 'object') {
+          return yComplement(item.data)
+        } 
+          
+        
+        typeof yComplement === 'function' 
+          ? yComplement 
+          : formatLabel
+
+      }
     }
   }))
 

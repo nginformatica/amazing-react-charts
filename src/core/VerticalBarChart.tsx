@@ -20,7 +20,8 @@ import {
   fixedTruncateLabel,
   takeLabelComplement,
   getWidthOpts,
-  getDateFormatType
+  getDateFormatType,
+  getInitialValues
 } from '../lib/auxiliarFunctions'
 import { WIDTH_STYLE } from '../lib/constants'
 
@@ -115,6 +116,7 @@ const VerticalBarChart = (props: IProps) => {
     marginRightToolbox,
     customMaxDomain,
     interval,
+    scrollStart
   } = props
 
   const isCustomDomain = customMaxDomain
@@ -241,17 +243,21 @@ const VerticalBarChart = (props: IProps) => {
     )
   }
 
+  const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
+
   const scrollable: ZoomProps[] =
-    data.length > 12
+    data.length > arrayInitialSize
       ? [
         {
           type: 'inside',
+          start: getInitialValues(xData.length, dateFormat, scrollStart),
           endValue: xData.length > 12 ? xData[11] : xData[xData.length - 1],
           zoomOnMouseWheel: 'shift'
         },
         {
           show: true,
           type: 'slider',
+          start: getInitialValues(xData.length, dateFormat, scrollStart),
           endValue: xData.length > 12 ? xData[11] : xData[xData.length - 1]
         }
       ]
