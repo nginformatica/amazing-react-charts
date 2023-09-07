@@ -156,7 +156,7 @@ const AudiometryChart = (props: IProps) => {
   }))
 
   const removedUndefinedMarks = map(
-    item => filter(serie => serie?.value !== undefined, item.data),
+    item => filter(serie => serie?.value !== null, item.data),
     seriesMarks
   )
 

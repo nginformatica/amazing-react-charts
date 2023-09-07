@@ -58,7 +58,25 @@ To run the demo:
 
 ```sh
 git clone https://github.com/nginformatica/amazing-react-charts.git
+```
 
+Install all the dependencies:
+
+```sh
+yarn
+```
+
+Then, run the following command:
+
+```sh
+nvm use
+```
+
+If you don't have the node version that it's beeing required, please install it.
+
+To run the demo, run the following command:
+
+```sh
 yarn && yarn start
 ```
 
