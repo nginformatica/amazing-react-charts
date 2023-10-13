@@ -28,7 +28,7 @@
   "dependencies": {
     "date-fns": "2.30.0",
     "echarts": "4.9.0",
-    "echarts-for-react": "2.0.16",
+    "echarts-for-react": "3.0.2",
     "ramda": "0.29.1"
   },
   "devDependencies": {
