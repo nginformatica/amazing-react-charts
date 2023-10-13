@@ -1987,10 +1987,10 @@
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-0.0.30.tgz#dc1e40f7af3b9c815013a7860e6252f6352a84df"
   integrity sha512-orGL5LXERPYsLov6CWs3Fh6203+dXzJkR7OnddIr2514Hsecwc8xRpzCapshBbKFImCsvS/mk6+FWiN5LyZJAQ==
 
-"@types/echarts@4.6.1":
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.6.1.tgz#de6ede6b8069123150d53f3350f9e38533f1970e"
-  integrity sha512-oeekc7CQASQzRCbx8ixVQw4U4AmnjF2/fEyptqeUYeQnsEubr87Yde8nw6AxWTsEtWSNB/Pp0B/FTgGNHqkAUQ==
+"@types/echarts@4.9.19":
+  version "4.9.19"
+  resolved "https://registry.yarnpkg.com/@types/echarts/-/echarts-4.9.19.tgz#6c50ccde9f4458edfc36a9c78f81511ec1853941"
+  integrity sha512-mtQzTmBFLQ1tyAmP667OTr7oOceyfqHRMa0tkIj9FBOKYY0ggG6OGE4AfUtDw2gOuPEEw4vzD+y0OJWKi1IZHQ==
   dependencies:
     "@types/zrender" "*"
 
