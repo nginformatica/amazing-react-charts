@@ -338,7 +338,7 @@ const VerticalBarChart = (props: IProps) => {
       textStyle: {
         fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
         fontSize: titleFontSize || 16,
-        fontWeight: '400' as const
+        fontWeight: 400 as const
       }
     },
     tooltip: tooltipProps && {
