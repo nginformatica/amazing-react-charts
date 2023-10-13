@@ -26,8 +26,14 @@ const RadarChart = (props: RadarChartProps) => {
 
   
   const formatTooltip = (
-    lines: { name: string, seriesName: string, value: number, data: any }
-  ) => {
+    lines: { 
+      name: string,
+      seriesName: string,
+      value: number,
+      data: {
+        value: (string | number)[]
+      }
+  }) => {
     const takeComplement = 
       (value: number) => takeLabelComplement(Number(value), yComplement)
 
