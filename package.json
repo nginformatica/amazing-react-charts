@@ -22,7 +22,7 @@
     "prepack": "yarn build"
   },
   "dependencies": {
-    "date-fns": "2.4.1",
+    "date-fns": "2.30.0",
     "echarts": "4.9.0",
     "echarts-for-react": "2.0.16",
     "ramda": "0.29.1"
