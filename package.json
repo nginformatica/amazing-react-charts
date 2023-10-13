@@ -16,7 +16,8 @@
     "build": "yarn pre-build && yarn && yarn build:ts && yarn build:babel",
     "build:babel": "babel src --out-dir dist --extensions \".ts,.tsx\"",
     "serve": "docz build && docz serve",
-    "pre-publish": "yarn lint --fix && yarn tsc",
+    "type-check": "tsc --noEmit",
+    "pre-publish": "yarn lint --fix && yarn type-check",
     "docz:build": "docz build",
     "lint": "eslint 'src/**/*.ts?(x)'",
     "prepack": "yarn build"
@@ -47,7 +48,7 @@
     "eslint-plugin-react": "7.33.2",
     "install-peers-cli": "2.2.0",
     "react-dom": "16.12.0",
-    "typescript": "4.3.5"
+    "typescript": "5.2.2"
   },
   "peerDependencies": {
     "react": "^17.0.1"
