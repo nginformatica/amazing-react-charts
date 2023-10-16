@@ -49,7 +49,6 @@ import VerticalBarChart from 'amazing-react-charts'
         { label: 'value 4', result: 79 }
     ]}
 />
-
 ```
 
 ## Demo
@@ -66,18 +65,10 @@ Install all the dependencies:
 yarn
 ```
 
-Then, run the following command:
-
-```sh
-nvm use
-```
-
-If you don't have the node version that it's beeing required, please install it.
-
 To run the demo, run the following command:
 
 ```sh
-yarn && yarn start
+yarn start
 ```
 
 ## Components
@@ -91,6 +82,7 @@ yarn && yarn start
 - [x] DonutChart
 - [x] LineChart
 - [x] PictorialChart
+- [x] RadarChart
 
 ## Special Components
 
@@ -101,7 +93,6 @@ yarn && yarn start
 
 - [ ] CalendarChart
 - [ ] ClusteredBarChart
-- [ ] RadarChart
 
 ## Documentation
 
