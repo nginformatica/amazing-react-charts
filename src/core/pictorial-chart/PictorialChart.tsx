@@ -4,9 +4,10 @@ import {
   IDefaultChartProps,
   OptionsProps,
   PictorialEntryData
-} from './types'
+} from '../types'
+import { pictorialChart } from '../../commonStyles'
 
-interface IProps extends Omit<IDefaultChartProps, 'data'> {
+export interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: PictorialEntryData[]
   height?: number | string
 }
@@ -70,9 +71,13 @@ const PictorialChart = (props: IProps) => {
     tooltip: tooltip
   }
 
-  const styleOpts = { width: '99.9%', height: props.height || 500 }
-
-  return <ReactEcharts lazyUpdate option={options} style={styleOpts} />
+  return (
+    <ReactEcharts
+      lazyUpdate
+      option={options}
+      style={pictorialChart(props.height || 500)}
+    />
+  )
 }
 
 export default PictorialChart

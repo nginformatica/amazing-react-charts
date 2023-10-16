@@ -7,11 +7,11 @@ import {
   getWidthOpts, 
   takeLabelComplement, 
   timeConvert 
-} from '../lib/auxiliarFunctions'
-import { IDefaultChartProps, WidthProps } from './types'
-import { WIDTH_STYLE } from '../lib/constants'
+} from '../../lib/auxiliarFunctions'
+import { IDefaultChartProps, WidthProps } from '../types'
+import { CHART_WIDTH } from '../../commonStyles'
 
-interface MultipurposeChartProps {
+export interface MultipurposeChartProps {
   series: Array<{
     name: string
     color?: string
@@ -97,7 +97,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
         xAxisIndex: 0,
         filterMode: 'none'
       },
-    ]: []
+    ] : []
 
   const options: EChartOption = {
     color: [...series.map(it => it.color)],
@@ -233,7 +233,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
 
   return (
     <ReactEcharts
-      style={WIDTH_STYLE}
+      style={CHART_WIDTH}
       opts={getWidthOpts(width || 'auto')}
       option={options}
       ref={ref}

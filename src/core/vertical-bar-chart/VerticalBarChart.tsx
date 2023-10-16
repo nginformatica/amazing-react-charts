@@ -9,7 +9,7 @@ import {
   LabelProps,
   OptionsProps,
   ZoomProps
-} from './types'
+} from '../types'
 import {
   formatTime,
   formatTooltip,
@@ -22,10 +22,10 @@ import {
   getWidthOpts,
   getDateFormatType,
   getInitialValues
-} from '../lib/auxiliarFunctions'
-import { WIDTH_STYLE } from '../lib/constants'
+} from '../../lib/auxiliarFunctions'
+import { CHART_WIDTH } from '../../commonStyles'
 
-interface IProps extends IDefaultChartProps {
+export interface IProps extends IDefaultChartProps {
   rotateTickLabel?: number
   customMaxDomain?: number
   interval?: number
@@ -219,6 +219,7 @@ const VerticalBarChart = (props: IProps) => {
       }
     }
   }
+  
   const formatSingleTooltip = (
     chartValues: { axisValueLabel: string, value: number }[]
   ) => {
@@ -356,7 +357,7 @@ const VerticalBarChart = (props: IProps) => {
     <ReactEcharts
       lazyUpdate
       notMerge
-      style={WIDTH_STYLE}
+      style={CHART_WIDTH}
       opts={getWidthOpts(width || 'auto')}
       onEvents={events}
       option={options}

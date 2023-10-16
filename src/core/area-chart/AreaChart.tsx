@@ -11,28 +11,15 @@ import {
   timeConvert,
   takeLabelComplement,
   getDateFormatType
-} from '../lib/auxiliarFunctions'
+} from '../../lib/auxiliarFunctions'
 import {
   IDefaultChartProps,
   TDataZoomChartProps,
   DataZoomEventProps,
   EntryData,
   ZoomProps
-} from './types'
-
-const STYLES = { width: '99.9%', height: 300 }
-
-export const TOOLBOX_DEFAULT_PROPS = {
-  showTitle: false,
-  right: '9.52%',
-  tooltip: {
-    show: true,
-    backgroundColor: 'grey',
-    textStyle: {
-      fontSize: 12
-    }
-  }
-}
+} from '../types'
+import { CHART_HEIGHT, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
 
 const AreaChart = (props: IDefaultChartProps) => {
   const {
@@ -57,8 +44,12 @@ const AreaChart = (props: IDefaultChartProps) => {
   } = props
 
   const markLine = lineMarkValue && data.map(() => lineMarkValue)
+
   const yData = data.map((item: EntryData) => item.result)
+
   const xData = data.map((item: EntryData) => item.label)
+
+  const WIDTH_OPTS = { width: width || 'auto' }  
 
   const formatLabel = (chartValues: { data: number }) => {
     const { data } = chartValues
@@ -125,7 +116,10 @@ const AreaChart = (props: IDefaultChartProps) => {
     }
   }
 
+  const zoomEvent = { dataZoom: dinamicData }
+
   const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
+
   const tooltipLabelFormat = dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
 
   const scrollable: ZoomProps[] =
@@ -159,13 +153,11 @@ const AreaChart = (props: IDefaultChartProps) => {
           formatter: (item: number | string | {data: number}) => {
             if(typeof yComplement === 'function' && typeof item === 'object') {
               return yComplement(item.data)
-            } 
-              
+            }               
             
             typeof yComplement === 'function' 
               ? yComplement 
-              : formatLabel
-    
+              : formatLabel    
           },
           show: true,
           position: 'top',
@@ -260,7 +252,7 @@ const AreaChart = (props: IDefaultChartProps) => {
       textStyle: {
         fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
         fontSize: 16,
-        fontWeight: '400' as const
+        fontWeight: 400 as const
       }
     },
     tooltip: tooltipProps && {
@@ -272,15 +264,12 @@ const AreaChart = (props: IDefaultChartProps) => {
     toolbox
   }
 
-  const widthOpts = { width: width || 'auto' }
-  const zoomEvent = { dataZoom: dinamicData }
-
   return (
     <ReactEcharts
       lazyUpdate
       notMerge
-      style={STYLES}
-      opts={widthOpts}
+      style={CHART_HEIGHT}
+      opts={WIDTH_OPTS}
       onEvents={zoomEvent}
       option={options}
     />

@@ -7,7 +7,7 @@ import {
   EntryWithStyleData,
   LabelProps,
   ParamsTooltip,
-} from './types'
+} from '../types'
 import {
   getDataView,
   getDomain,
@@ -20,15 +20,21 @@ import {
   convertImageToBase64FromUrl,
   changeSpaceForUnderline,
   formatLabelWithImage,
-} from '../lib/auxiliarFunctions'
+} from '../../lib/auxiliarFunctions'
 import { reverse } from 'ramda'
-import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
-import { WIDTH_STYLE } from '../lib/constants'
+import { CHART_WIDTH, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
 
-interface IProps extends IDefaultChartProps {
+export interface IProps extends IDefaultChartProps {
   showTickInfos?: boolean;
   xComplement?: string;
   boldTickLabel?: boolean;
+}
+
+export const clickBar = (item: { data: { value: string } }) => {
+  if (item && 'data' in item && 'value' in item.data) {
+    const value = item.data.value
+    window.alert(value)
+  }
 }
 
 const HorizontalBarChart = (props: IProps) => {
@@ -53,7 +59,10 @@ const HorizontalBarChart = (props: IProps) => {
   } = props
 
   const [title, setTitle] = useState(false)
+
   const [richData, setRichDate] = useState([])
+
+  const clickEvent = { click: onClickBar }
 
   useEffect(() => {
     if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
@@ -125,6 +134,7 @@ const HorizontalBarChart = (props: IProps) => {
   const yData = reverse(data.map((item: EntryData) => item.label))
   
   const domain = { min: 0, max: Math.max(...data.map((item) => item.result)) }
+
   const backgroundBar = data.map(() =>
     xComplement === '%' ? 100 : getDomain(domain)
   )
@@ -210,7 +220,7 @@ const HorizontalBarChart = (props: IProps) => {
           formatter: formatLabel,
           position: 'insideRight',
           fontSize: showTickInfos ? 14 : 11,
-          fontWeight: '400' as const,
+          fontWeight: 400 as const,
           color: 'black',
           show: true,
         },
@@ -256,7 +266,7 @@ const HorizontalBarChart = (props: IProps) => {
             : truncateLabel(text, labelWordSize),
         max: 10,
         margin: 12,
-        fontWeight: boldTickLabel ? ('400' as const) : undefined,
+        fontWeight: boldTickLabel ? (400 as const) : undefined,
         rich: Object.assign({}, ...richData),
       },
       axisTick: {
@@ -279,7 +289,7 @@ const HorizontalBarChart = (props: IProps) => {
       textStyle: {
         fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
         fontSize: titleFontSize || 16,
-        fontWeight: '400' as const,
+        fontWeight: 400 as const,
       },
     },
     tooltip: tooltipProps && {
@@ -296,11 +306,9 @@ const HorizontalBarChart = (props: IProps) => {
     toolbox,
   }
 
-  const clickEvent = { click: onClickBar }
-
   return (
     <ReactEcharts
-      style={WIDTH_STYLE}
+      style={CHART_WIDTH}
       opts={getWidthOpts(width || 'auto')}
       onEvents={clickEvent}
       option={options}

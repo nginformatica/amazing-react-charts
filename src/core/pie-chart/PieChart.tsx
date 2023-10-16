@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import ReactEcharts from 'echarts-for-react'
 import {
   IDefaultChartProps,
   PieChartData,
   PieDataLabel,
-} from './types'
-import ReactEcharts from 'echarts-for-react'
+} from '../types'
 import { map, sum } from 'ramda'
 import {
   getDataView,
@@ -13,9 +13,8 @@ import {
   getSaveAsImageWithTitle,
   getPercentage,
   getWidthOpts
-} from '../lib/auxiliarFunctions'
-import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
-import { WIDTH_STYLE } from '../lib/constants'
+} from '../../lib/auxiliarFunctions'
+import { CHART_WIDTH, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: PieChartData[]
@@ -50,9 +49,11 @@ export const PieChart = (props: IProps) => {
     tooltipTitle
   } = props
 
-  const names = map(item => item.name, data)
-  const totalValues = sum(map(item => item.value, data))
   const [title, setTitle] = useState(false)
+
+  const names = map(item => item.name, data)
+
+  const totalValues = sum(map(item => item.value, data))  
 
   useEffect(() => {
     if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
@@ -86,7 +87,6 @@ export const PieChart = (props: IProps) => {
         getDataView(toolboxTooltip.dataView)
     }
   }
-
 
   const formatTooltip = ({ name, value, marker }: PieChartData) => {
     const title = tooltipTitle ? tooltipTitle + '<br>' : ''
@@ -143,15 +143,13 @@ export const PieChart = (props: IProps) => {
       itemGap: legendType === 'scroll' ? 60 : 10
     },
     title: {
-      left: resultFormatType ? '0.1%' : '6.2%',
-      top: resultFormatType && '5.7%',
       show: title,
       text: titleProps,
       textAlign: 'left',
       textStyle: {
         fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
         fontSize: 16,
-        fontWeight: '400' as const
+        fontWeight: 400 as const
       }
     },
     itemStyle: {
@@ -162,7 +160,7 @@ export const PieChart = (props: IProps) => {
 
   return (
     <ReactEcharts
-      style={WIDTH_STYLE}
+      style={CHART_WIDTH}
       opts={getWidthOpts(width || 'auto')}
       option={options}
     />

@@ -10,7 +10,7 @@ import {
   toDate,
   takeLabelComplement,
   getWidthOpts
-} from '../lib/auxiliarFunctions'
+} from '../../lib/auxiliarFunctions'
 import {
   IDefaultChartProps,
   DataTooltip,
@@ -20,12 +20,11 @@ import {
   OptionsProps,
   TooltipEntryProps,
   ZoomProps
-} from './types'
+} from '../types'
 import { take } from 'ramda'
+import { CHART_HEIGHT } from '../../commonStyles'
 
-const STYLES = { width: '99.9%', height: 300 }
-
-interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
+export interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
   tooltip: {
     current: TooltipEntryProps
     forecast: TooltipEntryProps
@@ -59,6 +58,7 @@ const ForecastAreaChart = (props: IProps) => {
   } = props
 
   const yData = data.map((item: EntryData) => item.result)
+  
   const xData = data.map((item: EntryData) =>
     toDate(item.label, 'yyyy-MM-dd HH:mm').toString()
   )
@@ -97,6 +97,8 @@ const ForecastAreaChart = (props: IProps) => {
       charts.setOption({ series: [{ label: { show: false } }] })
     }
   }
+
+  const zoomEvent = { dataZoom: dinamicData }
 
   const formatSingleTooltip = (
     chartValues: { axisValueLabel: string, data: number }[]
@@ -301,13 +303,11 @@ const ForecastAreaChart = (props: IProps) => {
     toolbox
   }
 
-  const zoomEvent = { dataZoom: dinamicData }
-
   return (
     <ReactEcharts
       lazyUpdate
       notMerge
-      style={STYLES}
+      style={CHART_HEIGHT}
       opts={getWidthOpts(width || 'auto')}
       onEvents={zoomEvent}
       option={options}

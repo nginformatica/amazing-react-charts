@@ -1,7 +1,7 @@
-import React, { CSSProperties, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { IProps } from './PieChart'
-import { PieChartData, PieDataLabel } from './types'
+import { IProps } from '../pie-chart/PieChart'
+import { PieChartData, PieDataLabel } from '../types'
 import {
   getDataView,
   getSaveAsImage,
@@ -10,25 +10,20 @@ import {
   thousandSeparator,
   getPercentage,
   getWidthOpts
-} from '../lib/auxiliarFunctions'
+} from '../../lib/auxiliarFunctions'
 import { map, sum } from 'ramda'
-import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
+import {
+  ChartTitle,
+  ChartWrapper,
+  MIN_WIDTH,
+  TOOLBOX_DEFAULT_PROPS
+} from '../../commonStyles'
 
-interface IDonutProps extends IProps {
+export interface IDonutProps extends IProps {
   donutCenterValue?: string
   donutRadius: [string, string]
   centerPieValueFontSize?: number
   selectedMode?: boolean
-}
-
-const titleStyle: CSSProperties = {
-  position: 'absolute',
-  top: 5,
-  margin: 0,
-  fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-  fontSize: 16,
-  fontWeight: 400,
-  color: 'black'
 }
 
 export const DonutChart = (props: IDonutProps) => {
@@ -88,6 +83,7 @@ export const DonutChart = (props: IDonutProps) => {
   }
 
   const xData = map(item => item.name, data)
+
   const totalValues = sum(map(item => item.value, data))
 
   const formatTooltip = ({ name, value, marker }: PieChartData) => {
@@ -116,7 +112,6 @@ export const DonutChart = (props: IDonutProps) => {
       ? resultFormatType(value)
       : takeDonutChartComplement(value, yComplement)
 
-
   const options = {
     grid: grid,
     color: colors,
@@ -128,7 +123,7 @@ export const DonutChart = (props: IDonutProps) => {
       textStyle: {
         fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
         fontSize: centerPieValueFontSize || 24,
-        fontWeight: '300' as const
+        fontWeight: 300 as const
       }
     },
     toolbox,
@@ -172,17 +167,19 @@ export const DonutChart = (props: IDonutProps) => {
     }
   }
 
-  const TitleChart = () =>  <h1 style={titleStyle}>{titleProps}</h1>
-
   return (
-    <div style={{ position: 'relative', width: '100%'}}>
-      {title && <TitleChart />}
+    <ChartWrapper>
+      {title &&
+        <ChartTitle>
+          {titleProps}
+        </ChartTitle>
+      }
       <ReactEcharts
-        style={{ minWidth: '100%' }}
+        style={MIN_WIDTH}
         opts={getWidthOpts(width)}
         option={options}
       />
-    </div>
+    </ChartWrapper>
   )
 }
 

@@ -5,14 +5,14 @@ import {
   Coordinates,
   OptionsProps,
   WidthProps 
-} from './types'
+} from '../types'
 import { map } from 'ramda'
 import {
   getSaveAsImageWithTitle, 
   getSaveAsImage, 
   getDataView
-} from '../lib/auxiliarFunctions'
-import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
+} from '../../lib/auxiliarFunctions'
+import { TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
   coordinates: [Coordinates[], Coordinates[], Coordinates[]]
@@ -59,7 +59,10 @@ const CoordinateLineChart = (props: IProps) => {
   } = props
 
   const [title, setTitle] = useState(false)
+  
   const [ref, pre, pos] = coordinates
+
+  const WIDTH_STYLE = getWidthStyle(width, height)
 
   useEffect(() => {
     if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
@@ -183,10 +186,8 @@ const CoordinateLineChart = (props: IProps) => {
     toolbox
   }
 
-  const widthStyle = getWidthStyle(width, height)
-
   return (
-    <ReactEcharts style={widthStyle} option={options} />
+    <ReactEcharts style={WIDTH_STYLE} option={options} />
   )
 }
 

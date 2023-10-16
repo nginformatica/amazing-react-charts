@@ -7,15 +7,17 @@ import {
   LineStyleType,
   OptionsProps,
   TSimpleLegend
-} from './types'
+} from '../types'
 import { filter, map, zipWith } from 'ramda'
 import {
   getDataView,
   getSaveAsImageWithTitle,
-  getSaveAsImage
-} from '../lib/auxiliarFunctions'
-import { TOOLBOX_DEFAULT_PROPS } from './AreaChart'
-interface IProps extends Omit<IDefaultChartProps, 'data'> {
+  getSaveAsImage,
+  getWidthOpts
+} from '../../lib/auxiliarFunctions'
+import { TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
+
+export interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: TAudiometryDataEntry[][]
   height?: number
   lineType?: LineStyleType
@@ -58,6 +60,8 @@ const AudiometryChart = (props: IProps) => {
     legendItemHeight,
     formatTooltip
   } = props
+
+  const CHART_STYLE = { width: '99.9%', height: height || 400 }
 
   useEffect(() => {
     if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
@@ -272,13 +276,10 @@ const AudiometryChart = (props: IProps) => {
     tooltip
   }
 
-  const style = { width: '99.9%', height: height || 400 }
-  const widthOpts = { width: width || 'auto' }
-
   return (
     <ReactEcharts
-      style={style}
-      opts={widthOpts}
+      style={CHART_STYLE}
+      opts={getWidthOpts(width || 'auto')}
       option={options}
     />
   )

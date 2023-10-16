@@ -1,11 +1,11 @@
+import React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { EChartOption } from 'echarts/lib/echarts'
-import React from 'react'
-import { getWidthOpts, takeLabelComplement } from '../lib/auxiliarFunctions'
-import { WidthProps } from './types'
-import { WIDTH_STYLE } from '../lib/constants'
+import { getWidthOpts, takeLabelComplement } from '../../lib/auxiliarFunctions'
+import { WidthProps } from '../types'
+import { CHART_WIDTH } from '../../commonStyles'
 
-interface RadarChartProps {
+export interface RadarChartProps {
   series: Array<{
     name: string
     color: string
@@ -23,7 +23,6 @@ interface RadarChartProps {
 
 const RadarChart = (props: RadarChartProps) => {
   const { width, series, indicators, yComplement, circular, highlight } = props
-
   
   const formatTooltip = (
     lines: { 
@@ -83,7 +82,7 @@ const RadarChart = (props: RadarChartProps) => {
 
   return (
     <ReactEcharts
-      style={WIDTH_STYLE}
+      style={CHART_WIDTH}
       opts={getWidthOpts(width || 'auto')}
       option={options}
     />

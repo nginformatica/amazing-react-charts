@@ -11,7 +11,7 @@ import {
   ParamsTooltip,
   Complement,
   Tooltip
-} from './types'
+} from '../types'
 import {
   formatTime,
   getDataView,
@@ -24,17 +24,17 @@ import {
   takeLabelComplement,
   generateAuxMessage,
   getWidthOpts,
-} from '../lib/auxiliarFunctions'
+} from '../../lib/auxiliarFunctions'
 import {
   dontShowLabel,
   fullText,
   normalLabel,
   rotatedLabel
-} from './VerticalBarChart'
+} from '../vertical-bar-chart/VerticalBarChart'
 import { concat, move } from 'ramda'
-import { WIDTH_STYLE } from '../lib/constants'
+import { CHART_WIDTH } from '../../commonStyles'
 
-interface IProps extends Omit<IDefaultChartProps, 'data'> {
+export interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: EntryDataNTuples
   tooltipExtra?: string
   sumDataValues?: boolean
@@ -88,8 +88,11 @@ const StackedBarChart = (props: IProps) => {
     auxData = [], 
     ...additionalData
   ] = data
+
   const yBottomData = bottomData.map(verifyStyleProps)
+
   const yTopData = topData.map(verifyStyleProps)
+
   const yExtraData =
     data.length >= 4 && extraData.map((item: EntryData) => item.result)
 
@@ -111,6 +114,7 @@ const StackedBarChart = (props: IProps) => {
   }
 
   const yLineData = lineData.map((item: EntryData) => item.result)
+
   const xData =
     xType === 'time'
       ? bottomData.map((item: EntryData) => toDate(item.label, dateFormat))
@@ -134,6 +138,8 @@ const StackedBarChart = (props: IProps) => {
       charts.setOption(dontShowLabel)
     }
   }
+
+  const zoomEvent = { dataZoom: dynamicDataZoom }
 
   const formatTooltip = (values: ParamsTooltip[]): string => {
     const takeValue = (data: { value: number | string } | string | number) =>
@@ -398,7 +404,7 @@ const StackedBarChart = (props: IProps) => {
       textStyle: {
         fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
         fontSize: 16,
-        fontWeight: '400' as const
+        fontWeight: 400 as const
       }
     },
     tooltip: tooltipProps && {
@@ -409,12 +415,10 @@ const StackedBarChart = (props: IProps) => {
     toolbox
   }
 
-  const zoomEvent = { dataZoom: dynamicDataZoom }
-
   return (
     <ReactEcharts
       notMerge
-      style={WIDTH_STYLE}
+      style={CHART_WIDTH}
       opts={getWidthOpts(width || 'auto')}
       onEvents={zoomEvent}
       option={options}

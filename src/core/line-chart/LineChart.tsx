@@ -5,7 +5,7 @@ import {
   EntryData,
   EntryDataLine,
   ZoomProps
-} from './types'
+} from '../types'
 import {
   formatTime,
   getDataView,
@@ -15,10 +15,10 @@ import {
   getWidthOpts,
   takeLabelComplement,
   timeConvert
-} from '../lib/auxiliarFunctions'
-import { WIDTH_STYLE } from '../lib/constants'
+} from '../../lib/auxiliarFunctions'
+import { CHART_WIDTH } from '../../commonStyles'
 
-interface IProps extends Omit<IDefaultChartProps, 'data'> {
+export interface IProps extends Omit<IDefaultChartProps, 'data'> {
   data: EntryDataLine[]
   colors?: string[]
   showLabel?: boolean
@@ -53,7 +53,9 @@ const LineChart = (props: IProps) => {
   } = props
 
   const yData = data[0].values.map(item => item.result)
+
   const xData = data[0].values.map(item => item.label)
+
   const names = data.map(item => item.name)
   
   const formatLabel = (chartValues: { data: number }) => {
@@ -95,6 +97,7 @@ const LineChart = (props: IProps) => {
   }))
 
   const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
+  
   const tooltipLabelFormat = dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
 
   const scrollable: ZoomProps[] =
@@ -228,7 +231,7 @@ const LineChart = (props: IProps) => {
       textStyle: {
         fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
         fontSize: 16,
-        fontWeight: '400' as const
+        fontWeight: 400 as const
       }
     },
     dataZoom: scrollable,
@@ -239,7 +242,7 @@ const LineChart = (props: IProps) => {
     <ReactCharts
       lazyUpdate
       notMerge
-      style={WIDTH_STYLE}
+      style={CHART_WIDTH}
       opts={getWidthOpts(width || 'auto')}
       option={options}
     />
