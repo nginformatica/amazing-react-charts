@@ -8,24 +8,20 @@
   "repository": "git@github.com:nginformatica//amazing-react-charts.git",
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
-  "resolutions": {
-    "remark-mdx": "1.6.22"
-  },
   "scripts": {
     "start": "sb dev -p 6006",
-    "prepare": "install-peers",
-    "build:ts": "yarn tsc --emitDeclarationOnly",
-    "pre-build": "rm -Rf node_modules package-lock.json .docz/ dist/",
-    "build": "yarn pre-build && yarn && yarn build:ts && yarn build:babel",
-    "build:babel": "babel src --out-dir dist --extensions \".ts,.tsx\"",
-    "serve": "docz build && docz serve",
     "type-check": "tsc --noEmit",
-    "pre-publish": "yarn lint --fix && yarn type-check",
-    "docz:build": "docz build",
+    "build": "yarn pre:build && yarn build:ts && yarn build:babel && yarn",
+    "build:ts": "yarn tsc --emitDeclarationOnly",
+    "build:babel": "babel src --out-dir dist --extensions '.ts,.tsx'",
+    "pre-build": "rm -rf ./dist && mkdir ./dist && yarn postinstall:off && cp package.json ./dist && yarn postinstall:on",
+    "format": "prettier -w 'src/**/*.{ts,tsx}'",
     "lint": "eslint -c .eslintrc.yaml 'src/**/*.ts?(x)'",
-    "lint:quiet": "eslint --quiet .eslintrc.yaml 'src/**/*.{ts,tsx}'",
     "lint:fix": "eslint -c .eslintrc.yaml 'src/**/*.{ts,tsx}'",
-    "prepack": "yarn build",
+    "lint:quiet": "eslint --quiet .eslintrc.yaml 'src/**/*.{ts,tsx}'",
+    "pre-publish": "yarn lint --fix && yarn type-check",
+    "postinstall:off": "pinst --disable",
+    "postinstall:on": "pinst --enable",
     "build-storybook": "storybook build"
   },
   "dependencies": {
@@ -50,8 +46,8 @@
     "@types/echarts": "4.9.19",
     "@types/ramda": "0.29.6",
     "@types/react": "18.2.28",
-    "@typescript-eslint/eslint-plugin": "6.7.5",
-    "@typescript-eslint/parser": "6.7.5",
+    "@typescript-eslint/eslint-plugin": "6.8.0",
+    "@typescript-eslint/parser": "6.8.0",
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-imports": "2.0.0",
     "docz": "2.3.1",
@@ -60,12 +56,13 @@
     "eslint-plugin-react": "7.33.2",
     "eslint-plugin-storybook": "0.6.15",
     "install-peers-cli": "2.2.0",
+    "pinst": "3.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "storybook": "7.4.6",
     "styled-components": "6.1.0",
     "typescript": "5.2.2",
-    "webpack": "5.88.2"
+    "webpack": "5.89.0"
   },
   "peerDependencies": {
     "react": "18.2.0"
