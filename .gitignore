@@ -2,7 +2,6 @@
 /lib
 /.docz
 /build
-docs
 yarn-error.log
 *.tgz
 /public
