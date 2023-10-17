@@ -14,6 +14,7 @@
         "types": ["node"]
     },
     "include": [
-        "./src/**/*"
+        "./src/**/*",
+        "./src/core/disableControls.ts"
     ]
 }
