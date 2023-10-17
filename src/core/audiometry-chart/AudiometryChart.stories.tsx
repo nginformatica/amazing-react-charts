@@ -1,8 +1,14 @@
 import React from 'react'
+import { Meta } from '@storybook/react'
+import { IDefaultChartProps } from '../types'
 import AudiometryChart from './AudiometryChart'
+import { argTypesDisableAudiometry } from '../disableControls'
 
-export const audiometryChartWithSolidLine = () => (
+export const audiometryChartWithSolidLine = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <AudiometryChart
+        {...args}
         title='Audiometry Chart With Solid Line'
         toolboxTooltip={{ saveAsImageWithTitle: 'save as image' }}
         symbolsSize={16}
@@ -54,8 +60,11 @@ export const audiometryChartWithSolidLine = () => (
     />
 )
 
-export const audiometryChartWithDashedLine = () => (
+export const audiometryChartWithDashedLine = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <AudiometryChart
+        {...args}
         title='Audiometry Chart With Dashed Line'
         toolboxTooltip={{ saveAsImageWithTitle: 'save as image' }}
         symbolsSize={16}
@@ -118,8 +127,11 @@ export const audiometryChartWithDashedLine = () => (
     />
 )
 
-export const audiometryChartWithConcurrentLines = () => (
+export const audiometryChartWithConcurrentLines = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <AudiometryChart
+        {...args}
         tooltipMarker
         legendsPosition='bottom'
         legendGap={7}
@@ -227,5 +239,6 @@ export const audiometryChartWithConcurrentLines = () => (
 
 export default {
     title: 'Charts/Audiometry Chart',
-    component: AudiometryChart
-}
+    component: AudiometryChart,
+    argTypes: { ...argTypesDisableAudiometry }
+} as Meta<typeof AudiometryChart>

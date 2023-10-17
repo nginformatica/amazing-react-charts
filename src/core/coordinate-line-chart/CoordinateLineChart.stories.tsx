@@ -1,8 +1,14 @@
 import React from 'react'
+import { Meta } from '@storybook/react'
+import { IDefaultChartProps } from '../types'
 import CoordinateLineChart from './CoordinateLineChart'
+import { argTypesDisableCoordinate } from '../disableControls'
 
-export const coordinateLineChart = () => (
+export const coordinateLineChart = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <CoordinateLineChart
+        {...args}
         title='Coordinate Line Chart'
         toolboxTooltip={{ saveAsImageWithTitle: 'save as image' }}
         height={400}
@@ -48,8 +54,11 @@ export const coordinateLineChart = () => (
     />
 )
 
-export const coordinateLineChartWithNegativeValuesOnYAxis = () => (
+export const coordinateLineChartWithNegativeValuesOnYAxis = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <CoordinateLineChart
+        {...args}
         title='Coordinate Line Chart'
         toolboxTooltip={{ saveAsImageWithTitle: 'save as image' }}
         height={400}
@@ -100,5 +109,6 @@ export const coordinateLineChartWithNegativeValuesOnYAxis = () => (
 
 export default {
     title: 'Charts/Coordinate Line Chart',
-    component: CoordinateLineChart
-}
+    component: CoordinateLineChart,
+    argTypes: { ...argTypesDisableCoordinate }
+} as Meta<typeof CoordinateLineChart>

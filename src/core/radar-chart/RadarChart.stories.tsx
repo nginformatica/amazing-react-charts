@@ -1,8 +1,14 @@
 import React from 'react'
+import { Meta } from '@storybook/react'
+import { IDefaultChartProps } from '../types'
 import RadarChart from './RadarChart'
+import { argTypesDisableRadar } from '../disableControls'
 
-export const radarChart = () => (
+export const radarChart = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <RadarChart
+        {...args}
         yComplement={value => `R$ ${value},00`}
         series={[
             {
@@ -26,8 +32,11 @@ export const radarChart = () => (
     />
 )
 
-export const radarChartCircular = () => (
+export const radarChartCircular = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <RadarChart
+        {...args}
         circular
         yComplement={value => `R$ ${value},00`}
         series={[
@@ -52,8 +61,11 @@ export const radarChartCircular = () => (
     />
 )
 
-export const radarChartAreaHighlight = () => (
+export const radarChartAreaHighlight = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <RadarChart
+        {...args}
         highlight
         yComplement={value => `R$ ${value},00`}
         series={[
@@ -80,5 +92,6 @@ export const radarChartAreaHighlight = () => (
 
 export default {
     title: 'Charts/Radar Chart',
-    component: RadarChart
-}
+    component: RadarChart,
+    argTypes: { ...argTypesDisableRadar }
+} as Meta<typeof RadarChart>

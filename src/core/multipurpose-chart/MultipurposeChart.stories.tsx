@@ -1,8 +1,14 @@
 import React from 'react'
+import { Meta } from '@storybook/react'
+import { IDefaultChartProps } from '../types'
 import MultipurposeChart from './MultipurposeChart'
+import { argTypesDisableMultipurpose } from '../disableControls'
 
-export const multipurposeChart = () => (
+export const multipurposeChart = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <MultipurposeChart
+        {...args}
         yComplement={value => `R$ ${value},00`}
         series={[
             {
@@ -32,5 +38,6 @@ export const multipurposeChart = () => (
 
 export default {
     title: 'Charts/Multipurpose Chart',
-    component: MultipurposeChart
-}
+    component: MultipurposeChart,
+    argTypes: { ...argTypesDisableMultipurpose }
+} as Meta<typeof MultipurposeChart>

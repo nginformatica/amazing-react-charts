@@ -1,10 +1,16 @@
 import React from 'react'
+import { Meta } from '@storybook/react'
+import { IDefaultChartProps } from '../types'
 import PictorialChart from './PictorialChart'
 import { FullWrapper } from '../../commonStyles'
+import { argTypesDisablePictorial } from '../disableControls'
 
-export const pictorialChart = () => (
+export const pictorialChart = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <FullWrapper>
         <PictorialChart
+            {...args}
             grid={{ bottom: '10%' }}
             height={500}
             color='purple'
@@ -53,5 +59,6 @@ export const pictorialChart = () => (
 
 export default {
     title: 'Charts/Pictorial Chart',
-    component: PictorialChart
-}
+    component: PictorialChart,
+    argTypes: { ...argTypesDisablePictorial }
+} as Meta<typeof PictorialChart>

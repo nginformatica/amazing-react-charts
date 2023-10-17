@@ -1,8 +1,14 @@
 import React from 'react'
+import { Meta } from '@storybook/react'
+import { IDefaultChartProps } from '../types'
 import ForecastAreaChart from './ForecastAreaChart'
+import { argTypesDisableForecast } from '../disableControls'
 
-export const forecastAreaChart = () => (
+export const forecastAreaChart = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <ForecastAreaChart
+        {...args}
         title='Forecast Area Chart'
         tooltip={{
             current: { label: 'Lançamento', result: 'Posição' },
@@ -75,5 +81,6 @@ export const forecastAreaChart = () => (
 
 export default {
     title: 'Charts/Forecast Area Chart',
-    component: ForecastAreaChart
-}
+    component: ForecastAreaChart,
+    argTypes: { ...argTypesDisableForecast }
+} as Meta<typeof ForecastAreaChart>

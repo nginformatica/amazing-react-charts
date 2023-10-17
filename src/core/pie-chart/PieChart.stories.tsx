@@ -1,10 +1,16 @@
 import React from 'react'
+import { Meta } from '@storybook/react'
+import { IDefaultChartProps } from '../types'
 import PieChart from './PieChart'
 import { ChartStorieWrapper } from '../../commonStyles'
+import { argTypesDisablePie } from '../disableControls'
 
-export const pieChart = () => (
+export const pieChart = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <ChartStorieWrapper>
         <PieChart
+            {...args}
             noAnimation
             title='Pie Chart'
             legendPosition='inside'
@@ -25,9 +31,12 @@ export const pieChart = () => (
     </ChartStorieWrapper>
 )
 
-export const pieChartWithScrollableLegend = () => (
+export const pieChartWithScrollableLegend = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <ChartStorieWrapper>
         <PieChart
+            {...args}
             title='Pie Chart With Scrollable Legend'
             legendType='scroll'
             legendPosition='inside'
@@ -51,5 +60,6 @@ export const pieChartWithScrollableLegend = () => (
 
 export default {
     title: 'Charts/Pie Chart',
-    component: PieChart
-}
+    component: PieChart,
+    argTypes: { ...argTypesDisablePie }
+} as Meta<typeof PieChart>

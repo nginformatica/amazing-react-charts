@@ -1,9 +1,15 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
+import { Meta } from '@storybook/react'
+import { IDefaultChartProps } from '../types'
 import VerticalBarChart from './VerticalBarChart'
+import { argTypesDisableVertical } from '../disableControls'
 
-export const verticalBarChart = () => (
+export const verticalBarChart = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <VerticalBarChart
+        {...args}
         showBarLabel
         yComplement='%'
         xType='category'
@@ -112,9 +118,12 @@ export const verticalBarChart = () => (
     />
 )
 
-export const verticalBarChartWithCustomMaxDomain = () => (
+export const verticalBarChartWithCustomMaxDomain = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <VerticalBarChart
         showBarLabel
+        {...args}
         yComplement={value => `R$ ${value},00`}
         xType='category'
         yType='value'
@@ -136,9 +145,12 @@ export const verticalBarChartWithCustomMaxDomain = () => (
     />
 )
 
-export const verticalBarChartWithDateFormat = () => (
+export const verticalBarChartWithDateFormat = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <VerticalBarChart
         showBarLabel
+        {...args}
         title='Vertical Bar Chart With Date Format'
         xType='time'
         yComplement='%'
@@ -156,9 +168,12 @@ export const verticalBarChartWithDateFormat = () => (
     />
 )
 
-export const verticalBarChartWithTimeFormat = () => (
+export const verticalBarChartWithTimeFormat = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <VerticalBarChart
         showBarLabel
+        {...args}
         title='Vertical Bar Chart With Time Format'
         xType='category'
         yType='time'
@@ -184,8 +199,11 @@ export const verticalBarChartWithTimeFormat = () => (
     />
 )
 
-export const verticalBarChartWithYComplement = () => (
+export const verticalBarChartWithYComplement = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <VerticalBarChart
+        {...args}
         title='Vertical Bar Chart With Y Complement'
         yComplement={value =>
             value === 1
@@ -228,5 +246,6 @@ export const verticalBarChartWithYComplement = () => (
 
 export default {
     title: 'Charts/Vertical Bar Chart',
-    component: VerticalBarChart
-}
+    component: VerticalBarChart,
+    argTypes: { ...argTypesDisableVertical }
+} as Meta<typeof VerticalBarChart>

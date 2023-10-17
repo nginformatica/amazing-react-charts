@@ -1,8 +1,14 @@
 import React from 'react'
+import { Meta } from '@storybook/react'
+import { IDefaultChartProps } from '../types'
 import HorizontalBarChart, { clickBar } from './HorizontalBarChart'
+import { argTypesDisableHorizontal } from '../disableControls'
 
-export const horizontalBarChart = () => (
+export const horizontalBarChart = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <HorizontalBarChart
+        {...args}
         boldTickLabel
         showTickInfos
         title='Horizontal Bar Chart'
@@ -35,8 +41,11 @@ export const horizontalBarChart = () => (
     />
 )
 
-export const horizontalBarChartWithRadiusBorder = () => (
+export const horizontalBarChartWithRadiusBorder = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <HorizontalBarChart
+        {...args}
         xComplement='%'
         color='#8BC34A'
         title='Horizontal Bar Chart With Radius Border'
@@ -60,8 +69,11 @@ export const horizontalBarChartWithRadiusBorder = () => (
     />
 )
 
-export const horizontalBarChartWithAvatar = () => (
+export const horizontalBarChartWithAvatar = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <HorizontalBarChart
+        {...args}
         boldTickLabel
         showTickInfos
         title='Horizontal Bar Chart With Avatar'
@@ -99,5 +111,6 @@ export const horizontalBarChartWithAvatar = () => (
 
 export default {
     title: 'Charts/Horizontal Bar Chart',
-    component: HorizontalBarChart
-}
+    component: HorizontalBarChart,
+    argTypes: { ...argTypesDisableHorizontal }
+} as Meta<typeof HorizontalBarChart>

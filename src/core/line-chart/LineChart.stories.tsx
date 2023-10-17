@@ -1,8 +1,14 @@
 import React from 'react'
+import { Meta } from '@storybook/react'
+import { IDefaultChartProps } from '../types'
 import LineChart from './LineChart'
+import { argTypesDisableLine } from '../disableControls'
 
-export const lineChart = () => (
+export const lineChart = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <LineChart
+        {...args}
         showLabel
         title='Line Chart With Concurrent Lines'
         xType='time'
@@ -50,8 +56,11 @@ export const lineChart = () => (
     />
 )
 
-export const lineChartWithDateAndTime = () => (
+export const lineChartWithDateAndTime = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <LineChart
+        {...args}
         showLabel
         title='Line Chart With Date And Time'
         xType='time'
@@ -87,5 +96,6 @@ export const lineChartWithDateAndTime = () => (
 
 export default {
     title: 'Charts/Line Chart',
-    component: LineChart
-}
+    component: LineChart,
+    argTypes: { ...argTypesDisableLine }
+} as Meta<typeof LineChart>

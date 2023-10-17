@@ -1,8 +1,14 @@
 import React from 'react'
+import { Meta } from '@storybook/react'
+import { IDefaultChartProps } from '../types'
 import AreaChart from './AreaChart'
+import { argTypesDisableArea } from '../disableControls'
 
-export const areaChart = () => (
+export const areaChart = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <AreaChart
+        {...args}
         color='#3e2723'
         xType='time'
         lineMarkValue={3}
@@ -32,8 +38,11 @@ export const areaChart = () => (
     />
 )
 
-export const areaChartWithTime = () => (
+export const areaChartWithTime = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <AreaChart
+        {...args}
         color='#74007c'
         xType='time'
         yType='time'
@@ -54,8 +63,11 @@ export const areaChartWithTime = () => (
     />
 )
 
-export const areaChartWithDate = () => (
+export const areaChartWithDate = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <AreaChart
+        {...args}
         xType='time'
         title='Area Chart With Date'
         toolboxTooltip={{ saveAsImage: 'saving' }}
@@ -121,8 +133,11 @@ export const areaChartWithDate = () => (
     />
 )
 
-export const areaChartWithDateAndTime = () => (
+export const areaChartWithDateAndTime = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <AreaChart
+        {...args}
         xType='time'
         dateFormat='MMM/dd HH:mm'
         title='Area Chart With Date And Time'
@@ -140,5 +155,6 @@ export const areaChartWithDateAndTime = () => (
 
 export default {
     title: 'Charts/Area Chart',
-    component: AreaChart
-}
+    component: AreaChart,
+    argTypes: { ...argTypesDisableArea }
+} as Meta<typeof AreaChart>

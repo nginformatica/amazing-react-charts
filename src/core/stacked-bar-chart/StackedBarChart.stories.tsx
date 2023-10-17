@@ -1,8 +1,14 @@
 import React from 'react'
+import { Meta } from '@storybook/react'
+import { IDefaultChartProps } from '../types'
 import StackedBarChart from './StackedBarChart'
+import { argTypesDisableStacked } from '../disableControls'
 
-export const stackedBarChartWithTwoBars = () => (
+export const stackedBarChartWithTwoBars = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <StackedBarChart
+        {...args}
         xType='time'
         yComplement={value => `R$ ${value},00`}
         title='Stacked Bar Chart With Two Bars'
@@ -43,8 +49,11 @@ export const stackedBarChartWithTwoBars = () => (
     />
 )
 
-export const stackedBarChartWithThreeBars = () => (
+export const stackedBarChartWithThreeBars = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <StackedBarChart
+        {...args}
         xType='time'
         yComplement={value => `R$ ${value},00`}
         title='Stacked Bar Chart With Three Bars'
@@ -94,8 +103,11 @@ export const stackedBarChartWithThreeBars = () => (
     />
 )
 
-export const stackedBarChartWithThreeBarsAndAuxResultTooltip = () => (
+export const stackedBarChartWithThreeBarsAndAuxResultTooltip = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <StackedBarChart
+        {...args}
         xType='time'
         yComplement={value => `R$ ${value},00`}
         title='Stacked Bar Chart With Two Bars And auxResult Tooltip'
@@ -156,5 +168,6 @@ export const stackedBarChartWithThreeBarsAndAuxResultTooltip = () => (
 
 export default {
     title: 'Charts/Stacked Bar Chart',
-    component: StackedBarChart
-}
+    component: StackedBarChart,
+    argTypes: { ...argTypesDisableStacked }
+} as Meta<typeof StackedBarChart>

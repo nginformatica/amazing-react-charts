@@ -1,8 +1,14 @@
 import React from 'react'
 import DonutChart from './DonutChart'
+import { IDefaultChartProps } from '../types'
+import { Meta } from '@storybook/react'
+import { argTypesDisableDonut } from '../disableControls'
 
-export const donutChart = () => (
+export const donutChart = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <DonutChart
+        {...args}
         colors={['red', 'orange', 'yellow', 'green']}
         legendPosition='outside'
         resultFormatType='percent'
@@ -23,8 +29,11 @@ export const donutChart = () => (
     />
 )
 
-export const donutChartWithInsideLegend = () => (
+export const donutChartWithInsideLegend = (
+    args: React.JSX.IntrinsicAttributes & IDefaultChartProps
+) => (
     <DonutChart
+        {...args}
         selectedMode
         colors={['blue', 'green']}
         legendPosition='inside'
@@ -45,5 +54,6 @@ export const donutChartWithInsideLegend = () => (
 
 export default {
     title: 'Charts/Donut Chart',
-    component: DonutChart
-}
+    component: DonutChart,
+    argTypes: { ...argTypesDisableDonut }
+} as Meta<typeof DonutChart>
