@@ -64,14 +64,12 @@
     "webpack": "5.89.0"
   },
   "peerDependencies": {
-    "react": "18.2.0"
+    "react": "17.0.1"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
+    "extends": ["plugin:storybook/recommended"]
   }
 }
