@@ -3,7 +3,9 @@ public/
 .idea/
 docs/
 .eslintignore
-.eslintrc.json
+.eslintrc.yaml
+.prettierignore
+.prettierrc.yaml
 tsconfig.json
 yarn.lock
 yarn-error.log
