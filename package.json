@@ -13,19 +13,23 @@
   },
   "scripts": {
     "start": "sb dev -p 6006",
+    "clean": "rm -rf ./dist/*",
+    "copy:package": "cp package.json dist/",
+    "publish:yalc": "cd dist/ && yalc publish && cd ..",
+    "build": "yarn clean && yarn build:ts && yarn build:babel",
+    "build:link": "yarn build && yarn copy:package && yarn publish:yalc",
+    "build:ts": "tsc --emitDeclarationOnly",
+    "build:babel": "babel src --out-dir dist --extensions '.ts,.tsx' --ignore '**/*.stories.tsx'",
     "type-check": "tsc --noEmit",
-    "build": "yarn pre:build && yarn build:ts && yarn build:babel && yarn",
-    "build:ts": "yarn tsc --emitDeclarationOnly",
-    "build:babel": "babel src --out-dir dist --extensions '.ts,.tsx'",
-    "pre-build": "rm -rf ./dist && mkdir ./dist && yarn postinstall:off && cp package.json ./dist && yarn postinstall:on",
     "format": "prettier -w 'src/**/*.{ts,tsx}'",
     "lint": "eslint -c .eslintrc.yaml 'src/**/*.{ts,tsx}'",
-    "lint:fix": "eslint -c .eslintrc.yaml 'src/**/*.{ts,tsx}' --fix",
+    "lint:fix": "eslint -c .eslintrc.yaml --fix 'src/**/*.{ts,tsx}'",
     "lint:quiet": "eslint --quiet .eslintrc.yaml 'src/**/*.{ts,tsx}'",
+    "predeploy": "yarn build && yarn storybook:build",
+    "docs:build": "storybook build -o docs",
     "pre-publish": "yarn lint --fix && yarn type-check",
-    "postinstall:off": "pinst --disable",
-    "postinstall:on": "pinst --enable",
-    "build-storybook": "storybook build"
+    "deploy": "gh-pages -d docs",
+    "release": "yarn build && node pre-publish.js && npm publish ./dist --access public"
   },
   "dependencies": {
     "date-fns": "2.30.0",
@@ -57,7 +61,6 @@
     "eslint-plugin-import": "2.28.1",
     "eslint-plugin-react": "7.33.2",
     "eslint-plugin-storybook": "0.6.15",
-    "pinst": "3.0.0",
     "prettier": "3.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -67,12 +70,15 @@
     "webpack": "5.89.0"
   },
   "peerDependencies": {
-    "react": "17.0.1"
+    "react": "17.0.1",
+    "styled-components": "5.0.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "eslintConfig": {
-    "extends": ["plugin:storybook/recommended"]
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   }
 }
