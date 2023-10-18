@@ -20,7 +20,7 @@ export const TOOLBOX_DEFAULT_PROPS = {
 }
 
 export const CHART_TITLE: CSSProperties = {
-    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     top: 5,
     margin: 0,
     fontSize: 16,
@@ -39,13 +39,13 @@ export const ChartStorieWrapper = styled.div`
 `
 
 export const ChartWrapper = styled.div`
-    width: 50%;
+    width: 100%;
     margin: 0 auto;
     position: relative;
 `
 
 export const ChartTitle = styled.h1`
-    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
     color: black;
     top: 5;
     margin: 0px;
