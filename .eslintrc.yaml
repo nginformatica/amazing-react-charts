@@ -2,6 +2,8 @@ extends:
   - eslint:recommended
   - plugin:@typescript-eslint/recommended
   - plugin:react/recommended
+  - plugin:prettier/recommended
+  - prettier
 
 parser: '@typescript-eslint/parser'
 
@@ -18,8 +20,10 @@ rules:
   react/display-name: off
   no-unneeded-ternary: error
   no-nested-ternary: error
+  no-undef: off
   '@typescript-eslint/explicit-module-boundary-types': off
   '@typescript-eslint/ban-ts-comment': off
+  '@typescript-eslint/no-var-requires': off
 
 settings:
   react:
