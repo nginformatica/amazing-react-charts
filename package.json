@@ -8,6 +8,9 @@
   "repository": "git@github.com:nginformatica//amazing-react-charts.git",
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
+  "resolutions": {
+    "jackspeak": "2.1.1"
+  },
   "scripts": {
     "start": "sb dev -p 6006",
     "type-check": "tsc --noEmit",
