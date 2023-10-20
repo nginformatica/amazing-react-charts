@@ -12,15 +12,19 @@ export const TOOLBOX_DEFAULT_PROPS = {
     right: '9.52%',
     tooltip: {
         show: true,
-        backgroundColor: 'grey',
+        backgroundColor: '#00000099',
+        extraCssText: 'border: none; padding: 6px;',
+        opacity: 0.8,
         textStyle: {
-            fontSize: 12
+            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+            fontSize: 12,
+            color: 'white'
         }
     }
 }
 
 export const CHART_TITLE: CSSProperties = {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
     top: 5,
     margin: 0,
     fontSize: 16,
