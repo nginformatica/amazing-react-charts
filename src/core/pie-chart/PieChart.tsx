@@ -116,7 +116,13 @@ export const PieChart = (props: IProps) => {
         tooltip: {
             trigger: 'item' as const,
             formatter: formatTooltip,
-            textStyle: { fontSize: 11.5 }
+            backgroundColor: '#2B2B2B99',
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: 11.5,
+                color: 'white'
+            },
+            extraCssText: 'border: none; padding: 6px;'
         },
         series: [
             {
@@ -126,12 +132,20 @@ export const PieChart = (props: IProps) => {
                     formatter: formatPieLabel,
                     show: true,
                     position: legendPosition || 'outside',
-                    color: labelFontColor || 'white'
+                    textStyle: {
+                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                        fontWeight: 400 as const,
+                        color: labelFontColor || 'white'
+                    }
                 },
                 type: 'pie',
                 data: data,
                 radius: radius || '50%',
-                center: center || ['50%', '50%']
+                center: center || ['50%', '50%'],
+                itemStyle: {
+                    borderColor: pieceBorderColor || 'white',
+                    borderWidth: 1
+                }
             }
         ],
         legend: {
@@ -139,7 +153,12 @@ export const PieChart = (props: IProps) => {
             icon: 'shape',
             top: 270,
             type: legendType || 'plain',
-            itemGap: legendType === 'scroll' ? 60 : 10
+            itemGap: legendType === 'scroll' ? 60 : 10,
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: 400 as const,
+                color: 'black'
+            }
         },
         title: {
             show: title,
@@ -148,11 +167,9 @@ export const PieChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const
+                fontWeight: 400 as const,
+                color: 'black'
             }
-        },
-        itemStyle: {
-            borderColor: pieceBorderColor || 'white'
         },
         toolbox
     }
