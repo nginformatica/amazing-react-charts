@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { EChartOption } from 'echarts/lib/echarts'
+import { EChartsOption } from 'echarts'
 import { getWidthOpts, takeLabelComplement } from '../../lib/auxiliarFunctions'
 import { WidthProps } from '../types'
 import { CHART_WIDTH } from '../../commonStyles'
@@ -57,17 +57,30 @@ const RadarChart = (props: RadarChartProps) => {
           }
         : {}
 
-    const options: EChartOption = {
+    const options: EChartsOption = {
         color: series.map(it => it.color),
         tooltip: {
             formatter: formatTooltip,
-            trigger: 'item'
+            trigger: 'item' as const,
+            backgroundColor: '#00000099',
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: 13,
+                color: 'white'
+            },
+            extraCssText: 'border: none; padding: 6px;'
         },
         legend: {
-            data: series.map(it => it.name)
+            data: series.map(it => it.name),
+            padding: 0,
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: 400 as const,
+                color: 'black'
+            }
         },
         radar: {
-            shape: circular && 'circle',
+            shape: circular ? 'circle' : 'polygon',
             indicator: indicators.map(it => ({
                 name: it.name,
                 max: it.max
