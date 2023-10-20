@@ -22,7 +22,7 @@ import {
     ZoomProps
 } from '../types'
 import { take } from 'ramda'
-import { CHART_HEIGHT } from '../../commonStyles'
+import { CHART_HEIGHT, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
     tooltip: {
@@ -124,6 +124,7 @@ const ForecastAreaChart = (props: IProps) => {
     }
 
     const toolbox = toolboxTooltip && {
+        ...TOOLBOX_DEFAULT_PROPS,
         showTitle: false,
         right: '9.52%',
         feature: {
@@ -132,13 +133,6 @@ const ForecastAreaChart = (props: IProps) => {
                 getSaveAsImage(toolboxTooltip.saveAsImage),
             dataView:
                 toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
-        },
-        tooltip: {
-            show: true,
-            backgroundColor: 'grey',
-            textStyle: {
-                fontSize: 12
-            }
         }
     }
 
@@ -164,7 +158,7 @@ const ForecastAreaChart = (props: IProps) => {
               ]
             : []
 
-    const options: OptionsProps = {
+    const options = {
         series: [
             {
                 type: 'line',
@@ -177,8 +171,12 @@ const ForecastAreaChart = (props: IProps) => {
                             : formatLabel,
                     show: true,
                     position: 'top',
-                    fontSize: yType === 'time' ? 10 : 11.5,
-                    color: 'black',
+                    textStyle: {
+                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                        fontSize: yType === 'time' ? 10 : 11.5,
+                        fontWeight: 400 as const,
+                        color: 'black'
+                    },
                     distance: 1.1
                 },
                 lineStyle: {
@@ -196,7 +194,8 @@ const ForecastAreaChart = (props: IProps) => {
                     symbol: '',
                     label: {
                         formatter: forecastChartLegends.lineMark,
-                        show: true
+                        show: true,
+                        color: lineMarkColor || 'black'
                     },
                     animation: false,
                     data: [
@@ -230,8 +229,12 @@ const ForecastAreaChart = (props: IProps) => {
                             : formatLabel,
                     show: false,
                     position: 'top',
-                    fontSize: yType === 'time' ? 10 : 11.5,
-                    color: 'black',
+                    textStyle: {
+                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                        fontSize: yType === 'time' ? 10 : 11.5,
+                        fontWeight: 400 as const,
+                        color: 'black'
+                    },
                     distance: 1.1
                 },
                 lineStyle: {
@@ -253,15 +256,20 @@ const ForecastAreaChart = (props: IProps) => {
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dotted',
-                    opacity: 0.8
+                    type: 'dashed' as const,
+                    opacity: 0.2,
+                    color: 'gray'
                 }
             },
             axisLabel: {
                 formatter: (item: string) =>
                     xType === 'time' ? formatTime(item, 'dd MMM') : item,
                 rotate: rotateLabel || 0,
-                fontSize: fontLabelSize || 11.5
+                textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontSize: fontLabelSize || 11.5,
+                    color: 'black'
+                }
             }
         },
         yAxis: {
@@ -270,8 +278,9 @@ const ForecastAreaChart = (props: IProps) => {
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dotted',
-                    opacity: 0.8
+                    type: 'dashed' as const,
+                    opacity: 0.2,
+                    color: 'gray'
                 }
             },
             axisLabel: {
@@ -283,15 +292,34 @@ const ForecastAreaChart = (props: IProps) => {
                               Number(item.toFixed(2)),
                               yComplement
                           ),
-                fontSize: fontLabelSize || 11.5
+                textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontSize: fontLabelSize || 11.5,
+                    color: 'black'
+                }
+            },
+            axisTick: {
+                show: true,
+                alignWithLabel: true
+            },
+            axisLine: {
+                show: true,
+                onZero: true,
+                lineStyle: {
+                    color: 'black'
+                }
             }
         },
-        grid: { ...(gridProps || { bottom: 60 }), show: true },
+        grid: { ...(gridProps || { bottom: 75 }), show: true },
         legend: {
-            top: 30,
+            top: 20,
             selectedMode: false,
             data: [forecastChartLegends.current, forecastChartLegends.forecast],
-            itemGap: 30
+            itemGap: 30,
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                color: 'black'
+            }
         },
         dataZoom: scrollable,
         title: {
@@ -302,13 +330,20 @@ const ForecastAreaChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const
+                fontWeight: 400 as const,
+                color: 'black'
             }
         },
         tooltip: tooltipProps && {
             formatter: formatSingleTooltip,
             trigger: 'axis' as const,
-            textStyle: { fontSize: 11.5 }
+            backgroundColor: '#00000099',
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: 11.5,
+                color: 'white'
+            },
+            extraCssText: 'border: none; padding: 6px;'
         },
         toolbox
     }
