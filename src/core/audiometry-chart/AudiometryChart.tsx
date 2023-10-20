@@ -155,7 +155,13 @@ const AudiometryChart = (props: IProps) => {
     const tooltip = {
         formatter: formatTooltip ?? defaultToolip,
         trigger: 'axis' as const,
-        textStyle: { fontSize: 11.5 }
+        backgroundColor: '#00000099',
+        textStyle: {
+            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+            fontSize: 11.5,
+            color: 'white'
+        },
+        extraCssText: 'border: none; padding: 6px;'
     }
 
     // The mark color is always be the fist value on array
@@ -195,12 +201,24 @@ const AudiometryChart = (props: IProps) => {
                   itemGap: legendGap || 5,
                   padding: legendPadding || 4,
                   itemWidth: legendItemWidth || 25,
-                  itemHeight: legendItemHeight || 14
+                  itemHeight: legendItemHeight || 14,
+                  textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    color: 'black',
+                    fontSize: 11.5
+                }
               }
             : {
                   top: 30,
                   data: legends,
-                  itemGap: 30
+                  itemGap: 30,
+                  textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    color: 'black',
+                    fontSize: 11.5
+                }
               }
 
     const dataWithNames = [...marksWithTypes, ...seriesData].map(
@@ -219,9 +237,13 @@ const AudiometryChart = (props: IProps) => {
             boundaryGap: true,
             data: X_FIXED_DATA,
             type: 'category',
+            axisLabel: {
+                textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
+                }
+            },
             splitLine: {
                 show: true,
-            // @ts-ignore https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
                 lineStyle: {
                     type: 'solid',
@@ -236,6 +258,7 @@ const AudiometryChart = (props: IProps) => {
                 }
             },
             axisTick: {
+                show: true,
                 alignWithLabel: true
             }
         },
@@ -246,6 +269,11 @@ const AudiometryChart = (props: IProps) => {
             interval: 10,
             inverse: true,
             type: 'value',
+            axisLabel: {
+                textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
+                }
+            },
             splitLine: {
                 show: true,
                 lineStyle: {
@@ -255,9 +283,11 @@ const AudiometryChart = (props: IProps) => {
                 }
             },
             axisTick: {
+                show: true,
                 alignWithLabel: true
             },
             axisLine: {
+                show: true,
                 onZero: true,
                 lineStyle: {
                     color: color || 'red'
