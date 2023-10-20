@@ -16,7 +16,7 @@ import {
     takeLabelComplement,
     timeConvert
 } from '../../lib/auxiliarFunctions'
-import { CHART_WIDTH } from '../../commonStyles'
+import { CHART_WIDTH, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: EntryDataLine[]
@@ -27,6 +27,8 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     noTooltip?: boolean
     axisNames?: { x: string; y: string }
 }
+
+const STRAIGHT_LINE = 'path://M0 0H25H50V2H25H0V0Z'
 
 const takeYdata = (entryData: EntryData[]) => entryData.map(item => item.result)
 
@@ -114,7 +116,7 @@ const LineChart = (props: IProps) => {
                       zoomOnMouseWheel: 'shift'
                   },
                   {
-                      bottom: 0,
+                      bottom: 10,
                       show: true,
                       type: 'slider' as const,
                       start: getInitialValues(
@@ -159,6 +161,7 @@ const LineChart = (props: IProps) => {
     }
 
     const toolbox = toolboxTooltip && {
+        ...TOOLBOX_DEFAULT_PROPS,
         showTitle: false,
         right: '9.52%',
         feature: {
@@ -167,13 +170,6 @@ const LineChart = (props: IProps) => {
                 getSaveAsImage(toolboxTooltip.saveAsImage),
             dataView:
                 toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
-        },
-        tooltip: {
-            show: true,
-            backgroundColor: 'grey',
-            textStyle: {
-                fontSize: 12
-            }
         }
     }
 
@@ -188,8 +184,9 @@ const LineChart = (props: IProps) => {
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dotted' as const,
-                    opacity: 0.8
+                    type: 'dashed' as const,
+                    opacity: 0.2,
+                    color: 'gray'
                 }
             },
             axisLabel: {
@@ -202,7 +199,10 @@ const LineChart = (props: IProps) => {
                         : item,
                 rotate: rotateLabel || 0,
                 textStyle: {
-                    fontSize: fontLabelSize || 11.5
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    fontSize: fontLabelSize || 11.5,
+                    color: 'black'
                 }
             }
         },
@@ -212,8 +212,9 @@ const LineChart = (props: IProps) => {
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dotted' as const,
-                    opacity: 0.8
+                    type: 'dashed' as const,
+                    opacity: 0.2,
+                    color: 'gray'
                 }
             },
             axisLabel: {
@@ -223,19 +224,43 @@ const LineChart = (props: IProps) => {
                         ? timeConvert(item) + 'h'
                         : takeLabelComplement(item, yComplement),
                 textStyle: {
-                    fontSize: fontLabelSize || 11.5
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    fontSize: fontLabelSize || 11.5,
+                    color: 'black'
+                }
+            },
+            axisTick: {
+                show: true,
+                alignWithLabel: true
+            },
+            axisLine: {
+                show: true,
+                lineStyle: {
+                    color: 'black'
                 }
             }
         },
-        grid: { ...(gridProps || { bottom: 60 }), show: true },
+        grid: { ...(gridProps || { bottom: 75 }), show: true },
         legend: {
             data: names,
-            icon: 'line'
+            icon: STRAIGHT_LINE,
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: 400 as const,
+                color: 'black'
+            }
         },
         tooltip: !noTooltip && {
             formatter: formatTooltip,
             trigger: 'axis' as const,
-            textStyle: { fontSize: 11.5 }
+            backgroundColor: '#00000099',
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: 11.5,
+                color: 'white'
+            },
+            extraCssText: 'border: none; padding: 6px;'
         },
         title: {
             left: '6.2%',
@@ -245,7 +270,8 @@ const LineChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const
+                fontWeight: 400 as const,
+                color: 'black'
             }
         },
         dataZoom: scrollable,
