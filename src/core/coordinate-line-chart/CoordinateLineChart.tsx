@@ -30,6 +30,8 @@ const DASHED_ICON =
     '1000 l0 -40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40zm, M1440 1000 l0 ' +
     '-40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40z'
 
+const STRAIGHT_LINE = 'path://M0 0H25H50V2H25H0V0Z'
+
 const getPadding = (rangeValues?: number) =>
     rangeValues ? [150, 0, 0, 0] : [20, 0, 0, 0]
 
@@ -135,17 +137,43 @@ const CoordinateLineChart = (props: IProps) => {
         yAxis: {
             type: 'value',
             name: coordinateNames.y,
+            nameTextStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                color: 'black',
+            },
             nameGap: 10,
             min: -yRangeValues || 0,
             max: yRangeValues || 8,
-            interval: 2
+            interval: 2,
+            axisTick: {
+                show: true
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    type: 'solid' as const,
+                    opacity: 0.5,
+                    color: 'gray'
+                }
+            },
+            axisLabel: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                color: 'black'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'black'
+                }
+            }
         },
         xAxis: {
             type: 'value',
             name: coordinateNames.x,
             nameTextStyle: {
                 verticalAlign: yRangeValues ? 'top' : 'end',
-                padding: getPadding(yRangeValues)
+                padding: getPadding(yRangeValues),
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                color: 'black'
             },
             nameGap: -56,
             min: 0,
@@ -153,6 +181,23 @@ const CoordinateLineChart = (props: IProps) => {
             interval: 2,
             axisTick: {
                 show: false
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    type: 'solid' as const,
+                    opacity: 0.5,
+                    color: 'gray'
+                }
+            },
+            axisLabel: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                color: 'black'
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'black'
+                }
             }
         },
         legend: {
@@ -162,11 +207,14 @@ const CoordinateLineChart = (props: IProps) => {
                     name: legendNames[0] || '',
                     icon: DASHED_ICON
                 },
-                { name: legendNames[1] || '' },
-                { name: legendNames[2] || '' }
+                { name: legendNames[1] || '', icon: STRAIGHT_LINE },
+                { name: legendNames[2] || '', icon: STRAIGHT_LINE }
             ],
-            icon: 'line',
-            itemGap: 30
+            itemGap: 30,
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                color: 'black'
+            }
         },
         title: {
             left: '6.2%',
@@ -176,7 +224,8 @@ const CoordinateLineChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const
+                fontWeight: 400 as const,
+                color: 'black'
             }
         },
         grid: {
