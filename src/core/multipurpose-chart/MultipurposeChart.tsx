@@ -121,10 +121,22 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             trigger: 'axis',
             axisPointer: {
                 type: 'shadow'
-            }
+            },
+            backgroundColor: '#00000099',
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: 13,
+                color: 'white'
+            },
+            extraCssText: 'border: none; padding: 6px;'
         },
         legend: {
-            data: series.map(it => it.name)
+            data: series.map(it => it.name),
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: 400 as const,
+                color: 'black'
+            }
         },
         toolbox: {
             show: true,
@@ -149,16 +161,49 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
                         tile: 'Lado a lado'
                     }
                 },
-                saveAsImage: { show: true, title: 'Salvar como imagem' }
+                saveAsImage: { show: true, title: 'Salvar como imagem' },
+                textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const
+                }
             }
         },
         xAxis: {
             type: yType || 'category',
+            data: xData,
             axisTick: { show: false },
-            data: xData
+            axisLabel: {
+                textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    color: 'black'
+                }
+            }
         },
         yAxis: {
-            type: xType || 'value'
+            type: xType || 'value',
+            axisTick: { show: true },
+            axisLabel: {
+                textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    color: 'black'
+                }
+            },
+            axisLine: {
+                show: true,
+                lineStyle: {
+                    color: 'black'
+                }
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    type: 'solid' as const,
+                    opacity: 0.3,
+                    color: 'gray'
+                }
+            }
         },
         series: [
             ...series.map(it => ({
