@@ -21,6 +21,8 @@ import {
 } from '../types'
 import { CHART_HEIGHT, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
 
+const STRAIGHT_LINE = 'path://M0 0H25H50V2H25H0V0Z'
+
 const AreaChart = (props: IDefaultChartProps) => {
     const {
         data,
@@ -140,7 +142,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                       zoomOnMouseWheel: 'shift'
                   },
                   {
-                      bottom: 0,
+                      bottom: 10,
                       show: true,
                       type: 'slider' as const,
                       start: getInitialValues(
@@ -175,8 +177,11 @@ const AreaChart = (props: IDefaultChartProps) => {
                     },
                     show: true,
                     position: 'top',
-                    fontSize: yType === 'time' ? 10 : 11.5,
-                    color: 'black',
+                    textStyle: {
+                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                        fontSize: yType === 'time' ? 10 : 11.5,
+                        color: 'black'
+                    },
                     distance: 1.1
                 },
                 lineStyle: {
@@ -210,8 +215,9 @@ const AreaChart = (props: IDefaultChartProps) => {
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dotted' as const,
-                    opacity: 0.8
+                    type: 'dashed' as const,
+                    opacity: 0.2,
+                    color: 'gray'
                 }
             },
             axisLabel: {
@@ -220,10 +226,10 @@ const AreaChart = (props: IDefaultChartProps) => {
                         ? formatTime(item, getDateFormatType(dateFormat))
                         : item,
                 rotate: rotateLabel || 0,
-                rich: {
-                    textStyle: {
-                        fontSize: fontLabelSize || 11.5
-                    }
+                textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontSize: fontLabelSize || 11.5,
+                    color: 'black'
                 }
             }
         },
@@ -233,8 +239,9 @@ const AreaChart = (props: IDefaultChartProps) => {
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dotted' as const,
-                    opacity: 0.8
+                    type: 'dashed' as const,
+                    opacity: 0.2,
+                    color: 'gray'
                 }
             },
             axisLabel: {
@@ -244,19 +251,25 @@ const AreaChart = (props: IDefaultChartProps) => {
                         ? timeConvert(item) + 'h'
                         : takeLabelComplement(item, yComplement),
                 textStyle: {
-                    fontSize: fontLabelSize || 11.5
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontSize: fontLabelSize || 11.5,
+                    color: 'black'
                 }
             }
         },
         color: [lineMarkColor],
-        grid: { ...(gridProps || { bottom: 60 }), show: true },
+        grid: { ...(gridProps || { bottom: 75 }), show: true },
         legend: {
             x: 'center',
             y: 'bottom',
-            icon: 'line',
+            icon: STRAIGHT_LINE,
             top: 30,
             data: [lineMakeName],
-            itemGap: 30
+            itemGap: 30,
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                color: 'black'
+            }
         },
         title: {
             left: '6.2%',
@@ -266,13 +279,20 @@ const AreaChart = (props: IDefaultChartProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const
+                fontWeight: 400 as const,
+                color: 'black'
             }
         },
         tooltip: tooltipProps && {
             formatter: formatSingleTooltip,
             trigger: 'axis' as const,
-            textStyle: { fontSize: 11.5 }
+            backgroundColor: '#00000099',
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: 11.5,
+                color: 'white'
+            },
+            extraCssText: 'border: none; padding: 6px;'
         },
         dataZoom: scrollable,
         toolbox
