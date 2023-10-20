@@ -23,7 +23,7 @@ import {
     getDateFormatType,
     getInitialValues
 } from '../../lib/auxiliarFunctions'
-import { CHART_WIDTH } from '../../commonStyles'
+import { CHART_WIDTH, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
 
 export interface IProps extends IDefaultChartProps {
     rotateTickLabel?: number
@@ -201,6 +201,7 @@ const VerticalBarChart = (props: IProps) => {
     }
 
     const toolbox = toolboxTooltip && {
+        ...TOOLBOX_DEFAULT_PROPS,
         showTitle: false,
         right: marginRightToolbox || '8.7%',
         feature: {
@@ -209,13 +210,6 @@ const VerticalBarChart = (props: IProps) => {
                 getSaveAsImage(toolboxTooltip.saveAsImage),
             dataView:
                 toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
-        },
-        tooltip: {
-            show: true,
-            backgroundColor: 'grey',
-            textStyle: {
-                fontSize: 12
-            }
         }
     }
 
@@ -289,9 +283,13 @@ const VerticalBarChart = (props: IProps) => {
                     formatter: formatLabel,
                     show: showBarLabel,
                     position: 'insideTop',
-                    fontSize: 12,
-                    color: 'black',
-                    distance: 6
+                    distance: 6,
+                    textStyle: {
+                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                        fontWeight: 400 as const,
+                        fontSize: 12,
+                        color: 'black'
+                    }
                 }
             }
         ],
@@ -302,12 +300,12 @@ const VerticalBarChart = (props: IProps) => {
             data: xData as string[],
             splitLine: {
                 show: true,
+                alignWithLabel: true,
                 lineStyle: {
-                    type: 'dotted',
-                    opacity: 0.8
-                },
-            // @ts-ignore https://github.com/apache/incubator-echarts/issues/13618
-                alignWithLabel: true
+                    type: 'dashed' as const,
+                    opacity: 0.2,
+                    color: 'gray'
+                }
             },
             axisLabel: {
                 rotate: rotateLabel && rotateLabel,
@@ -319,7 +317,12 @@ const VerticalBarChart = (props: IProps) => {
                           )
                         : specialLabel(item),
                 interval: 0,
-                fontSize: 11
+                textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    fontSize: 11,
+                    color: 'black'
+                }
             },
             axisTick: {
                 show: true,
@@ -335,8 +338,9 @@ const VerticalBarChart = (props: IProps) => {
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dotted',
-                    opacity: 0.8
+                    type: 'dashed' as const,
+                    opacity: 0.2,
+                    color: 'gray'
                 }
             },
             axisLabel: {
@@ -344,7 +348,19 @@ const VerticalBarChart = (props: IProps) => {
                     yType === 'time'
                         ? timeConvert(item) + 'h'
                         : takeLabelComplement(item, yComplement),
-                fontSize: 11
+                textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    fontSize: 11,
+                    color: 'black'
+                }
+            },
+            axisLine: {
+                show: true
+            },
+            axisTick: {
+                show: true,
+                alignWithLabel: true
             }
         },
         title: {
@@ -355,13 +371,20 @@ const VerticalBarChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: titleFontSize || 16,
-                fontWeight: 400 as const
+                fontWeight: 400 as const,
+                color: 'black'
             }
         },
         tooltip: tooltipProps && {
             formatter: formatSingleTooltip,
             trigger: 'axis',
-            textStyle: { fontSize: 11 }
+            backgroundColor: '#00000099',
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: 11.5,
+                color: 'white'
+            },
+            extraCssText: 'border: none; padding: 6px;'
         },
         dataZoom: scrollable,
         toolbox
