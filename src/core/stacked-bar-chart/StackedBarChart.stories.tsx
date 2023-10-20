@@ -23,6 +23,7 @@ export const stackedBarChartWithTwoBars = {
                 label: 'Período',
                 topResult: 'Preventivas',
                 bottomResult: 'Corretivas',
+                extraResult: '0',
                 lineResult: 'Total'
             }}
             data={[
