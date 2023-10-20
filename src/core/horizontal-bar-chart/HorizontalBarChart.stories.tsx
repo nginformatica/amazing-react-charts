@@ -104,7 +104,7 @@ export const horizontalBarChartWithAvatar = {
                     image: 'https://picsum.photos/id/2/200/200'
                 },
                 {
-                    label: 'Jonh Doe',
+                    label: 'John Doe',
                     result: 94,
                     style: { color: 'OrangeRed' },
                     itemId: 'c',
