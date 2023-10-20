@@ -224,12 +224,16 @@ const StackedBarChart = (props: IProps) => {
                   max: 100,
                   position: 'right' as const,
                   axisLine: {
+                      show: true,
                       lineStyle: { color: colors[2] }
                   },
                   axisLabel: {
                       formatter: (item: string) =>
                           takeLabelComplement(Number(item), '%'),
                       color: colors[2]
+                  },
+                  axisTick: {
+                      show: true
                   },
                   splitLine: {
                       show: false
@@ -324,7 +328,13 @@ const StackedBarChart = (props: IProps) => {
                   ],
                   top: 270,
                   type: legendType,
-                  itemGap: legendScrollGap || 60
+                  itemGap: legendScrollGap || 60,
+                  textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    color: 'black',
+                    fontSize: 11.5
+                }
               }
             : {
                   top: 30,
@@ -335,7 +345,13 @@ const StackedBarChart = (props: IProps) => {
                       lineResult,
                       ...additionalResultsMap
                   ],
-                  itemGap: 30
+                  itemGap: 30,
+                  textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    color: 'black',
+                    fontSize: 11.5
+                }
               }
 
     const options = {
@@ -384,13 +400,21 @@ const StackedBarChart = (props: IProps) => {
                     xType === 'time'
                         ? formatTime(item, 'MMM/yy')
                         : truncateLabel(item),
-                fontSize: xData.length > 14 ? 10 : 11.5,
+                textStyle: {
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontSize: xData.length > 14 ? 10 : 11.5,
+                    fontWeight: 400 as const,
+                    color: 'black'
+                },
                 interval: xData.length > 20 ? () => 'auto' : 0
             },
             splitLine: {
-            // @ts-ignore https://github.com/apache/incubator-echarts/issues/13618
+                show: true,
                 alignWithLabel: true,
-                show: true
+                lineStyle: {
+                    opacity: 0.3,
+                    color: 'gray'
+                }
             },
             axisTick: {
                 show: true,
@@ -405,10 +429,24 @@ const StackedBarChart = (props: IProps) => {
                 axisLabel: {
                     formatter: (item: string) =>
                         takeLabelComplement(Number(item), yComplement),
-                    fontSize: 11.5
+                    textStyle: {
+                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                        fontWeight: 400 as const,
+                        color: 'black',
+                        fontSize: 11.5
+                    }
+                },
+                axisTick: { show: true, alignWithLabel: true },
+                axisLine: {
+                    show: true
                 },
                 splitLine: {
-                    show: true
+                    show: true,
+                    alignWithLabel: true,
+                    lineStyle: {
+                        opacity: 0.3,
+                        color: 'gray'
+                    }
                 }
             },
             secondYAxis
@@ -424,13 +462,20 @@ const StackedBarChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const
+                fontWeight: 400 as const,
+                color: 'black'
             }
         },
         tooltip: tooltipProps && {
             formatter: formatTooltip,
-            textStyle: { fontSize: 11.5 },
-            trigger: 'axis' as const
+            trigger: 'axis' as const,
+            backgroundColor: '#00000099',
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: 11.5,
+                color: 'white'
+            },
+            extraCssText: 'border: none; padding: 6px;'
         },
         toolbox
     }
