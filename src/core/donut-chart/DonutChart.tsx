@@ -127,21 +127,33 @@ export const DonutChart = (props: IDonutProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: centerPieValueFontSize || 24,
-                fontWeight: 300 as const
+                fontWeight: 400 as const,
+                color: 'black'
             }
         },
         toolbox,
         tooltip: {
             trigger: 'item' as const,
             formatter: formatTooltip,
-            textStyle: { fontSize: 11.5 }
+            backgroundColor: '#00000099',
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: 11.5,
+                color: 'white'
+            },
+            extraCssText: 'border: none; padding: 6px;'
         },
         legend: {
             selectedMode: selectedMode || false,
             orient: 'horizontal' as const,
             top: 270,
             data: xData,
-            icon: 'shape'
+            icon: 'shape',
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: 400 as const,
+                color: 'black'
+            }
         },
         series: [
             {
@@ -149,20 +161,27 @@ export const DonutChart = (props: IDonutProps) => {
                 type: 'pie',
                 radius: donutRadius,
                 data: data,
-                animation: false,
+                animation: true,
                 center: center || ['50%', '50%'],
                 label: {
                     position: legendPosition || 'outside',
-                    color: labelFontColor || 'black',
                     formatter: (item: PieDataLabel) =>
                         yComplement || resultFormatType
                             ? formatDonutLabel(item.data.value)
                             : item.data.value,
-                    distanceToLabelLine: 0
+                    distanceToLabelLine: 0,
+                    textStyle: {
+                        color: labelFontColor || 'black',
+                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                        fontWeight: 400 as const
+                    }
                 },
                 labelLine: {
-                    length: 4,
-                    length2: 4
+                    length: 10,
+                    length2: 8
+                },
+                itemStyle: {
+                    borderColor: 'white'
                 }
             }
         ],
