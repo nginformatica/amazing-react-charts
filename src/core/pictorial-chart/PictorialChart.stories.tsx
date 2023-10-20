@@ -17,7 +17,7 @@ export const pictorialChart = {
             <PictorialChart
                 {...args}
                 grid={{ bottom: '10%' }}
-                height={500}
+                height={450}
                 color='purple'
                 title='Pictorial Chart'
                 tooltip={{

@@ -17,8 +17,14 @@ const PictorialChart = (props: IProps) => {
 
     const tooltip = {
         formatter: formatTooltip,
-        textStyle: { fontSize: 11.5 },
-        trigger: 'item' as const
+        trigger: 'item' as const,
+        backgroundColor: '#00000099',
+        textStyle: {
+            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+            fontSize: 11.5,
+            color: 'white'
+        },
+        extraCssText: 'border: none; padding: 6px;'
     }
 
     const options: OptionsProps = {
