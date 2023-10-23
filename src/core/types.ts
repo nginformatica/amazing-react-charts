@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react'
-import { EChartOption } from 'echarts'
+import { EChartsOption } from 'echarts'
 
 export interface IDefaultChartProps {
     data: EntryData[]
@@ -323,7 +323,7 @@ export type AxisProps = {
     inverse?: boolean
 }
 
-export type OptionsProps = EChartOption
+export type OptionsProps = EChartsOption
 
 export type ZoomProps = {
     bottom?: number
