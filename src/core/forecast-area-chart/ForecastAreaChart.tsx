@@ -17,7 +17,6 @@ import {
     TDataZoomChartProps,
     DataZoomEventProps,
     EntryData,
-    OptionsProps,
     TooltipEntryProps,
     ZoomProps
 } from '../types'
