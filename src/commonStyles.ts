@@ -1,6 +1,13 @@
 import { CSSProperties } from 'react'
 import styled from 'styled-components'
 
+export const STRAIGHT_LINE_ICON = 'path://M0 0H25H50V2H25H0V0Z'
+
+export const DASHED_LINE_ICON =
+    'path://M180 1000 l0 -40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40z, M810 ' +
+    '1000 l0 -40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40zm, M1440 1000 l0 ' +
+    '-40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40z'
+
 export const MIN_WIDTH = { minWidth: '100%' }
 
 export const CHART_WIDTH = { width: '99.9%' }
