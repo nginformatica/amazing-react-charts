@@ -9,11 +9,15 @@ import {
     WidthProps
 } from '../core/types'
 
-const DOWNLOAD_ICON =
+export const DOWNLOAD_ICON =
     'path://M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 ' +
     '.67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z'
 
-const iconStyle = {
+export const DATA_VIEW_ICON =
+    'path://M2 20h20v-4H2v4zm2-3h2v2H4v-2zM2 4v4h20V4H2zm4 ' +
+    '3H4V5h2v2zm-4 7h20v-4H2v4zm2-3h2v2H4v-2z'
+
+export const ICON_STYLE = {
     color: '#152849',
     borderColor: '#152849',
     borderWidth: 0.1
@@ -215,21 +219,15 @@ export const getSaveAsImage = (title: string) => ({
     type: 'jpeg',
     show: true,
     icon: DOWNLOAD_ICON,
-    iconStyle,
+    iconStyle: ICON_STYLE,
     excludeComponents: ['toolbox', 'dataZoom']
 })
 
 export const getDataView = (title: string) => ({
     title,
     show: true,
-    icon:
-        'path://M2 20h20v-4H2v4zm2-3h2v2H4v-2zM2 4v4h20V4H2zm4 ' +
-        '3H4V5h2v2zm-4 7h20v-4H2v4zm2-3h2v2H4v-2z',
-    iconStyle: {
-        color: '#152849',
-        borderColor: '#152849',
-        borderWidth: 0.1
-    },
+    icon: DATA_VIEW_ICON,
+    iconStyle: ICON_STYLE,
     buttonColor: '#152849',
     // TODO: pass this labels as a props from the component use.
     lang: [title, 'Voltar', 'Atualizar']
@@ -270,7 +268,7 @@ export const getSaveAsImageWithTitle = (
     title,
     show: true,
     icon: DOWNLOAD_ICON,
-    iconStyle,
+    iconStyle: ICON_STYLE,
     onclick: (
         item: { option: { title: { text: string }[] } },
         chartInfo: { getConnectedDataURL: (opts: ConnectedDataURL) => string }
