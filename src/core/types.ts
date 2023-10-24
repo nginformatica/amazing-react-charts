@@ -1,4 +1,3 @@
-import { CSSProperties } from 'react'
 import { EChartsOption } from 'echarts'
 
 export interface IDefaultChartProps {
@@ -39,9 +38,15 @@ export type Complement =
     | ((value: string | number | { data: number }) => string)
 
 type ToolboxEntryProps = {
-    saveAsImage?: string
-    dataView?: string
-    saveAsImageWithTitle?: string
+    saveAsImage?: {
+        title?: string
+    }
+    dataView?: {
+        title?: string
+    }
+    saveAsImageWithTitle?: {
+        title?: string
+    }
 }
 
 export type Coordinates = {
@@ -80,7 +85,7 @@ export type EntryData = {
 }
 
 export type EntryWithStyleData = {
-    value: number
+    value: number | string
     label?: LabelProps
 }
 
@@ -146,6 +151,14 @@ export type DomainValues = {
 
 export type PieDataLabel = {
     data: PieChartData
+    item: number | string
+    componentType: string
+    componentSubType: string
+    componentIndex: number
+    name: string
+    dataIndex: number
+    value: string | number | Date
+    $vars: string[]
 }
 
 export type TypeChart = 'line' | 'bar' | 'pie' | 'pictorialBar' | 'scatter'
@@ -272,58 +285,26 @@ export type AxisLabelProps = {
     align?: 'left' | 'right' | 'center'
 }
 
-type SplitLineProps = {
-    show?: boolean
-    onZeroAxisIndex?: string
-    alignWithLabel?: boolean
-    lineStyle?: {
-        color?: string | string[]
-        width?: number
-        opacity?: number
-        type?: LineStyleType
-    }
-}
-
 export type PieChartData = {
     name: string
     value: number
     marker?: string
 }
 
-export type AxisProps = {
-    name?: string
-    nameGap?: number
-    type?: ChartType
-    nameTextStyle?: {
-        padding?: number[]
-        verticalAlign?: string
-    }
-    boundaryGap?: boolean
-    data?:
-        | number[]
-        | string[]
-        | Date[]
-        | PieChartData[]
-        | EntryWithStyleData[]
-        | { name: string }[]
-    gridIndex?: number
-    showGrid?: boolean
-    splitLine?: SplitLineProps
-    axisLabel?: AxisLabelProps
-    axisTick?: {
-        show?: boolean
-        alignWithLabel?: boolean
-        interval?: number
-    }
-    min?: number
-    max?: number | string | FormatterType
-    position?: PositionType
-    axisLine?: SplitLineProps
-    interval?: number | string[]
-    inverse?: boolean
+export type PieChartFormatter = {
+    name: string
+    value: number
+    marker?: string
+    axisValueLabel: string
+    data: number
+    seriesName?: string
+    axisValue?: string
+    componentType: string
+    componentSubType: string
+    componentIndex: number
+    dataIndex: number
+    $vars: string[]
 }
-
-export type OptionsProps = EChartsOption
 
 export type ZoomProps = {
     bottom?: number
@@ -336,33 +317,6 @@ export type ZoomProps = {
     zoomOnMouseWheel?: 'ctrl' | 'shift' | boolean
     startValue?: number
     endValue?: number | Date | string
-}
-
-export type LegendProps = {
-    x?: 'center' | 'bottom'
-    y?: 'center' | 'bottom'
-    icon?: 'line' | 'rect' | 'shape'
-    top?: number
-    data: string[] | TSimpleLegend[]
-    itemGap?: number
-    selectedMode?: boolean
-    color?: string[]
-    type?: 'scroll' | 'plain'
-    orient?: 'vertical' | 'horizontal'
-    left?: number | string
-}
-
-export type TooltipProps = {
-    formatter: FormatterType
-    trigger?: 'axis' | 'item'
-    textStyle?: React.CSSProperties
-    axisPointer?: AxisPointerProps
-}
-
-export type AxisPointerProps = {
-    type?: 'cross' | 'none' | 'shadow'
-    label?: CSSProperties
-    shadowStyle?: CSSProperties
 }
 
 export type DataTooltip = {
@@ -378,22 +332,122 @@ export type DataTooltip = {
     seriesIndex?: number
 }
 
-export type ParamsTooltip = {
+export type VerticalBarLabelFormatter = {
+    item: number | string
+    data: number
+    componentType: string
+    componentSubType: string
+    componentIndex: number
     name: string
+    dataIndex: number
+    value: string | number | Date
+    $vars: string[]
+    chartValues: number | string
+}
+
+export type ParamsTooltip = {
+    item: number | string
+    data: number | string
+    componentType: string
+    componentSubType: string
+    componentIndex: number
+    name: string
+    dataIndex: number
+    value: string | number
+    $vars: string[]
+    chartValues: number | string
+}
+
+export type LineChartTooltip = {
+    componentType: string
+    componentSubType: string
+    componentIndex: number
+    name: string
+    seriesName: string
     value: number
-    data?: number | string
-    dataIndex?: number
+    data: {
+        value: (string | number)[]
+    }
+    dataIndex: number
+    $vars: string[]
+}
+
+export type TooltipFormatter = {
+    item: number | string
+    data: number | string
+    componentType: string
+    componentSubType: string
+    componentIndex: number
+    name: string
+    dataIndex: number
+    value: string | number
+    $vars: string[]
+    chartValues: number | string
+    axisValueLabel: string
+}
+
+export type TooltipPictorialFormatter = {
+    data: number | string
+    componentType: string
+    componentSubType: string
+    componentIndex: number
+    name: string
+    dataIndex: number
+    value: string | number
+    $vars: string[]
+    tooltip?: TooltipEntryProps
+    label?: string
+    labelComplement?: string | number
+    result?: string
+    resultComplement?: string | number
 }
 
 export type AudiometryDataTooltip = {
-    data?: {
-        value: number | string
+    data: {
+        value: (string | number)[]
         boneValue: number | string
     }
     seriesName?: string
     axisValue?: string
     marker?: string
+    componentType: string
+    componentSubType: string
+    componentIndex: number
+    name: string
+    value: number
+    dataIndex: number
+    $vars: string[]
 }
+
+export type AreaDataTooltip = {
+    axisValueLabel: string
+    data: number
+    seriesName?: string
+    axisValue?: string
+    marker?: string
+    componentType: string
+    componentSubType: string
+    componentIndex: number
+    name: string
+    value: number
+    dataIndex: number
+    $vars: string[]
+}
+
+export type SeriesLabelFormatter = {
+    item: number | string
+    data: number
+    componentType: string
+    componentSubType: string
+    componentIndex: number
+    name: string
+    dataIndex: number
+    value: string | number | Date
+    $vars: string[]
+    chartValues: number | string
+}
+
+export type EChartSeries = object[]
 
 export type DataZoomEventProps = {
     start: number
@@ -401,12 +455,7 @@ export type DataZoomEventProps = {
 }
 
 export type TDataZoomChartProps = {
-    setOption(option: OptionsProps): void
-}
-
-export type TForecastAreaChartData = {
-    current: EntryData[]
-    forecast: EntryData[]
+    setOption(option: EChartsOption): void
 }
 
 export type TAudiometryDataEntry = {
