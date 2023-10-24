@@ -15,7 +15,7 @@ export const audiometryChartWithSolidLine = {
         <AudiometryChart
             {...args}
             title='Audiometry Chart With Solid Line'
-            toolboxTooltip={{ saveAsImageWithTitle: 'save as image' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             symbolsSize={16}
             colors={['red', 'red']}
             grid={{ left: '10%' }}
@@ -71,7 +71,7 @@ export const audiometryChartWithDashedLine = {
         <AudiometryChart
             {...args}
             title='Audiometry Chart With Dashed Line'
-            toolboxTooltip={{ saveAsImageWithTitle: 'save as image' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             symbolsSize={16}
             color='blue'
             colors={['blue']}

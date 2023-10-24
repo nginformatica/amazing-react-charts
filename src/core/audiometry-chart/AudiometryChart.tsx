@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react'
+import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
 import {
     IDefaultChartProps,
     TAudiometryDataEntry,
     AudiometryDataTooltip,
     LineStyleType,
-    OptionsProps,
-    TSimpleLegend
+    TSimpleLegend,
+    EChartSeries
 } from '../types'
 import { filter, map, zipWith } from 'ramda'
 import {
     getDataView,
-    getSaveAsImageWithTitle,
     getSaveAsImage,
+    getSaveAsImageWithTitle,
     getWidthOpts
 } from '../../lib/auxiliarFunctions'
 import { TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
@@ -75,7 +76,7 @@ const AudiometryChart = (props: IProps) => {
         setTitle(show)
     }
 
-    const defaultToolip = (items: AudiometryDataTooltip[]) => {
+    const defaultTooltip = (items: AudiometryDataTooltip[]) => {
         if (legends) {
             const generateTooltip = map(item => {
                 const marker = tooltipMarker ? item.marker : ''
@@ -132,28 +133,29 @@ const AudiometryChart = (props: IProps) => {
     const myTool = toolboxTooltip &&
         toolboxTooltip.saveAsImageWithTitle && {
             myTool: getSaveAsImageWithTitle(
-                toolboxTooltip.saveAsImageWithTitle,
+                toolboxTooltip.saveAsImageWithTitle.title,
                 handleShowTitle
             )
         }
 
     const saveAsImage = toolboxTooltip &&
         toolboxTooltip.saveAsImage && {
-            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
+            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
         }
 
-    const toolbox = toolboxTooltip && {
+    const toolbox: object = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         feature: {
             ...myTool,
             ...saveAsImage,
             dataView:
-                toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title)
         }
     }
 
     const tooltip = {
-        formatter: formatTooltip ?? defaultToolip,
+        formatter: formatTooltip ?? defaultTooltip,
         trigger: 'axis' as const,
         backgroundColor: '#00000099',
         textStyle: {
@@ -184,7 +186,7 @@ const AudiometryChart = (props: IProps) => {
     )
 
     const seriesData = data.map(item => ({
-        type: 'line' as const,
+        type: 'line',
         data: takeYData(item),
         lineStyle: {
             width: 1,
@@ -203,25 +205,25 @@ const AudiometryChart = (props: IProps) => {
                   itemWidth: legendItemWidth || 25,
                   itemHeight: legendItemHeight || 14,
                   textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    color: 'black',
-                    fontSize: 11.5
-                }
+                      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                      fontWeight: 400,
+                      color: 'black',
+                      fontSize: 11.5
+                  }
               }
             : {
                   top: 30,
                   data: legends,
                   itemGap: 30,
                   textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    color: 'black',
-                    fontSize: 11.5
-                }
+                      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                      fontWeight: 400,
+                      color: 'black',
+                      fontSize: 11.5
+                  }
               }
 
-    const dataWithNames = [...marksWithTypes, ...seriesData].map(
+    const dataWithNames: EChartSeries = [...marksWithTypes, ...seriesData].map(
         (item, index) => ({
             ...item,
             name:
@@ -231,20 +233,20 @@ const AudiometryChart = (props: IProps) => {
         })
     )
 
-    const options: OptionsProps = {
+    const options: EChartsOption = {
         series: dataWithNames,
         xAxis: {
-            boundaryGap: true,
-            data: X_FIXED_DATA,
             type: 'category',
+            data: X_FIXED_DATA,
+            boundaryGap: true,
             axisLabel: {
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
-                }
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
             },
             splitLine: {
-                show: true,
+                // @ts-ignore
+                // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
+                show: true,
                 lineStyle: {
                     type: 'solid',
                     opacity: 0.2,
@@ -263,16 +265,13 @@ const AudiometryChart = (props: IProps) => {
             }
         },
         yAxis: {
-            boundaryGap: true,
+            type: 'value',
             min: 0,
             max: 130,
             interval: 10,
             inverse: true,
-            type: 'value',
             axisLabel: {
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
-                }
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
             },
             splitLine: {
                 show: true,
@@ -283,8 +282,10 @@ const AudiometryChart = (props: IProps) => {
                 }
             },
             axisTick: {
-                show: true,
-                alignWithLabel: true
+                // @ts-ignore
+                // https://github.com/apache/incubator-echarts/issues/13618
+                alignWithLabel: true,
+                show: true
             },
             axisLine: {
                 show: true,
@@ -302,7 +303,7 @@ const AudiometryChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const,
+                fontWeight: 400,
                 color: color || 'red'
             }
         },

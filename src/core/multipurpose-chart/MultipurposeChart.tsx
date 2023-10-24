@@ -1,14 +1,14 @@
 // @ts-nocheck
 import React, { useRef } from 'react'
+import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
-import { EChartOption } from 'echarts/lib/echarts'
 import {
     formatTime,
     getWidthOpts,
     takeLabelComplement,
     timeConvert
 } from '../../lib/auxiliarFunctions'
-import { IDefaultChartProps, WidthProps } from '../types'
+import { IDefaultChartProps, LineChartTooltip, WidthProps } from '../types'
 import { CHART_WIDTH } from '../../commonStyles'
 
 export interface MultipurposeChartProps {
@@ -74,9 +74,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
         }
     }
 
-    const formatTooltip = (
-        lines: { name: string; seriesName: string; value: number }[]
-    ) => {
+    const formatTooltip = (lines: LineChartTooltip[]) => {
         const takeComplement = (value: number) =>
             yType === 'time'
                 ? timeConvert(Number(value)) + 'h'
@@ -113,7 +111,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
           ]
         : []
 
-    const options: EChartOption = {
+    const options: EChartsOption = {
         color: [...series.map(it => it.color)],
         dataZoom: [...slider],
         tooltip: {
@@ -134,7 +132,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             data: series.map(it => it.name),
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: 400 as const,
+                fontWeight: 400,
                 color: 'black'
             }
         },
@@ -158,13 +156,13 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
                         line: 'Gráfico de linha',
                         bar: 'Gráfico de barras',
                         stack: 'Estacar',
-                        tile: 'Lado a lado'
+                        title: 'Lado a lado'
                     }
                 },
                 saveAsImage: { show: true, title: 'Salvar como imagem' },
                 textStyle: {
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const
+                    fontWeight: 400
                 }
             }
         },
@@ -173,22 +171,18 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             data: xData,
             axisTick: { show: false },
             axisLabel: {
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    color: 'black'
-                }
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: 400,
+                color: 'black'
             }
         },
         yAxis: {
             type: xType || 'value',
             axisTick: { show: true },
             axisLabel: {
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    color: 'black'
-                }
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: 400,
+                color: 'black'
             },
             axisLine: {
                 show: true,
@@ -199,7 +193,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'solid' as const,
+                    type: 'solid',
                     opacity: 0.3,
                     color: 'gray'
                 }
@@ -230,7 +224,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
                 actualGraph.current = e.currentType
             }
 
-            const newOptions: EChartOption = { ...actualOptions }
+            const newOptions = { ...actualOptions }
             newOptions.toolbox = options.toolbox
             const isVertical =
                 actualGraph.current === 'bar' && !isStacked.current

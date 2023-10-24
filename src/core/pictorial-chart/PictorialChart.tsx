@@ -1,6 +1,11 @@
 import * as React from 'react'
+import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
-import { IDefaultChartProps, OptionsProps, PictorialEntryData } from '../types'
+import {
+    IDefaultChartProps,
+    PictorialEntryData,
+    TooltipPictorialFormatter
+} from '../types'
 import { pictorialChart } from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
@@ -9,7 +14,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
 }
 
 const PictorialChart = (props: IProps) => {
-    const formatTooltip = () =>
+    const formatTooltip = (props: TooltipPictorialFormatter) =>
         `${props.tooltip.label}: ${props.tooltip.labelComplement} <br>` +
         (props.tooltip.result
             ? `${props.tooltip.result}: ${props.tooltip.resultComplement}`
@@ -27,7 +32,7 @@ const PictorialChart = (props: IProps) => {
         extraCssText: 'border: none; padding: 6px;'
     }
 
-    const options: OptionsProps = {
+    const options: EChartsOption = {
         series: [
             {
                 name: 'full',

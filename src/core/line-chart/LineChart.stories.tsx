@@ -17,7 +17,7 @@ export const lineChart = {
             showLabel
             title='Line Chart With Concurrent Lines'
             xType='time'
-            toolboxTooltip={{ saveAsImage: 'saving' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             dateFormat='yyyy-MM'
             colors={['red', 'green', 'blue']}
             data={[
@@ -69,7 +69,7 @@ export const lineChartWithDateAndTime = {
             showLabel
             title='Line Chart With Date And Time'
             xType='time'
-            toolboxTooltip={{ saveAsImage: 'saving' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             dateFormat='MMM/dd HH:mm'
             colors={['red', 'green', 'blue']}
             data={[

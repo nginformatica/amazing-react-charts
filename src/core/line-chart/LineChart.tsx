@@ -1,10 +1,12 @@
 import * as React from 'react'
+import { EChartsOption } from 'echarts'
 import ReactCharts from 'echarts-for-react'
 import {
     IDefaultChartProps,
     EntryData,
     EntryDataLine,
-    ZoomProps
+    ZoomProps,
+    LineChartTooltip
 } from '../types'
 import {
     formatTime,
@@ -16,7 +18,11 @@ import {
     takeLabelComplement,
     timeConvert
 } from '../../lib/auxiliarFunctions'
-import { CHART_WIDTH, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
+import {
+    CHART_WIDTH,
+    STRAIGHT_LINE_ICON,
+    TOOLBOX_DEFAULT_PROPS
+} from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: EntryDataLine[]
@@ -27,8 +33,6 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     noTooltip?: boolean
     axisNames?: { x: string; y: string }
 }
-
-const STRAIGHT_LINE = 'path://M0 0H25H50V2H25H0V0Z'
 
 const takeYdata = (entryData: EntryData[]) => entryData.map(item => item.result)
 
@@ -67,14 +71,14 @@ const LineChart = (props: IProps) => {
             : takeLabelComplement(Number(data), yComplement)
     }
 
-    const series = data.map(item => ({
+    const series: object = data.map(item => ({
+        type: 'line',
         name: item.name,
-        type: 'line' as const,
         data: takeYdata(item.values),
         showSymbol: !disableMarks,
         lineStyle: {
             width: 1.5,
-            type: item.name === 'ref' ? ('dashed' as const) : undefined
+            type: item.name === 'ref' ? 'dashed' : undefined
         },
         smooth: smooth,
         label: {
@@ -105,7 +109,7 @@ const LineChart = (props: IProps) => {
         xData.length > arrayInitialSize
             ? [
                   {
-                      type: 'inside' as const,
+                      type: 'inside',
                       start: getInitialValues(
                           xData.length,
                           dateFormat,
@@ -118,7 +122,7 @@ const LineChart = (props: IProps) => {
                   {
                       bottom: 10,
                       show: true,
-                      type: 'slider' as const,
+                      type: 'slider',
                       start: getInitialValues(
                           xData.length,
                           dateFormat,
@@ -131,9 +135,7 @@ const LineChart = (props: IProps) => {
               ]
             : []
 
-    const formatTooltip = (
-        lines: { name: string; seriesName: string; value: number }[]
-    ) => {
+    const formatTooltip = (lines: LineChartTooltip[]) => {
         const takeComplement = (value: number) =>
             yType === 'time'
                 ? timeConvert(Number(value)) + 'h'
@@ -160,31 +162,31 @@ const LineChart = (props: IProps) => {
         return `${tooltipTitle} <br> ${linesTooltips.join(' ')}`
     }
 
-    const toolbox = toolboxTooltip && {
+    const toolbox: object = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         showTitle: false,
         right: '9.52%',
         feature: {
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
-                getSaveAsImage(toolboxTooltip.saveAsImage),
+                getSaveAsImage(toolboxTooltip.saveAsImage.title),
             dataView:
-                toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title)
         }
     }
 
-    const options = {
+    const options: EChartsOption = {
         color: colors,
         series: series,
         xAxis: {
-            type: 'category' as const,
+            type: 'category',
             data: xData,
             boundaryGap: false,
-            showGrid: true,
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dashed' as const,
+                    type: 'dashed',
                     opacity: 0.2,
                     color: 'gray'
                 }
@@ -198,21 +200,19 @@ const LineChart = (props: IProps) => {
                           )
                         : item,
                 rotate: rotateLabel || 0,
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    fontSize: fontLabelSize || 11.5,
-                    color: 'black'
-                }
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: 400,
+                fontSize: fontLabelSize || 11.5,
+                color: 'black'
             }
         },
         yAxis: {
-            type: 'value' as const,
+            type: 'value',
             data: yData,
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dashed' as const,
+                    type: 'dashed',
                     opacity: 0.2,
                     color: 'gray'
                 }
@@ -221,18 +221,18 @@ const LineChart = (props: IProps) => {
                 margin: yType === 'time' ? 16 : 14,
                 formatter: (item: number) =>
                     yType === 'time'
-                        ? timeConvert(item) + 'h'
-                        : takeLabelComplement(item, yComplement),
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    fontSize: fontLabelSize || 11.5,
-                    color: 'black'
-                }
+                        ? timeConvert(item).toString() + 'h'
+                        : takeLabelComplement(item, yComplement).toString(),
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: 400,
+                fontSize: fontLabelSize || 11.5,
+                color: 'black'
             },
             axisTick: {
-                show: true,
-                alignWithLabel: true
+                // @ts-ignore
+                // https://github.com/apache/incubator-echarts/issues/13618
+                alignWithLabel: true,
+                show: true
             },
             axisLine: {
                 show: true,
@@ -244,16 +244,16 @@ const LineChart = (props: IProps) => {
         grid: { ...(gridProps || { bottom: 75 }), show: true },
         legend: {
             data: names,
-            icon: STRAIGHT_LINE,
+            icon: STRAIGHT_LINE_ICON,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: 400 as const,
+                fontWeight: 400,
                 color: 'black'
             }
         },
         tooltip: !noTooltip && {
             formatter: formatTooltip,
-            trigger: 'axis' as const,
+            trigger: 'axis',
             backgroundColor: '#00000099',
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
@@ -270,7 +270,7 @@ const LineChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const,
+                fontWeight: 400,
                 color: 'black'
             }
         },

@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import {
     IDefaultChartProps,
-    DataTooltip,
     EntryData,
-    EntryWithStyleData,
     LabelProps,
     ParamsTooltip
 } from '../types'
@@ -23,6 +21,7 @@ import {
 } from '../../lib/auxiliarFunctions'
 import { reverse } from 'ramda'
 import { CHART_WIDTH, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
+import { EChartsOption } from 'echarts'
 
 export interface IProps extends IDefaultChartProps {
     showTickInfos?: boolean
@@ -95,11 +94,7 @@ const HorizontalBarChart = (props: IProps) => {
         })
     }, [richData])
 
-    const handleShowTitle = (show: boolean) => {
-        setTitle(show)
-    }
-
-    const xData: EntryWithStyleData[] = reverse(
+    const xData: object[] = reverse(
         data.map((item: EntryData) => {
             const results = data.map(item => item.result)
             const maxValue = Math.max(...results)
@@ -148,45 +143,56 @@ const HorizontalBarChart = (props: IProps) => {
 
         const dataValue =
             xType === 'time'
-                ? timeConvert(value) + 'h'
-                : takeLabelComplement(Number(value), xComplement)
+                ? timeConvert(value as number).toString() + 'h'
+                : takeLabelComplement(Number(value), xComplement).toString()
 
         return `${label}: ${name} <br>` + `${result}: ${dataValue} <br>`
     }
 
-    const formatLabel = (chartValues: DataTooltip) => {
+    const formatLabel = (chartValues: ParamsTooltip) => {
         const { value } = chartValues
 
         return xType === 'time'
-            ? timeConvert(Number(value)) + 'h'
-            : takeLabelComplement(Number(value), xComplement)
+            ? timeConvert(Number(value as number)).toString() + 'h'
+            : takeLabelComplement(Number(value), xComplement).toString()
+    }
+
+    const formatterLabel = (item: string | number) => {
+        return xType === 'time'
+            ? timeConvert(Number(item)).toString() + 'h'
+            : (item + xComplement).toString()
+    }
+
+    const handleShowTitle = (show: boolean) => {
+        setTitle(show)
     }
 
     const myTool = toolboxTooltip &&
         toolboxTooltip.saveAsImageWithTitle && {
             myTool: getSaveAsImageWithTitle(
-                toolboxTooltip.saveAsImageWithTitle,
+                toolboxTooltip.saveAsImageWithTitle.title,
                 handleShowTitle
             )
         }
 
     const saveAsImage = toolboxTooltip &&
         toolboxTooltip.saveAsImage && {
-            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
+            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
         }
 
-    const toolbox = toolboxTooltip && {
+    const toolbox: object = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         right: marginRightToolbox || '8.7%',
         feature: {
             ...myTool,
             ...saveAsImage,
             dataView:
-                toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title)
         }
     }
 
-    const options = {
+    const options: EChartsOption = {
         grid: {
             containLabel: true,
             ...gridProps
@@ -202,12 +208,10 @@ const HorizontalBarChart = (props: IProps) => {
                 silent: true,
                 data: backgroundBar,
                 itemStyle: {
-                    normal: {
-                        color: '#ececec',
-                        barBorderRadius: showTickInfos ? 0 : 10,
-                        opacity: showTickInfos && 0.5,
-                        borderColor: showTickInfos ? undefined : props.color
-                    }
+                    color: '#ececec',
+                    borderRadius: showTickInfos ? 0 : 10,
+                    opacity: showTickInfos && 0.5,
+                    borderColor: showTickInfos ? undefined : props.color
                 }
             },
             {
@@ -218,25 +222,23 @@ const HorizontalBarChart = (props: IProps) => {
                 barMaxWidth: !showTickInfos && 20,
                 itemStyle: {
                     color: color,
-                    barBorderRadius: showTickInfos ? 0 : 10
+                    borderRadius: showTickInfos ? 0 : 10
                 },
                 label: {
                     show: true,
                     formatter: formatLabel,
                     position: 'insideRight',
                     fontSize: showTickInfos ? 14 : 11,
-                    textStyle: {
-                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                        fontWeight: 400 as const,
-                        color: 'black'
-                    }
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    color: 'black'
                 }
             }
         ],
         xAxis: {
             max: xComplement === '%' ? 100 : getDomain(domain),
             type: 'value' as const,
-            data: xData,
+            // data: xData,
             axisTick: {
                 show: showTickInfos || false
             },
@@ -245,16 +247,11 @@ const HorizontalBarChart = (props: IProps) => {
             },
             axisLabel: {
                 rotate: rotateLabel,
+                formatter: formatterLabel,
                 show: showTickInfos || false,
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    color: 'black'
-                },
-                formatter: (item: string) =>
-                    xType === 'time'
-                        ? timeConvert(Number(item)) + 'h'
-                        : item + xComplement
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: 400 as const,
+                color: 'black'
             },
             splitLine: {
                 show: showTickInfos || false,
@@ -277,13 +274,11 @@ const HorizontalBarChart = (props: IProps) => {
                     data.find(item => item.image)
                         ? formatLabelWithImage(text)
                         : truncateLabel(text, labelWordSize),
-                max: 10,
+                // max: 10,
                 margin: 12,
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: boldTickLabel ? (400 as const) : undefined,
-                    color: 'black'
-                },
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: boldTickLabel ? (400 as const) : undefined,
+                color: 'black',
                 rich: Object.assign({}, ...richData)
             },
             axisTick: {

@@ -1,27 +1,32 @@
 import React from 'react'
+import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
 import {
     fixedDomain,
     formatTime,
     formatTooltip,
     getDataView,
+    getDateFormatType,
+    getSaveAsImage,
     getDomain,
     getInitialValues,
-    getSaveAsImage,
     timeConvert,
-    takeLabelComplement,
-    getDateFormatType
+    takeLabelComplement
 } from '../../lib/auxiliarFunctions'
 import {
     IDefaultChartProps,
     TDataZoomChartProps,
     DataZoomEventProps,
     EntryData,
-    ZoomProps
+    ZoomProps,
+    AreaDataTooltip,
+    SeriesLabelFormatter
 } from '../types'
-import { CHART_HEIGHT, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
-
-const STRAIGHT_LINE = 'path://M0 0H25H50V2H25H0V0Z'
+import {
+    CHART_HEIGHT,
+    STRAIGHT_LINE_ICON,
+    TOOLBOX_DEFAULT_PROPS
+} from '../../commonStyles'
 
 const AreaChart = (props: IDefaultChartProps) => {
     const {
@@ -53,12 +58,12 @@ const AreaChart = (props: IDefaultChartProps) => {
 
     const WIDTH_OPTS = { width: width || 'auto' }
 
-    const formatLabel = (chartValues: { data: number }) => {
+    const formatLabel = (chartValues: SeriesLabelFormatter) => {
         const { data } = chartValues
 
         return yType === 'time'
-            ? timeConvert(Number(data as number)) + 'h'
-            : takeLabelComplement(Number(data), yComplement)
+            ? timeConvert(Number(data as number)).toString() + 'h'
+            : takeLabelComplement(Number(data), yComplement).toString()
     }
 
     const dinamicData = (
@@ -91,9 +96,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         }
     }
 
-    const formatSingleTooltip = (
-        chartValues: { axisValueLabel: string; data: number }[]
-    ) => {
+    const formatSingleTooltip = (chartValues: AreaDataTooltip[]) => {
         const { label, result } = tooltipProps
         const { axisValueLabel, data } = chartValues[0]
         const complement = tooltipComplement ? tooltipComplement : ''
@@ -108,15 +111,16 @@ const AreaChart = (props: IDefaultChartProps) => {
       ${complement}`
     }
 
-    const toolbox = toolboxTooltip && {
+    const toolbox: object = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         feature: {
             saveAsImage:
                 toolboxTooltip &&
                 toolboxTooltip.saveAsImage &&
-                getSaveAsImage(toolboxTooltip.saveAsImage),
+                getSaveAsImage(toolboxTooltip.saveAsImage.title),
             dataView:
-                toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title)
         }
     }
 
@@ -131,7 +135,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         xData.length > arrayInitialSize
             ? [
                   {
-                      type: 'inside' as const,
+                      type: 'inside',
                       start: getInitialValues(
                           xData.length,
                           dateFormat,
@@ -144,7 +148,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                   {
                       bottom: 10,
                       show: true,
-                      type: 'slider' as const,
+                      type: 'slider',
                       start: getInitialValues(
                           xData.length,
                           dateFormat,
@@ -157,13 +161,13 @@ const AreaChart = (props: IDefaultChartProps) => {
               ]
             : []
 
-    const options = {
+    const options: EChartsOption = {
         series: [
             {
-                type: 'line' as const,
+                type: 'line',
                 data: yData,
                 label: {
-                    formatter: (item: number | string | { data: number }) => {
+                    formatter: (item: SeriesLabelFormatter) => {
                         if (
                             typeof yComplement === 'function' &&
                             typeof item === 'object'
@@ -177,11 +181,9 @@ const AreaChart = (props: IDefaultChartProps) => {
                     },
                     show: true,
                     position: 'top',
-                    textStyle: {
-                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                        fontSize: yType === 'time' ? 10 : 11.5,
-                        color: 'black'
-                    },
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontSize: yType === 'time' ? 10 : 11.5,
+                    color: 'black',
                     distance: 1.1
                 },
                 lineStyle: {
@@ -199,23 +201,24 @@ const AreaChart = (props: IDefaultChartProps) => {
                 name: lineMakeName,
                 symbolSize: 0,
                 showSymbol: false,
-                hoverAnimation: false,
-                type: 'line' as const,
+                type: 'line',
                 data: markLine,
                 lineStyle: {
                     color: lineMarkColor
+                },
+                emphasis: {
+                    scale: false
                 }
             }
         ],
         xAxis: {
-            type: 'category' as const,
+            type: 'category',
             boundaryGap: false,
-            showGrid: true,
             data: xData as string[],
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dashed' as const,
+                    type: 'dashed',
                     opacity: 0.2,
                     color: 'gray'
                 }
@@ -226,20 +229,18 @@ const AreaChart = (props: IDefaultChartProps) => {
                         ? formatTime(item, getDateFormatType(dateFormat))
                         : item,
                 rotate: rotateLabel || 0,
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontSize: fontLabelSize || 11.5,
-                    color: 'black'
-                }
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: fontLabelSize || 11.5,
+                color: 'black'
             }
         },
         yAxis: {
             max: lineMarkValue ? fixedDomain : getDomain,
-            type: 'value' as const,
+            type: 'value',
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dashed' as const,
+                    type: 'dashed',
                     opacity: 0.2,
                     color: 'gray'
                 }
@@ -249,20 +250,25 @@ const AreaChart = (props: IDefaultChartProps) => {
                 formatter: (item: number) =>
                     yType === 'time'
                         ? timeConvert(item) + 'h'
-                        : takeLabelComplement(item, yComplement),
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontSize: fontLabelSize || 11.5,
-                    color: 'black'
-                }
+                        : takeLabelComplement(item, yComplement).toString(),
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: fontLabelSize || 11.5,
+                color: 'black'
+            },
+            axisLine: {
+                show: true
+            },
+            axisTick: {
+                // @ts-ignore
+                // https://github.com/apache/incubator-echarts/issues/13618
+                alignWithLabel: true,
+                show: true
             }
         },
         color: [lineMarkColor],
         grid: { ...(gridProps || { bottom: 75 }), show: true },
         legend: {
-            x: 'center',
-            y: 'bottom',
-            icon: STRAIGHT_LINE,
+            icon: STRAIGHT_LINE_ICON,
             top: 30,
             data: [lineMakeName],
             itemGap: 30,
@@ -279,13 +285,13 @@ const AreaChart = (props: IDefaultChartProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const,
+                fontWeight: 400,
                 color: 'black'
             }
         },
         tooltip: tooltipProps && {
             formatter: formatSingleTooltip,
-            trigger: 'axis' as const,
+            trigger: 'axis',
             backgroundColor: '#00000099',
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',

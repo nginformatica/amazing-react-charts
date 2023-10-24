@@ -54,7 +54,7 @@ export const horizontalBarChartWithRadiusBorder = {
             xComplement='%'
             color='#8BC34A'
             title='Horizontal Bar Chart With Radius Border'
-            toolboxTooltip={{ saveAsImage: 'save as image' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             tooltip={{
                 label: 'Equipment',
                 result: 'Reliability'

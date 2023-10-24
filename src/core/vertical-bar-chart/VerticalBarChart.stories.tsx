@@ -21,7 +21,7 @@ export const verticalBarChart = {
             yType='value'
             color='green'
             title='Vertical Bar Chart'
-            toolboxTooltip={{ saveAsImage: 'save' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             tooltip={{ label: 'Equipamento', result: 'Disponibilidade' }}
             data={[
                 {
@@ -135,7 +135,7 @@ export const verticalBarChartWithCustomMaxDomain = {
             color='blue'
             title='Vertical Bar Chart With customMaxDomain'
             customMaxDomain={3000}
-            toolboxTooltip={{ saveAsImage: 'save' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             tooltip={{ label: 'Equipamento', result: 'Disponibilidade' }}
             data={[
                 {
@@ -162,7 +162,7 @@ export const verticalBarChartWithDateFormat = {
             dateFormat='yyyy-MM'
             color='blue'
             customMaxDomain={100}
-            toolboxTooltip={{ saveAsImage: 'save as image' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             tooltip={{ label: 'Date', result: 'Disp' }}
             data={[
                 {
@@ -185,7 +185,7 @@ export const verticalBarChartWithTimeFormat = {
             yComplement='h'
             color='orange'
             customMaxDomain={240}
-            toolboxTooltip={{ saveAsImage: 'save as image' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             tooltip={{ label: 'Grupo', result: 'MTTR' }}
             data={[
                 {

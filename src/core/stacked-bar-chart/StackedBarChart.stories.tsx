@@ -17,7 +17,7 @@ export const stackedBarChartWithTwoBars = {
             xType='time'
             yComplement={value => `R$ ${value},00`}
             title='Stacked Bar Chart With Two Bars'
-            toolboxTooltip={{ saveAsImage: 'save' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             colors={['#30D2D6', '#9F88FB', '#F09B1B']}
             tooltip={{
                 label: 'Período',
@@ -63,7 +63,7 @@ export const stackedBarChartWithThreeBars = {
             xType='time'
             yComplement={value => `R$ ${value},00`}
             title='Stacked Bar Chart With Three Bars'
-            toolboxTooltip={{ saveAsImage: 'save' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             colors={['#30D2D6', '#9F88FB', '#C5F3C2', '#F09B1B']}
             tooltip={{
                 label: 'Período',
@@ -117,7 +117,7 @@ export const stackedBarChartWithThreeBarsAndAuxResultTooltip = {
             xType='time'
             yComplement={value => `R$ ${value},00`}
             title='Stacked Bar Chart With Two Bars And auxResult Tooltip'
-            toolboxTooltip={{ saveAsImage: 'save' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             colors={['#30D2D6', '#9F88FB', '#C5F3C2', '#F09B1B']}
             tooltip={{
                 label: 'Período',
@@ -334,7 +334,7 @@ export const stackedBarChartWithMoreThanThreeBars = {
             xType='time'
             yComplement={value => `R$ ${value},00`}
             title='Custo por manutenção'
-            toolboxTooltip={{ saveAsImage: 'save' }}
+            toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
             colors={[
                 '#30D2D6',
                 '#9F88FB',

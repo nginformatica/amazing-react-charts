@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
+import { map, sum } from 'ramda'
 import { IProps } from '../pie-chart/PieChart'
-import { PieChartData, PieDataLabel } from '../types'
+import { PieChartFormatter, PieDataLabel } from '../types'
 import {
     getDataView,
     getSaveAsImage,
@@ -11,7 +13,6 @@ import {
     getPercentage,
     getWidthOpts
 } from '../../lib/auxiliarFunctions'
-import { map, sum } from 'ramda'
 import {
     ChartTitle,
     ChartWrapper,
@@ -64,23 +65,24 @@ export const DonutChart = (props: IDonutProps) => {
     const myTool = toolboxTooltip &&
         toolboxTooltip.saveAsImageWithTitle && {
             myTool: getSaveAsImageWithTitle(
-                toolboxTooltip.saveAsImageWithTitle,
+                toolboxTooltip.saveAsImageWithTitle.title,
                 handleShowTitle
             )
         }
 
     const saveAsImage = toolboxTooltip &&
         toolboxTooltip.saveAsImage && {
-            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
+            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
         }
 
-    const toolbox = toolboxTooltip && {
+    const toolbox: object = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         feature: {
             ...myTool,
             ...saveAsImage,
             dataView:
-                toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title)
         }
     }
 
@@ -88,7 +90,7 @@ export const DonutChart = (props: IDonutProps) => {
 
     const totalValues = sum(map(item => item.value, data))
 
-    const formatTooltip = ({ name, value, marker }: PieChartData) => {
+    const formatTooltip = ({ name, value, marker }: PieChartFormatter) => {
         const percent = getPercentage(value, totalValues)
         const valueWithPercent =
             resultFormatType === 'percent'
@@ -116,7 +118,7 @@ export const DonutChart = (props: IDonutProps) => {
             ? resultFormatType(value)
             : takeDonutChartComplement(value, yComplement)
 
-    const options = {
+    const options: EChartsOption = {
         grid: grid,
         color: colors,
         title: {
@@ -127,13 +129,13 @@ export const DonutChart = (props: IDonutProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: centerPieValueFontSize || 24,
-                fontWeight: 400 as const,
+                fontWeight: 400,
                 color: 'black'
             }
         },
         toolbox,
         tooltip: {
-            trigger: 'item' as const,
+            trigger: 'item',
             formatter: formatTooltip,
             backgroundColor: '#00000099',
             textStyle: {
@@ -145,13 +147,13 @@ export const DonutChart = (props: IDonutProps) => {
         },
         legend: {
             selectedMode: selectedMode || false,
-            orient: 'horizontal' as const,
+            orient: 'horizontal',
             top: 270,
             data: xData,
             icon: 'shape',
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: 400 as const,
+                fontWeight: 400,
                 color: 'black'
             }
         },
@@ -167,14 +169,12 @@ export const DonutChart = (props: IDonutProps) => {
                     position: legendPosition || 'outside',
                     formatter: (item: PieDataLabel) =>
                         yComplement || resultFormatType
-                            ? formatDonutLabel(item.data.value)
-                            : item.data.value,
+                            ? formatDonutLabel(item.data.value).toString()
+                            : String(item.data.value),
                     distanceToLabelLine: 0,
-                    textStyle: {
-                        color: labelFontColor || 'black',
-                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                        fontWeight: 400 as const
-                    }
+                    color: labelFontColor || 'black',
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400
                 },
                 labelLine: {
                     length: 10,

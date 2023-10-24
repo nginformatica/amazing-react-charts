@@ -1,5 +1,7 @@
 import * as React from 'react'
+import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
+import { take } from 'ramda'
 import {
     formatTime,
     formatTooltipWithHours,
@@ -13,14 +15,14 @@ import {
 } from '../../lib/auxiliarFunctions'
 import {
     IDefaultChartProps,
-    DataTooltip,
     TDataZoomChartProps,
     DataZoomEventProps,
     EntryData,
     TooltipEntryProps,
-    ZoomProps
+    ZoomProps,
+    SeriesLabelFormatter,
+    TooltipFormatter
 } from '../types'
-import { take } from 'ramda'
 import { CHART_HEIGHT, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
@@ -62,12 +64,15 @@ const ForecastAreaChart = (props: IProps) => {
         toDate(item.label, 'yyyy-MM-dd HH:mm').toString()
     )
 
-    const formatLabel = (chartValues: DataTooltip) => {
+    const formatLabel = (chartValues: SeriesLabelFormatter) => {
         const { data } = chartValues
 
         return yType === 'time'
-            ? timeConvert(Number(data))
-            : takeLabelComplement(Number(Number(data).toFixed(2)), yComplement)
+            ? timeConvert(Number(data)).toString()
+            : takeLabelComplement(
+                  Number(Number(data).toFixed(2)),
+                  yComplement
+              ).toString()
     }
 
     const dinamicData = (
@@ -99,9 +104,7 @@ const ForecastAreaChart = (props: IProps) => {
 
     const zoomEvent = { dataZoom: dinamicData }
 
-    const formatSingleTooltip = (
-        chartValues: { axisValueLabel: string; data: number }[]
-    ) => {
+    const formatSingleTooltip = (chartValues: TooltipFormatter[]) => {
         const { current, forecast } = tooltipProps
         const { axisValueLabel, data } =
             chartValues.length === 2 ? chartValues[1] : chartValues[0]
@@ -122,16 +125,17 @@ const ForecastAreaChart = (props: IProps) => {
       ${complement}`
     }
 
-    const toolbox = toolboxTooltip && {
+    const toolbox: object = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         showTitle: false,
         right: '9.52%',
         feature: {
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
-                getSaveAsImage(toolboxTooltip.saveAsImage),
+                getSaveAsImage(toolboxTooltip.saveAsImage.title),
             dataView:
-                toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title)
         }
     }
 
@@ -157,7 +161,7 @@ const ForecastAreaChart = (props: IProps) => {
               ]
             : []
 
-    const options = {
+    const options: EChartsOption = {
         series: [
             {
                 type: 'line',
@@ -166,16 +170,14 @@ const ForecastAreaChart = (props: IProps) => {
                 label: {
                     formatter:
                         typeof yComplement === 'function'
-                            ? yComplement
+                            ? yComplement.toString()
                             : formatLabel,
                     show: true,
                     position: 'top',
-                    textStyle: {
-                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                        fontSize: yType === 'time' ? 10 : 11.5,
-                        fontWeight: 400 as const,
-                        color: 'black'
-                    },
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontSize: yType === 'time' ? 10 : 11.5,
+                    fontWeight: 400,
+                    color: 'black',
                     distance: 1.1
                 },
                 lineStyle: {
@@ -201,18 +203,19 @@ const ForecastAreaChart = (props: IProps) => {
                         {
                             name: forecastChartLegends.lineMark || 'markLine',
                             // @ts-ignore TODO: remove this XGH
-                            xAxis: xData[lineMarkValue - 1].toString(),
-                            type: 'solid'
+                            xAxis: xData[lineMarkValue - 1].toString()
                         }
                     ],
                     lineStyle: {
                         width: 1,
                         type: 'solid',
-                        color: lineMarkColor || 'red',
-                        emphasis: {
+                        color: lineMarkColor || 'red'
+                    },
+                    emphasis: {
+                        lineStyle: {
                             type: 'solid',
                             width: 50,
-                            color: lineMarkColor || 'red'
+                            color: lineMarkColor || 'green'
                         }
                     }
                 }
@@ -224,16 +227,14 @@ const ForecastAreaChart = (props: IProps) => {
                 label: {
                     formatter:
                         typeof yComplement === 'function'
-                            ? yComplement
+                            ? yComplement.toString()
                             : formatLabel,
                     show: false,
                     position: 'top',
-                    textStyle: {
-                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                        fontSize: yType === 'time' ? 10 : 11.5,
-                        fontWeight: 400 as const,
-                        color: 'black'
-                    },
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontSize: yType === 'time' ? 10 : 11.5,
+                    fontWeight: 400,
+                    color: 'black',
                     distance: 1.1
                 },
                 lineStyle: {
@@ -255,20 +256,18 @@ const ForecastAreaChart = (props: IProps) => {
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dashed' as const,
-                    opacity: 0.2,
-                    color: 'gray'
+                    type: 'dashed',
+                    opacity: 0.3,
+                    color: 'gray',
                 }
             },
             axisLabel: {
                 formatter: (item: string) =>
                     xType === 'time' ? formatTime(item, 'dd MMM') : item,
                 rotate: rotateLabel || 0,
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontSize: fontLabelSize || 11.5,
-                    color: 'black'
-                }
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: fontLabelSize || 11.5,
+                color: 'black'
             }
         },
         yAxis: {
@@ -277,8 +276,8 @@ const ForecastAreaChart = (props: IProps) => {
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'dashed' as const,
-                    opacity: 0.2,
+                    type: 'dashed',
+                    opacity: 0.3,
                     color: 'gray'
                 }
             },
@@ -286,20 +285,20 @@ const ForecastAreaChart = (props: IProps) => {
                 margin: yType === 'time' ? 16 : 14,
                 formatter: (item: number) =>
                     yType === 'time'
-                        ? timeConvert(Number(item))
+                        ? timeConvert(Number(item)).toString()
                         : takeLabelComplement(
                               Number(item.toFixed(2)),
                               yComplement
-                          ),
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontSize: fontLabelSize || 11.5,
-                    color: 'black'
-                }
+                          ).toString(),
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: fontLabelSize || 11.5,
+                color: 'black'
             },
             axisTick: {
-                show: true,
-                alignWithLabel: true
+                // @ts-ignore
+                // https://github.com/apache/incubator-echarts/issues/13618
+                alignWithLabel: true,
+                show: true
             },
             axisLine: {
                 show: true,
@@ -329,13 +328,13 @@ const ForecastAreaChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const,
+                fontWeight: 400,
                 color: 'black'
             }
         },
         tooltip: tooltipProps && {
             formatter: formatSingleTooltip,
-            trigger: 'axis' as const,
+            trigger: 'axis',
             backgroundColor: '#00000099',
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',

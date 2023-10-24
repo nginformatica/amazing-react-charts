@@ -1,14 +1,16 @@
 import * as React from 'react'
+import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
 import {
     IDefaultChartProps,
-    DataTooltip,
     TDataZoomChartProps,
     DataZoomEventProps,
     EntryData,
     LabelProps,
-    OptionsProps,
-    ZoomProps
+    ZoomProps,
+    VerticalBarLabelFormatter,
+    EChartSeries,
+    TooltipFormatter
 } from '../types'
 import {
     formatTime,
@@ -121,7 +123,7 @@ const VerticalBarChart = (props: IProps) => {
 
     const isCustomDomain = customMaxDomain ? customMaxDomain : getDomain
 
-    const yData = data.map((item: EntryData) => {
+    const yData: EChartSeries = data.map((item: EntryData) => {
         const results = data.map(item => item.result)
         const maxValue = Math.max(...results)
 
@@ -191,31 +193,30 @@ const VerticalBarChart = (props: IProps) => {
         }
     }
 
-    const formatLabel = (chartValues: DataTooltip) => {
+    const formatLabel = (chartValues: VerticalBarLabelFormatter) => {
         const { value } = chartValues
         const isTimeType = yType === 'time'
 
         return isTimeType
-            ? timeConvert(Number(value)) + 'h'
-            : takeLabelComplement(Number(value), yComplement)
+            ? timeConvert(Number(value)).toString() + 'h'
+            : takeLabelComplement(Number(value), yComplement).toString()
     }
 
-    const toolbox = toolboxTooltip && {
+    const toolbox: object = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         showTitle: false,
         right: marginRightToolbox || '8.7%',
         feature: {
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
-                getSaveAsImage(toolboxTooltip.saveAsImage),
+                getSaveAsImage(toolboxTooltip.saveAsImage.title),
             dataView:
-                toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title)
         }
     }
 
-    const formatSingleTooltip = (
-        chartValues: { axisValueLabel: string; value: number }[]
-    ) => {
+    const formatSingleTooltip = (chartValues: TooltipFormatter[]) => {
         const { label, result } = tooltipProps
         const { axisValueLabel, value } = chartValues[0]
         const complement = tooltipComplement ? tooltipComplement : ''
@@ -270,7 +271,7 @@ const VerticalBarChart = (props: IProps) => {
               ]
             : []
 
-    const options: OptionsProps = {
+    const options: EChartsOption = {
         grid: { ...gridProps },
         color: [color],
         interval,
@@ -284,12 +285,10 @@ const VerticalBarChart = (props: IProps) => {
                     show: showBarLabel,
                     position: 'insideTop',
                     distance: 6,
-                    textStyle: {
-                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                        fontWeight: 400 as const,
-                        fontSize: 12,
-                        color: 'black'
-                    }
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    fontSize: 12,
+                    color: 'black'
                 }
             }
         ],
@@ -300,6 +299,8 @@ const VerticalBarChart = (props: IProps) => {
             data: xData as string[],
             splitLine: {
                 show: true,
+                // @ts-ignore
+                // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
                 lineStyle: {
                     type: 'dashed' as const,
@@ -317,12 +318,10 @@ const VerticalBarChart = (props: IProps) => {
                           )
                         : specialLabel(item),
                 interval: 0,
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    fontSize: 11,
-                    color: 'black'
-                }
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: 400 as const,
+                fontSize: 11,
+                color: 'black'
             },
             axisTick: {
                 show: true,
@@ -346,20 +345,20 @@ const VerticalBarChart = (props: IProps) => {
             axisLabel: {
                 formatter: (item: number) =>
                     yType === 'time'
-                        ? timeConvert(item) + 'h'
-                        : takeLabelComplement(item, yComplement),
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    fontSize: 11,
-                    color: 'black'
-                }
+                        ? timeConvert(item).toString() + 'h'
+                        : takeLabelComplement(item, yComplement).toString(),
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontWeight: 400 as const,
+                fontSize: 11,
+                color: 'black'
             },
             axisLine: {
                 show: true
             },
             axisTick: {
                 show: true,
+                // @ts-ignore
+                // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true
             }
         },

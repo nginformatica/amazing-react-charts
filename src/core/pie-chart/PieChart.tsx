@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react'
+import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
-import { IDefaultChartProps, PieChartData, PieDataLabel } from '../types'
 import { map, sum } from 'ramda'
+import {
+    IDefaultChartProps,
+    PieChartData,
+    PieChartFormatter,
+    PieDataLabel
+} from '../types'
 import {
     getDataView,
     getSaveAsImage,
@@ -66,27 +72,28 @@ export const PieChart = (props: IProps) => {
     const myTool = toolboxTooltip &&
         toolboxTooltip.saveAsImageWithTitle && {
             myTool: getSaveAsImageWithTitle(
-                toolboxTooltip.saveAsImageWithTitle,
+                toolboxTooltip.saveAsImageWithTitle.title,
                 handleShowTitle
             )
         }
 
     const saveAsImage = toolboxTooltip &&
         toolboxTooltip.saveAsImage && {
-            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
+            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
         }
 
-    const toolbox = toolboxTooltip && {
+    const toolbox: object = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         feature: {
             ...myTool,
             ...saveAsImage,
             dataView:
-                toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title)
         }
     }
 
-    const formatTooltip = ({ name, value, marker }: PieChartData) => {
+    const formatTooltip = ({ name, value, marker }: PieChartFormatter) => {
         const title = tooltipTitle ? tooltipTitle + '<br>' : ''
         const percent = getPercentage(value, totalValues)
         const valuePrint =
@@ -108,13 +115,17 @@ export const PieChart = (props: IProps) => {
     const formatPieLabel = ({ data }: PieDataLabel) =>
         data.value === 0 && legendPosition === 'inside'
             ? ''
-            : takeLabelComplement(data.value, resultFormatType, 'pie')
+            : takeLabelComplement(
+                  data.value,
+                  resultFormatType,
+                  'pie'
+              ).toString()
 
-    const options = {
+    const options: EChartsOption = {
         grid: gridProps,
         color: colors,
         tooltip: {
-            trigger: 'item' as const,
+            trigger: 'item',
             formatter: formatTooltip,
             backgroundColor: '#2B2B2B99',
             textStyle: {
@@ -132,11 +143,9 @@ export const PieChart = (props: IProps) => {
                     formatter: formatPieLabel,
                     show: true,
                     position: legendPosition || 'outside',
-                    textStyle: {
-                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                        fontWeight: 400 as const,
-                        color: labelFontColor || 'white'
-                    }
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400,
+                    color: labelFontColor || 'white'
                 },
                 type: 'pie',
                 data: data,
@@ -156,7 +165,7 @@ export const PieChart = (props: IProps) => {
             itemGap: legendType === 'scroll' ? 60 : 10,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: 400 as const,
+                fontWeight: 400,
                 color: 'black'
             }
         },
@@ -167,7 +176,7 @@ export const PieChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const,
+                fontWeight: 400,
                 color: 'black'
             }
         },

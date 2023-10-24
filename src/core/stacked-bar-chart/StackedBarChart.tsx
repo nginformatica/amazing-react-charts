@@ -1,5 +1,7 @@
 import * as React from 'react'
+import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
+import { concat, move } from 'ramda'
 import {
     IDefaultChartProps,
     DataTooltip,
@@ -10,7 +12,8 @@ import {
     ZoomProps,
     ParamsTooltip,
     Complement,
-    Tooltip
+    Tooltip,
+    SeriesLabelFormatter
 } from '../types'
 import {
     formatTime,
@@ -31,8 +34,7 @@ import {
     normalLabel,
     rotatedLabel
 } from '../vertical-bar-chart/VerticalBarChart'
-import { concat, move } from 'ramda'
-import { CHART_WIDTH } from '../../commonStyles'
+import { CHART_WIDTH, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: EntryDataNTuples
@@ -106,11 +108,11 @@ const StackedBarChart = (props: IProps) => {
 
     const topLabels = yBottomValue.map((item, index) => item + yTopValue[index])
 
-    const formatLabel = (chartValues: DataTooltip) => {
+    const formatLabel = (chartValues: SeriesLabelFormatter) => {
         const { dataIndex } = chartValues
         const value = topLabels[dataIndex]
 
-        return takeLabelComplement(Number(value), yComplement)
+        return takeLabelComplement(Number(value), yComplement).toString()
     }
 
     const yLineData = lineData.map((item: EntryData) => item.result)
@@ -264,26 +266,19 @@ const StackedBarChart = (props: IProps) => {
               ]
             : []
 
-    const toolbox = toolboxTooltip && {
-        showTitle: false,
-        right: '8.7%',
+    const toolbox: object = toolboxTooltip && {
+        ...TOOLBOX_DEFAULT_PROPS,
         feature: {
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
-                getSaveAsImage(toolboxTooltip.saveAsImage),
+                getSaveAsImage(toolboxTooltip.saveAsImage.title),
             dataView:
-                toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
-        },
-        tooltip: {
-            show: true,
-            backgroundColor: 'grey',
-            textStyle: {
-                fontSize: 12
-            }
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title)
         }
     }
 
-    const extraStackedSerie = yExtraData && {
+    const extraStackedSerie: object = yExtraData && {
         barWidth: barWidth,
         yAxisIndex: 0,
         name: extraResult,
@@ -330,11 +325,11 @@ const StackedBarChart = (props: IProps) => {
                   type: legendType,
                   itemGap: legendScrollGap || 60,
                   textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    color: 'black',
-                    fontSize: 11.5
-                }
+                      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                      fontWeight: 400 as const,
+                      color: 'black',
+                      fontSize: 11.5
+                  }
               }
             : {
                   top: 30,
@@ -347,14 +342,14 @@ const StackedBarChart = (props: IProps) => {
                   ],
                   itemGap: 30,
                   textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    color: 'black',
-                    fontSize: 11.5
-                }
+                      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                      fontWeight: 400 as const,
+                      color: 'black',
+                      fontSize: 11.5
+                  }
               }
 
-    const options = {
+    const options: EChartsOption = {
         grid: gridProps,
         color: colors,
         series: [
@@ -400,17 +395,17 @@ const StackedBarChart = (props: IProps) => {
                     xType === 'time'
                         ? formatTime(item, 'MMM/yy')
                         : truncateLabel(item),
-                textStyle: {
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontSize: xData.length > 14 ? 10 : 11.5,
-                    fontWeight: 400 as const,
-                    color: 'black'
-                },
-                interval: xData.length > 20 ? () => 'auto' : 0
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: xData.length > 14 ? 10 : 11.5,
+                fontWeight: 400 as const,
+                color: 'black',
+                interval: xData.length > 20 ? 'auto' : 0
             },
             splitLine: {
-                show: true,
+                // @ts-ignore
+                // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
+                show: true,
                 lineStyle: {
                     opacity: 0.3,
                     color: 'gray'
@@ -428,21 +423,24 @@ const StackedBarChart = (props: IProps) => {
                 position: 'left' as const,
                 axisLabel: {
                     formatter: (item: string) =>
-                        takeLabelComplement(Number(item), yComplement),
-                    textStyle: {
-                        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                        fontWeight: 400 as const,
-                        color: 'black',
-                        fontSize: 11.5
-                    }
+                        takeLabelComplement(
+                            Number(item),
+                            yComplement
+                        ).toString(),
+                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                    fontWeight: 400 as const,
+                    color: 'black',
+                    fontSize: 11.5
                 },
                 axisTick: { show: true, alignWithLabel: true },
                 axisLine: {
                     show: true
                 },
                 splitLine: {
-                    show: true,
+                    // @ts-ignore
+                    // https://github.com/apache/incubator-echarts/issues/13618
                     alignWithLabel: true,
+                    show: true,
                     lineStyle: {
                         opacity: 0.3,
                         color: 'gray'

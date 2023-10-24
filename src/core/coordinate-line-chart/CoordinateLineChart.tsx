@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react'
+import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
-import {
-    IDefaultChartProps,
-    Coordinates,
-    OptionsProps,
-    WidthProps
-} from '../types'
+import { IDefaultChartProps, Coordinates, WidthProps } from '../types'
 import { map } from 'ramda'
 import {
     getSaveAsImageWithTitle,
     getSaveAsImage,
     getDataView
 } from '../../lib/auxiliarFunctions'
-import { TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
+import {
+    DASHED_LINE_ICON,
+    STRAIGHT_LINE_ICON,
+    TOOLBOX_DEFAULT_PROPS
+} from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     coordinates: [Coordinates[], Coordinates[], Coordinates[]]
@@ -24,13 +24,6 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     xMaxValue?: number
     legendPosition?: number
 }
-
-const DASHED_ICON =
-    'path://M180 1000 l0 -40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40z, M810 ' +
-    '1000 l0 -40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40zm, M1440 1000 l0 ' +
-    '-40 200 0 200 0 0 40 0 40 -200 0 -200 0 0 -40z'
-
-const STRAIGHT_LINE = 'path://M0 0H25H50V2H25H0V0Z'
 
 const getPadding = (rangeValues?: number) =>
     rangeValues ? [150, 0, 0, 0] : [20, 0, 0, 0]
@@ -79,23 +72,24 @@ const CoordinateLineChart = (props: IProps) => {
     const myTool = toolboxTooltip &&
         toolboxTooltip.saveAsImageWithTitle && {
             myTool: getSaveAsImageWithTitle(
-                toolboxTooltip.saveAsImageWithTitle,
+                toolboxTooltip.saveAsImageWithTitle.title,
                 handleShowTitle
             )
         }
 
     const saveAsImage = toolboxTooltip &&
         toolboxTooltip.saveAsImage && {
-            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage)
+            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
         }
 
-    const toolbox = toolboxTooltip && {
+    const toolbox: object = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         feature: {
             ...myTool,
             ...saveAsImage,
             dataView:
-                toolboxTooltip.dataView && getDataView(toolboxTooltip.dataView)
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title)
         }
     }
 
@@ -105,7 +99,7 @@ const CoordinateLineChart = (props: IProps) => {
 
     // The legendNames prop is a 3-tuple typed correctly, so we can use
     // index access with safety here.
-    const options: OptionsProps = {
+    const options: EChartsOption = {
         color: colors,
         series: [
             {
@@ -139,7 +133,7 @@ const CoordinateLineChart = (props: IProps) => {
             name: coordinateNames.y,
             nameTextStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: 'black',
+                color: 'black'
             },
             nameGap: 10,
             min: -yRangeValues || 0,
@@ -151,7 +145,7 @@ const CoordinateLineChart = (props: IProps) => {
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'solid' as const,
+                    type: 'solid',
                     opacity: 0.5,
                     color: 'gray'
                 }
@@ -170,7 +164,7 @@ const CoordinateLineChart = (props: IProps) => {
             type: 'value',
             name: coordinateNames.x,
             nameTextStyle: {
-                verticalAlign: yRangeValues ? 'top' : 'end',
+                verticalAlign: 'top',
                 padding: getPadding(yRangeValues),
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 color: 'black'
@@ -185,7 +179,7 @@ const CoordinateLineChart = (props: IProps) => {
             splitLine: {
                 show: true,
                 lineStyle: {
-                    type: 'solid' as const,
+                    type: 'solid',
                     opacity: 0.5,
                     color: 'gray'
                 }
@@ -205,10 +199,10 @@ const CoordinateLineChart = (props: IProps) => {
             data: [
                 {
                     name: legendNames[0] || '',
-                    icon: DASHED_ICON
+                    icon: DASHED_LINE_ICON
                 },
-                { name: legendNames[1] || '', icon: STRAIGHT_LINE },
-                { name: legendNames[2] || '', icon: STRAIGHT_LINE }
+                { name: legendNames[1] || '', icon: STRAIGHT_LINE_ICON },
+                { name: legendNames[2] || '', icon: STRAIGHT_LINE_ICON }
             ],
             itemGap: 30,
             textStyle: {
@@ -224,7 +218,7 @@ const CoordinateLineChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const,
+                fontWeight: 400,
                 color: 'black'
             }
         },

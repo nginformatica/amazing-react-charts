@@ -15,7 +15,9 @@ export const coordinateLineChart = {
         <CoordinateLineChart
             {...args}
             title='Coordinate Line Chart'
-            toolboxTooltip={{ saveAsImageWithTitle: 'save as image' }}
+            toolboxTooltip={{
+                saveAsImageWithTitle: { title: 'Save as Image' }
+            }}
             height={400}
             xMaxValue={8}
             legendNames={['ref', 'pre', 'pos']}
@@ -65,7 +67,9 @@ export const coordinateLineChartWithNegativeValuesOnYAxis = {
         <CoordinateLineChart
             {...args}
             title='Coordinate Line Chart'
-            toolboxTooltip={{ saveAsImageWithTitle: 'save as image' }}
+            toolboxTooltip={{
+                saveAsImageWithTitle: { title: 'Save as Image' }
+            }}
             height={400}
             legendNames={['ref', 'pre', 'pos']}
             yRangeValues={8}
