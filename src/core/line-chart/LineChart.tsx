@@ -6,7 +6,7 @@ import {
     EntryData,
     EntryDataLine,
     ZoomProps,
-    LineChartTooltip
+    LinesFormatterTooltip
 } from '../types'
 import {
     formatTime,
@@ -135,7 +135,7 @@ const LineChart = (props: IProps) => {
               ]
             : []
 
-    const formatTooltip = (lines: LineChartTooltip[]) => {
+    const formatTooltip = (lines: LinesFormatterTooltip[]) => {
         const takeComplement = (value: number) =>
             yType === 'time'
                 ? timeConvert(Number(value)) + 'h'

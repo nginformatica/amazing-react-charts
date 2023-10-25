@@ -8,7 +8,7 @@ import {
     takeLabelComplement,
     timeConvert
 } from '../../lib/auxiliarFunctions'
-import { IDefaultChartProps, LineChartTooltip, WidthProps } from '../types'
+import { IDefaultChartProps, LinesFormatterTooltip, WidthProps } from '../types'
 import { CHART_WIDTH } from '../../commonStyles'
 
 export interface MultipurposeChartProps {
@@ -74,7 +74,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
         }
     }
 
-    const formatTooltip = (lines: LineChartTooltip[]) => {
+    const formatTooltip = (lines: LinesFormatterTooltip[]) => {
         const takeComplement = (value: number) =>
             yType === 'time'
                 ? timeConvert(Number(value)) + 'h'

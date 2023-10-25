@@ -1,5 +1,75 @@
 import { EChartsOption } from 'echarts'
 
+type FormatterReturn = string[] | string | number
+
+type FormatterEntry =
+    | string
+    | number
+    | DomainValues
+    | DataTooltip
+    | DataTooltip[]
+    | PieDataLabel
+
+type FormatterType =
+    | string
+    | ((item: FormatterEntry | AudiometryDataTooltip[]) => FormatterReturn)
+
+type FormatterSliderType =
+    | string
+    | ((yValue: string, xValue: string) => FormatterReturn)
+
+type PositionType =
+    | 'top'
+    | 'bottom'
+    | 'left'
+    | 'right'
+    | 'insideRight'
+    | 'insideLeft'
+    | 'insideTop'
+    | 'insideBottom'
+    | 'inside'
+    | 'outside'
+    | 'center'
+    | [number, number]
+
+type ToolboxEntryProps = {
+    saveAsImage?: {
+        title?: string
+    }
+    dataView?: {
+        title?: string
+    }
+    saveAsImageWithTitle?: {
+        title?: string
+    }
+}
+
+type DefaultProps = {
+    formatter?: FormatterType
+    show?: boolean
+    position?: PositionType
+    fontSize?: number
+    fontWeight?: number
+    color?: string
+    distance?: number
+    borderColor?: string
+    barBorderRadius?: number
+    opacity?: number
+    itemStyle?: LabelProps
+}
+
+type GridProps = {
+    show?: boolean
+    right?: string | number
+    left?: string | number
+    top?: string | number
+    bottom?: string | number
+    height?: string | number
+    containLabel?: boolean
+}
+
+export type EChartSeries = object[]
+
 export interface IDefaultChartProps {
     data: EntryData[]
     lineMarkValue?: number
@@ -37,24 +107,10 @@ export type Complement =
     | string
     | ((value: string | number | { data: number }) => string)
 
-type ToolboxEntryProps = {
-    saveAsImage?: {
-        title?: string
-    }
-    dataView?: {
-        title?: string
-    }
-    saveAsImageWithTitle?: {
-        title?: string
-    }
-}
-
 export type Coordinates = {
     x: number
     y: number
 }
-
-export type NumberTuple = [number, number]
 
 export type WidthProps = number | null | undefined | 'auto'
 
@@ -84,65 +140,12 @@ export type EntryData = {
     image?: string
 }
 
-export type EntryWithStyleData = {
-    value: number | string
-    label?: LabelProps
-}
-
 export type PictorialEntryData = {
     value: number
     symbol: string
 }
 
 export type EntryDataNTuples = Array<EntryData[]>
-
-export type Series = {
-    stillShowZeroSum?: boolean
-    name?: string
-    xAxisIndex?: number
-    yAxisIndex?: number
-    label?: LabelProps
-    labelLine?: { show?: boolean; length?: number; length2?: number }
-    areaStyle?: React.CSSProperties
-    lineStyle?: React.CSSProperties & { type?: LineStyleType }
-    barGap?: string
-    barCategoryGap?: string
-    animation?: boolean
-    itemStyle?: LabelProps
-    markLine?: MarkLineProps
-    markPoint?: MarkPointProps
-    barWidth?: number | string
-    emphasis?: DefaultProps
-    stack?: string
-    silent?: boolean
-    showAllSymbol?: boolean | 'auto'
-    symbolSize?: number
-    showSymbol?: boolean
-    hoverAnimation?: boolean
-    barMaxWidth?: number | string
-    type?: 'line' | 'bar' | 'pie' | 'pictorialBar' | 'scatter'
-    symbolClip?: boolean
-    symbolBoundingData?: boolean | number
-    animationDuration?: number
-    radius?: string | [string, string]
-    center?: [number, string] | [string, string] | string | number
-    smooth?: boolean
-    data?:
-        | number[]
-        | string[]
-        | Date[]
-        | PieChartData[]
-        | EntryWithStyleData[]
-        | PictorialEntryData[]
-        | CostumizedSymbolData[]
-        | NumberTuple[]
-}
-
-export type CostumizedSymbolData = {
-    value?: string | number
-    symbol?: string
-    symbolSize?: number
-}
 
 export type DomainValues = {
     min: number
@@ -163,40 +166,6 @@ export type PieDataLabel = {
 
 export type TypeChart = 'line' | 'bar' | 'pie' | 'pictorialBar' | 'scatter'
 
-type FormatterReturn = string[] | string | number
-
-type FormatterEntry =
-    | string
-    | number
-    | DomainValues
-    | DataTooltip
-    | DataTooltip[]
-    | PieDataLabel
-
-export type FormatterType =
-    | string
-    | ((item: FormatterEntry | AudiometryDataTooltip[]) => FormatterReturn)
-
-export type FormatterSliderType =
-    | string
-    | ((yValue: string, xValue: string) => FormatterReturn)
-
-export type PositionType =
-    | 'top'
-    | 'bottom'
-    | 'left'
-    | 'right'
-    | 'insideRight'
-    | 'insideLeft'
-    | 'insideTop'
-    | 'insideBottom'
-    | 'inside'
-    | 'outside'
-    | 'center'
-    | [number, number]
-
-export type ChartType = 'time' | 'category' | 'value' | 'log'
-
 export type LineStyleType = 'solid' | 'dashed' | 'dotted'
 
 export type LabelProps = {
@@ -215,74 +184,6 @@ export type LabelProps = {
     margin?: string
     distanceToLabelLine?: number
     fontFamily?: string
-}
-
-export type DataMarkLine = {
-    name?: string
-    xAxis?: string
-    yAxis?: string | number
-    type?: string
-}
-
-export type MarkLineProps = {
-    silent?: boolean
-    symbol?: string
-    label?: LabelProps
-    animation?: boolean
-    data: DataMarkLine[]
-    lineStyle: LineStyle
-}
-
-export type MarkPointProps = {
-    symbolSize?: number
-    hoverAnimation?: boolean
-    data: DataMarkLine[]
-}
-
-export type LineStyle = {
-    width?: number
-    type?: string
-    color?: string
-    emphasis?: {
-        lineStyle?: LineStyle
-    }
-}
-
-export type DefaultProps = {
-    formatter?: FormatterType
-    show?: boolean
-    position?: PositionType
-    fontSize?: number
-    fontWeight?: number
-    color?: string
-    distance?: number
-    borderColor?: string
-    barBorderRadius?: number
-    opacity?: number
-    itemStyle?: LabelProps
-}
-
-export type GridProps = {
-    show?: boolean
-    right?: string | number
-    left?: string | number
-    top?: string | number
-    bottom?: string | number
-    height?: string | number
-    containLabel?: boolean
-}
-
-export type AxisLabelProps = {
-    type?: ChartType
-    formatter?: FormatterType
-    textStyle?: React.CSSProperties
-    interval?: number | string | 'auto'
-    rotate?: number
-    show?: boolean
-    inside?: boolean
-    color?: string | string[]
-    margin?: number
-    align?: 'left' | 'right' | 'center'
 }
 
 export type PieChartData = {
@@ -358,7 +259,7 @@ export type ParamsTooltip = {
     chartValues: number | string
 }
 
-export type LineChartTooltip = {
+export type LinesFormatterTooltip = {
     componentType: string
     componentSubType: string
     componentIndex: number
@@ -386,21 +287,21 @@ export type TooltipFormatter = {
     axisValueLabel: string
 }
 
-export type TooltipPictorialFormatter = {
-    data: number | string
-    componentType: string
-    componentSubType: string
-    componentIndex: number
-    name: string
-    dataIndex: number
-    value: string | number
-    $vars: string[]
-    tooltip?: TooltipEntryProps
-    label?: string
-    labelComplement?: string | number
-    result?: string
-    resultComplement?: string | number
-}
+// export type TooltipPictorialFormatter = {
+//     data: number | string
+//     componentType: string
+//     componentSubType: string
+//     componentIndex: number
+//     name: string
+//     dataIndex: number
+//     value: string | number
+//     $vars: string[]
+//     tooltip?: TooltipEntryProps
+//     label?: string
+//     labelComplement?: string | number
+//     result?: string
+//     resultComplement?: string | number
+// }
 
 export type AudiometryDataTooltip = {
     data: {
@@ -446,8 +347,6 @@ export type SeriesLabelFormatter = {
     $vars: string[]
     chartValues: number | string
 }
-
-export type EChartSeries = object[]
 
 export type DataZoomEventProps = {
     start: number

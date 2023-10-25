@@ -1,11 +1,7 @@
 import * as React from 'react'
 import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
-import {
-    IDefaultChartProps,
-    PictorialEntryData,
-    TooltipPictorialFormatter
-} from '../types'
+import { IDefaultChartProps, PictorialEntryData } from '../types'
 import { pictorialChart } from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
@@ -14,23 +10,11 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
 }
 
 const PictorialChart = (props: IProps) => {
-    const formatTooltip = (props: TooltipPictorialFormatter) =>
+    const formatTooltip = () =>
         `${props.tooltip.label}: ${props.tooltip.labelComplement} <br>` +
         (props.tooltip.result
             ? `${props.tooltip.result}: ${props.tooltip.resultComplement}`
             : '')
-
-    const tooltip = {
-        formatter: formatTooltip,
-        trigger: 'item' as const,
-        backgroundColor: '#00000099',
-        textStyle: {
-            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-            fontSize: 11.5,
-            color: 'white'
-        },
-        extraCssText: 'border: none; padding: 6px;'
-    }
 
     const options: EChartsOption = {
         series: [
@@ -75,7 +59,17 @@ const PictorialChart = (props: IProps) => {
             top: 'center',
             show: false
         },
-        tooltip: tooltip
+        tooltip: {
+            formatter: formatTooltip,
+            trigger: 'item' as const,
+            backgroundColor: '#00000099',
+            textStyle: {
+                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                fontSize: 11.5,
+                color: 'white'
+            },
+            extraCssText: 'border: none; padding: 6px;'
+        }
     }
 
     return (

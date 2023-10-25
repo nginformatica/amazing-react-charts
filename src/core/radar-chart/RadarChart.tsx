@@ -2,7 +2,7 @@ import React from 'react'
 import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
 import { getWidthOpts, takeLabelComplement } from '../../lib/auxiliarFunctions'
-import { LineChartTooltip, WidthProps } from '../types'
+import { LinesFormatterTooltip, WidthProps } from '../types'
 import { CHART_WIDTH } from '../../commonStyles'
 
 export interface RadarChartProps {
@@ -25,7 +25,7 @@ const RadarChart = (props: RadarChartProps) => {
     const { width, series, indicators, yComplement, circular, highlight } =
         props
 
-    const formatTooltip = (lines: LineChartTooltip) => {
+    const formatTooltip = (lines: LinesFormatterTooltip) => {
         const takeComplement = (value: number) =>
             takeLabelComplement(Number(value), yComplement)
 
