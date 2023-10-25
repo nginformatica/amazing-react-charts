@@ -1,8 +1,8 @@
 import { EChartsOption } from 'echarts'
 
-type FormatterReturn = string[] | string | number
+export type FormatterReturn = string[] | string | number
 
-type FormatterEntry =
+export type FormatterEntry =
     | string
     | number
     | DomainValues
@@ -10,15 +10,15 @@ type FormatterEntry =
     | DataTooltip[]
     | PieDataLabel
 
-type FormatterType =
+export type FormatterType =
     | string
     | ((item: FormatterEntry | AudiometryDataTooltip[]) => FormatterReturn)
 
-type FormatterSliderType =
+export type FormatterSliderType =
     | string
     | ((yValue: string, xValue: string) => FormatterReturn)
 
-type PositionType =
+export type PositionType =
     | 'top'
     | 'bottom'
     | 'left'
@@ -32,7 +32,7 @@ type PositionType =
     | 'center'
     | [number, number]
 
-type ToolboxEntryProps = {
+export type ToolboxEntryProps = {
     saveAsImage?: {
         title?: string
     }
@@ -44,7 +44,7 @@ type ToolboxEntryProps = {
     }
 }
 
-type DefaultProps = {
+export type DefaultProps = {
     formatter?: FormatterType
     show?: boolean
     position?: PositionType
@@ -58,7 +58,7 @@ type DefaultProps = {
     itemStyle?: LabelProps
 }
 
-type GridProps = {
+export type GridProps = {
     show?: boolean
     right?: string | number
     left?: string | number
@@ -286,22 +286,6 @@ export type TooltipFormatter = {
     chartValues: number | string
     axisValueLabel: string
 }
-
-// export type TooltipPictorialFormatter = {
-//     data: number | string
-//     componentType: string
-//     componentSubType: string
-//     componentIndex: number
-//     name: string
-//     dataIndex: number
-//     value: string | number
-//     $vars: string[]
-//     tooltip?: TooltipEntryProps
-//     label?: string
-//     labelComplement?: string | number
-//     result?: string
-//     resultComplement?: string | number
-// }
 
 export type AudiometryDataTooltip = {
     data: {
