@@ -76,7 +76,7 @@ const StackedBarChart = (props: IProps) => {
         label,
         bottomResult,
         topResult,
-        extraResult,
+        extraResult = '0',
         lineResult,
         auxResult,
         complement

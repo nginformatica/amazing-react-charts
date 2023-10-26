@@ -23,7 +23,6 @@ export const stackedBarChartWithTwoBars = {
                 label: 'Período',
                 topResult: 'Preventivas',
                 bottomResult: 'Corretivas',
-                extraResult: '0',
                 lineResult: 'Total'
             }}
             data={[
@@ -185,7 +184,6 @@ export const stackedBarChartWithTwoBarsWithPareto = {
                 label: 'Equipamento',
                 topResult: 'Aquisição',
                 bottomResult: 'Manutenção',
-                extraResult: '0',
                 lineResult: 'Custo % acumulado',
                 complement: 'Custo total'
             }}
@@ -286,7 +284,6 @@ export const stackedBarChartWithTwoBarsStacked = {
                 label: 'Criticidade',
                 topResult: 'Tempo médio em atendimento',
                 bottomResult: 'Tempo médio em execução',
-                extraResult: '0',
                 complement: 'Tempo médio total'
             }}
             data={[

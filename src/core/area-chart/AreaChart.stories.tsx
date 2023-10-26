@@ -48,9 +48,6 @@ export const areaChartWithTime = {
     render: (args: React.JSX.IntrinsicAttributes & IDefaultChartProps) => (
         <AreaChart
             {...args}
-            lineMarkValue={0}
-            lineMarkColor=''
-            lineMakeName=''
             color='#74007c'
             xType='time'
             yType='time'
@@ -76,9 +73,6 @@ export const areaChartWithDate = {
     render: (args: React.JSX.IntrinsicAttributes & IDefaultChartProps) => (
         <AreaChart
             {...args}
-            lineMarkValue={0}
-            lineMarkColor=''
-            lineMakeName=''
             xType='time'
             title='Area Chart With Date'
             toolboxTooltip={{ saveAsImage: { title: 'Save as Image' } }}
@@ -149,9 +143,6 @@ export const areaChartWithDateAndTime = {
     render: (args: React.JSX.IntrinsicAttributes & IDefaultChartProps) => (
         <AreaChart
             {...args}
-            lineMarkValue={0}
-            lineMarkColor=''
-            lineMakeName=''
             xType='time'
             dateFormat='MMM/dd HH:mm'
             title='Area Chart With Date And Time'
