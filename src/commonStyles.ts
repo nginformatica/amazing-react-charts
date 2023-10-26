@@ -40,8 +40,9 @@ export const CHART_TITLE: CSSProperties = {
     position: 'absolute'
 }
 
-export const FullWrapper = styled.div`
-    width: 100%;
+export const PictorialWrapper = styled.div`
+    width: 350px;
+    margin: 0 auto;
 `
 
 export const ChartStorieWrapper = styled.div`
@@ -63,9 +64,3 @@ export const ChartTitle = styled.h1`
     font-weight: 400;
     position: absolute;
 `
-
-export const pictorialChart = (height: number | string) => ({
-    width: '300px',
-    margin: '0 auto',
-    height: height || 500
-})

@@ -2,7 +2,6 @@ import * as React from 'react'
 import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
 import { IDefaultChartProps, PictorialEntryData } from '../types'
-import { pictorialChart } from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: PictorialEntryData[]
@@ -72,13 +71,9 @@ const PictorialChart = (props: IProps) => {
         }
     }
 
-    return (
-        <ReactEcharts
-            lazyUpdate
-            option={options}
-            style={pictorialChart(props.height || 500)}
-        />
-    )
+    const CHART_HEIGHT = { width: '99.9%', height: props.height || 500 }
+
+    return <ReactEcharts lazyUpdate option={options} style={CHART_HEIGHT} />
 }
 
 export default PictorialChart

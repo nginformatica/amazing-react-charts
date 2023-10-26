@@ -42,7 +42,7 @@ export const fullText = {
             formatter: (item: string) => fixedTruncateLabel(item, 16)
         }
     },
-    grid: { bottom: 60 }
+    grid: { bottom: 75 }
 }
 
 export const rotatedLabel = {
@@ -81,7 +81,7 @@ export const normalLabel = {
             formatter: (item: string) => fixedTruncateLabel(item, 9)
         }
     },
-    grid: { bottom: 60 }
+    grid: { bottom: 75 }
 }
 
 export const dontShowLabel = {
@@ -91,7 +91,7 @@ export const dontShowLabel = {
             rotate: 0
         }
     },
-    grid: { bottom: 60 }
+    grid: { bottom: 75 }
 }
 
 const VerticalBarChart = (props: IProps) => {

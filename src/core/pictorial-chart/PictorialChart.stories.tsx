@@ -2,7 +2,7 @@ import React from 'react'
 import { Meta } from '@storybook/react'
 import { IDefaultChartProps } from '../types'
 import PictorialChart from './PictorialChart'
-import { FullWrapper } from '../../commonStyles'
+import { PictorialWrapper } from '../../commonStyles'
 import { argTypesDisablePictorial } from '../disableControls'
 
 export default {
@@ -13,11 +13,11 @@ export default {
 
 export const pictorialChart = {
     render: (args: React.JSX.IntrinsicAttributes & IDefaultChartProps) => (
-        <FullWrapper>
+        <PictorialWrapper>
             <PictorialChart
                 {...args}
                 grid={{ bottom: '10%' }}
-                height={450}
+                height={500}
                 color='purple'
                 title='Pictorial Chart'
                 tooltip={{
@@ -59,6 +59,6 @@ export const pictorialChart = {
                     }
                 ]}
             />
-        </FullWrapper>
+        </PictorialWrapper>
     )
 }

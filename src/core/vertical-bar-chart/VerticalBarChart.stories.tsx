@@ -118,6 +118,101 @@ export const verticalBarChart = {
                     label: 'NG19',
                     result: 85,
                     itemId: '19'
+                },
+                {
+                    label: 'NG20',
+                    result: 90,
+                    itemId: '20'
+                },
+                {
+                    label: 'NG21',
+                    result: 10,
+                    itemId: '21'
+                },
+                {
+                    label: 'NG22',
+                    result: 73,
+                    itemId: '22'
+                },
+                {
+                    label: 'NG23',
+                    result: 85,
+                    itemId: '23'
+                },
+                {
+                    label: 'NG24',
+                    result: 47,
+                    itemId: '24'
+                },
+                {
+                    label: 'NG25',
+                    result: 29,
+                    itemId: '25'
+                },
+                {
+                    label: 'NG26',
+                    result: 10,
+                    itemId: '26'
+                },
+                {
+                    label: 'NG27',
+                    result: 77,
+                    itemId: '27'
+                },
+                {
+                    label: 'NG28',
+                    result: 45,
+                    itemId: '28'
+                },
+                {
+                    label: 'NG29',
+                    result: 99,
+                    itemId: '29'
+                },
+                {
+                    label: 'NG30',
+                    result: 10,
+                    itemId: '30'
+                },
+                {
+                    label: 'NG31',
+                    result: 1,
+                    itemId: '31'
+                },
+                {
+                    label: 'NG32',
+                    result: 50,
+                    itemId: '32'
+                },
+                {
+                    label: 'NG33',
+                    result: 83,
+                    itemId: '33'
+                },
+                {
+                    label: 'NG34',
+                    result: 91,
+                    itemId: '34'
+                },
+                {
+                    label: 'NG35',
+                    result: 10,
+                    itemId: '35'
+                },
+                {
+                    label: 'NG36',
+                    result: 60,
+                    itemId: '36'
+                },
+                {
+                    label: 'NG37',
+                    result: 41,
+                    itemId: '37'
+                },
+                {
+                    label: 'NG38',
+                    result: 85,
+                    itemId: '38'
                 }
             ]}
         />

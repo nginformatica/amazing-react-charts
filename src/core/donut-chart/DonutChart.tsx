@@ -177,11 +177,15 @@ export const DonutChart = (props: IDonutProps) => {
                     fontWeight: 400
                 },
                 labelLine: {
-                    length: 10,
-                    length2: 8
+                    length: 6,
+                    length2: 6
                 },
                 itemStyle: {
                     borderColor: 'white'
+                },
+                emphasis: {
+                    scale: true,
+                    scaleSize: 2
                 }
             }
         ],

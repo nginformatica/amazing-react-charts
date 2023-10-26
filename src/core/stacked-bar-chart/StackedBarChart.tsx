@@ -232,6 +232,8 @@ const StackedBarChart = (props: IProps) => {
                   axisLabel: {
                       formatter: (item: string) =>
                           takeLabelComplement(Number(item), '%'),
+                      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+                      fontWeight: 400 as const,
                       color: colors[2]
                   },
                   axisTick: {
@@ -460,7 +462,7 @@ const StackedBarChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
-                fontWeight: 400 as const,
+                fontWeight: 400,
                 color: 'black'
             }
         },
