@@ -11,7 +11,8 @@ import {
 import {
     DASHED_LINE_ICON,
     STRAIGHT_LINE_ICON,
-    TOOLBOX_DEFAULT_PROPS
+    TOOLBOX_DEFAULT_PROPS,
+    TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
@@ -226,7 +227,13 @@ const CoordinateLineChart = (props: IProps) => {
             containLabel: true,
             ...grid
         },
-        toolbox
+        toolbox: {
+            ...toolbox,
+            tooltip: {
+                ...TOOLTIP_DEFAULT_PROPS,
+                formatter: param => `<div>${param.title}</div>`
+            }
+        }
     }
 
     return <ReactEcharts style={WIDTH_STYLE} option={options} />

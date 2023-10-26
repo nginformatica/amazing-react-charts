@@ -16,7 +16,10 @@ import {
     getSaveAsImageWithTitle,
     getWidthOpts
 } from '../../lib/auxiliarFunctions'
-import { TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
+import {
+    TOOLBOX_DEFAULT_PROPS,
+    TOOLTIP_DEFAULT_PROPS
+} from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TAudiometryDataEntry[][]
@@ -313,8 +316,14 @@ const AudiometryChart = (props: IProps) => {
             show: false
         },
         legend: legends?.length ? legendProps : undefined,
-        toolbox,
-        tooltip
+        tooltip,
+        toolbox: {
+            ...toolbox,
+            tooltip: {
+                ...TOOLTIP_DEFAULT_PROPS,
+                formatter: param => `<div>${param.title}</div>`
+            }
+        }
     }
 
     return (

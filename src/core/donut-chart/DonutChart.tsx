@@ -17,7 +17,8 @@ import {
     ChartTitle,
     ChartWrapper,
     MIN_WIDTH,
-    TOOLBOX_DEFAULT_PROPS
+    TOOLBOX_DEFAULT_PROPS,
+    TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
 
 export interface IDonutProps extends IProps {
@@ -133,7 +134,13 @@ export const DonutChart = (props: IDonutProps) => {
                 color: 'black'
             }
         },
-        toolbox,
+        toolbox: {
+            ...toolbox,
+            tooltip: {
+                ...TOOLTIP_DEFAULT_PROPS,
+                formatter: param => `<div>${param.title}</div>`
+            }
+        },
         tooltip: {
             trigger: 'item',
             formatter: formatTooltip,

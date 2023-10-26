@@ -23,7 +23,11 @@ import {
     SeriesLabelFormatter,
     TooltipFormatter
 } from '../types'
-import { CHART_HEIGHT, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
+import {
+    CHART_HEIGHT,
+    TOOLBOX_DEFAULT_PROPS,
+    TOOLTIP_DEFAULT_PROPS
+} from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
     tooltip: {
@@ -258,7 +262,7 @@ const ForecastAreaChart = (props: IProps) => {
                 lineStyle: {
                     type: 'dashed',
                     opacity: 0.3,
-                    color: 'gray',
+                    color: 'gray'
                 }
             },
             axisLabel: {
@@ -343,7 +347,13 @@ const ForecastAreaChart = (props: IProps) => {
             },
             extraCssText: 'border: none; padding: 6px;'
         },
-        toolbox
+        toolbox: {
+            ...toolbox,
+            tooltip: {
+                ...TOOLTIP_DEFAULT_PROPS,
+                formatter: param => `<div>${param.title}</div>`
+            }
+        }
     }
 
     return (

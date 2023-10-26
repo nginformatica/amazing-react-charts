@@ -16,7 +16,11 @@ import {
     getPercentage,
     getWidthOpts
 } from '../../lib/auxiliarFunctions'
-import { CHART_WIDTH, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
+import {
+    CHART_WIDTH,
+    TOOLBOX_DEFAULT_PROPS,
+    TOOLTIP_DEFAULT_PROPS
+} from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: PieChartData[]
@@ -180,7 +184,13 @@ export const PieChart = (props: IProps) => {
                 color: 'black'
             }
         },
-        toolbox
+        toolbox: {
+            ...toolbox,
+            tooltip: {
+                ...TOOLTIP_DEFAULT_PROPS,
+                formatter: param => `<div>${param.title}</div>`
+            }
+        }
     }
 
     return (

@@ -25,7 +25,7 @@ import {
     getDateFormatType,
     getInitialValues
 } from '../../lib/auxiliarFunctions'
-import { CHART_WIDTH, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
+import { CHART_WIDTH, TOOLTIP_DEFAULT_PROPS } from '../../commonStyles'
 
 export interface IProps extends IDefaultChartProps {
     rotateTickLabel?: number
@@ -203,7 +203,6 @@ const VerticalBarChart = (props: IProps) => {
     }
 
     const toolbox: object = toolboxTooltip && {
-        ...TOOLBOX_DEFAULT_PROPS,
         showTitle: false,
         right: marginRightToolbox || '8.7%',
         feature: {
@@ -386,7 +385,13 @@ const VerticalBarChart = (props: IProps) => {
             extraCssText: 'border: none; padding: 6px;'
         },
         dataZoom: scrollable,
-        toolbox
+        toolbox: {
+            ...toolbox,
+            tooltip: {
+                ...TOOLTIP_DEFAULT_PROPS,
+                formatter: param => `<div>${param.title}</div>`
+            }
+        }
     }
 
     const events = { dataZoom: dynamicDataZoom, click: onClickBar }

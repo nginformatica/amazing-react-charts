@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
 import {
     IDefaultChartProps,
@@ -20,8 +21,11 @@ import {
     formatLabelWithImage
 } from '../../lib/auxiliarFunctions'
 import { reverse } from 'ramda'
-import { CHART_WIDTH, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
-import { EChartsOption } from 'echarts'
+import {
+    CHART_WIDTH,
+    TOOLBOX_DEFAULT_PROPS,
+    TOOLTIP_DEFAULT_PROPS
+} from '../../commonStyles'
 
 export interface IProps extends IDefaultChartProps {
     showTickInfos?: boolean
@@ -323,7 +327,13 @@ const HorizontalBarChart = (props: IProps) => {
             },
             extraCssText: 'border: none; padding: 6px;'
         },
-        toolbox
+        toolbox: {
+            ...toolbox,
+            tooltip: {
+                ...TOOLTIP_DEFAULT_PROPS,
+                formatter: param => `<div>${param.title}</div>`
+            }
+        }
     }
 
     return (

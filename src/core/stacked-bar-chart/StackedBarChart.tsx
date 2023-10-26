@@ -34,7 +34,7 @@ import {
     normalLabel,
     rotatedLabel
 } from '../vertical-bar-chart/VerticalBarChart'
-import { CHART_WIDTH, TOOLBOX_DEFAULT_PROPS } from '../../commonStyles'
+import { CHART_WIDTH, TOOLTIP_DEFAULT_PROPS } from '../../commonStyles'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: EntryDataNTuples
@@ -269,7 +269,8 @@ const StackedBarChart = (props: IProps) => {
             : []
 
     const toolbox: object = toolboxTooltip && {
-        ...TOOLBOX_DEFAULT_PROPS,
+        showTitle: false,
+        right: '8.7%',
         feature: {
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
@@ -477,7 +478,13 @@ const StackedBarChart = (props: IProps) => {
             },
             extraCssText: 'border: none; padding: 6px;'
         },
-        toolbox
+        toolbox: {
+            ...toolbox,
+            tooltip: {
+                ...TOOLTIP_DEFAULT_PROPS,
+                formatter: param => `<div>${param.title}</div>`
+            }
+        }
     }
 
     return (

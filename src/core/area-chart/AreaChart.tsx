@@ -25,7 +25,8 @@ import {
 import {
     CHART_HEIGHT,
     STRAIGHT_LINE_ICON,
-    TOOLBOX_DEFAULT_PROPS
+    TOOLBOX_DEFAULT_PROPS,
+    TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
 
 const AreaChart = (props: IDefaultChartProps) => {
@@ -301,7 +302,13 @@ const AreaChart = (props: IDefaultChartProps) => {
             extraCssText: 'border: none; padding: 6px;'
         },
         dataZoom: scrollable,
-        toolbox
+        toolbox: {
+            ...toolbox,
+            tooltip: {
+                ...TOOLTIP_DEFAULT_PROPS,
+                formatter: param => `<div>${param.title}</div>`
+            }
+        }
     }
 
     return (

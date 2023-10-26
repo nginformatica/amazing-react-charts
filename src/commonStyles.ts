@@ -1,4 +1,3 @@
-import { CSSProperties } from 'react'
 import styled from 'styled-components'
 
 export const STRAIGHT_LINE_ICON = 'path://M0 0H25H50V2H25H0V0Z'
@@ -16,28 +15,18 @@ export const CHART_HEIGHT = { width: '99.9%', height: 300 }
 
 export const TOOLBOX_DEFAULT_PROPS = {
     showTitle: false,
-    right: '9.52%',
-    tooltip: {
-        show: true,
-        backgroundColor: '#00000099',
-        extraCssText: 'border: none; padding: 6px;',
-        opacity: 0.8,
-        textStyle: {
-            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-            fontSize: 12,
-            color: 'white'
-        }
-    }
+    right: '9.52%'
 }
 
-export const CHART_TITLE: CSSProperties = {
-    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-    top: 5,
-    margin: 0,
-    fontSize: 16,
-    color: 'black',
-    fontWeight: 400,
-    position: 'absolute'
+export const TOOLTIP_DEFAULT_PROPS = {
+    show: true,
+    backgroundColor: '#00000090',
+    extraCssText: 'border: none; padding: 5px;',
+    textStyle: {
+        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+        fontSize: 12,
+        color: '#FFFFFF'
+    }
 }
 
 export const PictorialWrapper = styled.div`
@@ -57,7 +46,7 @@ export const ChartWrapper = styled.div`
 
 export const ChartTitle = styled.h1`
     font-family: Roboto, Helvetica, Arial, sans-serif;
-    color: black;
+    color: #000000;
     top: 5;
     margin: 0px;
     font-size: 16px;
