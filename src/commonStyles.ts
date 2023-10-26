@@ -41,7 +41,7 @@ export const CHART_TITLE: CSSProperties = {
 }
 
 export const PictorialWrapper = styled.div`
-    width: 350px;
+    width: 330px;
     margin: 0 auto;
 `
 
@@ -56,7 +56,7 @@ export const ChartWrapper = styled.div`
 `
 
 export const ChartTitle = styled.h1`
-    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
     color: black;
     top: 5;
     margin: 0px;

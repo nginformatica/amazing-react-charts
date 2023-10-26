@@ -148,7 +148,7 @@ export const DonutChart = (props: IDonutProps) => {
         legend: {
             selectedMode: selectedMode || false,
             orient: 'horizontal',
-            top: 270,
+            top: 280,
             data: xData,
             icon: 'shape',
             textStyle: {
@@ -177,8 +177,8 @@ export const DonutChart = (props: IDonutProps) => {
                     fontWeight: 400
                 },
                 labelLine: {
-                    length: 6,
-                    length2: 6
+                    length: 5,
+                    length2: 5
                 },
                 itemStyle: {
                     borderColor: 'white'

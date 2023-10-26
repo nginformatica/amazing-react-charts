@@ -198,8 +198,8 @@ const VerticalBarChart = (props: IProps) => {
         const isTimeType = yType === 'time'
 
         return isTimeType
-            ? timeConvert(Number(value)).toString() + 'h'
-            : takeLabelComplement(Number(value), yComplement).toString()
+            ? timeConvert(Number(value)) + 'h'
+            : String(takeLabelComplement(Number(value), yComplement))
     }
 
     const toolbox: object = toolboxTooltip && {
@@ -345,8 +345,8 @@ const VerticalBarChart = (props: IProps) => {
             axisLabel: {
                 formatter: (item: number) =>
                     yType === 'time'
-                        ? timeConvert(item).toString() + 'h'
-                        : takeLabelComplement(item, yComplement).toString(),
+                        ? timeConvert(item) + 'h'
+                        : String(takeLabelComplement(item, yComplement)),
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400 as const,
                 fontSize: 11,

@@ -71,9 +71,9 @@ const PictorialChart = (props: IProps) => {
         }
     }
 
-    const CHART_HEIGHT = { width: '99.9%', height: props.height || 500 }
+    const CHART_STYLE = { width: '99.9%', height: props.height || 500 }
 
-    return <ReactEcharts lazyUpdate option={options} style={CHART_HEIGHT} />
+    return <ReactEcharts lazyUpdate option={options} style={CHART_STYLE} />
 }
 
 export default PictorialChart
