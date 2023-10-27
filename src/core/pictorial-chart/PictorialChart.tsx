@@ -65,7 +65,7 @@ const PictorialChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: 'white'
+                color: '#FFFFFF'
             },
             extraCssText: 'border: none; padding: 6px;'
         }

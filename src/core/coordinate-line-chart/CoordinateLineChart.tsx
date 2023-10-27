@@ -134,7 +134,7 @@ const CoordinateLineChart = (props: IProps) => {
             name: coordinateNames.y,
             nameTextStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: 'black'
+                color: '#000000'
             },
             nameGap: 10,
             min: -yRangeValues || 0,
@@ -153,11 +153,11 @@ const CoordinateLineChart = (props: IProps) => {
             },
             axisLabel: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: 'black'
+                color: '#000000'
             },
             axisLine: {
                 lineStyle: {
-                    color: 'black'
+                    color: '#000000'
                 }
             }
         },
@@ -168,7 +168,7 @@ const CoordinateLineChart = (props: IProps) => {
                 verticalAlign: 'top',
                 padding: getPadding(yRangeValues),
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: 'black'
+                color: '#000000'
             },
             nameGap: -56,
             min: 0,
@@ -187,11 +187,11 @@ const CoordinateLineChart = (props: IProps) => {
             },
             axisLabel: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: 'black'
+                color: '#000000'
             },
             axisLine: {
                 lineStyle: {
-                    color: 'black'
+                    color: '#000000'
                 }
             }
         },
@@ -208,7 +208,7 @@ const CoordinateLineChart = (props: IProps) => {
             itemGap: 30,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: 'black'
+                color: '#000000'
             }
         },
         title: {
@@ -220,7 +220,7 @@ const CoordinateLineChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             }
         },
         grid: {

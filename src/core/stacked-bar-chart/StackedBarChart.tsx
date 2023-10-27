@@ -330,7 +330,7 @@ const StackedBarChart = (props: IProps) => {
                   textStyle: {
                       fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                       fontWeight: 400 as const,
-                      color: 'black',
+                      color: '#000000',
                       fontSize: 11.5
                   }
               }
@@ -347,7 +347,7 @@ const StackedBarChart = (props: IProps) => {
                   textStyle: {
                       fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                       fontWeight: 400 as const,
-                      color: 'black',
+                      color: '#000000',
                       fontSize: 11.5
                   }
               }
@@ -376,7 +376,7 @@ const StackedBarChart = (props: IProps) => {
                     show: showBarLabel,
                     position: 'top',
                     fontSize: 12,
-                    color: 'black',
+                    color: '#000000',
                     distance: 2
                 }
             },
@@ -401,7 +401,7 @@ const StackedBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: xData.length > 14 ? 10 : 11.5,
                 fontWeight: 400 as const,
-                color: 'black',
+                color: '#000000',
                 interval: xData.length > 20 ? 'auto' : 0
             },
             splitLine: {
@@ -432,7 +432,7 @@ const StackedBarChart = (props: IProps) => {
                         ).toString(),
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontWeight: 400 as const,
-                    color: 'black',
+                    color: '#000000',
                     fontSize: 11.5
                 },
                 axisTick: { show: true, alignWithLabel: true },
@@ -464,7 +464,7 @@ const StackedBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             }
         },
         tooltip: tooltipProps && {
@@ -474,7 +474,7 @@ const StackedBarChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: 'white'
+                color: '#FFFFFF'
             },
             extraCssText: 'border: none; padding: 6px;'
         },

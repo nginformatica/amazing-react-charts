@@ -124,7 +124,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 13,
-                color: 'white'
+                color: '#FFFFFF'
             },
             extraCssText: 'border: none; padding: 6px;'
         },
@@ -133,7 +133,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             }
         },
         toolbox: {
@@ -173,7 +173,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             axisLabel: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             }
         },
         yAxis: {
@@ -182,12 +182,12 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             axisLabel: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             },
             axisLine: {
                 show: true,
                 lineStyle: {
-                    color: 'black'
+                    color: '#000000'
                 }
             },
             splitLine: {

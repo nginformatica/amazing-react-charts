@@ -86,7 +86,7 @@ const LineChart = (props: IProps) => {
             show: showLabel,
             position: 'top',
             fontSize: yType === 'time' ? 10 : 11.5,
-            color: 'black',
+            color: '#000000',
             distance: 1.1,
             formatter: (item: number | string | { data: number }) => {
                 if (
@@ -204,7 +204,7 @@ const LineChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
                 fontSize: fontLabelSize || 11.5,
-                color: 'black'
+                color: '#000000'
             }
         },
         yAxis: {
@@ -227,7 +227,7 @@ const LineChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
                 fontSize: fontLabelSize || 11.5,
-                color: 'black'
+                color: '#000000'
             },
             axisTick: {
                 // @ts-ignore
@@ -238,7 +238,7 @@ const LineChart = (props: IProps) => {
             axisLine: {
                 show: true,
                 lineStyle: {
-                    color: 'black'
+                    color: '#000000'
                 }
             }
         },
@@ -249,7 +249,7 @@ const LineChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             }
         },
         tooltip: !noTooltip && {
@@ -259,7 +259,7 @@ const LineChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: 'white'
+                color: '#FFFFFF'
             },
             extraCssText: 'border: none; padding: 6px;'
         },
@@ -272,7 +272,7 @@ const LineChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             }
         },
         dataZoom: scrollable,

@@ -135,7 +135,7 @@ export const PieChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: 'white'
+                color: '#FFFFFF'
             },
             extraCssText: 'border: none; padding: 6px;'
         },
@@ -149,14 +149,14 @@ export const PieChart = (props: IProps) => {
                     position: legendPosition || 'outside',
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontWeight: 400,
-                    color: labelFontColor || 'white'
+                    color: labelFontColor || '#FFFFFF'
                 },
                 type: 'pie',
                 data: data,
                 radius: radius || '50%',
                 center: center || ['50%', '50%'],
                 itemStyle: {
-                    borderColor: pieceBorderColor || 'white',
+                    borderColor: pieceBorderColor || '#FFFFFF',
                     borderWidth: 1
                 }
             }
@@ -170,7 +170,7 @@ export const PieChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             }
         },
         title: {
@@ -181,7 +181,7 @@ export const PieChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             }
         },
         toolbox: {

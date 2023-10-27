@@ -164,7 +164,7 @@ const AudiometryChart = (props: IProps) => {
         textStyle: {
             fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
             fontSize: 11.5,
-            color: 'white'
+            color: '#FFFFFF'
         },
         extraCssText: 'border: none; padding: 6px;'
     }
@@ -210,7 +210,7 @@ const AudiometryChart = (props: IProps) => {
                   textStyle: {
                       fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                       fontWeight: 400,
-                      color: 'black',
+                      color: '#000000',
                       fontSize: 11.5
                   }
               }
@@ -221,7 +221,7 @@ const AudiometryChart = (props: IProps) => {
                   textStyle: {
                       fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                       fontWeight: 400,
-                      color: 'black',
+                      color: '#000000',
                       fontSize: 11.5
                   }
               }

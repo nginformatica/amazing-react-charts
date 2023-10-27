@@ -86,7 +86,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                             show: true,
                             position: 'top',
                             fontSize: yType === 'time' ? 10 : 11.5,
-                            color: 'black',
+                            color: '#000000',
                             distance: 1.1
                         }
                     }
@@ -184,7 +184,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                     position: 'top',
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontSize: yType === 'time' ? 10 : 11.5,
-                    color: 'black',
+                    color: '#000000',
                     distance: 1.1
                 },
                 lineStyle: {
@@ -232,7 +232,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 rotate: rotateLabel || 0,
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: fontLabelSize || 11.5,
-                color: 'black'
+                color: '#000000'
             }
         },
         yAxis: {
@@ -254,7 +254,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                         : takeLabelComplement(item, yComplement).toString(),
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: fontLabelSize || 11.5,
-                color: 'black'
+                color: '#000000'
             },
             axisLine: {
                 show: true
@@ -275,7 +275,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             itemGap: 30,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: 'black'
+                color: '#000000'
             }
         },
         title: {
@@ -287,7 +287,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             }
         },
         tooltip: tooltipProps && {
@@ -297,7 +297,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: 'white'
+                color: '#FFFFFF'
             },
             extraCssText: 'border: none; padding: 6px;'
         },

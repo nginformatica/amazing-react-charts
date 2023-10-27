@@ -287,7 +287,7 @@ const VerticalBarChart = (props: IProps) => {
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontWeight: 400 as const,
                     fontSize: 12,
-                    color: 'black'
+                    color: '#000000'
                 }
             }
         ],
@@ -320,7 +320,7 @@ const VerticalBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400 as const,
                 fontSize: 11,
-                color: 'black'
+                color: '#000000'
             },
             axisTick: {
                 show: true,
@@ -349,7 +349,7 @@ const VerticalBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400 as const,
                 fontSize: 11,
-                color: 'black'
+                color: '#000000'
             },
             axisLine: {
                 show: true
@@ -370,7 +370,7 @@ const VerticalBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: titleFontSize || 16,
                 fontWeight: 400 as const,
-                color: 'black'
+                color: '#000000'
             }
         },
         tooltip: tooltipProps && {
@@ -380,7 +380,7 @@ const VerticalBarChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: 'white'
+                color: '#FFFFFF'
             },
             extraCssText: 'border: none; padding: 6px;'
         },

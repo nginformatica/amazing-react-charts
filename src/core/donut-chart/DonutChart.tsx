@@ -131,7 +131,7 @@ export const DonutChart = (props: IDonutProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: centerPieValueFontSize || 24,
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             }
         },
         toolbox: {
@@ -152,7 +152,7 @@ export const DonutChart = (props: IDonutProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: 'white'
+                color: '#FFFFFF'
             },
             extraCssText: 'border: none; padding: 6px;'
         },
@@ -165,7 +165,7 @@ export const DonutChart = (props: IDonutProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             }
         },
         series: [
@@ -183,7 +183,7 @@ export const DonutChart = (props: IDonutProps) => {
                             ? formatDonutLabel(item.data.value).toString()
                             : String(item.data.value),
                     distanceToLabelLine: 0,
-                    color: labelFontColor || 'black',
+                    color: labelFontColor || '#000000',
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontWeight: 400
                 },
@@ -192,7 +192,7 @@ export const DonutChart = (props: IDonutProps) => {
                     length2: 5
                 },
                 itemStyle: {
-                    borderColor: 'white'
+                    borderColor: '#FFFFFF'
                 },
                 emphasis: {
                     scale: true,
@@ -201,7 +201,7 @@ export const DonutChart = (props: IDonutProps) => {
             }
         ],
         itemStyle: {
-            borderColor: pieceBorderColor || 'white'
+            borderColor: pieceBorderColor || '#FFFFFF'
         }
     }
 

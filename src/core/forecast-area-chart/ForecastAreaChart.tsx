@@ -95,7 +95,7 @@ const ForecastAreaChart = (props: IProps) => {
                             show: true,
                             position: 'top',
                             fontSize: yType === 'time' ? 10 : 11.5,
-                            color: 'black',
+                            color: '#000000',
                             distance: 1.1
                         }
                     }
@@ -181,7 +181,7 @@ const ForecastAreaChart = (props: IProps) => {
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontSize: yType === 'time' ? 10 : 11.5,
                     fontWeight: 400,
-                    color: 'black',
+                    color: '#000000',
                     distance: 1.1
                 },
                 lineStyle: {
@@ -200,7 +200,7 @@ const ForecastAreaChart = (props: IProps) => {
                     label: {
                         formatter: forecastChartLegends.lineMark,
                         show: true,
-                        color: lineMarkColor || 'black'
+                        color: lineMarkColor || '#000000'
                     },
                     animation: false,
                     data: [
@@ -238,7 +238,7 @@ const ForecastAreaChart = (props: IProps) => {
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontSize: yType === 'time' ? 10 : 11.5,
                     fontWeight: 400,
-                    color: 'black',
+                    color: '#000000',
                     distance: 1.1
                 },
                 lineStyle: {
@@ -271,7 +271,7 @@ const ForecastAreaChart = (props: IProps) => {
                 rotate: rotateLabel || 0,
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: fontLabelSize || 11.5,
-                color: 'black'
+                color: '#000000'
             }
         },
         yAxis: {
@@ -296,7 +296,7 @@ const ForecastAreaChart = (props: IProps) => {
                           ).toString(),
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: fontLabelSize || 11.5,
-                color: 'black'
+                color: '#000000'
             },
             axisTick: {
                 // @ts-ignore
@@ -308,7 +308,7 @@ const ForecastAreaChart = (props: IProps) => {
                 show: true,
                 onZero: true,
                 lineStyle: {
-                    color: 'black'
+                    color: '#000000'
                 }
             }
         },
@@ -320,7 +320,7 @@ const ForecastAreaChart = (props: IProps) => {
             itemGap: 30,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: 'black'
+                color: '#000000'
             }
         },
         dataZoom: scrollable,
@@ -333,7 +333,7 @@ const ForecastAreaChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: 'black'
+                color: '#000000'
             }
         },
         tooltip: tooltipProps && {
@@ -343,7 +343,7 @@ const ForecastAreaChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: 'white'
+                color: '#FFFFFF'
             },
             extraCssText: 'border: none; padding: 6px;'
         },

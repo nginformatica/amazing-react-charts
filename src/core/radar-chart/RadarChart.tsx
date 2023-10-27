@@ -59,7 +59,7 @@ const RadarChart = (props: RadarChartProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 13,
-                color: 'white'
+                color: '#FFFFFF'
             },
             extraCssText: 'border: none; padding: 6px;'
         },
@@ -69,7 +69,7 @@ const RadarChart = (props: RadarChartProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400 as const,
-                color: 'black'
+                color: '#000000'
             }
         },
         radar: {

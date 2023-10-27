@@ -235,7 +235,7 @@ const HorizontalBarChart = (props: IProps) => {
                     fontSize: showTickInfos ? 14 : 11,
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontWeight: 400 as const,
-                    color: 'black'
+                    color: '#000000'
                 }
             }
         ],
@@ -255,7 +255,7 @@ const HorizontalBarChart = (props: IProps) => {
                 show: showTickInfos || false,
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400 as const,
-                color: 'black'
+                color: '#000000'
             },
             splitLine: {
                 show: showTickInfos || false,
@@ -282,7 +282,7 @@ const HorizontalBarChart = (props: IProps) => {
                 margin: 12,
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: boldTickLabel ? (400 as const) : undefined,
-                color: 'black',
+                color: '#000000',
                 rich: Object.assign({}, ...richData)
             },
             axisTick: {
@@ -307,7 +307,7 @@ const HorizontalBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: titleFontSize || 16,
                 fontWeight: 400 as const,
-                color: 'black'
+                color: '#000000'
             }
         },
         tooltip: tooltipProps && {
@@ -323,7 +323,7 @@ const HorizontalBarChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: 'white'
+                color: '#FFFFFF'
             },
             extraCssText: 'border: none; padding: 6px;'
         },
