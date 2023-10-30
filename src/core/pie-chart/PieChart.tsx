@@ -158,6 +158,10 @@ export const PieChart = (props: IProps) => {
                 itemStyle: {
                     borderColor: pieceBorderColor || '#FFFFFF',
                     borderWidth: 1
+                },
+                emphasis: {
+                    scale: true,
+                    scaleSize: 3
                 }
             }
         ],
