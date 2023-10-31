@@ -1,5 +1,5 @@
 import React from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import DonutChart, { IDonutProps } from './DonutChart'
 import { argTypesDisableDonut } from '../disableControls'
 

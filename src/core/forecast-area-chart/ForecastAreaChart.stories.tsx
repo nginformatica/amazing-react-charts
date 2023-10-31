@@ -1,5 +1,5 @@
 import React from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import ForecastAreaChart, { IProps } from './ForecastAreaChart'
 import { argTypesDisableForecast } from '../disableControls'
 

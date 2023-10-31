@@ -1,5 +1,5 @@
 import React from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import HorizontalBarChart, { IProps, clickBar } from './HorizontalBarChart'
 import { argTypesDisableHorizontal } from '../disableControls'
 

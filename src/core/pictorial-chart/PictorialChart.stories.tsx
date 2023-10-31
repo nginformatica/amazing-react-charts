@@ -1,5 +1,5 @@
 import React from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import PictorialChart, { IProps } from './PictorialChart'
 import { argTypesDisablePictorial } from '../disableControls'
 import { PictorialWrapper } from '../../commonStyles'

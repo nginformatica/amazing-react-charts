@@ -1,5 +1,5 @@
 import React from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import StackedBarChart, { IProps } from './StackedBarChart'
 import { argTypesDisableStacked } from '../disableControls'
 

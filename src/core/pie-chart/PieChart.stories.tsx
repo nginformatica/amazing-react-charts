@@ -1,5 +1,5 @@
 import React from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import PieChart, { IProps } from './PieChart'
 import { argTypesDisablePie } from '../disableControls'
 import { ChartStorieWrapper } from '../../commonStyles'
