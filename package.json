@@ -1,70 +1,90 @@
 {
   "name": "amazing-react-charts",
-  "version": "0.7.10",
+  "version": "1.0.0",
   "description": "An amazing react charts package based in echarts",
   "license": "MIT",
   "main": "dist/index.js",
   "homepage": "https://amazing-react-charts.now.sh/",
-  "repository": "git@github.com:nginformatica//amazing-react-charts.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nginformatica/amazing-react-charts.git"
+  },
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
+  "resolutions": {
+    "jackspeak": "2.1.1"
+  },
   "scripts": {
-    "prepare": "install-peers",
-    "start": "docz dev",
-    "build:ts": "yarn tsc --emitDeclarationOnly",
-    "pre-build": "rm -Rf node_modules package-lock.json .docz/ dist/",
-    "build": "yarn pre-build && yarn && yarn build:ts && yarn build:babel",
-    "build:babel": "babel src --out-dir dist --extensions \".ts,.tsx\"",
-    "serve": "docz build && docz serve",
-    "pre-publish": "yarn lint --fix && yarn tsc",
-    "docz:build": "docz build",
-    "lint": "eslint 'src/**/*.ts?(x)'",
-    "prepack": "yarn build"
+    "start": "sb dev -p 6006",
+    "clean": "rm -rf ./dist/*",
+    "copy:package": "cp package.json dist/",
+    "publish:yalc": "cd dist/ && yalc publish && cd ..",
+    "build": "yarn clean && yarn build:ts && yarn build:babel",
+    "build:link": "yarn build && yarn copy:package && yarn publish:yalc",
+    "build:ts": "tsc --emitDeclarationOnly",
+    "build:babel": "babel src --out-dir dist --extensions '.ts,.tsx' --ignore '**/*.stories.tsx'",
+    "type-check": "tsc --noEmit",
+    "format": "prettier -w 'src/**/*.{ts,tsx}'",
+    "lint": "eslint -c .eslintrc.yaml 'src/**/*.{ts,tsx}'",
+    "lint:fix": "eslint -c .eslintrc.yaml --fix 'src/**/*.{ts,tsx}'",
+    "lint:quiet": "eslint --quiet .eslintrc.yaml 'src/**/*.{ts,tsx}'",
+    "predeploy": "yarn build && yarn storybook:build",
+    "docs:build": "storybook build -o docs",
+    "pre-publish": "yarn lint --fix && yarn type-check",
+    "deploy": "gh-pages -d docs",
+    "release": "yarn build && node pre-publish.js && npm publish ./dist --access public"
   },
   "dependencies": {
-    "date-fns": "2.4.1",
-    "echarts": "4.9.0",
-    "echarts-for-react": "2.0.16",
-    "ramda": "0.26.1"
+    "date-fns": "2.30.0",
+    "echarts": "5.4.3",
+    "echarts-for-react": "3.0.2",
+    "ramda": "0.29.1"
   },
   "devDependencies": {
-    "@babel/cli": "7.10.0",
-    "@babel/core": "7.9.0",
-    "@babel/plugin-transform-runtime": "7.9.0",
-    "@babel/preset-env": "7.9.0",
-    "@babel/preset-react": "7.9.0",
-    "@babel/preset-typescript": "7.9.0",
-    "@types/echarts": "4.6.1",
-    "@types/ramda": "0.26.36",
-    "@types/react": "16.9.14",
-    "@typescript-eslint/eslint-plugin": "4.29.0",
-    "@typescript-eslint/parser": "4.29.0",
+    "@babel/cli": "7.23.0",
+    "@babel/core": "7.23.2",
+    "@babel/plugin-transform-runtime": "7.23.2",
+    "@babel/preset-env": "7.23.2",
+    "@babel/preset-react": "7.22.15",
+    "@babel/preset-typescript": "7.23.2",
+    "@storybook/addon-essentials": "7.5.2",
+    "@storybook/addon-styling-webpack": "0.0.5",
+    "@storybook/blocks": "7.5.2",
+    "@storybook/react": "7.5.2",
+    "@storybook/react-webpack5": "7.5.2",
+    "@storybook/testing-library": "0.2.2",
+    "@types/ramda": "0.29.7",
+    "@types/react": "18.2.33",
+    "@typescript-eslint/eslint-plugin": "6.9.1",
+    "@typescript-eslint/parser": "6.9.1",
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-imports": "2.0.0",
-    "docz": "2.3.1",
-    "eslint": "7.1.0",
-    "eslint-plugin-import": "2.18.2",
-    "eslint-plugin-react": "7.20.0",
-    "install-peers-cli": "2.2.0",
-    "react-dom": "16.12.0",
-    "typescript": "4.3.5"
+    "eslint": "8.52.0",
+    "eslint-plugin-import": "2.29.0",
+    "eslint-plugin-react": "7.33.2",
+    "eslint-plugin-storybook": "0.6.15",
+    "prettier": "3.0.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "storybook": "7.5.2",
+    "styled-components": "6.1.0",
+    "typescript": "5.2.2",
+    "webpack": "5.89.0"
   },
   "peerDependencies": {
-    "react": "^17.0.1"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "react": "17.0.1",
+    "styled-components": "5.0.0"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "ignore": [
+      "!dist/",
+      "!/node_modules/"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   }
 }

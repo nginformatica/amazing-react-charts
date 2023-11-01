@@ -1,11 +1,11 @@
 .vscode/
-.docz/
 public/
 .idea/
 docs/
-doczrc.js
 .eslintignore
-.eslintrc.json
+.eslintrc.yaml
+.prettierignore
+.prettierrc.yaml
 tsconfig.json
 yarn.lock
 yarn-error.log
