@@ -1,21 +1,22 @@
 name: Deploy
 
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
         with:
-          node-version: [18.x]
+          node-version: 18.x
           registry-url: https://registry.npmjs.org/
       - run: |
           yarn
-          yarn docs:build
+          yarn docz:build
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1.6.1
         with:
@@ -23,4 +24,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_ACCESS_SECRET }}
           aws-region: "us-east-1"
       - name: Deploy to S3
-        run: aws s3 sync docs s3://amazing-react-charts.ngi.com.br --delete
+        run: aws s3 sync public s3://amazing-react-charts.ngi.com.br --delete
