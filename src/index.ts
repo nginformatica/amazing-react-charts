@@ -33,3 +33,11 @@ export { default as StackedBarChart } from './core/stacked-bar-chart/StackedBarC
 export {
     default as VerticalBarChart
 } from './core/vertical-bar-chart/VerticalBarChart'
+
+export {
+    default as PyramidBarChart
+} from './core/pyramid-bar-chart/PyramidBarChart'
+
+export {
+    default as DivergingStackedBarChart
+} from './core/diverging-stacked-bar-chart/DivergingStackedBarChart'
