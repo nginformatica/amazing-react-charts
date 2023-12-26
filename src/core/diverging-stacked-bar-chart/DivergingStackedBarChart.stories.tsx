@@ -67,7 +67,7 @@ export default meta
 
 type Story = StoryObj<typeof DivergingStackedBarChart>
 
-export const pyramidChart: Story = {
+export const divergingBarChart: Story = {
     render: (args: IProps) => {
         return <DivergingStackedBarChart {...args} />
     },
