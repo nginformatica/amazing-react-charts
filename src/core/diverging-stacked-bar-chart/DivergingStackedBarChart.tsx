@@ -265,7 +265,7 @@ const DivergingStackedBarChart = (props: IProps) => {
     }
 
     return (
-        <div>
+        <>
             <ReactEcharts
                 style={CHART_WIDTH}
                 opts={getWidthOpts(width || 'auto')}
@@ -277,7 +277,7 @@ const DivergingStackedBarChart = (props: IProps) => {
                     onClick={exportToCSV}
                 >csv</CsvDownloadButtonStyle>
             )}
-        </div>
+        </>
     )
 }
 

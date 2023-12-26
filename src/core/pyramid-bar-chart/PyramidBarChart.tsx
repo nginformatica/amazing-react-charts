@@ -281,7 +281,7 @@ const PyramidBarChart = (props: IProps) => {
     }
 
     return (
-        <div>
+        <>
             <ReactEcharts
                 style={CHART_WIDTH}
                 opts={getWidthOpts(width || 'auto')}
@@ -293,7 +293,7 @@ const PyramidBarChart = (props: IProps) => {
                     onClick={exportToCSV}
                 >csv</CsvDownloadButtonStyle>
             )}
-        </div>
+        </>
     )
 }
 

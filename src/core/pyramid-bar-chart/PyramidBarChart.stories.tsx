@@ -1,11 +1,11 @@
 import React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
-import DivergingStackedBarChart, { IProps } from './DivergingStackedBarChart'
+import PyramidBarChart, { IProps } from './PyramidBarChart'
 import { argTypesCommon } from '../disableControls'
 
 const meta: Meta = {
-    title: 'Charts/Diverging Stacked Bar Chart',
-    component: DivergingStackedBarChart,
+    title: 'Charts/Pyramid Bar Chart',
+    component: PyramidBarChart,
     argTypes: {
         ...argTypesCommon,
         title: {
@@ -65,44 +65,32 @@ const meta: Meta = {
 
 export default meta
 
-type Story = StoryObj<typeof DivergingStackedBarChart>
+type Story = StoryObj<typeof PyramidBarChart>
 
 export const pyramidChart: Story = {
     render: (args: IProps) => {
-        return <DivergingStackedBarChart {...args} />
+        return <PyramidBarChart {...args} />
     },
     args: {
         showCSVDownload: true,
-        title: 'Diverging Bar Chart',
+        title: 'Pyramid Bar Chart',
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
         data: {
             seriesData: [
                 {
-                    name: '25%',
-                    data: [-74, -39, -45, -45, -35, -34, -20],
-                    labelPosition: 'left',
-                    itemStyle: { color: 'lightBlue' }
-                },
-                {
-                    name: '50%',
-                    data: [50, 62, 35, 68, 52, 62, 30],
-                    itemStyle: { color: 'blue' },
-                    labelPosition: 'inside'
-                },
-                {
-                    name: '75%',
-                    data: [60, 40, 78, 75, 59, 38, 20],
-                    itemStyle: { color: 'violet' },
-                    labelPosition: 'inside'
-                },
-                {
-                    name: '100%',
-                    data: [150, 110, 110, 85, 70, 58, 25],
+                    name: 'Income',
+                    data: [103, 72, 58, 27, 19, 10, 5],
                     itemStyle: { color: 'purple' },
                     labelPosition: 'right'
+                },
+                {
+                    name: 'Expenses',
+                    data: [-103, -72, -58, -27, -19, -10, -5],
+                    itemStyle: { color: 'violet' },
+                    labelPosition: 'left'
                 }
             ],
-            categories: ['2012', '2013', '2014', '2015', '2016', '2017']
+            categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
         }
     }
 }
