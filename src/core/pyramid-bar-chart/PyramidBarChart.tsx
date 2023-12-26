@@ -14,14 +14,33 @@ import {
     getWidthOpts,
 } from '../../lib/auxiliarFunctions'
 import {
-    CHART_WIDTH, TOOLBOX_DEFAULT_PROPS, TOOLTIP_DEFAULT_PROPS,
+    CHART_WIDTH,
+    CsvDownloadButtonStyle,
+    TOOLBOX_DEFAULT_PROPS,
+    TOOLTIP_DEFAULT_PROPS,
 } from '../../commonStyles'
 
 export interface SeriesData {
-    image?: string
-    label?: string
-    name: string
     data: number[]
+    name: string
+    image?: string
+    itemStyle?: object
+    color?: string
+    label?: string
+    labelPosition?:
+    | 'inside'
+    | 'top'
+    | 'bottom'
+    | 'left'
+    | 'right'
+    | 'insideLeft'
+    | 'insideRight'
+    | 'insideTop'
+    | 'insideBottom'
+    | 'insideTopLeft'
+    | 'insideBottomLeft'
+    | 'insideTopRight'
+    | 'insideBottomRight'
 }
 
 export interface ChartData {
@@ -31,6 +50,7 @@ export interface ChartData {
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: ChartData
+    showCSVDownload?: boolean
     width?: WidthProps
     color?: string
     toolboxTooltip?: ToolboxEntryProps
@@ -55,6 +75,7 @@ const PyramidBarChart = (props: IProps) => {
     const {
         data,
         width,
+        grid: gridProps,
         legendType,
         showTickInfos,
         titleFontSize,
@@ -127,6 +148,53 @@ const PyramidBarChart = (props: IProps) => {
                 getDataView(toolboxTooltip.dataView.title)
         }
     }
+
+    const exportToCSV = () => {
+        const { seriesData, categories } = props.data;
+
+        let csvContent = 'data:text/csv;charset=utf-8,';
+        csvContent += 'Category,' +
+            seriesData.map(series => series.name).join(',') + '\r\n';
+
+
+        for (let i = 0; i < categories.length; i++) {
+            const row = [categories[i].toString()];
+            for (let j = 0; j < seriesData.length; j++) {
+                row.push(seriesData[j].data[i].toString());
+            }
+            csvContent += row.join(',') + '\r\n';
+        }
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', 'chart_data.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const series: object[] = data.seriesData.map((seriesItem) => ({
+        grid: {
+            containLabel: true,
+            ...gridProps
+        },
+        name: seriesItem.name,
+        type: 'bar',
+        stack: 'Total',
+        label: {
+            show: true,
+            position: seriesItem.labelPosition || 'inside'
+        },
+        emphasis: {
+            focus: 'series'
+        },
+        itemStyle: seriesItem.itemStyle || {
+            color: seriesItem.color || props.color || '#ececec',
+        },
+
+        data: seriesItem.data
+    }))
 
     const options: EChartsOption = {
         tooltip: {
@@ -202,48 +270,7 @@ const PyramidBarChart = (props: IProps) => {
                 data: data.categories
             }
         ],
-        series: [
-            {
-                name: data.seriesData[0].name,
-                type: 'bar',
-                stack: 'Total',
-                label: {
-                    show: true,
-                    position: 'right'
-                },
-                emphasis: {
-                    focus: 'series'
-                },
-                data: data.seriesData[0].data
-            },
-            {
-                name: data.seriesData[1].name,
-                type: 'bar',
-                stack: 'Total',
-                label: {
-                    show: true,
-                    formatter: function (value) {
-                        let numericValue: number
-
-                        if (typeof value.data === 'object' && 'value'
-                            in value.data && typeof value.data.value === 'number') {
-                            numericValue = value.data.value
-                        } else {
-                            numericValue = parseFloat(value.data as string) || 0
-                        }
-
-                        const absoluteValue = Math.abs(numericValue)
-
-                        return absoluteValue.toString()
-                    },
-                    position: 'left'
-                },
-                emphasis: {
-                    focus: 'series'
-                },
-                data: data.seriesData[1].data
-            }
-        ],
+        series: series,
         toolbox: {
             ...toolbox,
             tooltip: {
@@ -254,12 +281,19 @@ const PyramidBarChart = (props: IProps) => {
     }
 
     return (
-        <ReactEcharts
-            style={CHART_WIDTH}
-            opts={getWidthOpts(width || 'auto')}
-            onEvents={clickEvent}
-            option={options}
-        />
+        <div>
+            <ReactEcharts
+                style={CHART_WIDTH}
+                opts={getWidthOpts(width || 'auto')}
+                onEvents={clickEvent}
+                option={options}
+            />
+            {props.showCSVDownload && (
+                <CsvDownloadButtonStyle
+                    onClick={exportToCSV}
+                >csv</CsvDownloadButtonStyle>
+            )}
+        </div>
     )
 }
 
