@@ -55,35 +55,35 @@ export const ChartTitle = styled.h1`
 `
 
 export const CsvDownloadButtonStyle = styled.button`
-        font-weight: bold;
-        background: white;
-        text-transform: uppercase;
-        border: none;
-        width: 40px;
-        height: 20px;
-        cursor: pointer;
-        display: block;
-        position: absolute;
-        margin-top: -295px;
-        margin-left: 80%;
-          &:hover::after {
-    content: 'Save as CSV';
+    font-weight: bold;
+    background: white;
+    text-transform: uppercase;
+    border: none;
+    width: 40px;
+    height: 20px;
+    cursor: pointer;
+    display: block;
     position: absolute;
-    text-transform: none;
-    font-weight: lighter;
-    top: 123%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: black;
-    opacity: 55%;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    height: 19px;
-    white-space: nowrap;
-    text-align: center;
-    display: flex;
-    align-items: center;
+    margin-top: -295px;
+    margin-left: 80%;
+    &:hover::after {
+        content: 'Save as CSV';
+        position: absolute;
+        text-transform: none;
+        font-weight: lighter;
+        top: 123%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: black;
+        opacity: 55%;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        height: 19px;
+        white-space: nowrap;
+        text-align: center;
+        display: flex;
+        align-items: center;
   }
 `
