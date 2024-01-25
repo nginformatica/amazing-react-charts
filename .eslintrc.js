@@ -96,20 +96,20 @@ const rulesImport = {
                     position: 'before'
                 },
                 {
-                    pattern: '../styles',
+                    pattern: 'echarts-for-react',
+                    group: 'external',
+                    position: 'before'
+                },
+                {
+                    pattern: 'echarts',
+                    group: 'type',
+                    position: 'before'
+                },
+                {
+                    pattern: '../../commonStyles',
                     group: 'index',
                     position: 'after'
                 },
-                {
-                    pattern: './styles',
-                    group: 'index',
-                    position: 'after'
-                },
-                {
-                    pattern: '@/theme',
-                    group: 'index',
-                    position: 'after'
-                }
             ],
             pathGroupsExcludedImportTypes: ['react', 'react-dom'],
             'newlines-between': 'never',
