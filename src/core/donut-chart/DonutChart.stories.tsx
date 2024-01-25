@@ -1,7 +1,8 @@
 import React from 'react'
+import type { IDonutProps } from './DonutChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import DonutChart, { IDonutProps } from './DonutChart'
 import { argTypesDisableDonut } from '../disableControls'
+import DonutChart from './DonutChart'
 
 const meta: Meta<typeof DonutChart> = {
     title: 'Charts/Donut Chart',

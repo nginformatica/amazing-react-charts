@@ -1,8 +1,8 @@
 import React from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts'
+import type { LinesFormatterTooltip, WidthProps } from '../types'
 import { getWidthOpts, takeLabelComplement } from '../../lib/auxiliarFunctions'
-import { LinesFormatterTooltip, WidthProps } from '../types'
 import { CHART_WIDTH } from '../../commonStyles'
 
 export interface RadarChartProps {

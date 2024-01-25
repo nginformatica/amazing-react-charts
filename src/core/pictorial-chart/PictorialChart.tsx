@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
-import { IDefaultChartProps, PictorialEntryData } from '../types'
+import type { EChartsOption } from 'echarts'
+import type { IDefaultChartProps, PictorialEntryData } from '../types'
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: PictorialEntryData[]

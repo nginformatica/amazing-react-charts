@@ -1,7 +1,8 @@
 import React from 'react'
+import type { IProps } from './LineChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import LineChart, { IProps } from './LineChart'
 import { argTypesDisableLine } from '../disableControls'
+import LineChart from './LineChart'
 
 const meta: Meta<typeof LineChart> = {
     title: 'Charts/Line Chart',

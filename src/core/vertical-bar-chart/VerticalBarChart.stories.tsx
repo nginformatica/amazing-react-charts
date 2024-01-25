@@ -1,8 +1,8 @@
-/* eslint-disable no-nested-ternary */
 import React from 'react'
+import type { IProps } from './VerticalBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import VerticalBarChart, { IProps } from './VerticalBarChart'
 import { argTypesDisableVertical } from '../disableControls'
+import VerticalBarChart from './VerticalBarChart'
 
 const meta: Meta<typeof VerticalBarChart> = {
     title: 'Charts/Vertical Bar Chart',
@@ -396,10 +396,10 @@ export const verticalBarChartWithYComplement: Story = {
             value === 1
                 ? 'Saudável'
                 : value === 2
-                ? 'Alerta'
-                : value === 3
-                ? 'Crítico'
-                : '',
+                  ? 'Alerta'
+                  : value === 3
+                    ? 'Crítico'
+                    : '',
         xType: 'time',
         yType: 'value',
         dateFormat: 'yyyy-MM-dd',

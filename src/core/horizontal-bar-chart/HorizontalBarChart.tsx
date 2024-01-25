@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
-import {
+import { reverse } from 'ramda'
+import type { EChartsOption } from 'echarts'
+import type {
     IDefaultChartProps,
     EntryData,
     LabelProps,
@@ -20,7 +21,6 @@ import {
     changeSpaceForUnderline,
     formatLabelWithImage
 } from '../../lib/auxiliarFunctions'
-import { reverse } from 'ramda'
 import {
     CHART_WIDTH,
     TOOLBOX_DEFAULT_PROPS,
@@ -36,6 +36,7 @@ export interface IProps extends IDefaultChartProps {
 export const clickBar = (item: { data: { value: string } }) => {
     if (item && 'data' in item && 'value' in item.data) {
         const value = item.data.value
+
         window.alert(value)
     }
 }
@@ -340,8 +341,8 @@ const HorizontalBarChart = (props: IProps) => {
         <ReactEcharts
             style={CHART_WIDTH}
             opts={getWidthOpts(width || 'auto')}
-            onEvents={clickEvent}
             option={options}
+            onEvents={clickEvent}
         />
     )
 }

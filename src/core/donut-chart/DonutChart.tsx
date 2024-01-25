@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
 import { map, sum } from 'ramda'
-import { IProps } from '../pie-chart/PieChart'
-import { PieChartFormatter, PieDataLabel } from '../types'
+import type { EChartsOption } from 'echarts'
+import type { IProps } from '../pie-chart/PieChart'
+import type { PieChartFormatter, PieDataLabel } from '../types'
 import {
     getDataView,
     getSaveAsImage,
@@ -138,6 +138,7 @@ export const DonutChart = (props: IDonutProps) => {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 // there is no toolbox-tooltip-trigger type on EChartsOption
                 // if the trigger it's not set to none, the tooltip shows an arrow

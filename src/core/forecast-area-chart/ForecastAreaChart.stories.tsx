@@ -1,7 +1,8 @@
 import React from 'react'
+import type { IProps } from './ForecastAreaChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import ForecastAreaChart, { IProps } from './ForecastAreaChart'
 import { argTypesDisableForecast } from '../disableControls'
+import ForecastAreaChart from './ForecastAreaChart'
 
 const meta: Meta<typeof ForecastAreaChart> = {
     title: 'Charts/Forecast Area Chart',

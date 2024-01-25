@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
-import { IDefaultChartProps, Coordinates, WidthProps } from '../types'
 import { map } from 'ramda'
+import type { EChartsOption } from 'echarts'
+import type { IDefaultChartProps, Coordinates, WidthProps } from '../types'
 import {
     getSaveAsImageWithTitle,
     getSaveAsImage,

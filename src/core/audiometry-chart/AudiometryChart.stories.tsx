@@ -1,7 +1,8 @@
 import React from 'react'
+import type { IProps } from './AudiometryChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import AudiometryChart, { IProps } from './AudiometryChart'
 import { argTypesDisableAudiometry } from '../disableControls'
+import AudiometryChart from './AudiometryChart'
 
 const meta: Meta<typeof AudiometryChart> = {
     title: 'Charts/Audiometry Chart',

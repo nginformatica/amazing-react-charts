@@ -1,4 +1,4 @@
-import { EChartsOption } from 'echarts'
+import type { EChartsOption } from 'echarts'
 
 export type FormatterReturn = string[] | string | number
 

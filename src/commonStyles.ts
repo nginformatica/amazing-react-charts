@@ -85,5 +85,5 @@ export const CsvDownloadButtonStyle = styled.button`
         text-align: center;
         display: flex;
         align-items: center;
-  }
+    }
 `

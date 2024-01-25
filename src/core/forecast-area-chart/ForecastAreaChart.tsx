@@ -1,7 +1,17 @@
 import * as React from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
 import { take } from 'ramda'
+import type { EChartsOption } from 'echarts'
+import type {
+    IDefaultChartProps,
+    TDataZoomChartProps,
+    DataZoomEventProps,
+    EntryData,
+    TooltipEntryProps,
+    ZoomProps,
+    SeriesLabelFormatter,
+    TooltipFormatter
+} from '../types'
 import {
     formatTime,
     formatTooltipWithHours,
@@ -13,16 +23,6 @@ import {
     takeLabelComplement,
     getWidthOpts
 } from '../../lib/auxiliarFunctions'
-import {
-    IDefaultChartProps,
-    TDataZoomChartProps,
-    DataZoomEventProps,
-    EntryData,
-    TooltipEntryProps,
-    ZoomProps,
-    SeriesLabelFormatter,
-    TooltipFormatter
-} from '../types'
 import {
     CHART_HEIGHT,
     TOOLBOX_DEFAULT_PROPS,
@@ -101,9 +101,8 @@ const ForecastAreaChart = (props: IProps) => {
                     }
                 ]
             })
-        } else {
-            charts.setOption({ series: [{ label: { show: false } }] })
         }
+        charts.setOption({ series: [{ label: { show: false } }] })
     }
 
     const zoomEvent = { dataZoom: dinamicData }
@@ -206,6 +205,8 @@ const ForecastAreaChart = (props: IProps) => {
                     data: [
                         {
                             name: forecastChartLegends.lineMark || 'markLine',
+                            // eslint-disable-next-line @stylistic/max-len
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore TODO: remove this XGH
                             xAxis: xData[lineMarkValue - 1].toString()
                         }
@@ -299,6 +300,7 @@ const ForecastAreaChart = (props: IProps) => {
                 color: '#000000'
             },
             axisTick: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
@@ -362,8 +364,8 @@ const ForecastAreaChart = (props: IProps) => {
             notMerge
             style={CHART_HEIGHT}
             opts={getWidthOpts(width || 'auto')}
-            onEvents={zoomEvent}
             option={options}
+            onEvents={zoomEvent}
         />
     )
 }

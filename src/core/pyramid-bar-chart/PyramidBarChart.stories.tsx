@@ -1,7 +1,8 @@
 import React from 'react'
-import { Meta, StoryObj } from '@storybook/react'
-import PyramidBarChart, { IProps } from './PyramidBarChart'
+import type { IProps } from './PyramidBarChart'
+import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesCommon } from '../disableControls'
+import PyramidBarChart from './PyramidBarChart'
 
 const meta: Meta = {
     title: 'Charts/Pyramid Bar Chart',

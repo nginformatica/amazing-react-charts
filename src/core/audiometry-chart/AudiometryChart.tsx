@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
-import {
+import { filter, map, zipWith } from 'ramda'
+import type { EChartsOption } from 'echarts'
+import type {
     IDefaultChartProps,
     TAudiometryDataEntry,
     AudiometryDataTooltip,
@@ -9,7 +10,6 @@ import {
     TSimpleLegend,
     EChartSeries
 } from '../types'
-import { filter, map, zipWith } from 'ramda'
 import {
     getDataView,
     getSaveAsImage,
@@ -88,23 +88,22 @@ const AudiometryChart = (props: IProps) => {
             }, items)
 
             return generateTooltip.join(' ')
-        } else {
-            // TODO: remove this default tooltip to turn it generic
-            const item =
-                items.length > 0 ? items[0].data : { value: 0, boneValue: 0 }
-
-            const result =
-                item.value || item.value === 0
-                    ? `Limiar Aéreo: ${item.value} dB <br>`
-                    : ''
-
-            const boneResult =
-                item.boneValue || item.boneValue === 0
-                    ? `Limiar Ósseo: ${item.boneValue} dB`
-                    : ''
-
-            return result + boneResult
         }
+        // TODO: remove this default tooltip to turn it generic
+        const item =
+            items.length > 0 ? items[0].data : { value: 0, boneValue: 0 }
+
+        const result =
+            item.value || item.value === 0
+                ? `Limiar Aéreo: ${item.value} dB <br>`
+                : ''
+
+        const boneResult =
+            item.boneValue || item.boneValue === 0
+                ? `Limiar Ósseo: ${item.boneValue} dB`
+                : ''
+
+        return result + boneResult
     }
 
     const takeYData = (item: TAudiometryDataEntry[]) =>
@@ -175,7 +174,7 @@ const AudiometryChart = (props: IProps) => {
     }))
 
     const removedUndefinedMarks = map(
-        item => filter(serie => serie?.value !== null, item.data),
+        item => filter(serie => serie.value !== null, item.data),
         seriesMarks
     )
 
@@ -185,7 +184,7 @@ const AudiometryChart = (props: IProps) => {
             type: 'scatter',
             data: item
         }),
-        removedUndefinedMarks.filter(item => item?.length > 0)
+        removedUndefinedMarks.filter(item => item.length > 0)
     )
 
     const seriesData = data.map(item => ({
@@ -230,7 +229,7 @@ const AudiometryChart = (props: IProps) => {
         (item, index) => ({
             ...item,
             name:
-                legends?.length > 0
+                legends.length > 0
                     ? legends[index]?.name
                     : 'audiometry-' + index
         })
@@ -246,6 +245,7 @@ const AudiometryChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
             },
             splitLine: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
@@ -285,6 +285,7 @@ const AudiometryChart = (props: IProps) => {
                 }
             },
             axisTick: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
@@ -315,7 +316,7 @@ const AudiometryChart = (props: IProps) => {
             ...grid,
             show: false
         },
-        legend: legends?.length ? legendProps : undefined,
+        legend: legends.length ? legendProps : undefined,
         tooltip,
         toolbox: {
             ...toolbox,

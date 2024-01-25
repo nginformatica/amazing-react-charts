@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
-import {
+import type { EChartsOption } from 'echarts'
+import type {
     IDefaultChartProps,
     ToolboxEntryProps,
-    WidthProps,
+    WidthProps
 } from '../types'
 import {
     changeSpaceForUnderline,
@@ -12,13 +12,13 @@ import {
     getDataView,
     getSaveAsImage,
     getSaveAsImageWithTitle,
-    getWidthOpts,
+    getWidthOpts
 } from '../../lib/auxiliarFunctions'
 import {
     CHART_WIDTH,
     CsvDownloadButtonStyle,
     TOOLBOX_DEFAULT_PROPS,
-    TOOLTIP_DEFAULT_PROPS,
+    TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
 
 export interface SeriesData {
@@ -29,19 +29,19 @@ export interface SeriesData {
     color?: string
     label?: string
     labelPosition?:
-    | 'inside'
-    | 'top'
-    | 'bottom'
-    | 'left'
-    | 'right'
-    | 'insideLeft'
-    | 'insideRight'
-    | 'insideTop'
-    | 'insideBottom'
-    | 'insideTopLeft'
-    | 'insideBottomLeft'
-    | 'insideTopRight'
-    | 'insideBottomRight'
+        | 'inside'
+        | 'top'
+        | 'bottom'
+        | 'left'
+        | 'right'
+        | 'insideLeft'
+        | 'insideRight'
+        | 'insideTop'
+        | 'insideBottom'
+        | 'insideTopLeft'
+        | 'insideBottomLeft'
+        | 'insideTopRight'
+        | 'insideBottomRight'
 }
 
 export interface ChartData {
@@ -68,6 +68,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
 export const clickBar = (item: { data: { value: string } }) => {
     if (item && 'data' in item && 'value' in item.data) {
         const value = item.data.value
+
         window.alert(value)
     }
 }
@@ -127,16 +128,16 @@ const DivergingStackedBarChart = (props: IProps) => {
 
     const myTool = toolboxTooltip &&
         toolboxTooltip.saveAsImageWithTitle && {
-        myTool: getSaveAsImageWithTitle(
-            toolboxTooltip.saveAsImageWithTitle.title,
-            handleShowTitle
-        )
-    }
+            myTool: getSaveAsImageWithTitle(
+                toolboxTooltip.saveAsImageWithTitle.title,
+                handleShowTitle
+            )
+        }
 
     const saveAsImage = toolboxTooltip &&
         toolboxTooltip.saveAsImage && {
-        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
-    }
+            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
+        }
 
     const toolbox: object = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
@@ -151,31 +152,35 @@ const DivergingStackedBarChart = (props: IProps) => {
     }
 
     const exportToCSV = () => {
-        const { seriesData, categories } = props.data;
+        const { seriesData, categories } = props.data
 
-        let csvContent = 'data:text/csv;charset=utf-8,';
-        csvContent += 'Category,' +
-            seriesData.map(series => series.name).join(',') + '\r\n';
+        let csvContent = 'data:text/csv;charset=utf-8,'
 
+        csvContent +=
+            'Category,' +
+            seriesData.map(series => series.name).join(',') +
+            '\r\n'
 
         for (let i = 0; i < categories.length; i++) {
-            const row = [categories[i].toString()];
+            const row = [categories[i].toString()]
+
             for (let j = 0; j < seriesData.length; j++) {
-                row.push(seriesData[j].data[i].toString());
+                row.push(seriesData[j].data[i].toString())
             }
-            csvContent += row.join(',') + '\r\n';
+            csvContent += row.join(',') + '\r\n'
         }
 
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement('a');
-        link.setAttribute('href', encodedUri);
-        link.setAttribute('download', 'chart_data.csv');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
+        const encodedUri = encodeURI(csvContent)
+        const link = document.createElement('a')
 
-    const series: object[] = data.seriesData.map((seriesItem) => ({
+        link.setAttribute('href', encodedUri)
+        link.setAttribute('download', 'chart_data.csv')
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+    }
+
+    const series: object[] = data.seriesData.map(seriesItem => ({
         grid: {
             containLabel: true,
             ...gridProps
@@ -191,7 +196,7 @@ const DivergingStackedBarChart = (props: IProps) => {
             focus: 'series'
         },
         itemStyle: seriesItem.itemStyle || {
-            color: seriesItem.color || props.color || '#ececec',
+            color: seriesItem.color || props.color || '#ececec'
         },
         data: seriesItem.data
     }))
@@ -211,7 +216,7 @@ const DivergingStackedBarChart = (props: IProps) => {
             extraCssText: 'border: none; padding: 6px;'
         },
         legend: {
-            data: data.seriesData.map((item) => item.name)
+            data: data.seriesData.map(item => item.name)
         },
         title: {
             left: legendType === 'scroll' ? '0.1%' : '4%',
@@ -259,7 +264,7 @@ const DivergingStackedBarChart = (props: IProps) => {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
-                formatter: (param) => `<div>${param.title}</div>`
+                formatter: param => `<div>${param.title}</div>`
             }
         }
     }
@@ -269,13 +274,13 @@ const DivergingStackedBarChart = (props: IProps) => {
             <ReactEcharts
                 style={CHART_WIDTH}
                 opts={getWidthOpts(width || 'auto')}
-                onEvents={clickEvent}
                 option={options}
+                onEvents={clickEvent}
             />
             {props.showCSVDownload && (
-                <CsvDownloadButtonStyle
-                    onClick={exportToCSV}
-                >csv</CsvDownloadButtonStyle>
+                <CsvDownloadButtonStyle onClick={exportToCSV}>
+                    csv
+                </CsvDownloadButtonStyle>
             )}
         </>
     )

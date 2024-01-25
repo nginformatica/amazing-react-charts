@@ -1,7 +1,8 @@
 import React from 'react'
+import type { IProps } from './PieChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import PieChart, { IProps } from './PieChart'
 import { argTypesDisablePie } from '../disableControls'
+import PieChart from './PieChart'
 import { ChartStorieWrapper } from '../../commonStyles'
 
 const meta: Meta<typeof PieChart> = {

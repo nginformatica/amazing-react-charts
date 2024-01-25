@@ -1,7 +1,8 @@
 import React from 'react'
+import type { IProps } from './CoordinateLineChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import CoordinateLineChart, { IProps } from './CoordinateLineChart'
 import { argTypesDisableCoordinate } from '../disableControls'
+import CoordinateLineChart from './CoordinateLineChart'
 
 const meta: Meta<typeof CoordinateLineChart> = {
     title: 'Charts/Coordinate Line Chart',
