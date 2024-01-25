@@ -1,4 +1,6 @@
-import ptBR, { format, parse } from 'date-fns'
+/* eslint-disable import/no-duplicates */
+import { format, parse } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import type {
     Complement,
     ConnectedDataURL,
