@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { EChartsOption } from 'echarts'
 import ReactCharts from 'echarts-for-react'
-import {
+import type { EChartsOption } from 'echarts'
+import type {
     IDefaultChartProps,
     EntryData,
     EntryDataLine,
@@ -230,6 +230,7 @@ const LineChart = (props: IProps) => {
                 color: '#000000'
             },
             axisTick: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,

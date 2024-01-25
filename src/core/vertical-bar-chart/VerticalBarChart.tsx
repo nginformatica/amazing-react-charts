@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
-import {
+import type { EChartsOption } from 'echarts'
+import type {
     IDefaultChartProps,
     TDataZoomChartProps,
     DataZoomEventProps,
@@ -298,6 +298,7 @@ const VerticalBarChart = (props: IProps) => {
             data: xData as string[],
             splitLine: {
                 show: true,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
@@ -356,6 +357,7 @@ const VerticalBarChart = (props: IProps) => {
             },
             axisTick: {
                 show: true,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true
@@ -402,8 +404,8 @@ const VerticalBarChart = (props: IProps) => {
             notMerge
             style={CHART_WIDTH}
             opts={getWidthOpts(width || 'auto')}
-            onEvents={events}
             option={options}
+            onEvents={events}
         />
     )
 }

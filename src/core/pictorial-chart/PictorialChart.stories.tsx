@@ -1,7 +1,8 @@
 import React from 'react'
+import type { IProps } from './PictorialChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import PictorialChart, { IProps } from './PictorialChart'
 import { argTypesDisablePictorial } from '../disableControls'
+import PictorialChart from './PictorialChart'
 import { PictorialWrapper } from '../../commonStyles'
 
 const meta: Meta<typeof PictorialChart> = {

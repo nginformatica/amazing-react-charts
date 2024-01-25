@@ -1,7 +1,8 @@
 import React from 'react'
-import { Meta, StoryObj } from '@storybook/react'
-import DivergingStackedBarChart, { IProps } from './DivergingStackedBarChart'
+import type { IProps } from './DivergingStackedBarChart'
+import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesCommon } from '../disableControls'
+import DivergingStackedBarChart from './DivergingStackedBarChart'
 
 const meta: Meta = {
     title: 'Charts/Diverging Stacked Bar Chart',

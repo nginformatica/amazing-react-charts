@@ -1,8 +1,8 @@
 import React from 'react'
+import type { IDefaultChartProps } from '../types'
 import type { Meta, StoryObj } from '@storybook/react'
-import { IDefaultChartProps } from '../types'
-import AreaChart from './AreaChart'
 import { argTypesDisableArea } from '../disableControls'
+import AreaChart from './AreaChart'
 
 const meta: Meta<typeof AreaChart> = {
     title: 'Charts/Area Chart',

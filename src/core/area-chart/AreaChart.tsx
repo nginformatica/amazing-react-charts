@@ -1,6 +1,15 @@
 import React from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts'
+import type {
+    IDefaultChartProps,
+    TDataZoomChartProps,
+    DataZoomEventProps,
+    EntryData,
+    ZoomProps,
+    AreaDataTooltip,
+    SeriesLabelFormatter
+} from '../types'
 import {
     fixedDomain,
     formatTime,
@@ -13,15 +22,6 @@ import {
     timeConvert,
     takeLabelComplement
 } from '../../lib/auxiliarFunctions'
-import {
-    IDefaultChartProps,
-    TDataZoomChartProps,
-    DataZoomEventProps,
-    EntryData,
-    ZoomProps,
-    AreaDataTooltip,
-    SeriesLabelFormatter
-} from '../types'
 import {
     CHART_HEIGHT,
     STRAIGHT_LINE_ICON,
@@ -92,9 +92,8 @@ const AreaChart = (props: IDefaultChartProps) => {
                     }
                 ]
             })
-        } else {
-            charts.setOption({ series: [{ label: { show: false } }] })
         }
+        charts.setOption({ series: [{ label: { show: false } }] })
     }
 
     const formatSingleTooltip = (chartValues: AreaDataTooltip[]) => {
@@ -260,6 +259,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 show: true
             },
             axisTick: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
@@ -317,8 +317,8 @@ const AreaChart = (props: IDefaultChartProps) => {
             notMerge
             style={CHART_HEIGHT}
             opts={WIDTH_OPTS}
-            onEvents={zoomEvent}
             option={options}
+            onEvents={zoomEvent}
         />
     )
 }

@@ -1,7 +1,8 @@
 import React from 'react'
+import type { MultipurposeChartProps } from './MultipurposeChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import MultipurposeChart, { MultipurposeChartProps } from './MultipurposeChart'
 import { argTypesDisableMultipurpose } from '../disableControls'
+import MultipurposeChart from './MultipurposeChart'
 
 const meta: Meta<typeof MultipurposeChart> = {
     title: 'Charts/Multipurpose Chart',

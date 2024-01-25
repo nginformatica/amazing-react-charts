@@ -1,7 +1,8 @@
 import React from 'react'
+import type { IProps } from './HorizontalBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import HorizontalBarChart, { IProps, clickBar } from './HorizontalBarChart'
 import { argTypesDisableHorizontal } from '../disableControls'
+import HorizontalBarChart, { clickBar } from './HorizontalBarChart'
 
 const meta: Meta<typeof HorizontalBarChart> = {
     title: 'Charts/Horizontal Bar Chart',

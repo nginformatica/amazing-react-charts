@@ -1,7 +1,8 @@
 import React from 'react'
+import type { RadarChartProps } from './RadarChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import RadarChart, { RadarChartProps } from './RadarChart'
 import { argTypesDisableRadar } from '../disableControls'
+import RadarChart from './RadarChart'
 
 const meta: Meta<typeof RadarChart> = {
     title: 'Charts/Radar Chart',

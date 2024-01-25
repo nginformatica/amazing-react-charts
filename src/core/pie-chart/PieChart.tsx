@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
 import { map, sum } from 'ramda'
-import {
+import type { EChartsOption } from 'echarts'
+import type {
     IDefaultChartProps,
     PieChartData,
     PieChartFormatter,
@@ -192,6 +192,7 @@ export const PieChart = (props: IProps) => {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 // there is no toolbox-tooltip-trigger type on EChartsOption
                 // if the trigger it's not set to none, the tooltip shows an arrow

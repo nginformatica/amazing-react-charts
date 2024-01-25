@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
 import { concat, move } from 'ramda'
-import {
+import type { EChartsOption } from 'echarts'
+import type {
     IDefaultChartProps,
     DataTooltip,
     TDataZoomChartProps,
@@ -157,7 +157,7 @@ const StackedBarChart = (props: IProps) => {
         // This function is only used to show auxiliary values on tooltip.
         // We need to improve this component to allow users use it better.
         const getAuxToolTip = (dataIndex: number) =>
-            auxData?.length && auxData[dataIndex].result >= 0
+            auxData.length && auxData[dataIndex].result >= 0
                 ? generateAuxMessage(
                       auxResult,
                       auxData[dataIndex].result,
@@ -405,6 +405,7 @@ const StackedBarChart = (props: IProps) => {
                 interval: xData.length > 20 ? 'auto' : 0
             },
             splitLine: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
@@ -440,6 +441,7 @@ const StackedBarChart = (props: IProps) => {
                     show: true
                 },
                 splitLine: {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     // https://github.com/apache/incubator-echarts/issues/13618
                     alignWithLabel: true,
@@ -492,8 +494,8 @@ const StackedBarChart = (props: IProps) => {
             notMerge
             style={CHART_WIDTH}
             opts={getWidthOpts(width || 'auto')}
-            onEvents={zoomEvent}
             option={options}
+            onEvents={zoomEvent}
         />
     )
 }

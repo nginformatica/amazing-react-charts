@@ -1,7 +1,8 @@
 import React from 'react'
+import type { IProps } from './StackedBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import StackedBarChart, { IProps } from './StackedBarChart'
 import { argTypesDisableStacked } from '../disableControls'
+import StackedBarChart from './StackedBarChart'
 
 const meta: Meta<typeof StackedBarChart> = {
     title: 'Charts/Stacked Bar Chart',

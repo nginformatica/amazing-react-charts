@@ -1,14 +1,19 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import React, { useRef } from 'react'
-import { EChartsOption } from 'echarts'
 import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts'
+import type {
+    IDefaultChartProps,
+    LinesFormatterTooltip,
+    WidthProps
+} from '../types'
 import {
     formatTime,
     getWidthOpts,
     takeLabelComplement,
     timeConvert
 } from '../../lib/auxiliarFunctions'
-import { IDefaultChartProps, LinesFormatterTooltip, WidthProps } from '../types'
 import { CHART_WIDTH } from '../../commonStyles'
 
 export interface MultipurposeChartProps {
@@ -34,6 +39,7 @@ const isDarkColor = (color: string) => {
     const b = (rgb >> 0) & 0xff
 
     const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b
+
     return luma < 40
 }
 
@@ -225,11 +231,13 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             }
 
             const newOptions = { ...actualOptions }
+
             newOptions.toolbox = options.toolbox
             const isVertical =
                 actualGraph.current === 'bar' && !isStacked.current
             const isLine = actualGraph.current === 'line'
             const originalSeries = options.series
+
             newOptions.series.forEach((it, i) => {
                 it.label.rotate = isVertical ? 90 : 0
                 it.label.align = isVertical ? 'left' : 'center'
@@ -271,6 +279,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
 
             const originalSeries = options.series
             const isLine = actualGraph.current === 'line'
+
             actualOptions.series.forEach((it, i) => {
                 it.label.rich.name.color = isLine
                     ? '#000000'

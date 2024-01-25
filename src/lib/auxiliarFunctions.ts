@@ -1,6 +1,5 @@
-import { format, parse } from 'date-fns'
-import ptBR from 'date-fns/locale/pt-BR'
-import {
+import ptBR, { format, parse } from 'date-fns'
+import type {
     Complement,
     ConnectedDataURL,
     DataTooltip,
@@ -23,27 +22,6 @@ export const ICON_STYLE = {
     borderWidth: 0.1
 }
 
-export const takeLabelComplement = (
-    item: number,
-    yComplement: Complement,
-    typeChart?: TypeChart
-) => {
-    const getComplement = (complement?: string) =>
-        complement ? formatValueAxis(item, complement, typeChart) : item
-
-    return typeof yComplement === 'function'
-        ? yComplement(item)
-        : getComplement(yComplement)
-}
-
-export const takeDonutChartComplement = (
-    item: number,
-    complement?: Complement
-) =>
-    item === 0 && typeof complement === 'function'
-        ? ''
-        : `${item}  ${complement ? `(${complement})` : ''}`
-
 export const timeConvert = (value: number) => {
     const hrs = Math.floor(value)
     const min = Math.round((value - hrs) * 60)
@@ -56,26 +34,6 @@ export const timeConvert = (value: number) => {
 
 export const getPercentage = (value: number, valueTotal: number) =>
     value !== 0 ? (value * (100 / valueTotal)).toFixed(2) : '0'
-
-export const generateAuxMessage = (
-    label: string,
-    result: number,
-    complement: Complement
-) => {
-    const value = typeof complement === 'function' ? complement(result) : result
-
-    return `<span style="margin-left: 15.2px;"></span>${label}: ${value}<br>`
-}
-
-export const monuntTimeMessage = (item: DataTooltip, stackedValues: number) => {
-    const time = timeConvert(Number(item.value))
-    const percent =
-        item.value !== 0
-            ? getPercentage(Number(item.value), stackedValues)
-            : '0'
-
-    return item.seriesName + ': ' + time + ' (' + percent + '%) <br>'
-}
 
 // These 3 next functions are used on the mountMessage function.
 const formatValueAxis = (
@@ -119,6 +77,47 @@ const moneyWithPercentage = (
         : complement(value) + '<br>'
 }
 
+export const takeLabelComplement = (
+    item: number,
+    yComplement: Complement,
+    typeChart?: TypeChart
+) => {
+    const getComplement = (complement?: string) =>
+        complement ? formatValueAxis(item, complement, typeChart) : item
+
+    return typeof yComplement === 'function'
+        ? yComplement(item)
+        : getComplement(yComplement)
+}
+
+export const takeDonutChartComplement = (
+    item: number,
+    complement?: Complement
+) =>
+    item === 0 && typeof complement === 'function'
+        ? ''
+        : `${item}  ${complement ? `(${complement})` : ''}`
+
+export const generateAuxMessage = (
+    label: string,
+    result: number,
+    complement: Complement
+) => {
+    const value = typeof complement === 'function' ? complement(result) : result
+
+    return `<span style="margin-left: 15.2px;"></span>${label}: ${value}<br>`
+}
+
+export const monuntTimeMessage = (item: DataTooltip, stackedValues: number) => {
+    const time = timeConvert(Number(item.value))
+    const percent =
+        item.value !== 0
+            ? getPercentage(Number(item.value), stackedValues)
+            : '0'
+
+    return item.seriesName + ': ' + time + ' (' + percent + '%) <br>'
+}
+
 // Specific function only used in the stacked bar chart tooltip
 export const mountMessage = (
     value: DataTooltip,
@@ -149,6 +148,14 @@ export const mountMessage = (
     return typeof complement === 'function' && value.seriesType !== 'line'
         ? seriesLabel + ': ' + moneyValue
         : isPercentage
+}
+
+export const getDateFormatType = (dateFormat: string, baseFormat?: string) => {
+    if (dateFormat === 'yyyy-MM') {
+        return baseFormat ? baseFormat : 'MMM/yy'
+    }
+
+    return dateFormat
 }
 
 export const toDate = (text: string, format?: string) =>
@@ -286,6 +293,7 @@ export const getSaveAsImageWithTitle = (
         })
 
         const a = document.createElement('a')
+
         a.download = title + '.jpeg'
         a.target = '_blank'
         a.href = url
@@ -307,12 +315,14 @@ export const getWidthOpts = (width: WidthProps) => ({ width })
 export const convertImageToBase64FromUrl = (imgUrl: string) => {
     return new Promise(resolve => {
         const img = new Image()
+
         img.src = imgUrl
         img.setAttribute('crossOrigin', 'anonymous')
 
         img.onload = function () {
             const canvas = document.createElement('canvas')
             const ctx = canvas.getContext('2d')
+
             canvas.width = 40
             canvas.height = 40
 
@@ -324,6 +334,7 @@ export const convertImageToBase64FromUrl = (imgUrl: string) => {
             ctx.restore()
 
             const dataUrl = ctx.canvas.toDataURL('image/png')
+
             resolve(dataUrl)
         }
     })
@@ -337,12 +348,4 @@ export const formatLabelWithImage = (text: string) => {
         '{value|' + text + '} {' + changeSpaceForUnderline(text) + '| }'
 
     return textFormatted
-}
-
-export const getDateFormatType = (dateFormat: string, baseFormat?: string) => {
-    if (dateFormat === 'yyyy-MM') {
-        return baseFormat ? baseFormat : 'MMM/yy'
-    }
-
-    return dateFormat
 }
