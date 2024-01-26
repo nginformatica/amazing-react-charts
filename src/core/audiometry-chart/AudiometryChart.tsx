@@ -174,7 +174,7 @@ const AudiometryChart = (props: IProps) => {
     }))
 
     const removedUndefinedMarks = map(
-        item => filter(serie => serie.value !== null, item.data),
+        item => filter(serie => serie?.value !== null, item.data),
         seriesMarks
     )
 
@@ -184,7 +184,7 @@ const AudiometryChart = (props: IProps) => {
             type: 'scatter',
             data: item
         }),
-        removedUndefinedMarks.filter(item => item.length > 0)
+        removedUndefinedMarks.filter(item => item?.length > 0)
     )
 
     const seriesData = data.map(item => ({
@@ -229,7 +229,7 @@ const AudiometryChart = (props: IProps) => {
         (item, index) => ({
             ...item,
             name:
-                legends.length > 0
+                legends?.length > 0
                     ? legends[index]?.name
                     : 'audiometry-' + index
         })
@@ -316,7 +316,7 @@ const AudiometryChart = (props: IProps) => {
             ...grid,
             show: false
         },
-        legend: legends.length ? legendProps : undefined,
+        legend: legends?.length ? legendProps : undefined,
         tooltip,
         toolbox: {
             ...toolbox,
