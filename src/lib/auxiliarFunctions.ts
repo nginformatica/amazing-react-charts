@@ -1,4 +1,5 @@
 /* eslint-disable import/no-duplicates */
+// import ptBR, { format, parse } from 'date-fns'
 import { format, parse } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import type {
@@ -160,11 +161,11 @@ export const getDateFormatType = (dateFormat: string, baseFormat?: string) => {
     return dateFormat
 }
 
+export const formatTime = (text: string, dateFormat = 'dd MMM') =>
+    format(new Date(text + 'T00:00:00'), dateFormat, { locale: ptBR })
+
 export const toDate = (text: string, format?: string) =>
     parse(text, format ? format : 'yyyy-MM-dd', new Date())
-
-export const formatTime = (text: string, dateFormat = 'dd MMM') =>
-    format(new Date(text), dateFormat, { locale: ptBR })
 
 export const formatTooltip = (text: string, dateFormat = 'dd MMM') =>
     format(new Date(text), getDateFormatType(dateFormat, 'dd/MM/yyyy'), {
