@@ -41,7 +41,7 @@ export const multipurposeChart: Story = {
         return <MultipurposeChart {...args} />
     },
     args: {
-        yComplement: value => `R$ ${value},00`,
+        yComplement: (value: string) => `R$ ${value},00`,
         xData: ['2012', '2013', '2014', '2015', '2016'],
         series: [
             {

@@ -387,19 +387,25 @@ export const verticalBarChartWithTimeFormat: Story = {
     }
 }
 
+const yComplement = (value: number) => {
+    switch (value) {
+        case 1:
+            return 'Saudável'
+        case 2:
+            return 'Alerta'
+        case 3:
+            return 'Crítico'
+        default:
+            return ''
+    }
+}
+
 export const verticalBarChartWithYComplement: Story = {
     render: (args: IProps) => {
         return <VerticalBarChart {...args} />
     },
     args: {
-        yComplement: value =>
-            value === 1
-                ? 'Saudável'
-                : value === 2
-                  ? 'Alerta'
-                  : value === 3
-                    ? 'Crítico'
-                    : '',
+        yComplement: yComplement,
         xType: 'time',
         yType: 'value',
         dateFormat: 'yyyy-MM-dd',

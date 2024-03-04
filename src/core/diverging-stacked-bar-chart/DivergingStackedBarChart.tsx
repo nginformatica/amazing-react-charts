@@ -49,6 +49,15 @@ export interface ChartData {
     categories: string[]
 }
 
+interface RichDataItem {
+    [key: string]: {
+        height: number
+        backgroundColor: {
+            image: unknown
+        }
+    }
+}
+
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     showCSVDownload?: boolean
     data: ChartData
@@ -66,7 +75,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
 }
 
 export const clickBar = (item: { data: { value: string } }) => {
-    if (item && 'data' in item && 'value' in item.data) {
+    if ('data' in item && 'value' in item.data) {
         const value = item.data.value
 
         window.alert(value)
@@ -88,11 +97,11 @@ const DivergingStackedBarChart = (props: IProps) => {
     } = props
 
     const [title, setTitle] = useState(false)
-    const [richData, setRichDate] = useState([])
+    const [richData, setRichDate] = useState<RichDataItem[]>([])
     const clickEvent = { click: onClickBar }
 
     useEffect(() => {
-        if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
+        if (toolboxTooltip?.saveAsImageWithTitle) {
             setTitle(false)
         } else {
             setTitle(true)
@@ -104,7 +113,7 @@ const DivergingStackedBarChart = (props: IProps) => {
             if (!item.image) return {}
 
             const rich = {
-                [changeSpaceForUnderline(item.label)]: {
+                [changeSpaceForUnderline(item.label ?? '')]: {
                     height: 35,
                     backgroundColor: {
                         image: await convertImageToBase64FromUrl(item.image)
@@ -114,32 +123,33 @@ const DivergingStackedBarChart = (props: IProps) => {
 
             if (
                 !richData.find(
-                    itemRich => changeSpaceForUnderline(item.label) in itemRich
+                    itemRich =>
+                        changeSpaceForUnderline(item.label ?? '') in itemRich
                 )
             ) {
                 setRichDate(state => [...state, rich])
             }
         })
+        // it doesn't need the missing dependency
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [richData])
 
     const handleShowTitle = (show: boolean) => {
         setTitle(show)
     }
 
-    const myTool = toolboxTooltip &&
-        toolboxTooltip.saveAsImageWithTitle && {
-            myTool: getSaveAsImageWithTitle(
-                toolboxTooltip.saveAsImageWithTitle.title,
-                handleShowTitle
-            )
-        }
+    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
+        myTool: getSaveAsImageWithTitle(
+            toolboxTooltip.saveAsImageWithTitle.title ?? '',
+            handleShowTitle
+        )
+    }
 
-    const saveAsImage = toolboxTooltip &&
-        toolboxTooltip.saveAsImage && {
-            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
-        }
+    const saveAsImage = toolboxTooltip?.saveAsImage && {
+        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
+    }
 
-    const toolbox: object = toolboxTooltip && {
+    const toolbox: object | undefined = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         right: marginRightToolbox || '8.7%',
         feature: {
@@ -147,7 +157,7 @@ const DivergingStackedBarChart = (props: IProps) => {
             ...saveAsImage,
             dataView:
                 toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title)
+                getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
@@ -220,7 +230,8 @@ const DivergingStackedBarChart = (props: IProps) => {
         },
         title: {
             left: legendType === 'scroll' ? '0.1%' : '4%',
-            top: legendType === 'scroll' && '5.7%',
+            // top: legendType === 'scroll' && '5.7%',
+            top: legendType,
             show: title,
             text: titleProps,
             textAlign: 'left',
@@ -275,6 +286,8 @@ const DivergingStackedBarChart = (props: IProps) => {
                 style={CHART_WIDTH}
                 opts={getWidthOpts(width || 'auto')}
                 option={options}
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 onEvents={clickEvent}
             />
             {props.showCSVDownload && (

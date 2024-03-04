@@ -33,8 +33,17 @@ export interface IProps extends IDefaultChartProps {
     boldTickLabel?: boolean
 }
 
+interface RichDataItem {
+    [key: string]: {
+        height: number
+        backgroundColor: {
+            image: unknown
+        }
+    }
+}
+
 export const clickBar = (item: { data: { value: string } }) => {
-    if (item && 'data' in item && 'value' in item.data) {
+    if ('data' in item && 'value' in item.data) {
         const value = item.data.value
 
         window.alert(value)
@@ -63,13 +72,11 @@ const HorizontalBarChart = (props: IProps) => {
     } = props
 
     const [title, setTitle] = useState(false)
-
-    const [richData, setRichDate] = useState([])
-
+    const [richData, setRichDate] = useState<RichDataItem[]>([])
     const clickEvent = { click: onClickBar }
 
     useEffect(() => {
-        if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
+        if (toolboxTooltip?.saveAsImageWithTitle) {
             setTitle(false)
         } else {
             setTitle(true)
@@ -97,6 +104,8 @@ const HorizontalBarChart = (props: IProps) => {
                 setRichDate(state => [...state, rich])
             }
         })
+        // it doesn't need the missing dependency
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [richData])
 
     const xData: object[] = reverse(
@@ -104,10 +113,13 @@ const HorizontalBarChart = (props: IProps) => {
             const results = data.map(item => item.result)
             const maxValue = Math.max(...results)
 
-            const label: LabelProps = item.result <=
-                (!showTickInfos ? 50 : 15) && {
-                position: 'right',
-                distance: 1
+            let label: LabelProps = {}
+
+            if (item.result <= (!showTickInfos ? 50 : 15)) {
+                label = {
+                    position: 'right',
+                    distance: 1
+                }
             }
 
             if (maxValue !== item.result && xType === 'time') {
@@ -143,13 +155,17 @@ const HorizontalBarChart = (props: IProps) => {
     )
 
     const formatTooltip = (chartValues: ParamsTooltip[]) => {
-        const { label, result } = tooltipProps
+        const label = tooltipProps?.label
+        const result = tooltipProps?.result
         const { name, value } = chartValues[1]
 
         const dataValue =
             xType === 'time'
                 ? timeConvert(value as number).toString() + 'h'
-                : takeLabelComplement(Number(value), xComplement).toString()
+                : takeLabelComplement(
+                      Number(value),
+                      xComplement ?? ''
+                  ).toString()
 
         return `${label}: ${name} <br>` + `${result}: ${dataValue} <br>`
     }
@@ -159,33 +175,31 @@ const HorizontalBarChart = (props: IProps) => {
 
         return xType === 'time'
             ? timeConvert(Number(value as number)).toString() + 'h'
-            : takeLabelComplement(Number(value), xComplement).toString()
+            : takeLabelComplement(Number(value), xComplement ?? '').toString()
     }
 
     const formatterLabel = (item: string | number) => {
         return xType === 'time'
             ? timeConvert(Number(item)).toString() + 'h'
-            : (item + xComplement).toString()
+            : (xComplement && (item + xComplement).toString()) ?? ''
     }
 
     const handleShowTitle = (show: boolean) => {
         setTitle(show)
     }
 
-    const myTool = toolboxTooltip &&
-        toolboxTooltip.saveAsImageWithTitle && {
-            myTool: getSaveAsImageWithTitle(
-                toolboxTooltip.saveAsImageWithTitle.title,
-                handleShowTitle
-            )
-        }
+    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
+        myTool: getSaveAsImageWithTitle(
+            toolboxTooltip.saveAsImageWithTitle.title ?? '',
+            handleShowTitle
+        )
+    }
 
-    const saveAsImage = toolboxTooltip &&
-        toolboxTooltip.saveAsImage && {
-            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
-        }
+    const saveAsImage = toolboxTooltip?.saveAsImage && {
+        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
+    }
 
-    const toolbox: object = toolboxTooltip && {
+    const toolbox: object | undefined = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         right: marginRightToolbox || '8.7%',
         feature: {
@@ -193,7 +207,7 @@ const HorizontalBarChart = (props: IProps) => {
             ...saveAsImage,
             dataView:
                 toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title)
+                getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
@@ -202,6 +216,8 @@ const HorizontalBarChart = (props: IProps) => {
             containLabel: true,
             ...gridProps
         },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         series: [
             {
                 barGap: '-100%',
@@ -243,7 +259,6 @@ const HorizontalBarChart = (props: IProps) => {
         xAxis: {
             max: xComplement === '%' ? 100 : getDomain(domain),
             type: 'value' as const,
-            // data: xData,
             axisTick: {
                 show: showTickInfos || false
             },
@@ -279,7 +294,6 @@ const HorizontalBarChart = (props: IProps) => {
                     data.find(item => item.image)
                         ? formatLabelWithImage(text)
                         : truncateLabel(text, labelWordSize),
-                // max: 10,
                 margin: 12,
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: boldTickLabel ? (400 as const) : undefined,
@@ -342,6 +356,8 @@ const HorizontalBarChart = (props: IProps) => {
             style={CHART_WIDTH}
             opts={getWidthOpts(width || 'auto')}
             option={options}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             onEvents={clickEvent}
         />
     )

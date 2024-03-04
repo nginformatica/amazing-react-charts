@@ -64,7 +64,7 @@ const AreaChart = (props: IDefaultChartProps) => {
 
         return yType === 'time'
             ? timeConvert(Number(data as number)).toString() + 'h'
-            : takeLabelComplement(Number(data), yComplement).toString()
+            : takeLabelComplement(Number(data), yComplement ?? '').toString()
     }
 
     const dinamicData = (
@@ -97,30 +97,30 @@ const AreaChart = (props: IDefaultChartProps) => {
     }
 
     const formatSingleTooltip = (chartValues: AreaDataTooltip[]) => {
-        const { label, result } = tooltipProps
+        const label = tooltipProps?.label
+        const result = tooltipProps?.result
         const { axisValueLabel, data } = chartValues[0]
         const complement = tooltipComplement ? tooltipComplement : ''
 
         const values =
             yType === 'time'
                 ? timeConvert(Number(data as number)) + 'h'
-                : takeLabelComplement(Number(data), yComplement)
+                : takeLabelComplement(Number(data), yComplement ?? '')
 
         return `${label}: ${formatTooltip(axisValueLabel, dateFormat)} <br>
-      ${result}: ${values} <br> 
+      ${result}: ${values} <br>
       ${complement}`
     }
 
-    const toolbox: object = toolboxTooltip && {
+    const toolbox: object | undefined = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         feature: {
             saveAsImage:
-                toolboxTooltip &&
                 toolboxTooltip.saveAsImage &&
-                getSaveAsImage(toolboxTooltip.saveAsImage.title),
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
             dataView:
                 toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title)
+                getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
@@ -162,6 +162,8 @@ const AreaChart = (props: IDefaultChartProps) => {
             : []
 
     const options: EChartsOption = {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         series: [
             {
                 type: 'line',
@@ -175,9 +177,15 @@ const AreaChart = (props: IDefaultChartProps) => {
                             return yComplement(item.data)
                         }
 
-                        typeof yComplement === 'function'
-                            ? yComplement
-                            : formatLabel
+                        if (typeof yComplement === 'function') {
+                            return yComplement
+                        }
+
+                        // this can't be returned
+                        // it breaks the labels
+                        // eslint-disable-next-line @stylistic/max-len
+                        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                        formatLabel
                     },
                     show: true,
                     position: 'top',
@@ -226,7 +234,10 @@ const AreaChart = (props: IDefaultChartProps) => {
             axisLabel: {
                 formatter: (item: string) =>
                     xType === 'time'
-                        ? formatTime(item, getDateFormatType(dateFormat))
+                        ? formatTime(
+                              item,
+                              getDateFormatType(dateFormat || 'yyyy-MM')
+                          )
                         : item,
                 rotate: rotateLabel || 0,
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
@@ -250,7 +261,10 @@ const AreaChart = (props: IDefaultChartProps) => {
                 formatter: (item: number) =>
                     yType === 'time'
                         ? timeConvert(item) + 'h'
-                        : takeLabelComplement(item, yComplement).toString(),
+                        : takeLabelComplement(
+                              item,
+                              yComplement ?? ''
+                          ).toString(),
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: fontLabelSize || 11.5,
                 color: '#000000'

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import { default as styled } from 'styled-components'
 
 export const STRAIGHT_LINE_ICON = 'path://M0 0H25H50V2H25H0V0Z'
 

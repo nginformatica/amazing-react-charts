@@ -128,12 +128,14 @@ export const mountMessage = (
     stackedValues: number,
     sumDataValues: boolean
 ) => {
-    const seriesLabel = value.marker + value.seriesName
+    const seriesLabel =
+        (value.marker ? value.marker : '') +
+        (value.seriesName ? value.seriesName : '')
 
     const moneyValue =
         typeof complement === 'function'
             ? moneyWithPercentage(
-                  value.data,
+                  value.data ?? '',
                   stackedValues,
                   complement,
                   sumDataValues
@@ -145,7 +147,7 @@ export const mountMessage = (
             ? seriesLabel +
               ': ' +
               (formatValueAxis(Number(value.data), '%') + '<br>')
-            : seriesLabel + takeComplement(value.data, complement)
+            : seriesLabel + takeComplement(value.data ?? '', complement)
 
     return typeof complement === 'function' && value.seriesType !== 'line'
         ? seriesLabel + ': ' + moneyValue
@@ -338,16 +340,21 @@ export const convertImageToBase64FromUrl = (imgUrl: string) => {
             canvas.width = 40
             canvas.height = 40
 
-            ctx.save()
-            ctx.beginPath()
-            ctx.arc(40 / 2, 40 / 2, 40 / 2, 0, Math.PI * 2)
-            ctx.clip()
-            ctx.drawImage(img, 0, 0, 40, 40)
-            ctx.restore()
+            if (ctx) {
+                canvas.width = 40
+                canvas.height = 40
 
-            const dataUrl = ctx.canvas.toDataURL('image/png')
+                ctx.save()
+                ctx.beginPath()
+                ctx.arc(40 / 2, 40 / 2, 40 / 2, 0, Math.PI * 2)
+                ctx.clip()
+                ctx.drawImage(img, 0, 0, 40, 40)
+                ctx.restore()
 
-            resolve(dataUrl)
+                const dataUrl = ctx.canvas.toDataURL('image/png')
+
+                resolve(dataUrl)
+            }
         }
     })
 }

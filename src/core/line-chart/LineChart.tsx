@@ -31,7 +31,6 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     showLabel?: boolean
     smooth?: boolean
     disableMarks?: boolean
-    noTooltip?: boolean
     axisNames?: { x: string; y: string }
 }
 
@@ -54,7 +53,6 @@ const LineChart = (props: IProps) => {
         showLabel,
         smooth,
         disableMarks,
-        noTooltip,
         scrollStart
     } = props
 
@@ -69,7 +67,7 @@ const LineChart = (props: IProps) => {
 
         return yType === 'time'
             ? timeConvert(Number(data as number)) + 'h'
-            : takeLabelComplement(Number(data), yComplement)
+            : takeLabelComplement(Number(data), yComplement ?? '')
     }
 
     const series: object = data.map(item => ({
@@ -96,7 +94,14 @@ const LineChart = (props: IProps) => {
                     return yComplement(item.data)
                 }
 
-                typeof yComplement === 'function' ? yComplement : formatLabel
+                if (typeof yComplement === 'function') {
+                    return yComplement
+                }
+
+                // this can't be returned
+                // it breaks the labels
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                formatLabel
             }
         }
     }))
@@ -140,7 +145,7 @@ const LineChart = (props: IProps) => {
         const takeComplement = (value: number) =>
             yType === 'time'
                 ? timeConvert(Number(value)) + 'h'
-                : takeLabelComplement(Number(value), yComplement)
+                : takeLabelComplement(Number(value), yComplement ?? '')
 
         const linesTooltips = lines.map(
             line =>
@@ -156,24 +161,24 @@ const LineChart = (props: IProps) => {
                       dateFormat === 'yyyy-MM'
                           ? lines[0].name + '-02'
                           : lines[0].name,
-                      getDateFormatType(dateFormat)
+                      getDateFormatType(dateFormat ?? 'yyyy-MM')
                   )
                 : lines[0].name
 
         return `${tooltipTitle} <br> ${linesTooltips.join(' ')}`
     }
 
-    const toolbox: object = toolboxTooltip && {
+    const toolbox: object | undefined = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         showTitle: false,
         right: '9.52%',
         feature: {
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
-                getSaveAsImage(toolboxTooltip.saveAsImage.title),
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
             dataView:
                 toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title)
+                getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
@@ -197,7 +202,7 @@ const LineChart = (props: IProps) => {
                     xType === 'time'
                         ? formatTime(
                               dateFormat === 'yyyy-MM' ? item + '-02' : item,
-                              getDateFormatType(dateFormat)
+                              getDateFormatType(dateFormat ?? 'yyyy-MM')
                           )
                         : item,
                 rotate: rotateLabel || 0,
@@ -223,7 +228,10 @@ const LineChart = (props: IProps) => {
                 formatter: (item: number) =>
                     yType === 'time'
                         ? timeConvert(item).toString() + 'h'
-                        : takeLabelComplement(item, yComplement).toString(),
+                        : takeLabelComplement(
+                              item,
+                              yComplement ?? ''
+                          ).toString(),
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
                 fontSize: fontLabelSize || 11.5,
@@ -244,6 +252,8 @@ const LineChart = (props: IProps) => {
             }
         },
         grid: { ...(gridProps || { bottom: 75 }), show: true },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         legend: {
             data: names,
             icon: STRAIGHT_LINE_ICON,
@@ -253,7 +263,7 @@ const LineChart = (props: IProps) => {
                 color: '#000000'
             }
         },
-        tooltip: !noTooltip && {
+        tooltip: {
             formatter: formatTooltip,
             trigger: 'axis',
             backgroundColor: '#00000099',
