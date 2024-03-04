@@ -1,16 +1,18 @@
 {
     "compilerOptions": {
-        "jsx": "react",
-        "module": "commonjs",
-        "noImplicitAny": true,
         "outDir": "./dist/",
+        "jsx": "react",
+        "module": "esnext",
+        "target": "esnext",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
         "preserveConstEnums": true,
         "removeComments": true,
         "esModuleInterop": true,
         "declaration": true,
         "sourceMap": true,
-        "target": "es6",
         "skipLibCheck": true,
+        "strictNullChecks": true,
         "types": ["node"]
     },
     "include": [
