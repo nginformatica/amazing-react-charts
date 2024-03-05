@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import DivergingStackedBarChart from './DivergingStackedBarChart'
+import DivergingStackedBarChart from '../core/diverging-stacked-bar-chart/DivergingStackedBarChart'
 import '@testing-library/jest-dom'
 
 describe('DivergingStackedBarChart', () => {

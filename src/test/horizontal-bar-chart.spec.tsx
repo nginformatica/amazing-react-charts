@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import HorizontalBarChart from './HorizontalBarChart'
+import HorizontalBarChart from '../core/horizontal-bar-chart/HorizontalBarChart'
 import '@testing-library/jest-dom'
 
 describe('HorizontalBarChart', () => {

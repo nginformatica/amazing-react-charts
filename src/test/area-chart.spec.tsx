@@ -1,10 +1,10 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import AreaChart from './AreaChart'
+import AreaChart from '../core/area-chart/AreaChart'
 import '@testing-library/jest-dom'
 
 describe('AreaChart', () => {
-    it.only('should render AreaChart', async () => {
+    it('should render AreaChart', async () => {
         const { container } = render(
             <AreaChart
                 xType='time'

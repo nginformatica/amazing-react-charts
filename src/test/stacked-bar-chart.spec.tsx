@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import StackedBarChart from './StackedBarChart'
+import StackedBarChart from '../core/stacked-bar-chart/StackedBarChart'
 import '@testing-library/jest-dom'
 
 describe('StackedBarChart', () => {

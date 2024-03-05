@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import LineChart from './LineChart'
+import LineChart from '../core/line-chart/LineChart'
 import '@testing-library/jest-dom'
 
 describe('LineChart', () => {

@@ -1,14 +1,20 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import MultipurposeChart from './MultipurposeChart'
+import RadarChart from '../core/radar-chart/RadarChart'
 import '@testing-library/jest-dom'
 
-describe('MultipurposeChart', () => {
-    it('should render MultipurposeChart', async () => {
+describe('RadarChart', () => {
+    it('should render RadarChart', async () => {
         const { container } = render(
-            <MultipurposeChart
-                yComplement={(value: string) => `R$ ${value},00`}
-                xData={['2012', '2013', '2014', '2015', '2016']}
+            <RadarChart
+                yComplement={value => `R$ ${value},00`}
+                indicators={[
+                    { name: 'Roupas', max: 500 },
+                    { name: 'Sapatos', max: 500 },
+                    { name: 'Bolsas', max: 500 },
+                    { name: 'Acessórios', max: 500 },
+                    { name: 'Outros', max: 500 }
+                ]}
                 series={[
                     {
                         name: 'Dinheiro',
@@ -19,16 +25,6 @@ describe('MultipurposeChart', () => {
                         name: 'Crédito',
                         color: '#176BA0',
                         data: [220, 182, 191, 234, 290]
-                    },
-                    {
-                        name: 'Débito',
-                        color: '#19AADE',
-                        data: [150, 232, 201, 154, 190]
-                    },
-                    {
-                        name: 'Pix',
-                        color: '#1AC9E6',
-                        data: [98, 77, 101, 99, 40]
                     }
                 ]}
             />

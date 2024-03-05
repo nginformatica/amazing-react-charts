@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import PyramidBarChart from './PyramidBarChart'
+import PyramidBarChart from '../core/pyramid-bar-chart/PyramidBarChart'
 import '@testing-library/jest-dom'
 
 describe('PyramidBarChart', () => {

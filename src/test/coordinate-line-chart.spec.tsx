@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import CoordinateLineChart from './CoordinateLineChart'
+import CoordinateLineChart from '../core/coordinate-line-chart/CoordinateLineChart'
 import '@testing-library/jest-dom'
 
 describe('CoordinateLineChart', () => {
