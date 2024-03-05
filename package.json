@@ -22,7 +22,7 @@
     "build": "yarn clean && yarn build:ts && yarn build:babel",
     "build:link": "yarn build && yarn copy:package && yarn publish:yalc",
     "build:ts": "tsc --emitDeclarationOnly",
-    "build:babel": "babel src --out-dir dist --extensions '.ts,.tsx' --ignore '**/*.stories.tsx'",
+    "build:babel": "babel src --out-dir dist --extensions '.ts,.tsx' --ignore '**/*.stories.tsx' --ignore '**/*.spec.tsx'",
     "type-check": "tsc --noEmit",
     "format": "prettier -w 'src/**/*.{ts,tsx}'",
     "lint": "eslint -c .eslintrc.js 'src/**/*.{ts,tsx}'",
@@ -33,7 +33,8 @@
     "pre-publish": "yarn lint --fix && yarn type-check",
     "deploy": "gh-pages -d docs",
     "release": "yarn build && node pre-publish.js && npm publish ./dist --access public",
-    "test": "NODE_ENV=test jest --no-cache --verbose --passWithNoTests --noStackTrace --runInBand  --updateSnapshot"
+    "test": "NODE_ENV=test jest --no-cache --verbose --passWithNoTests --noStackTrace --runInBand  --updateSnapshot",
+    "pre-test": "node checkTestFiles.js"
   },
   "dependencies": {
     "date-fns": "2.30.0",

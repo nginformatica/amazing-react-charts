@@ -196,5 +196,5 @@ module.exports = {
         'import',
         '@stylistic'
     ],
-    ignorePatterns: ['.eslintrc.js', 'jest.config.ts']
+    ignorePatterns: ['.eslintrc.js', 'jest.config.ts', 'checkTestFiles.js']
 }
