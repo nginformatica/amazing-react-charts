@@ -36,7 +36,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     tooltipTitle?: string
 }
 
-export const PieChart = (props: IProps) => {
+const PieChart = (props: IProps) => {
     const {
         data,
         grid: gridProps,
@@ -62,7 +62,7 @@ export const PieChart = (props: IProps) => {
     const totalValues = sum(map(item => item.value, data))
 
     useEffect(() => {
-        if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
+        if (toolboxTooltip?.saveAsImageWithTitle) {
             setTitle(false)
         } else {
             setTitle(true)
@@ -73,27 +73,25 @@ export const PieChart = (props: IProps) => {
         setTitle(show)
     }
 
-    const myTool = toolboxTooltip &&
-        toolboxTooltip.saveAsImageWithTitle && {
-            myTool: getSaveAsImageWithTitle(
-                toolboxTooltip.saveAsImageWithTitle.title,
-                handleShowTitle
-            )
-        }
+    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
+        myTool: getSaveAsImageWithTitle(
+            toolboxTooltip.saveAsImageWithTitle.title ?? '',
+            handleShowTitle
+        )
+    }
 
-    const saveAsImage = toolboxTooltip &&
-        toolboxTooltip.saveAsImage && {
-            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
-        }
+    const saveAsImage = toolboxTooltip?.saveAsImage && {
+        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
+    }
 
-    const toolbox: object = toolboxTooltip && {
+    const toolbox: object | undefined = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         feature: {
             ...myTool,
             ...saveAsImage,
             dataView:
                 toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title)
+                getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
@@ -121,7 +119,7 @@ export const PieChart = (props: IProps) => {
             ? ''
             : takeLabelComplement(
                   data.value,
-                  resultFormatType,
+                  resultFormatType ?? '',
                   'pie'
               ).toString()
 

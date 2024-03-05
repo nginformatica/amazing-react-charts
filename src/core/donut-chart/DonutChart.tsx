@@ -28,7 +28,7 @@ export interface IDonutProps extends IProps {
     selectedMode?: boolean
 }
 
-export const DonutChart = (props: IDonutProps) => {
+const DonutChart = (props: IDonutProps) => {
     const {
         title: titleProps,
         resultFormatType,
@@ -52,7 +52,7 @@ export const DonutChart = (props: IDonutProps) => {
     const [title, setTitle] = useState(false)
 
     useEffect(() => {
-        if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
+        if (toolboxTooltip?.saveAsImageWithTitle) {
             setTitle(false)
         } else {
             setTitle(true)
@@ -63,27 +63,25 @@ export const DonutChart = (props: IDonutProps) => {
         setTitle(show)
     }
 
-    const myTool = toolboxTooltip &&
-        toolboxTooltip.saveAsImageWithTitle && {
-            myTool: getSaveAsImageWithTitle(
-                toolboxTooltip.saveAsImageWithTitle.title,
-                handleShowTitle
-            )
-        }
+    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
+        myTool: getSaveAsImageWithTitle(
+            toolboxTooltip.saveAsImageWithTitle.title ?? '',
+            handleShowTitle
+        )
+    }
 
-    const saveAsImage = toolboxTooltip &&
-        toolboxTooltip.saveAsImage && {
-            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
-        }
+    const saveAsImage = toolboxTooltip?.saveAsImage && {
+        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
+    }
 
-    const toolbox: object = toolboxTooltip && {
+    const toolbox: object | undefined = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         feature: {
             ...myTool,
             ...saveAsImage,
             dataView:
                 toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title)
+                getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
@@ -103,13 +101,11 @@ export const DonutChart = (props: IDonutProps) => {
                 ? resultFormatType(value)
                 : valueWithPercent
 
-        const label =
-            tooltip && tooltip.label ? tooltip.label + ': ' + name + '<br>' : ''
+        const label = tooltip?.label ? tooltip.label + ': ' + name + '<br>' : ''
 
-        const result =
-            tooltip && tooltip.result
-                ? marker + tooltip.result + ': ' + valueToShow
-                : ''
+        const result = tooltip?.result
+            ? marker + tooltip.result + ': ' + valueToShow
+            : ''
 
         return tooltip ? label + result : marker + name + ': ' + valueToShow
     }

@@ -29,7 +29,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
 const getPadding = (rangeValues?: number) =>
     rangeValues ? [150, 0, 0, 0] : [20, 0, 0, 0]
 
-const getWidthStyle = (width: WidthProps, height: WidthProps) => ({
+const getWidthStyle = (width: WidthProps, height: number | undefined) => ({
     width: width || 'auto',
     height: height
 })
@@ -59,7 +59,7 @@ const CoordinateLineChart = (props: IProps) => {
     const WIDTH_STYLE = getWidthStyle(width, height)
 
     useEffect(() => {
-        if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
+        if (toolboxTooltip?.saveAsImageWithTitle) {
             setTitle(false)
         } else {
             setTitle(true)
@@ -70,27 +70,25 @@ const CoordinateLineChart = (props: IProps) => {
         setTitle(show)
     }
 
-    const myTool = toolboxTooltip &&
-        toolboxTooltip.saveAsImageWithTitle && {
-            myTool: getSaveAsImageWithTitle(
-                toolboxTooltip.saveAsImageWithTitle.title,
-                handleShowTitle
-            )
-        }
+    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
+        myTool: getSaveAsImageWithTitle(
+            toolboxTooltip.saveAsImageWithTitle.title ?? '',
+            handleShowTitle
+        )
+    }
 
-    const saveAsImage = toolboxTooltip &&
-        toolboxTooltip.saveAsImage && {
-            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
-        }
+    const saveAsImage = toolboxTooltip?.saveAsImage && {
+        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
+    }
 
-    const toolbox: object = toolboxTooltip && {
+    const toolbox: object | undefined = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         feature: {
             ...myTool,
             ...saveAsImage,
             dataView:
                 toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title)
+                getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
@@ -104,7 +102,7 @@ const CoordinateLineChart = (props: IProps) => {
         color: colors,
         series: [
             {
-                name: legendNames[0] || '',
+                name: legendNames?.[0] ?? '',
                 showSymbol: false,
                 type: 'line',
                 data: reference,
@@ -115,14 +113,14 @@ const CoordinateLineChart = (props: IProps) => {
                 }
             },
             {
-                name: legendNames[1] || '',
+                name: legendNames?.[1] ?? '',
                 showSymbol: false,
                 type: 'line',
                 data: preRespiratory,
                 smooth: true
             },
             {
-                name: legendNames[2] || '',
+                name: legendNames?.[2] ?? '',
                 showSymbol: false,
                 type: 'line',
                 data: posResporatory,
@@ -131,13 +129,13 @@ const CoordinateLineChart = (props: IProps) => {
         ],
         yAxis: {
             type: 'value',
-            name: coordinateNames.y,
+            name: coordinateNames?.y,
             nameTextStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 color: '#000000'
             },
             nameGap: 10,
-            min: -yRangeValues || 0,
+            min: yRangeValues ? -yRangeValues : 0,
             max: yRangeValues || 8,
             interval: 2,
             axisTick: {
@@ -163,7 +161,7 @@ const CoordinateLineChart = (props: IProps) => {
         },
         xAxis: {
             type: 'value',
-            name: coordinateNames.x,
+            name: coordinateNames?.x,
             nameTextStyle: {
                 verticalAlign: 'top',
                 padding: getPadding(yRangeValues),
@@ -199,11 +197,11 @@ const CoordinateLineChart = (props: IProps) => {
             top: legendPosition ?? 26,
             data: [
                 {
-                    name: legendNames[0] || '',
+                    name: legendNames?.[0] ?? '',
                     icon: DASHED_LINE_ICON
                 },
-                { name: legendNames[1] || '', icon: STRAIGHT_LINE_ICON },
-                { name: legendNames[2] || '', icon: STRAIGHT_LINE_ICON }
+                { name: legendNames?.[1] ?? '', icon: STRAIGHT_LINE_ICON },
+                { name: legendNames?.[2] ?? '', icon: STRAIGHT_LINE_ICON }
             ],
             itemGap: 30,
             textStyle: {

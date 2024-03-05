@@ -40,10 +40,6 @@ const meta: Meta<typeof LineChart> = {
             control: 'boolean',
             description: 'The chart data marks.'
         },
-        noTooltip: {
-            control: 'boolean',
-            description: 'The chart data tooltip.'
-        },
         data: {
             label: { control: 'text' },
             result: { control: 'number' },

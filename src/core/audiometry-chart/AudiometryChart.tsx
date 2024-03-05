@@ -29,7 +29,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     colors?: string[]
     legendsPosition?: 'top' | 'bottom'
     legendGap?: number
-    legendType: 'scroll' | 'plain'
+    legendType?: 'scroll' | 'plain'
     legends?: TSimpleLegend[]
     legendPadding?: number
     legendItemWidth?: number
@@ -68,7 +68,7 @@ const AudiometryChart = (props: IProps) => {
     const CHART_STYLE = { width: '99.9%', height: height || 400 }
 
     useEffect(() => {
-        if (toolboxTooltip && toolboxTooltip.saveAsImageWithTitle) {
+        if (toolboxTooltip?.saveAsImageWithTitle) {
             setTitle(false)
         } else {
             setTitle(true)
@@ -132,27 +132,25 @@ const AudiometryChart = (props: IProps) => {
             item
         )
 
-    const myTool = toolboxTooltip &&
-        toolboxTooltip.saveAsImageWithTitle && {
-            myTool: getSaveAsImageWithTitle(
-                toolboxTooltip.saveAsImageWithTitle.title,
-                handleShowTitle
-            )
-        }
+    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
+        myTool: getSaveAsImageWithTitle(
+            toolboxTooltip.saveAsImageWithTitle.title ?? '',
+            handleShowTitle
+        )
+    }
 
-    const saveAsImage = toolboxTooltip &&
-        toolboxTooltip.saveAsImage && {
-            saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title)
-        }
+    const saveAsImage = toolboxTooltip?.saveAsImage && {
+        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
+    }
 
-    const toolbox: object = toolboxTooltip && {
+    const toolbox: object | undefined = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         feature: {
             ...myTool,
             ...saveAsImage,
             dataView:
                 toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title)
+                getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
@@ -174,7 +172,7 @@ const AudiometryChart = (props: IProps) => {
     }))
 
     const removedUndefinedMarks = map(
-        item => filter(serie => serie?.value !== null, item.data),
+        item => filter(serie => serie.value !== undefined, item.data),
         seriesMarks
     )
 
@@ -184,7 +182,7 @@ const AudiometryChart = (props: IProps) => {
             type: 'scatter',
             data: item
         }),
-        removedUndefinedMarks.filter(item => item?.length > 0)
+        removedUndefinedMarks.filter(item => item.length > 0)
     )
 
     const seriesData = data.map(item => ({
@@ -229,8 +227,8 @@ const AudiometryChart = (props: IProps) => {
         (item, index) => ({
             ...item,
             name:
-                legends?.length > 0
-                    ? legends[index]?.name
+                legends && legends.length > 0
+                    ? legends[index].name
                     : 'audiometry-' + index
         })
     )

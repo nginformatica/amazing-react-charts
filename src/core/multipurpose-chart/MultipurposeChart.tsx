@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import React, { useRef } from 'react'
+import React, { memo, useRef } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import type { EChartsOption } from 'echarts'
 import type {
@@ -43,8 +43,6 @@ const isDarkColor = (color: string) => {
     return luma < 40
 }
 
-const MAGIC_TYPE = ['line', 'bar', 'stack']
-
 const MultipurposeChart = (props: MultipurposeChartProps) => {
     const {
         series,
@@ -69,7 +67,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             align: 'left',
             verticalAlign: 'middle',
             rotate: 90,
-            formatter: yComplement('{c}') + '  {name|{a}}',
+            formatter: yComplement && yComplement('{c}') + '  {name|{a}}',
             color: isDarkBarColor ? '#FFFFFF' : '#000000',
             fontSize: 16,
             rich: {
@@ -84,7 +82,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
         const takeComplement = (value: number) =>
             yType === 'time'
                 ? timeConvert(Number(value)) + 'h'
-                : takeLabelComplement(Number(value), yComplement)
+                : takeLabelComplement(Number(value), yComplement ?? '')
 
         const linesTooltips = lines.map(
             line =>
@@ -118,7 +116,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
         : []
 
     const options: EChartsOption = {
-        color: [...series.map(it => it.color)],
+        color: [...series.map(it => it.color)] as string[],
         dataZoom: [...slider],
         tooltip: {
             formatter: formatTooltip,
@@ -157,7 +155,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
                 },
                 magicType: {
                     show: true,
-                    type: MAGIC_TYPE,
+                    type: ['line', 'bar', 'stack'],
                     title: {
                         line: 'Gráfico de linha',
                         bar: 'Gráfico de barras',
@@ -210,7 +208,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
                 name: it.name,
                 type: 'bar',
                 barGap: 0,
-                label: getLabelOptions(it.color),
+                label: getLabelOptions(it.color ?? ''),
                 emphasis: {
                     focus: 'series'
                 },
@@ -221,8 +219,8 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
 
     const onEvents = {
         magictypechanged: (e: { currentType: 'stack' | 'line' | 'bar' }) => {
-            const echartsInstance = ref.current.getEchartsInstance()
-            const actualOptions = echartsInstance.getOption()
+            const echartsInstance = ref.current?.getEchartsInstance()
+            const actualOptions = echartsInstance?.getOption()
 
             if (e.currentType === 'stack') {
                 isStacked.current = !isStacked.current
@@ -250,11 +248,11 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
                     : originalSeries[i].label.color
             })
 
-            ref.current.getEchartsInstance().setOption(newOptions)
+            ref.current?.getEchartsInstance().setOption(newOptions)
         },
         mouseover: e => {
-            const echartsInstance = ref.current.getEchartsInstance()
-            const actualOptions = echartsInstance.getOption()
+            const echartsInstance = ref.current?.getEchartsInstance()
+            const actualOptions = echartsInstance?.getOption()
 
             actualOptions.color = [
                 ...options.color.map((it, i) =>
@@ -269,11 +267,11 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
                 it.label.color = '#00000000'
             })
 
-            echartsInstance.setOption({ ...actualOptions })
+            echartsInstance?.setOption({ ...actualOptions })
         },
         mouseout: () => {
-            const echartsInstance = ref.current.getEchartsInstance()
-            const actualOptions = echartsInstance.getOption()
+            const echartsInstance = ref.current?.getEchartsInstance()
+            const actualOptions = echartsInstance?.getOption()
 
             actualOptions.color = [...options.color]
 
@@ -289,7 +287,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
                     : originalSeries[i].label.color
             })
 
-            echartsInstance.setOption({ ...actualOptions })
+            echartsInstance?.setOption({ ...actualOptions })
         }
     }
 
@@ -304,4 +302,4 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
     )
 }
 
-export default React.memo(MultipurposeChart)
+export default memo(MultipurposeChart)

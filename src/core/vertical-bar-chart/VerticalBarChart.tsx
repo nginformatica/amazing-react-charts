@@ -127,11 +127,13 @@ const VerticalBarChart = (props: IProps) => {
         const results = data.map(item => item.result)
         const maxValue = Math.max(...results)
 
-        const label: LabelProps = showBarLabel &&
-            item.result <= 10 && {
-                position: 'top',
-                distance: 1
-            }
+        const label: LabelProps | false | undefined =
+            showBarLabel && item.result <= 10
+                ? {
+                      position: 'top',
+                      distance: 1
+                  }
+                : false
 
         if (maxValue !== item.result) {
             const mainPercentage = (item.result * 100) / maxValue
@@ -199,30 +201,31 @@ const VerticalBarChart = (props: IProps) => {
 
         return isTimeType
             ? timeConvert(Number(value)) + 'h'
-            : String(takeLabelComplement(Number(value), yComplement))
+            : String(takeLabelComplement(Number(value), yComplement ?? ''))
     }
 
-    const toolbox: object = toolboxTooltip && {
+    const toolbox: object | undefined = toolboxTooltip && {
         showTitle: false,
         right: marginRightToolbox || '8.7%',
         feature: {
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
-                getSaveAsImage(toolboxTooltip.saveAsImage.title),
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
             dataView:
                 toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title)
+                getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
     const formatSingleTooltip = (chartValues: TooltipFormatter[]) => {
-        const { label, result } = tooltipProps
+        const label = tooltipProps?.label
+        const result = tooltipProps?.result
         const { axisValueLabel, value } = chartValues[0]
         const complement = tooltipComplement ? tooltipComplement : ''
         const values =
             yType === 'time'
                 ? timeConvert(Number(value)) + 'h'
-                : takeLabelComplement(Number(value), yComplement)
+                : takeLabelComplement(Number(value), yComplement ?? '')
 
         const labelPrint =
             xType === 'time'
@@ -272,7 +275,7 @@ const VerticalBarChart = (props: IProps) => {
 
     const options: EChartsOption = {
         grid: { ...gridProps },
-        color: [color],
+        color: color && [color],
         interval,
         series: [
             {
@@ -314,7 +317,10 @@ const VerticalBarChart = (props: IProps) => {
                     xType === 'time'
                         ? formatTime(
                               item,
-                              getDateFormatType(dateFormat, 'dd/MM/yyyy')
+                              getDateFormatType(
+                                  dateFormat ?? 'yyyy-MM',
+                                  'dd/MM/yyyy'
+                              )
                           )
                         : specialLabel(item),
                 interval: 0,
@@ -346,7 +352,7 @@ const VerticalBarChart = (props: IProps) => {
                 formatter: (item: number) =>
                     yType === 'time'
                         ? timeConvert(item) + 'h'
-                        : String(takeLabelComplement(item, yComplement)),
+                        : String(takeLabelComplement(item, yComplement ?? '')),
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400 as const,
                 fontSize: 11,
@@ -405,6 +411,8 @@ const VerticalBarChart = (props: IProps) => {
             style={CHART_WIDTH}
             opts={getWidthOpts(width || 'auto')}
             option={options}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             onEvents={events}
         />
     )

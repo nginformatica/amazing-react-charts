@@ -75,7 +75,7 @@ const ForecastAreaChart = (props: IProps) => {
             ? timeConvert(Number(data)).toString()
             : takeLabelComplement(
                   Number(Number(data).toFixed(2)),
-                  yComplement
+                  yComplement ?? ''
               ).toString()
     }
 
@@ -120,7 +120,7 @@ const ForecastAreaChart = (props: IProps) => {
                 ? timeConvert(Number(data))
                 : takeLabelComplement(
                       Number(Number(data).toFixed(2)),
-                      yComplement
+                      yComplement ?? ''
                   )
 
         return `${label}: ${formatTooltipWithHours(axisValueLabel)} <br>
@@ -128,17 +128,17 @@ const ForecastAreaChart = (props: IProps) => {
       ${complement}`
     }
 
-    const toolbox: object = toolboxTooltip && {
+    const toolbox: object | undefined = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         showTitle: false,
         right: '9.52%',
         feature: {
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
-                getSaveAsImage(toolboxTooltip.saveAsImage.title),
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
             dataView:
                 toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title)
+                getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
@@ -147,7 +147,7 @@ const ForecastAreaChart = (props: IProps) => {
             ? [
                   {
                       type: 'inside',
-                      startValue: lineMarkValue - 2,
+                      startValue: lineMarkValue && lineMarkValue - 2,
                       endValue: lineMarkValue,
                       zoomLock: true,
                       zoomOnMouseWheel: 'shift'
@@ -156,8 +156,8 @@ const ForecastAreaChart = (props: IProps) => {
                       bottom: 10,
                       show: true,
                       type: 'slider',
-                      startValue: lineMarkValue - 1,
-                      endValue: lineMarkValue + 3,
+                      startValue: lineMarkValue && lineMarkValue - 1,
+                      endValue: lineMarkValue && lineMarkValue + 3,
                       labelFormatter: (_: string, item: string) =>
                           formatTime(item, 'dd/MM/yyyy')
                   }
@@ -165,6 +165,8 @@ const ForecastAreaChart = (props: IProps) => {
             : []
 
     const options: EChartsOption = {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         series: [
             {
                 type: 'line',
@@ -197,18 +199,17 @@ const ForecastAreaChart = (props: IProps) => {
                     silent: true,
                     symbol: '',
                     label: {
-                        formatter: forecastChartLegends.lineMark,
+                        formatter: forecastChartLegends?.lineMark,
                         show: true,
                         color: lineMarkColor || '#000000'
                     },
                     animation: false,
                     data: [
                         {
-                            name: forecastChartLegends.lineMark || 'markLine',
-                            // eslint-disable-next-line @stylistic/max-len
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore TODO: remove this XGH
-                            xAxis: xData[lineMarkValue - 1].toString()
+                            name: forecastChartLegends?.lineMark || 'markLine',
+                            xAxis:
+                                lineMarkValue &&
+                                xData[lineMarkValue - 1].toString()
                         }
                     ],
                     lineStyle: {
@@ -227,8 +228,8 @@ const ForecastAreaChart = (props: IProps) => {
             },
             {
                 type: 'line',
-                name: forecastChartLegends.current || '',
-                data: take(lineMarkValue, yData),
+                name: forecastChartLegends?.current || '',
+                data: lineMarkValue && take(lineMarkValue, yData),
                 label: {
                     formatter:
                         typeof yComplement === 'function'
@@ -293,7 +294,7 @@ const ForecastAreaChart = (props: IProps) => {
                         ? timeConvert(Number(item)).toString()
                         : takeLabelComplement(
                               Number(item.toFixed(2)),
-                              yComplement
+                              yComplement ?? ''
                           ).toString(),
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: fontLabelSize || 11.5,
@@ -315,10 +316,15 @@ const ForecastAreaChart = (props: IProps) => {
             }
         },
         grid: { ...(gridProps || { bottom: 75 }), show: true },
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         legend: {
             top: 20,
             selectedMode: false,
-            data: [forecastChartLegends.current, forecastChartLegends.forecast],
+            data: [
+                forecastChartLegends?.current,
+                forecastChartLegends?.forecast
+            ],
             itemGap: 30,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
@@ -338,7 +344,7 @@ const ForecastAreaChart = (props: IProps) => {
                 color: '#000000'
             }
         },
-        tooltip: tooltipProps && {
+        tooltip: {
             formatter: formatSingleTooltip,
             trigger: 'axis',
             backgroundColor: '#00000099',

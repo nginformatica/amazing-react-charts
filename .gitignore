@@ -5,4 +5,5 @@ yarn-error.log
 *.tgz
 /public
 /dist
-.vscode
+/coverage
+src/test/__snapshots__

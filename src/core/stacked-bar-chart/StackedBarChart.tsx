@@ -72,15 +72,13 @@ const StackedBarChart = (props: IProps) => {
         additionalResults
     } = props
 
-    const {
-        label,
-        bottomResult,
-        topResult,
-        extraResult = '0',
-        lineResult,
-        auxResult,
-        complement
-    } = tooltipProps
+    const label = tooltipProps?.label
+    const bottomResult = tooltipProps?.bottomResult
+    const topResult = tooltipProps?.topResult
+    const extraResult = tooltipProps?.extraResult ?? '0'
+    const lineResult = tooltipProps?.lineResult
+    const auxResult = tooltipProps?.auxResult
+    const complement = tooltipProps?.complement
 
     const [
         bottomData,
@@ -88,7 +86,7 @@ const StackedBarChart = (props: IProps) => {
         lineData = [],
         extraData,
         auxData = [],
-        ...additionalData
+        ...aditionalData
     ] = data
 
     const yBottomData = bottomData.map(verifyStyleProps)
@@ -112,7 +110,7 @@ const StackedBarChart = (props: IProps) => {
         const { dataIndex } = chartValues
         const value = topLabels[dataIndex]
 
-        return takeLabelComplement(Number(value), yComplement).toString()
+        return takeLabelComplement(Number(value), yComplement ?? '').toString()
     }
 
     const yLineData = lineData.map((item: EntryData) => item.result)
@@ -159,9 +157,9 @@ const StackedBarChart = (props: IProps) => {
         const getAuxToolTip = (dataIndex: number) =>
             auxData.length && auxData[dataIndex].result >= 0
                 ? generateAuxMessage(
-                      auxResult,
+                      auxResult as string,
                       auxData[dataIndex].result,
-                      yComplement
+                      yComplement ?? ''
                   )
                 : ''
 
@@ -170,10 +168,10 @@ const StackedBarChart = (props: IProps) => {
                 ? monuntTimeMessage(value, stackedValues)
                 : mountMessage(
                       value,
-                      yComplement,
-                      secondYAxisType,
+                      yComplement ?? '',
+                      secondYAxisType ?? '',
                       stackedValues,
-                      sumDataValues
+                      sumDataValues ?? false
                   )
         )
 
@@ -192,7 +190,7 @@ const StackedBarChart = (props: IProps) => {
         const verifyFormat =
             yComplement === 'time'
                 ? timeConvert(stackedValues)
-                : isMoney(yComplement)
+                : isMoney(yComplement ?? '')
 
         const labelResult =
             xType === 'time'
@@ -227,14 +225,14 @@ const StackedBarChart = (props: IProps) => {
                   position: 'right' as const,
                   axisLine: {
                       show: true,
-                      lineStyle: { color: colors[2] }
+                      lineStyle: { color: colors?.[2] }
                   },
                   axisLabel: {
                       formatter: (item: string) =>
                           takeLabelComplement(Number(item), '%'),
                       fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                       fontWeight: 400 as const,
-                      color: colors[2]
+                      color: colors?.[2]
                   },
                   axisTick: {
                       show: true
@@ -268,20 +266,20 @@ const StackedBarChart = (props: IProps) => {
               ]
             : []
 
-    const toolbox: object = toolboxTooltip && {
+    const toolbox: object | undefined = toolboxTooltip && {
         showTitle: false,
         right: '8.7%',
         feature: {
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
-                getSaveAsImage(toolboxTooltip.saveAsImage.title),
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
             dataView:
                 toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title)
+                getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
-    const extraStackedSerie: object = yExtraData && {
+    const extraStackedSerie: object | boolean = yExtraData && {
         barWidth: barWidth,
         yAxisIndex: 0,
         name: extraResult,
@@ -294,25 +292,23 @@ const StackedBarChart = (props: IProps) => {
         ? additionalResults.map(it => it.name)
         : []
 
-    const additionalSeries = additionalData
-        ? additionalData.map((it, i) =>
-              additionalResults[i].type === 'bar'
-                  ? {
-                        barWidth,
-                        yAxisIndex: 0,
-                        name: additionalResults[i].name,
-                        type: 'bar',
-                        data: it.map(verifyStyleProps),
-                        stack: 'stacked'
-                    }
-                  : {
-                        yAxisIndex: secondYAxisType === 'percent' ? 1 : 0,
-                        name: additionalResults[i].name,
-                        type: 'line',
-                        data: it.map(verifyStyleProps)
-                    }
-          )
-        : []
+    const aditionalSeries = aditionalData.map((it, i) =>
+        additionalResults?.[i].type === 'bar'
+            ? {
+                  barWidth,
+                  yAxisIndex: 0,
+                  name: additionalResults[i].name,
+                  type: 'bar',
+                  data: it.map(verifyStyleProps),
+                  stack: 'stacked'
+              }
+            : {
+                  yAxisIndex: secondYAxisType === 'percent' ? 1 : 0,
+                  name: additionalResults?.[i].name,
+                  type: 'line',
+                  data: it.map(verifyStyleProps)
+              }
+    )
 
     const legendProps =
         legendType === 'scroll'
@@ -355,6 +351,8 @@ const StackedBarChart = (props: IProps) => {
     const options: EChartsOption = {
         grid: gridProps,
         color: colors,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         series: [
             {
                 barWidth: barWidth,
@@ -387,7 +385,7 @@ const StackedBarChart = (props: IProps) => {
                 type: 'line',
                 data: yLineData
             },
-            ...additionalSeries
+            ...aditionalSeries
         ],
         xAxis: {
             data: xData as string[],
@@ -429,7 +427,7 @@ const StackedBarChart = (props: IProps) => {
                     formatter: (item: string) =>
                         takeLabelComplement(
                             Number(item),
-                            yComplement
+                            yComplement ?? ''
                         ).toString(),
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontWeight: 400 as const,
@@ -454,8 +452,12 @@ const StackedBarChart = (props: IProps) => {
             },
             secondYAxis
         ],
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         legend: legendType === 'none' ? undefined : legendProps,
         dataZoom: scrollable,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         title: {
             left: legendType === 'scroll' ? '0.1%' : '4%',
             top: legendType === 'scroll' && '5.7%',
