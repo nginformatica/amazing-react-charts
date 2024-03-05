@@ -46,7 +46,7 @@ jobs:
         env:
           CI: true
 
-      - name: Build
-      - run: yarn build
+      - name: Run Build
+        run: yarn build
         env:
           CI: true
