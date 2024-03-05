@@ -29,7 +29,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     colors?: string[]
     legendsPosition?: 'top' | 'bottom'
     legendGap?: number
-    legendType: 'scroll' | 'plain'
+    legendType?: 'scroll' | 'plain'
     legends?: TSimpleLegend[]
     legendPadding?: number
     legendItemWidth?: number

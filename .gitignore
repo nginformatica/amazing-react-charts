@@ -6,3 +6,4 @@ yarn-error.log
 /public
 /dist
 /coverage
+src/core/*/__snapshots__

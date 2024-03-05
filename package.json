@@ -33,8 +33,7 @@
     "pre-publish": "yarn lint --fix && yarn type-check",
     "deploy": "gh-pages -d docs",
     "release": "yarn build && node pre-publish.js && npm publish ./dist --access public",
-    "test": "NODE_ENV=test jest --no-cache --verbose --passWithNoTests --noStackTrace --runInBand",
-    "test:ci": "yarn test --coverage"
+    "test": "NODE_ENV=test jest --no-cache --verbose --passWithNoTests --noStackTrace --runInBand  --updateSnapshot"
   },
   "dependencies": {
     "date-fns": "2.30.0",
@@ -45,6 +44,7 @@
   "devDependencies": {
     "@babel/cli": "7.23.9",
     "@babel/core": "7.24.0",
+    "@babel/plugin-transform-modules-commonjs": "7.23.3",
     "@babel/plugin-transform-runtime": "7.24.0",
     "@babel/preset-env": "7.24.0",
     "@babel/preset-react": "7.23.3",
@@ -66,6 +66,7 @@
     "@typescript-eslint/parser": "7.1.0",
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-imports": "2.0.0",
+    "canvas": "2.11.2",
     "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-import-resolver-typescript": "3.6.1",
