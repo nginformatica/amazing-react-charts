@@ -3,6 +3,7 @@ import type { IDonutProps } from './DonutChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableDonut } from '../disableControls'
 import DonutChart from './DonutChart'
+import { DonutWrapper } from '../../commonStyles'
 
 const meta: Meta<typeof DonutChart> = {
     title: 'Charts/Donut Chart',
@@ -15,11 +16,6 @@ const meta: Meta<typeof DonutChart> = {
             }
         },
         pieceBorderColor: {
-            table: {
-                disable: true
-            }
-        },
-        legendType: {
             table: {
                 disable: true
             }
@@ -62,6 +58,11 @@ const meta: Meta<typeof DonutChart> = {
             options: ['inside', 'outside'],
             control: { type: 'radio' },
             description: 'The chart legend position.'
+        },
+        legendType: {
+            options: ['scroll', 'plain'],
+            control: { type: 'radio' },
+            description: 'The chart legend type.'
         },
         tooltip: {
             label: { control: 'text' },
@@ -133,6 +134,38 @@ export const donutChartWithInsideLegend: Story = {
         data: [
             { name: 'Com resposta', value: 781 },
             { name: 'Sem resposta', value: 156 }
+        ]
+    }
+}
+
+export const donutChartWithScrollableLegend: Story = {
+    render: (args: IDonutProps) => {
+        return (
+            <DonutWrapper>
+                <DonutChart {...args} />
+            </DonutWrapper>
+        )
+    },
+    args: {
+        selectedMode: true,
+        title: 'Donut Chart With Scrollable Legend',
+        colors: ['blue', 'green', 'red', 'purple', 'pink', 'orange'],
+        donutRadius: ['40%', '70%'],
+        resultFormatType: 'percent',
+        center: ['50%', '50%'],
+        legendPosition: 'inside',
+        legendType: 'scroll',
+        labelFontColor: 'white',
+        centerPieValueFontSize: 25,
+        donutCenterValue: '78,20%',
+        toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
+        data: [
+            { name: 'Água', value: 281 },
+            { name: 'Suco de limão', value: 156 },
+            { name: 'Suco de frutas vermelhas', value: 77 },
+            { name: 'Suco de uva', value: 68 },
+            { name: 'Refrigerante', value: 253 },
+            { name: 'Cerveja', value: 217 }
         ]
     }
 }

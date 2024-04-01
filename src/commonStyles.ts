@@ -34,6 +34,11 @@ export const PictorialWrapper = styled.div`
     margin: 0 auto;
 `
 
+export const DonutWrapper = styled.div`
+    width: 500px;
+    margin: 0 auto;
+`
+
 export const ChartStorieWrapper = styled.div`
     width: 50%;
     margin: 0 auto;

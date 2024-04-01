@@ -26,6 +26,7 @@ export interface IDonutProps extends IProps {
     donutRadius: [string, string]
     centerPieValueFontSize?: number
     selectedMode?: boolean
+    legendType?: 'scroll' | 'plain'
 }
 
 const DonutChart = (props: IDonutProps) => {
@@ -40,6 +41,7 @@ const DonutChart = (props: IDonutProps) => {
         pieceBorderColor,
         tooltip,
         legendPosition,
+        legendType,
         labelFontColor,
         centerPieValueFontSize,
         selectedMode,
@@ -159,6 +161,8 @@ const DonutChart = (props: IDonutProps) => {
             top: 280,
             data: xData,
             icon: 'shape',
+            type: legendType || 'plain',
+            itemGap: legendType === 'scroll' ? 40 : 10,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
