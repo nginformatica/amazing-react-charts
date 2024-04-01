@@ -74,6 +74,13 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     ): void
 }
 
+interface TooltipParams {
+    axisValueLabel: string
+    marker: string
+    seriesName: string
+    value: number
+}
+
 export const clickBar = (item: { data: { value: string } }) => {
     if ('data' in item && 'value' in item.data) {
         const value = item.data.value
@@ -161,6 +168,36 @@ const DivergingStackedBarChart = (props: IProps) => {
         }
     }
 
+    const formatTooltip = (params: TooltipParams[]) => {
+        const tooltipString = `<div style="margin-bottom: 6px">
+                ${params[0].axisValueLabel}<br/>
+            </div>`
+
+        const details = params
+            .map(
+                obj =>
+                    `<div style="display: flex; align-items: center; margin-top: 4px;">
+                    ${obj.marker}
+                    <div
+                        style="
+                            width: 100%;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;">
+                        <div>
+                            ${obj.seriesName}
+                        </div>
+                        <div style="font-weight: 600; padding-left: 16px;">
+                            ${Math.abs(obj.value)}
+                        </div>
+                    </div>
+                </div>`
+            )
+            .join('')
+
+        return tooltipString + details
+    }
+
     const exportToCSV = () => {
         const { seriesData, categories } = props.data
 
@@ -200,7 +237,10 @@ const DivergingStackedBarChart = (props: IProps) => {
         stack: 'Total',
         label: {
             show: true,
-            position: seriesItem.labelPosition || 'inside'
+            position: seriesItem.labelPosition || 'inside',
+            formatter: function (params: { value: number }) {
+                return Math.abs(params.value)
+            }
         },
         emphasis: {
             focus: 'series'
@@ -212,6 +252,7 @@ const DivergingStackedBarChart = (props: IProps) => {
     }))
 
     const options: EChartsOption = {
+        // @ts-expect-error The echarts type doesn't match with this
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -223,14 +264,14 @@ const DivergingStackedBarChart = (props: IProps) => {
                 fontSize: 11.5,
                 color: '#FFFFFF'
             },
-            extraCssText: 'border: none; padding: 6px;'
+            extraCssText: 'border: none; padding: 6px;',
+            formatter: formatTooltip
         },
         legend: {
             data: data.seriesData.map(item => item.name)
         },
         title: {
             left: legendType === 'scroll' ? '0.1%' : '4%',
-            // top: legendType === 'scroll' && '5.7%',
             top: legendType,
             show: title,
             text: titleProps,
@@ -258,7 +299,12 @@ const DivergingStackedBarChart = (props: IProps) => {
         },
         xAxis: [
             {
-                type: 'value'
+                type: 'value',
+                axisLabel: {
+                    formatter: function (value: number) {
+                        return Math.abs(value).toString()
+                    }
+                }
             }
         ],
         yAxis: [
@@ -286,8 +332,7 @@ const DivergingStackedBarChart = (props: IProps) => {
                 style={CHART_WIDTH}
                 opts={getWidthOpts(width || 'auto')}
                 option={options}
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error The echarts type doesn't match with this
                 onEvents={clickEvent}
             />
             {props.showCSVDownload && (
