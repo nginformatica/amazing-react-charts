@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { filter, map, zipWith } from 'ramda'
-import type { EChartsOption } from 'echarts'
 import type {
     IDefaultChartProps,
     TAudiometryDataEntry,
@@ -10,6 +9,7 @@ import type {
     TSimpleLegend,
     EChartSeries
 } from '../types'
+import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
     getDataView,
     getSaveAsImage,

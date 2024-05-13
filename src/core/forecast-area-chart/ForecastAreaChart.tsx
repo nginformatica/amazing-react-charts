@@ -1,7 +1,6 @@
-import * as React from 'react'
+import React from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { take } from 'ramda'
-import type { EChartsOption } from 'echarts'
 import type {
     IDefaultChartProps,
     TDataZoomChartProps,
@@ -12,6 +11,7 @@ import type {
     SeriesLabelFormatter,
     TooltipFormatter
 } from '../types'
+import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
     formatTime,
     formatTooltipWithHours,

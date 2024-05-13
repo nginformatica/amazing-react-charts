@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { map, sum } from 'ramda'
-import type { EChartsOption } from 'echarts'
 import type { IProps } from '../pie-chart/PieChart'
 import type { PieChartFormatter, PieDataLabel } from '../types'
+import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
     getDataView,
     getSaveAsImage,

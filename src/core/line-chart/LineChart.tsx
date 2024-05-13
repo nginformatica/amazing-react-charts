@@ -1,6 +1,5 @@
-import * as React from 'react'
+import React from 'react'
 import ReactCharts from 'echarts-for-react'
-import type { EChartsOption } from 'echarts'
 import type {
     IDefaultChartProps,
     EntryData,
@@ -8,6 +7,7 @@ import type {
     ZoomProps,
     LinesFormatterTooltip
 } from '../types'
+import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
     formatTime,
     getDataView,
