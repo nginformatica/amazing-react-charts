@@ -1,20 +1,24 @@
 module.exports = {
     plugins: [
-        [
-            'transform-imports',
-            {
-                'date-fns': {
-                    transform: 'date-fns/${member}',
-                    preventFullImport: true
-                },
-                ramda: {
-                    transform: 'ramda/es/${member}',
-                    preventFullImport: true
-                }
-            }
-        ],
         '@babel/plugin-transform-runtime',
-        'transform-class-properties'
+        [
+            'import',
+            {
+                libraryName: 'ramda',
+                libraryDirectory: 'es',
+                camel2DashComponentName: false
+            },
+            'ramda'
+        ]
+        [
+            'import',
+            {
+                libraryName: 'date-fns',
+                libraryDirectory: '',
+                camel2DashComponentName: false
+            },
+            'date-fns'
+        ]
     ],
     presets: [
         '@babel/preset-env',
@@ -23,9 +27,7 @@ module.exports = {
     ],
     env: {
         test: {
-            plugins: [
-                '@babel/plugin-transform-modules-commonjs'
-            ]
+            plugins: ['@babel/plugin-transform-modules-commonjs']
         }
     }
 }
