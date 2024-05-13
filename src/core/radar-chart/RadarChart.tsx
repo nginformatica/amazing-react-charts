@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactEcharts from 'echarts-for-react'
-import type { EChartsOption } from 'echarts'
 import type { LinesFormatterTooltip, WidthProps } from '../types'
+import type { EChartsOption } from 'echarts/types/dist/echarts'
 import { getWidthOpts, takeLabelComplement } from '../../lib/auxiliarFunctions'
 import { CHART_WIDTH } from '../../commonStyles'
 

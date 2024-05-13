@@ -1,9 +1,8 @@
 .vscode/
 public/
 .idea/
-docs/
 .eslintignore
-.eslintrc.yaml
+.eslintrc.js
 .prettierignore
 .prettierrc.yaml
 tsconfig.json

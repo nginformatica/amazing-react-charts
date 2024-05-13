@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
 import { reverse } from 'ramda'
-import type { EChartsOption } from 'echarts'
 import type {
     IDefaultChartProps,
     EntryData,
     LabelProps,
     ParamsTooltip
 } from '../types'
+import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
     getDataView,
     getDomain,

@@ -2,12 +2,12 @@
 // @ts-nocheck
 import React, { memo, useRef } from 'react'
 import ReactEcharts from 'echarts-for-react'
-import type { EChartsOption } from 'echarts'
 import type {
     IDefaultChartProps,
     LinesFormatterTooltip,
     WidthProps
 } from '../types'
+import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
     formatTime,
     getWidthOpts,
