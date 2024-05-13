@@ -9,7 +9,7 @@ module.exports = {
                 camel2DashComponentName: false
             },
             'ramda'
-        ]
+        ],
         [
             'import',
             {

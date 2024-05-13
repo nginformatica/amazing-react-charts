@@ -1,106 +1,100 @@
 {
-  "name": "amazing-react-charts",
-  "version": "1.0.8",
-  "description": "An amazing react charts package based in echarts",
-  "license": "MIT",
-  "main": "dist/index.js",
-  "homepage": "https://amazing-react-charts.now.sh/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nginformatica/amazing-react-charts.git"
-  },
-  "types": "dist/index.d.ts",
-  "typings": "dist/index.d.ts",
-  "resolutions": {
-    "jackspeak": "2.1.1"
-  },
-  "scripts": {
-    "start": "sb dev -p 6006",
-    "clean": "rm -rf ./dist/*",
-    "copy:package": "cp package.json dist/",
-    "publish:yalc": "cd dist/ && yalc publish && cd ..",
-    "build": "yarn clean && yarn build:ts && yarn build:babel",
-    "build:link": "yarn build && yarn copy:package && yarn publish:yalc",
-    "build:ts": "tsc --emitDeclarationOnly",
-    "build:babel": "babel src --out-dir dist --extensions '.ts,.tsx' --ignore '**/*.stories.tsx' --ignore '**/*.spec.tsx'",
-    "type-check": "tsc --noEmit",
-    "format": "prettier -w 'src/**/*.{ts,tsx}'",
-    "lint": "eslint -c .eslintrc.js 'src/**/*.{ts,tsx}'",
-    "lint:fix": "eslint -c .eslintrc.js --fix 'src/**/*.{ts,tsx}'",
-    "lint:quiet": "eslint --quiet .eslintrc.js 'src/**/*.{ts,tsx}'",
-    "predeploy": "yarn build && yarn storybook:build",
-    "docs:build": "storybook build -o docs",
-    "pre-publish": "yarn lint --fix && yarn type-check",
-    "deploy": "gh-pages -d docs",
-    "release": "yarn build && node pre-publish.js && npm publish ./dist --access public",
-    "test": "NODE_ENV=test jest --no-cache --verbose --passWithNoTests --noStackTrace --runInBand  --updateSnapshot",
-    "pre-test": "node checkTestFiles.js"
-  },
-  "dependencies": {
-    "date-fns": "2.30.0",
-    "echarts": "5.5.0",
-    "echarts-for-react": "3.0.2",
-    "ramda": "0.29.1"
-  },
-  "devDependencies": {
-    "@babel/cli": "7.24.1",
-    "@babel/core": "7.24.3",
-    "@babel/plugin-transform-modules-commonjs": "7.24.1",
-    "@babel/plugin-transform-runtime": "7.24.3",
-    "@babel/preset-env": "7.24.3",
-    "@babel/preset-react": "7.24.1",
-    "@babel/preset-typescript": "7.24.1",
-    "@storybook/addon-essentials": "7.6.17",
-    "@storybook/addon-styling-webpack": "0.0.6",
-    "@storybook/blocks": "7.6.17",
-    "@storybook/react": "7.6.17",
-    "@storybook/react-webpack5": "7.6.17",
-    "@storybook/testing-library": "0.2.2",
-    "@stylistic/eslint-plugin": "1.5.4",
-    "@testing-library/jest-dom": "6.4.2",
-    "@testing-library/react": "14.2.2",
-    "@testing-library/user-event": "14.5.2",
-    "@types/jest": "29.5.12",
-    "@types/ramda": "0.29.12",
-    "@types/react": "18.2.73",
-    "@typescript-eslint/eslint-plugin": "7.2.0",
-    "@typescript-eslint/parser": "7.2.0",
-    "babel-plugin-transform-class-properties": "6.24.1",
-    "babel-plugin-transform-imports": "2.0.0",
-    "canvas": "2.11.2",
-    "eslint": "8.57.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-import-resolver-typescript": "3.6.1",
-    "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-prettier": "5.1.3",
-    "eslint-plugin-react": "7.34.1",
-    "eslint-plugin-react-hooks": "4.6.0",
-    "jest": "29.7.0",
-    "jest-environment-jsdom": "29.7.0",
-    "prettier": "3.2.5",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "storybook": "7.6.17",
-    "styled-components": "6.1.8",
-    "ts-jest": "29.1.2",
-    "ts-node": "10.9.2",
-    "typescript": "5.4.3",
-    "webpack": "5.91.0"
-  },
-  "peerDependencies": {
-    "react": "16.x || 17.x || 18.x",
-    "styled-components": "5.x || 6.x"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
-    "ignore": [
-      "!dist/",
-      "!/node_modules/"
-    ]
-  },
-  "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
-  }
+    "name": "amazing-react-charts",
+    "version": "1.0.9",
+    "description": "An amazing react charts package based in echarts",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "homepage": "https://amazing-react-charts.now.sh/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nginformatica/amazing-react-charts.git"
+    },
+    "types": "dist/index.d.ts",
+    "typings": "dist/index.d.ts",
+    "resolutions": {
+        "jackspeak": "2.1.1"
+    },
+    "scripts": {
+        "start": "sb dev -p 6006",
+        "clean": "rm -rf ./dist/*",
+        "copy:package": "cp package.json dist/",
+        "publish:yalc": "cd dist/ && yalc publish && cd ..",
+        "build": "yarn clean && yarn build:ts && yarn build:babel",
+        "build:link": "yarn build && yarn copy:package && yarn publish:yalc",
+        "build:ts": "tsc --emitDeclarationOnly",
+        "build:babel": "babel src --out-dir dist --extensions '.ts,.tsx' --ignore '**/*.stories.tsx' --ignore '**/*.spec.tsx'",
+        "type-check": "tsc --noEmit",
+        "format": "prettier -w 'src/**/*.{ts,tsx}'",
+        "lint": "eslint -c .eslintrc.js 'src/**/*.{ts,tsx}'",
+        "lint:fix": "eslint -c .eslintrc.js --fix 'src/**/*.{ts,tsx}'",
+        "lint:quiet": "eslint --quiet .eslintrc.js 'src/**/*.{ts,tsx}'",
+        "docs:build": "storybook build -o docs",
+        "pre-publish": "yarn lint --fix && yarn type-check",
+        "release": "yarn build && node pre-publish.js && npm publish ./dist --access public",
+        "test": "NODE_ENV=test jest --no-cache --verbose --passWithNoTests --noStackTrace --runInBand  --updateSnapshot",
+        "pre-test": "node checkTestFiles.js"
+    },
+    "dependencies": {
+        "date-fns": "2.30.0",
+        "echarts": "5.5.0",
+        "echarts-for-react": "3.0.2",
+        "ramda": "0.29.1"
+    },
+    "devDependencies": {
+        "@babel/cli": "7.24.5",
+        "@babel/core": "7.24.5",
+        "@babel/plugin-transform-modules-commonjs": "7.24.1",
+        "@babel/plugin-transform-runtime": "7.24.3",
+        "@babel/preset-env": "7.24.5",
+        "@babel/preset-react": "7.24.1",
+        "@babel/preset-typescript": "7.24.1",
+        "@storybook/addon-essentials": "7.6.17",
+        "@storybook/addon-styling-webpack": "0.0.6",
+        "@storybook/blocks": "7.6.17",
+        "@storybook/react": "7.6.17",
+        "@storybook/react-webpack5": "7.6.17",
+        "@stylistic/eslint-plugin": "1.5.4",
+        "@testing-library/dom": "10.1.0",
+        "@testing-library/jest-dom": "6.4.5",
+        "@testing-library/react": "15.0.7",
+        "@testing-library/user-event": "14.5.2",
+        "@types/jest": "29.5.12",
+        "@types/node": "20.12.11",
+        "@types/ramda": "0.29.12",
+        "@types/react": "18.2.73",
+        "@typescript-eslint/eslint-plugin": "7.2.0",
+        "@typescript-eslint/parser": "7.2.0",
+        "babel-plugin-import": "1.13.8",
+        "canvas": "2.11.2",
+        "eslint": "8.57.0",
+        "eslint-config-prettier": "9.1.0",
+        "eslint-import-resolver-typescript": "3.6.1",
+        "eslint-plugin-import": "2.29.1",
+        "eslint-plugin-prettier": "5.1.3",
+        "eslint-plugin-react": "7.34.1",
+        "eslint-plugin-react-hooks": "4.6.2",
+        "jest": "29.7.0",
+        "jest-environment-jsdom": "29.7.0",
+        "prettier": "3.2.5",
+        "react": "18.2.0",
+        "react-dom": "18.2.0",
+        "storybook": "7.6.17",
+        "styled-components": "6.1.11",
+        "ts-jest": "29.1.2",
+        "ts-node": "10.9.2",
+        "typescript": "5.4.5",
+        "webpack": "5.91.0"
+    },
+    "peerDependencies": {
+        "react": ">=17.0.0",
+        "react-dom": ">=17.0.0",
+        "styled-components": ">=5.0.0"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/",
+        "ignore": [
+            "!dist/",
+            "!/node_modules/"
+        ]
+    }
 }
