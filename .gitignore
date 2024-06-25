@@ -1,10 +1,9 @@
-/node_modules
+node_modules
 
 src/test/__snapshots__
 
-/dist
-/docs
+dist/
+docs/
 
-.yarn/*
 yarn-error.log
 *.tgz

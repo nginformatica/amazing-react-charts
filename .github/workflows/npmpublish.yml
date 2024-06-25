@@ -10,11 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install yarn lastest version
-        run: |
-          corepack enable
-          yarn set version berry
-
       - name: Setup node.js
         uses: actions/setup-node@v4
         with:
@@ -33,11 +28,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install yarn lastest version
-        run: |
-          corepack enable
-          yarn set version berry
 
       - name: Publish new version to NPM
         uses: actions/setup-node@v4
