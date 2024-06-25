@@ -13,9 +13,10 @@ jobs:
       - name: Enable corepack
         run: corepack enable
 
-      - uses: actions/setup-node@v4
+      - name: Setup node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20.15.0'
           registry-url: 'https://registry.npmjs.org'
           always-auth: true
 
@@ -40,7 +41,7 @@ jobs:
       - name: Publish new version to NPM
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20.15.0'
           registry-url: https://registry.npmjs.org/
           always-auth: true
 
