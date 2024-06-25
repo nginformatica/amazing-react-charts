@@ -11,7 +11,6 @@
     },
     "types": "dist/index.d.ts",
     "typings": "dist/index.d.ts",
-    "packageManager": "yarn@4.3.1",
     "resolutions": {
         "jackspeak": "2.1.1"
     },
