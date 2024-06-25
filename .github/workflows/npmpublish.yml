@@ -9,35 +9,54 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Enable Corepack before setting up Node
+
+      - name: Enable corepack
         run: corepack enable
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: 'https://registry.npmjs.org'
           always-auth: true
+
       - name: Install lastest Yarn version
         run: yarn set version berry
-      - run: yarn
-      - run: yarn lint
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run lint
+        run: yarn lint
 
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Publish new version to NPM
+
+      - name: Enable corepack
         run: corepack enable
+
+      - name: Publish new version to NPM
         uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
           always-auth: true
+
       - name: Install lastest Yarn version
         run: yarn set version berry
-      - run: yarn
-      - run: yarn build
-      - run: node pre-publish.js
-      - run: npm publish ./dist --access public
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build package
+        run: yarn build
+
+      - name: Run pre-publish
+        run: node pre-publish.js
+
+      - name: Publish package on npm
+        run: npm publish ./dist --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
