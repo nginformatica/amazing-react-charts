@@ -216,8 +216,7 @@ const HorizontalBarChart = (props: IProps) => {
             containLabel: true,
             ...gridProps
         },
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fix
         series: [
             {
                 barGap: '-100%',
@@ -356,8 +355,7 @@ const HorizontalBarChart = (props: IProps) => {
             style={CHART_WIDTH}
             opts={getWidthOpts(width || 'auto')}
             option={options}
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fix
             onEvents={clickEvent}
         />
     )

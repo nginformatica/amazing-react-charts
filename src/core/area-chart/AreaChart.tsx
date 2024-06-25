@@ -162,8 +162,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             : []
 
     const options: EChartsOption = {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fix
         series: [
             {
                 type: 'line',
@@ -273,8 +272,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 show: true
             },
             axisTick: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error issue
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
                 show: true

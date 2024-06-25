@@ -1,6 +1,5 @@
 .vscode/
 public/
-.idea/
 .eslintignore
 .eslintrc.js
 .prettierignore

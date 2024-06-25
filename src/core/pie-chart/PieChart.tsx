@@ -190,9 +190,7 @@ const PieChart = (props: IProps) => {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                // there is no toolbox-tooltip-trigger type on EChartsOption
+                // @ts-expect-error fix
                 // if the trigger it's not set to none, the tooltip shows an arrow
                 trigger: 'none' as const,
                 formatter: param => `<div>${param.title}</div>`

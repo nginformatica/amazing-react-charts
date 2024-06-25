@@ -165,8 +165,7 @@ const ForecastAreaChart = (props: IProps) => {
             : []
 
     const options: EChartsOption = {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fix
         series: [
             {
                 type: 'line',
@@ -301,8 +300,7 @@ const ForecastAreaChart = (props: IProps) => {
                 color: '#000000'
             },
             axisTick: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error issue
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
                 show: true
@@ -316,8 +314,7 @@ const ForecastAreaChart = (props: IProps) => {
             }
         },
         grid: { ...(gridProps || { bottom: 75 }), show: true },
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fix
         legend: {
             top: 20,
             selectedMode: false,

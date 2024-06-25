@@ -243,8 +243,7 @@ const AudiometryChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
             },
             splitLine: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error issue
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
                 show: true,
@@ -283,8 +282,7 @@ const AudiometryChart = (props: IProps) => {
                 }
             },
             axisTick: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error issue
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
                 show: true

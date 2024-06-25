@@ -301,8 +301,7 @@ const VerticalBarChart = (props: IProps) => {
             data: xData as string[],
             splitLine: {
                 show: true,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error issue
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
                 lineStyle: {
@@ -363,8 +362,7 @@ const VerticalBarChart = (props: IProps) => {
             },
             axisTick: {
                 show: true,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error issue
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true
             }
@@ -411,8 +409,7 @@ const VerticalBarChart = (props: IProps) => {
             style={CHART_WIDTH}
             opts={getWidthOpts(width || 'auto')}
             option={options}
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fix
             onEvents={events}
         />
     )

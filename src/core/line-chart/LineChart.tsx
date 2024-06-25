@@ -238,8 +238,7 @@ const LineChart = (props: IProps) => {
                 color: '#000000'
             },
             axisTick: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error issue
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
                 show: true
@@ -252,8 +251,7 @@ const LineChart = (props: IProps) => {
             }
         },
         grid: { ...(gridProps || { bottom: 75 }), show: true },
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error issue
         legend: {
             data: names,
             icon: STRAIGHT_LINE_ICON,
