@@ -1,6 +1,6 @@
 {
     "name": "amazing-react-charts",
-    "version": "1.0.9",
+    "version": "1.1.0",
     "description": "An amazing react charts package based in echarts",
     "license": "MIT",
     "main": "dist/index.js",
@@ -16,7 +16,7 @@
     },
     "scripts": {
         "start": "sb dev -p 6006",
-        "clean": "rm -rf ./dist/*",
+        "clean": "rm -rf ./dist",
         "copy:package": "cp package.json dist/",
         "publish:yalc": "cd dist/ && yalc publish && cd ..",
         "build": "yarn clean && yarn build:ts && yarn build:babel",
