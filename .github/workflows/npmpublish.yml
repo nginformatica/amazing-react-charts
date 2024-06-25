@@ -10,8 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Enable corepack
-        run: corepack enable
+      - name: Install yarn lastest version
+        run: |
+          corepack enable
+          yarn set version berry
 
       - name: Setup node.js
         uses: actions/setup-node@v4
@@ -19,9 +21,6 @@ jobs:
           node-version: '20.15.0'
           registry-url: 'https://registry.npmjs.org'
           always-auth: true
-
-      - name: Install lastest Yarn version
-        run: yarn set version berry
 
       - name: Install dependencies
         run: yarn
@@ -35,8 +34,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Enable corepack
-        run: corepack enable
+      - name: Install yarn lastest version
+        run: |
+          corepack enable
+          yarn set version berry
 
       - name: Publish new version to NPM
         uses: actions/setup-node@v4
@@ -44,9 +45,6 @@ jobs:
           node-version: '20.15.0'
           registry-url: https://registry.npmjs.org/
           always-auth: true
-
-      - name: Install lastest Yarn version
-        run: yarn set version berry
 
       - name: Install dependencies
         run: yarn
