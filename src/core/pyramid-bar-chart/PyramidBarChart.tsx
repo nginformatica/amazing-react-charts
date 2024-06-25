@@ -242,8 +242,7 @@ const PyramidBarChart = (props: IProps) => {
         legend: {
             data: data.seriesData.map(item => item.name)
         },
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fix
         title: {
             left: legendType === 'scroll' ? '0.1%' : '4%',
             top: legendType === 'scroll' && '5.7%',
@@ -306,8 +305,7 @@ const PyramidBarChart = (props: IProps) => {
                 style={CHART_WIDTH}
                 opts={getWidthOpts(width || 'auto')}
                 option={options}
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error fix
                 onEvents={clickEvent}
             />
             {props.showCSVDownload && (

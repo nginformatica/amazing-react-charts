@@ -351,8 +351,7 @@ const StackedBarChart = (props: IProps) => {
     const options: EChartsOption = {
         grid: gridProps,
         color: colors,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fix
         series: [
             {
                 barWidth: barWidth,
@@ -403,8 +402,7 @@ const StackedBarChart = (props: IProps) => {
                 interval: xData.length > 20 ? 'auto' : 0
             },
             splitLine: {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error issue
                 // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
                 show: true,
@@ -439,8 +437,7 @@ const StackedBarChart = (props: IProps) => {
                     show: true
                 },
                 splitLine: {
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
+                    // @ts-expect-error issue
                     // https://github.com/apache/incubator-echarts/issues/13618
                     alignWithLabel: true,
                     show: true,
@@ -452,12 +449,10 @@ const StackedBarChart = (props: IProps) => {
             },
             secondYAxis
         ],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fix
         legend: legendType === 'none' ? undefined : legendProps,
         dataZoom: scrollable,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fix
         title: {
             left: legendType === 'scroll' ? '0.1%' : '4%',
             top: legendType === 'scroll' && '5.7%',
