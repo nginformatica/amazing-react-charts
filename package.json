@@ -10,9 +10,6 @@
     },
     "types": "dist/index.d.ts",
     "typings": "dist/index.d.ts",
-    "resolutions": {
-        "jackspeak": "2.1.1"
-    },
     "scripts": {
         "start": "sb dev -p 6006",
         "clean": "rm -rf ./dist",
