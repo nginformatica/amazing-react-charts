@@ -181,7 +181,7 @@ const HorizontalBarChart = (props: IProps) => {
     const formatterLabel = (item: string | number) => {
         return xType === 'time'
             ? timeConvert(Number(item)).toString() + 'h'
-            : (xComplement && (item + xComplement).toString()) ?? ''
+            : ((xComplement && (item + xComplement).toString()) ?? '')
     }
 
     const handleShowTitle = (show: boolean) => {
