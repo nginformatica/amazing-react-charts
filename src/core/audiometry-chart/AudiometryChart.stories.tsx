@@ -3,6 +3,9 @@ import type { IProps } from './AudiometryChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableAudiometry } from '../disableControls'
 import AudiometryChart from './AudiometryChart'
+import { theme } from 'flipper-ui/theme'
+
+const { amber, blue, green, neutral, purple, red } = theme.colors
 
 const meta: Meta<typeof AudiometryChart> = {
     title: 'Charts/Audiometry Chart',
@@ -80,8 +83,8 @@ export const audiometryChartWithSolidLine: Story = {
     args: {
         grid: { left: '10%' },
         title: 'Audiometry Chart With Solid Line',
-        color: 'red',
-        colors: ['red', 'red'],
+        color: red[600],
+        colors: [red[600], red[600]],
         lineType: 'solid',
         symbolsSize: 16,
         legendType: 'scroll',
@@ -149,8 +152,8 @@ export const audiometryChartWithDashedLine: Story = {
     },
     args: {
         title: 'Audiometry Chart With Dashed Line',
-        color: 'blue',
-        colors: ['blue', 'blue'],
+        color: blue[800],
+        colors: [blue[800], blue[800]],
         lineType: 'dashed',
         symbolsSize: 16,
         legendType: 'scroll',
@@ -230,8 +233,15 @@ export const audiometryChartWithConcurrentLines: Story = {
         tooltipMarker: true,
         grid: { bottom: 80 },
         title: 'Audiometry Chart With Concurrent Lines',
-        color: 'black',
-        colors: ['red', 'red', 'blue', 'green', 'purple', 'yellow'],
+        color: neutral[200],
+        colors: [
+            red[600],
+            red[600],
+            blue[800],
+            green[500],
+            purple[800],
+            amber[600]
+        ],
         lineType: 'solid',
         symbolsSize: 14,
         legendType: 'scroll',
@@ -245,12 +255,12 @@ export const audiometryChartWithConcurrentLines: Story = {
                     ' 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'
             },
             {
-                name: 'red',
+                name: red[600],
                 icon:
                     'path://M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5' +
                     ' 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'
             },
-            { name: 'blue' },
+            { name: blue[800] },
             { name: 'item-special-second' },
             { name: 'item-special-twelve' },
             { name: 'item-special-bing-bang' }

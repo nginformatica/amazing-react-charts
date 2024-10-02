@@ -4,6 +4,9 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisablePie } from '../disableControls'
 import PieChart from './PieChart'
 import { ChartStorieWrapper } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { blue, neutral, teal } = theme.colors
 
 const meta: Meta<typeof PieChart> = {
     title: 'Charts/Pie Chart',
@@ -101,10 +104,10 @@ export const pieChart: Story = {
     args: {
         noAnimation: true,
         title: 'Pie Chart',
-        colors: ['red', 'yellow', 'green', 'blue'],
+        colors: [blue[300], blue[500], blue[700], blue[900]],
         radius: '75%',
         resultFormatType: 'percent',
-        labelFontColor: 'black',
+        labelFontColor: neutral[200],
         legendPosition: 'inside',
         tooltipTitle: 'title',
         center: ['50%', '50%'],
@@ -135,9 +138,9 @@ export const pieChartWithScrollableLegend: Story = {
     },
     args: {
         title: 'Pie Chart With Scrollable Legend',
-        colors: ['blue', 'green', 'red', 'purple', 'black'],
+        colors: [teal[900], teal[700], teal[500], teal[400], teal[200]],
         radius: '75%',
-        labelFontColor: 'white',
+        labelFontColor: neutral[50],
         legendPosition: 'inside',
         tooltipTitle: 'title',
         center: ['50%', '50%'],

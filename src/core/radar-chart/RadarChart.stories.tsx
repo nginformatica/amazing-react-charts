@@ -3,6 +3,9 @@ import type { RadarChartProps } from './RadarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableRadar } from '../disableControls'
 import RadarChart from './RadarChart'
+import { theme } from 'flipper-ui/theme'
+
+const { darkBlue, indigo } = theme.colors
 
 const meta: Meta<typeof RadarChart> = {
     title: 'Charts/Radar Chart',
@@ -51,12 +54,12 @@ export const radarChart: Story = {
         series: [
             {
                 name: 'Dinheiro',
-                color: '#142459',
+                color: darkBlue[700],
                 data: [320, 332, 301, 334, 390]
             },
             {
                 name: 'Crédito',
-                color: '#176BA0',
+                color: indigo[800],
                 data: [220, 182, 191, 234, 290]
             }
         ]
@@ -92,12 +95,12 @@ export const radarChartCircular: Story = {
         series: [
             {
                 name: 'Dinheiro',
-                color: '#142459',
+                color: darkBlue[700],
                 data: [320, 332, 301, 334, 390]
             },
             {
                 name: 'Crédito',
-                color: '#176BA0',
+                color: indigo[800],
                 data: [220, 182, 191, 234, 290]
             }
         ]
@@ -128,12 +131,12 @@ export const radarChartAreaHighlight: Story = {
         series: [
             {
                 name: 'Dinheiro',
-                color: '#142459',
+                color: darkBlue[700],
                 data: [320, 332, 301, 334, 390]
             },
             {
                 name: 'Crédito',
-                color: '#176BA0',
+                color: indigo[800],
                 data: [220, 182, 191, 234, 290]
             }
         ]

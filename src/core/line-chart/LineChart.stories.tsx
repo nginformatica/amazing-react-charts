@@ -3,6 +3,9 @@ import type { IProps } from './LineChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableLine } from '../disableControls'
 import LineChart from './LineChart'
+import { theme } from 'flipper-ui/theme'
+
+const { blue, green, red } = theme.colors
 
 const meta: Meta<typeof LineChart> = {
     title: 'Charts/Line Chart',
@@ -61,8 +64,8 @@ export const lineChart: Story = {
         showLabel: true,
         xType: 'time',
         dateFormat: 'yyyy-MM',
-        title: 'Line Chart With Concurrent Lines',
-        colors: ['red', 'green'],
+        title: 'Line Chart',
+        colors: [red[500], green[400]],
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
         data: [
             {
@@ -113,8 +116,8 @@ export const lineChartWithDateAndTime: Story = {
         showLabel: true,
         xType: 'time',
         dateFormat: 'MMM/dd HH:mm',
-        title: 'Line Chart With Concurrent Lines',
-        colors: ['red', 'green', 'blue'],
+        title: 'Line Chart With Date and Time',
+        colors: [red[500], green[400], blue[600]],
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
         data: [
             {
@@ -126,6 +129,17 @@ export const lineChartWithDateAndTime: Story = {
                     { label: '2019-04 12:30', result: 20 },
                     { label: '2019-05 14:30', result: 40 },
                     { label: '2019-06 18:45', result: 50 }
+                ]
+            },
+            {
+                name: 'medium line',
+                values: [
+                    { label: '2019-01 08:40', result: 5 },
+                    { label: '2019-02 09:12', result: 15 },
+                    { label: '2019-03 10:25', result: 11 },
+                    { label: '2019-04 12:30', result: 9 },
+                    { label: '2019-05 14:30', result: 17 },
+                    { label: '2019-06 18:45', result: 19 }
                 ]
             },
             {

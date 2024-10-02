@@ -3,6 +3,9 @@ import type { IProps } from './VerticalBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableVertical } from '../disableControls'
 import VerticalBarChart from './VerticalBarChart'
+import { theme } from 'flipper-ui/theme'
+
+const { amber, blue, green, orange, red } = theme.colors
 
 const meta: Meta<typeof VerticalBarChart> = {
     title: 'Charts/Vertical Bar Chart',
@@ -68,7 +71,7 @@ export const verticalBarChart: Story = {
         xType: 'category',
         yType: 'value',
         title: 'Vertical Bar Chart',
-        color: 'green',
+        color: green[500],
         yComplement: '%',
         tooltip: { label: 'Equipamento', result: 'Disponibilidade' },
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
@@ -288,7 +291,7 @@ export const verticalBarChartWithCustomMaxDomain: Story = {
         xType: 'category',
         yType: 'value',
         title: 'Vertical Bar Chart With customMaxDomain',
-        color: 'blue',
+        color: blue[600],
         customMaxDomain: 3000,
         yComplement: '%',
         tooltip: { label: 'Equipamento', result: 'Disponibilidade' },
@@ -322,7 +325,7 @@ export const verticalBarChartWithDateFormat: Story = {
         xType: 'time',
         dateFormat: 'yyyy-MM',
         title: 'Vertical Bar Chart With Date Format',
-        color: 'blue',
+        color: blue[600],
         customMaxDomain: 100,
         yComplement: '%',
         tooltip: { label: 'Date', result: 'Disp' },
@@ -353,7 +356,7 @@ export const verticalBarChartWithTimeFormat: Story = {
         yType: 'time',
         dateFormat: 'yyyy-MM',
         title: 'Vertical Bar Chart With Time Format',
-        color: 'orange',
+        color: orange[700],
         customMaxDomain: 240,
         yComplement: 'h',
         tooltip: { label: 'Grupo', result: 'MTTR' },
@@ -410,7 +413,7 @@ export const verticalBarChartWithYComplement: Story = {
         yType: 'value',
         dateFormat: 'yyyy-MM-dd',
         title: 'Vertical Bar Chart With Y Complement',
-        color: 'green',
+        color: green[500],
         customMaxDomain: 3,
         interval: 1,
         tooltip: { label: 'Data', result: 'Saúde' },
@@ -419,19 +422,19 @@ export const verticalBarChartWithYComplement: Story = {
                 label: '2023-06-29',
                 result: 1,
                 itemId: '1',
-                style: { color: 'green' }
+                style: { color: green[500] }
             },
             {
                 label: '2023-06-30',
                 result: 3,
                 itemId: '1',
-                style: { color: 'red' }
+                style: { color: red[500] }
             },
             {
                 label: '2023-07-01',
                 result: 2,
                 itemId: '1',
-                style: { color: 'yellow' }
+                style: { color: amber[400] }
             }
         ]
     },

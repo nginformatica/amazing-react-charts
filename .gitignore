@@ -7,3 +7,6 @@ docs/
 
 yarn-error.log
 *.tgz
+
+.yalc
+yalc.lock

@@ -115,6 +115,11 @@ const rulesImport = {
                     group: 'index',
                     position: 'after'
                 },
+                {
+                    pattern: 'flipper-ui/theme',
+                    group: 'index',
+                    position: 'after'
+                },
             ],
             pathGroupsExcludedImportTypes: ['react', 'react-dom'],
             'newlines-between': 'never',

@@ -3,6 +3,9 @@ import type { IProps } from './CoordinateLineChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableCoordinate } from '../disableControls'
 import CoordinateLineChart from './CoordinateLineChart'
+import { theme } from 'flipper-ui/theme'
+
+const { amber, gray, green } = theme.colors
 
 const meta: Meta<typeof CoordinateLineChart> = {
     title: 'Charts/Coordinate Line Chart',
@@ -71,7 +74,7 @@ export const coordinateLineChart: Story = {
     },
     args: {
         title: 'Coordinate Line Chart',
-        colors: ['gray', 'orange', 'green'],
+        colors: [gray[700], amber[700], green[700]],
         height: 400,
         xMaxValue: 8,
         legendNames: ['ref', 'pre', 'pos'],
@@ -131,7 +134,7 @@ export const coordinateLineChartWithNegativeValuesOnYAxis: Story = {
     args: {
         grid: { top: 80 },
         title: 'Coordinate Line Chart',
-        colors: ['gray', 'orange', 'green'],
+        colors: [gray[700], amber[700], green[700]],
         height: 400,
         xMaxValue: 8,
         yRangeValues: 8,

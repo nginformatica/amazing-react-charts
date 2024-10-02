@@ -26,6 +26,9 @@ import {
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { gray, neutral } = theme.colors
 
 export interface IProps extends IDefaultChartProps {
     showTickInfos?: boolean
@@ -228,7 +231,7 @@ const HorizontalBarChart = (props: IProps) => {
                 silent: true,
                 data: backgroundBar,
                 itemStyle: {
-                    color: '#ececec',
+                    color: gray[200],
                     borderRadius: showTickInfos ? 0 : 10,
                     opacity: showTickInfos && 0.5,
                     borderColor: showTickInfos ? undefined : props.color
@@ -251,7 +254,7 @@ const HorizontalBarChart = (props: IProps) => {
                     fontSize: showTickInfos ? 14 : 11,
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontWeight: 400 as const,
-                    color: '#000000'
+                    color: neutral[200]
                 }
             }
         ],
@@ -270,14 +273,14 @@ const HorizontalBarChart = (props: IProps) => {
                 show: showTickInfos || false,
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400 as const,
-                color: '#000000'
+                color: neutral[200]
             },
             splitLine: {
                 show: showTickInfos || false,
                 lineStyle: {
                     type: 'dashed' as const,
                     opacity: 0.2,
-                    color: 'gray'
+                    color: gray[800]
                 }
             }
         },
@@ -296,7 +299,7 @@ const HorizontalBarChart = (props: IProps) => {
                 margin: 12,
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: boldTickLabel ? (400 as const) : undefined,
-                color: '#000000',
+                color: neutral[200],
                 rich: Object.assign({}, ...richData)
             },
             axisTick: {
@@ -308,7 +311,7 @@ const HorizontalBarChart = (props: IProps) => {
                 lineStyle: {
                     type: 'dashed' as const,
                     opacity: 0.2,
-                    color: 'gray'
+                    color: gray[800]
                 }
             }
         },
@@ -321,7 +324,7 @@ const HorizontalBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: titleFontSize || 16,
                 fontWeight: 400 as const,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         tooltip: tooltipProps && {
@@ -333,11 +336,11 @@ const HorizontalBarChart = (props: IProps) => {
                 }
             },
             formatter: formatTooltip,
-            backgroundColor: '#00000099',
+            backgroundColor: `${neutral[200]}99`,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: '#FFFFFF'
+                color: neutral[50]
             },
             extraCssText: 'border: none; padding: 6px;'
         },

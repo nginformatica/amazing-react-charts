@@ -4,6 +4,9 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisablePictorial } from '../disableControls'
 import PictorialChart from './PictorialChart'
 import { PictorialWrapper } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { lightGreen } = theme.colors
 
 const meta: Meta<typeof PictorialChart> = {
     title: 'Charts/Pictorial Chart',
@@ -50,7 +53,7 @@ export const pictorialChart: Story = {
     args: {
         grid: { bottom: '10%' },
         title: 'Pictorial Chart',
-        color: 'purple',
+        color: lightGreen[400],
         height: 500,
         tooltip: {
             label: 'acidents',

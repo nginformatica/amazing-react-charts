@@ -3,6 +3,9 @@ import type { IProps } from './HorizontalBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableHorizontal } from '../disableControls'
 import HorizontalBarChart, { clickBar } from './HorizontalBarChart'
+import { theme } from 'flipper-ui/theme'
+
+const { amber, green, indigo, lightGreen, orange, red } = theme.colors
 
 const meta: Meta<typeof HorizontalBarChart> = {
     title: 'Charts/Horizontal Bar Chart',
@@ -65,19 +68,19 @@ export const horizontalBarChart: Story = {
             {
                 label: 'A',
                 result: 75.3,
-                style: { color: 'red' },
+                style: { color: red[500] },
                 itemId: 'c'
             },
             {
                 label: 'B',
                 result: 86,
-                style: { color: 'yellow' },
+                style: { color: amber[400] },
                 itemId: 'b'
             },
             {
                 label: 'C',
                 result: 94,
-                style: { color: 'green' },
+                style: { color: green[400] },
                 itemId: 'c'
             }
         ]
@@ -103,7 +106,7 @@ export const horizontalBarChartWithRadiusBorder: Story = {
     args: {
         xComplement: '%',
         title: 'Horizontal Bar Chart With Radius Border',
-        color: '#8BC34A',
+        color: lightGreen[400],
         tooltip: {
             label: 'Equipment',
             result: 'Reliability'
@@ -142,21 +145,21 @@ export const horizontalBarChartWithAvatar: Story = {
             {
                 label: 'Bruce Wayne',
                 result: 75.3,
-                style: { color: 'BlueViolet' },
+                style: { color: indigo[700] },
                 itemId: 'c',
                 image: 'https://picsum.photos/id/1/200/200'
             },
             {
                 label: 'Jack Robert',
                 result: 86,
-                style: { color: 'MediumSpringGreen' },
+                style: { color: green[200] },
                 itemId: 'b',
                 image: 'https://picsum.photos/id/2/200/200'
             },
             {
                 label: 'John Doe',
                 result: 94,
-                style: { color: 'OrangeRed' },
+                style: { color: orange[700] },
                 itemId: 'c',
                 image: 'https://picsum.photos/id/3/200/200'
             }

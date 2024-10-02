@@ -24,6 +24,9 @@ import {
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { gray, neutral } = theme.colors
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: EntryDataLine[]
@@ -84,7 +87,7 @@ const LineChart = (props: IProps) => {
             show: showLabel,
             position: 'top',
             fontSize: yType === 'time' ? 10 : 11.5,
-            color: '#000000',
+            color: neutral[200],
             distance: 1.1,
             formatter: (item: number | string | { data: number }) => {
                 if (
@@ -194,7 +197,7 @@ const LineChart = (props: IProps) => {
                 lineStyle: {
                     type: 'dashed',
                     opacity: 0.2,
-                    color: 'gray'
+                    color: gray[800]
                 }
             },
             axisLabel: {
@@ -209,7 +212,7 @@ const LineChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
                 fontSize: fontLabelSize || 11.5,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         yAxis: {
@@ -220,7 +223,7 @@ const LineChart = (props: IProps) => {
                 lineStyle: {
                     type: 'dashed',
                     opacity: 0.2,
-                    color: 'gray'
+                    color: gray[800]
                 }
             },
             axisLabel: {
@@ -235,7 +238,7 @@ const LineChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
                 fontSize: fontLabelSize || 11.5,
-                color: '#000000'
+                color: neutral[200]
             },
             axisTick: {
                 // @ts-expect-error issue
@@ -246,7 +249,7 @@ const LineChart = (props: IProps) => {
             axisLine: {
                 show: true,
                 lineStyle: {
-                    color: '#000000'
+                    color: neutral[200]
                 }
             }
         },
@@ -258,17 +261,17 @@ const LineChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         tooltip: {
             formatter: formatTooltip,
             trigger: 'axis',
-            backgroundColor: '#00000099',
+            backgroundColor: `${neutral[200]}99`,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: '#FFFFFF'
+                color: neutral[50]
             },
             extraCssText: 'border: none; padding: 6px;'
         },
@@ -281,7 +284,7 @@ const LineChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         dataZoom: scrollable,

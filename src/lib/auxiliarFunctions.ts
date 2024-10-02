@@ -9,6 +9,9 @@ import type {
     TypeChart,
     WidthProps
 } from '../core/types'
+import { theme } from 'flipper-ui/theme'
+
+const { neutral, primary } = theme.colors
 
 export const DOWNLOAD_ICON =
     'path://M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 ' +
@@ -19,8 +22,8 @@ export const DATA_VIEW_ICON =
     '3H4V5h2v2zm-4 7h20v-4H2v4zm2-3h2v2H4v-2z'
 
 export const ICON_STYLE = {
-    color: '#152849',
-    borderColor: '#152849',
+    color: primary.main,
+    borderColor: primary.main,
     borderWidth: 0.1
 }
 
@@ -249,7 +252,7 @@ export const getDataView = (title: string) => ({
     show: true,
     icon: DATA_VIEW_ICON,
     iconStyle: ICON_STYLE,
-    buttonColor: '#152849',
+    buttonColor: primary.main,
     // TODO: pass this labels as a props from the component use.
     lang: [title, 'Voltar', 'Atualizar']
 })
@@ -301,8 +304,8 @@ export const getSaveAsImageWithTitle = (
 
         const url = chartInfo.getConnectedDataURL({
             type: 'jpg',
-            backgroundColor: '#fff',
-            connectedBackgroundColor: '#fff',
+            backgroundColor: neutral[50],
+            connectedBackgroundColor: neutral[50],
             excludeComponents: ['toolbox', 'dataZoom']
         })
 

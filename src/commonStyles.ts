@@ -1,4 +1,7 @@
 import { default as styled } from 'styled-components'
+import { theme } from 'flipper-ui/theme'
+
+const { neutral } = theme.colors
 
 export const STRAIGHT_LINE_ICON = 'path://M0 0H25H50V2H25H0V0Z'
 
@@ -20,12 +23,12 @@ export const TOOLBOX_DEFAULT_PROPS = {
 
 export const TOOLTIP_DEFAULT_PROPS = {
     show: true,
-    backgroundColor: '#00000090',
+    backgroundColor: `${neutral[200]}90`,
     extraCssText: 'border: none; padding: 5px;',
     textStyle: {
         fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
         fontSize: 12,
-        color: '#FFFFFF'
+        color: neutral[50]
     }
 }
 
@@ -51,7 +54,7 @@ export const ChartWrapper = styled.div`
 
 export const ChartTitle = styled.h1`
     font-family: Roboto, Helvetica, Arial, sans-serif;
-    color: #000000;
+    color: ${neutral[200]};
     top: 5;
     margin: 0px;
     font-size: 16px;
@@ -61,7 +64,7 @@ export const ChartTitle = styled.h1`
 
 export const CsvDownloadButtonStyle = styled.button`
     font-weight: bold;
-    background: white;
+    background: ${neutral[50]};
     text-transform: uppercase;
     border: none;
     width: 40px;
@@ -71,6 +74,7 @@ export const CsvDownloadButtonStyle = styled.button`
     position: absolute;
     margin-top: -295px;
     margin-left: 80%;
+
     &:hover::after {
         content: 'Save as CSV';
         position: absolute;
@@ -79,9 +83,9 @@ export const CsvDownloadButtonStyle = styled.button`
         top: 123%;
         left: 50%;
         transform: translateX(-50%);
-        background-color: black;
+        background-color: ${neutral[200]};
         opacity: 55%;
-        color: white;
+        color: ${neutral[50]};
         padding: 4px 8px;
         border-radius: 4px;
         font-size: 12px;

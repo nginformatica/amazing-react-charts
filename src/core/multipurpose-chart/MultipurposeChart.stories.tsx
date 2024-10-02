@@ -3,6 +3,9 @@ import type { MultipurposeChartProps } from './MultipurposeChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableMultipurpose } from '../disableControls'
 import MultipurposeChart from './MultipurposeChart'
+import { theme } from 'flipper-ui/theme'
+
+const { indigo } = theme.colors
 
 const meta: Meta<typeof MultipurposeChart> = {
     title: 'Charts/Multipurpose Chart',
@@ -46,22 +49,22 @@ export const multipurposeChart: Story = {
         series: [
             {
                 name: 'Dinheiro',
-                color: '#142459',
+                color: indigo[900],
                 data: [320, 332, 301, 334, 390]
             },
             {
                 name: 'Crédito',
-                color: '#176BA0',
+                color: indigo[600],
                 data: [220, 182, 191, 234, 290]
             },
             {
                 name: 'Débito',
-                color: '#19AADE',
+                color: indigo[300],
                 data: [150, 232, 201, 154, 190]
             },
             {
                 name: 'Pix',
-                color: '#1AC9E6',
+                color: indigo[100],
                 data: [98, 77, 101, 99, 40]
             }
         ]
