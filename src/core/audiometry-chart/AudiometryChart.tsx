@@ -20,6 +20,9 @@ import {
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { neutral, red } = theme.colors
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: TAudiometryDataEntry[][]
@@ -157,11 +160,11 @@ const AudiometryChart = (props: IProps) => {
     const tooltip = {
         formatter: formatTooltip ?? defaultTooltip,
         trigger: 'axis' as const,
-        backgroundColor: '#00000099',
+        backgroundColor: `${neutral[200]}99`,
         textStyle: {
             fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
             fontSize: 11.5,
-            color: '#FFFFFF'
+            color: neutral[50]
         },
         extraCssText: 'border: none; padding: 6px;'
     }
@@ -207,7 +210,7 @@ const AudiometryChart = (props: IProps) => {
                   textStyle: {
                       fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                       fontWeight: 400,
-                      color: '#000000',
+                      color: neutral[200],
                       fontSize: 11.5
                   }
               }
@@ -218,7 +221,7 @@ const AudiometryChart = (props: IProps) => {
                   textStyle: {
                       fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                       fontWeight: 400,
-                      color: '#000000',
+                      color: neutral[200],
                       fontSize: 11.5
                   }
               }
@@ -250,13 +253,13 @@ const AudiometryChart = (props: IProps) => {
                 lineStyle: {
                     type: 'solid',
                     opacity: 0.2,
-                    color: color || 'red'
+                    color: color || red[600]
                 }
             },
             axisLine: {
                 onZeroAxisIndex: 1,
                 lineStyle: {
-                    color: color || 'red'
+                    color: color || red[600]
                 }
             },
             axisTick: {
@@ -278,7 +281,7 @@ const AudiometryChart = (props: IProps) => {
                 lineStyle: {
                     type: 'solid',
                     opacity: 0.2,
-                    color: color || 'red'
+                    color: color || red[600]
                 }
             },
             axisTick: {
@@ -291,7 +294,7 @@ const AudiometryChart = (props: IProps) => {
                 show: true,
                 onZero: true,
                 lineStyle: {
-                    color: color || 'red'
+                    color: color || red[600]
                 }
             }
         },
@@ -304,7 +307,7 @@ const AudiometryChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: color || 'red'
+                color: color || red[600]
             }
         },
         color: colors,

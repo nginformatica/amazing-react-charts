@@ -4,6 +4,9 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableDonut } from '../disableControls'
 import DonutChart from './DonutChart'
 import { DonutWrapper } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { blue, lightGreen, neutral, red } = theme.colors
 
 const meta: Meta<typeof DonutChart> = {
     title: 'Charts/Donut Chart',
@@ -89,7 +92,7 @@ export const donutChart: Story = {
     },
     args: {
         title: 'Donut Chart',
-        colors: ['red', 'orange', 'yellow', 'green'],
+        colors: [red[900], red[700], red[500], red[300]],
         donutRadius: ['58%', '70%'],
         resultFormatType: 'percent',
         center: ['50%', '50%'],
@@ -122,12 +125,12 @@ export const donutChartWithInsideLegend: Story = {
     args: {
         selectedMode: true,
         title: 'Donut Chart With Inside Legend',
-        colors: ['blue', 'green'],
+        colors: [blue[800], blue[400]],
         donutRadius: ['40%', '70%'],
         resultFormatType: 'percent',
         center: ['50%', '50%'],
         legendPosition: 'inside',
-        labelFontColor: 'white',
+        labelFontColor: neutral[50],
         centerPieValueFontSize: 28,
         donutCenterValue: '83,35%',
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
@@ -149,13 +152,20 @@ export const donutChartWithScrollableLegend: Story = {
     args: {
         selectedMode: true,
         title: 'Donut Chart With Scrollable Legend',
-        colors: ['blue', 'green', 'red', 'purple', 'pink', 'orange'],
+        colors: [
+            lightGreen[900],
+            lightGreen[800],
+            lightGreen[700],
+            lightGreen[600],
+            lightGreen[500],
+            lightGreen[400]
+        ],
         donutRadius: ['40%', '70%'],
         resultFormatType: 'percent',
         center: ['50%', '50%'],
         legendPosition: 'inside',
         legendType: 'scroll',
-        labelFontColor: 'white',
+        labelFontColor: neutral[50],
         centerPieValueFontSize: 25,
         donutCenterValue: '78,20%',
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },

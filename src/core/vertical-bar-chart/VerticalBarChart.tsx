@@ -26,6 +26,9 @@ import {
     getInitialValues
 } from '../../lib/auxiliarFunctions'
 import { CHART_WIDTH, TOOLTIP_DEFAULT_PROPS } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { gray, neutral } = theme.colors
 
 export interface IProps extends IDefaultChartProps {
     rotateTickLabel?: number
@@ -290,7 +293,7 @@ const VerticalBarChart = (props: IProps) => {
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontWeight: 400 as const,
                     fontSize: 12,
-                    color: '#000000'
+                    color: neutral[200]
                 }
             }
         ],
@@ -307,7 +310,7 @@ const VerticalBarChart = (props: IProps) => {
                 lineStyle: {
                     type: 'dashed' as const,
                     opacity: 0.2,
-                    color: 'gray'
+                    color: gray[800]
                 }
             },
             axisLabel: {
@@ -326,7 +329,7 @@ const VerticalBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400 as const,
                 fontSize: 11,
-                color: '#000000'
+                color: neutral[200]
             },
             axisTick: {
                 show: true,
@@ -344,7 +347,7 @@ const VerticalBarChart = (props: IProps) => {
                 lineStyle: {
                     type: 'dashed' as const,
                     opacity: 0.2,
-                    color: 'gray'
+                    color: gray[800]
                 }
             },
             axisLabel: {
@@ -355,7 +358,7 @@ const VerticalBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400 as const,
                 fontSize: 11,
-                color: '#000000'
+                color: neutral[200]
             },
             axisLine: {
                 show: true
@@ -376,17 +379,17 @@ const VerticalBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: titleFontSize || 16,
                 fontWeight: 400 as const,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         tooltip: tooltipProps && {
             formatter: formatSingleTooltip,
             trigger: 'axis',
-            backgroundColor: '#00000099',
+            backgroundColor: `${neutral[200]}99`,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: '#FFFFFF'
+                color: neutral[50]
             },
             extraCssText: 'border: none; padding: 6px;'
         },

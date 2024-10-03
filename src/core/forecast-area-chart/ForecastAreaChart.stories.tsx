@@ -3,6 +3,9 @@ import type { IProps } from './ForecastAreaChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableForecast } from '../disableControls'
 import ForecastAreaChart from './ForecastAreaChart'
+import { theme } from 'flipper-ui/theme'
+
+const { blue, orange, red } = theme.colors
 
 const meta: Meta<typeof ForecastAreaChart> = {
     title: 'Charts/Forecast Area Chart',
@@ -66,10 +69,10 @@ export const forecastAreaChart: Story = {
         xType: 'time',
         grid: { left: '10%' },
         title: 'Forecast Area Chart',
-        color: 'blue',
-        lineMarkColor: 'red',
+        color: blue[600],
+        lineMarkColor: red[500],
         lineMarkValue: 2,
-        forecastColor: 'orange',
+        forecastColor: orange[600],
         yComplement: ' km',
         tooltip: {
             current: { label: 'Lançamento', result: 'Posição' },

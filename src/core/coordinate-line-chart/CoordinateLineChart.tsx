@@ -14,6 +14,9 @@ import {
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { gray, neutral } = theme.colors
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     coordinates: [Coordinates[], Coordinates[], Coordinates[]]
@@ -132,7 +135,7 @@ const CoordinateLineChart = (props: IProps) => {
             name: coordinateNames?.y,
             nameTextStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: '#000000'
+                color: neutral[200]
             },
             nameGap: 10,
             min: yRangeValues ? -yRangeValues : 0,
@@ -146,16 +149,16 @@ const CoordinateLineChart = (props: IProps) => {
                 lineStyle: {
                     type: 'solid',
                     opacity: 0.5,
-                    color: 'gray'
+                    color: gray[800]
                 }
             },
             axisLabel: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: '#000000'
+                color: neutral[200]
             },
             axisLine: {
                 lineStyle: {
-                    color: '#000000'
+                    color: neutral[200]
                 }
             }
         },
@@ -166,7 +169,7 @@ const CoordinateLineChart = (props: IProps) => {
                 verticalAlign: 'top',
                 padding: getPadding(yRangeValues),
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: '#000000'
+                color: neutral[200]
             },
             nameGap: -56,
             min: 0,
@@ -180,16 +183,16 @@ const CoordinateLineChart = (props: IProps) => {
                 lineStyle: {
                     type: 'solid',
                     opacity: 0.5,
-                    color: 'gray'
+                    color: gray[800]
                 }
             },
             axisLabel: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: '#000000'
+                color: neutral[200]
             },
             axisLine: {
                 lineStyle: {
-                    color: '#000000'
+                    color: neutral[200]
                 }
             }
         },
@@ -206,7 +209,7 @@ const CoordinateLineChart = (props: IProps) => {
             itemGap: 30,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: '#000000'
+                color: neutral[200]
             }
         },
         title: {
@@ -218,7 +221,7 @@ const CoordinateLineChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         grid: {

@@ -3,6 +3,9 @@ import type { IProps } from './PyramidBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesCommon } from '../disableControls'
 import PyramidBarChart from './PyramidBarChart'
+import { theme } from 'flipper-ui/theme'
+
+const { pink } = theme.colors
 
 const meta: Meta = {
     title: 'Charts/Pyramid Bar Chart',
@@ -81,13 +84,13 @@ export const pyramidChart: Story = {
                 {
                     name: 'Income',
                     data: [103, 72, 58, 27, 19, 10, 5],
-                    itemStyle: { color: 'purple' },
+                    itemStyle: { color: pink[800] },
                     labelPosition: 'right'
                 },
                 {
                     name: 'Expenses',
                     data: [-103, -72, -58, -27, -19, -10, -5],
-                    itemStyle: { color: 'violet' },
+                    itemStyle: { color: pink[400] },
                     labelPosition: 'left'
                 }
             ],

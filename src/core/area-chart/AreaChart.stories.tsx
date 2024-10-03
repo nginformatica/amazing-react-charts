@@ -3,6 +3,9 @@ import type { IDefaultChartProps } from '../types'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableArea } from '../disableControls'
 import AreaChart from './AreaChart'
+import { theme } from 'flipper-ui/theme'
+
+const { deepOrange, gray, orange } = theme.colors
 
 const meta: Meta<typeof AreaChart> = {
     title: 'Charts/Area Chart',
@@ -73,10 +76,10 @@ export const areaChart: Story = {
         xType: 'time',
         dateFormat: 'yyyy-MM',
         title: 'Area Chart',
-        color: '#3E2723',
-        lineMarkColor: '#E65100',
+        color: gray[800],
+        lineMarkColor: orange[800],
         lineMakeName: 'mark',
-        lineMarkValue: 3,
+        lineMarkValue: 10,
         yComplement: '%',
         tooltipComplement: 'goals',
         tooltip: { label: 'Data', result: 'RAV' },
@@ -105,7 +108,7 @@ export const areaChartWithTime: Story = {
     },
     args: {
         title: 'Area Chart With Time',
-        color: '#74007c',
+        color: deepOrange[800],
         xType: 'time',
         yType: 'time',
         tooltip: { label: 'Data', result: 'MTBF' },
@@ -163,7 +166,7 @@ export const areaChartWithDate: Story = {
     args: {
         xType: 'time',
         title: 'Area Chart With Date',
-        color: '#E65100',
+        color: deepOrange[600],
         tooltip: { label: 'Data', result: 'O.S. em aberto' },
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
         data: [
@@ -256,7 +259,7 @@ export const areaChartWithDateAndTime: Story = {
         xType: 'time',
         dateFormat: 'MMM/dd HH:mm',
         title: 'Area Chart With Date And Time',
-        color: '#E65100',
+        color: deepOrange[400],
         tooltip: { label: 'Data', result: 'O.S. em aberto' },
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
         data: [

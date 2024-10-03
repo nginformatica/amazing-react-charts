@@ -3,6 +3,10 @@ import type { IProps } from './StackedBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableStacked } from '../disableControls'
 import StackedBarChart from './StackedBarChart'
+import { theme } from 'flipper-ui/theme'
+
+const { amber, darkBlue, gray, green, lightGreen, lightTeal, orange, red } =
+    theme.colors
 
 const meta: Meta<typeof StackedBarChart> = {
     title: 'Charts/Stacked Bar Chart',
@@ -72,7 +76,7 @@ export const stackedBarChartWithTwoBars: Story = {
         xType: 'time',
         yComplement: value => `R$ ${value},00`,
         title: 'Stacked Bar Chart With Two Bars',
-        colors: ['#30D2D6', '#9F88FB', '#F09B1B'],
+        colors: [lightTeal[800], lightTeal[400], orange[700]],
         barWidth: 90,
         tooltip: {
             label: 'Período',
@@ -118,7 +122,7 @@ export const stackedBarChartWithThreeBars: Story = {
         xType: 'time',
         yComplement: value => `R$ ${value},00`,
         title: 'Stacked Bar Chart With Three Bars',
-        colors: ['#30D2D6', '#9F88FB', '#C5F3C2', '#F09B1B'],
+        colors: [lightTeal[800], lightTeal[400], lightGreen[200], orange[700]],
         barWidth: 90,
         tooltip: {
             label: 'Período',
@@ -173,7 +177,7 @@ export const stackedBarChartWithThreeBarsAndAuxResultTooltip: Story = {
         xType: 'time',
         yComplement: value => `R$ ${value},00`,
         title: 'Stacked Bar Chart With Two Bars And auxResult Tooltip',
-        colors: ['#30D2D6', '#9F88FB', '#C5F3C2', '#F09B1B'],
+        colors: [lightTeal[800], lightTeal[400], lightGreen[200], orange[700]],
         barWidth: 90,
         tooltip: {
             label: 'Período',
@@ -238,7 +242,7 @@ export const stackedBarChartWithTwoBarsWithPareto: Story = {
         yComplement: value => `R$ ${value},00`,
         secondYAxisType: 'percent',
         title: 'Stacked Bar Chart With Two Bars And auxResult Tooltip',
-        colors: ['#487086', '#87C4CB', '#E97551'],
+        colors: [lightTeal[800], lightTeal[400], orange[700]],
         barWidth: 45,
         tooltip: {
             label: 'Equipamento',
@@ -358,44 +362,44 @@ export const stackedBarChartWithTwoBarsStacked: Story = {
                 {
                     label: 'Emergencial',
                     result: 1,
-                    style: { color: 'red', opacity: 0.7 }
+                    style: { color: red[500], opacity: 0.7 }
                 },
                 {
                     label: 'Alta',
                     result: 2,
-                    style: { color: 'orange', opacity: 0.7 }
+                    style: { color: orange[700], opacity: 0.7 }
                 },
                 {
                     label: 'Média',
                     result: 4,
-                    style: { color: 'yellow', opacity: 0.7 }
+                    style: { color: amber[400], opacity: 0.7 }
                 },
                 {
                     label: 'Baixa',
                     result: 5,
-                    style: { color: 'green', opacity: 0.7 }
+                    style: { color: green[500], opacity: 0.7 }
                 }
             ],
             [
                 {
                     label: 'Emergencial',
                     result: 10,
-                    style: { color: 'red' }
+                    style: { color: red[500] }
                 },
                 {
                     label: 'Alta',
                     result: 40,
-                    style: { color: 'orange' }
+                    style: { color: orange[700] }
                 },
                 {
                     label: 'Média',
                     result: 30,
-                    style: { color: 'yellow' }
+                    style: { color: amber[400] }
                 },
                 {
                     label: 'Baixa',
                     result: 20,
-                    style: { color: 'green' }
+                    style: { color: green[500] }
                 }
             ]
         ]
@@ -433,12 +437,12 @@ export const stackedBarChartWithMoreThanThreeBars: Story = {
         yComplement: value => `R$ ${value},00`,
         title: 'Custo por manutenção',
         colors: [
-            '#30D2D6',
-            '#9F88FB',
-            '#C5F3C2',
-            '#F09B1B',
-            '#A9A9A9',
-            '#0F528A'
+            lightTeal[800],
+            lightTeal[400],
+            lightGreen[200],
+            orange[700],
+            gray[500],
+            darkBlue[400]
         ],
         barWidth: 90,
         tooltip: {

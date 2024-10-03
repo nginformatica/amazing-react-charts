@@ -4,6 +4,9 @@ import type { LinesFormatterTooltip, WidthProps } from '../types'
 import type { EChartsOption } from 'echarts/types/dist/echarts'
 import { getWidthOpts, takeLabelComplement } from '../../lib/auxiliarFunctions'
 import { CHART_WIDTH } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { lightGreen, neutral } = theme.colors
 
 export interface RadarChartProps {
     series: Array<{
@@ -44,7 +47,7 @@ const RadarChart = (props: RadarChartProps) => {
         ? {
               emphasis: {
                   areaStyle: {
-                      color: 'rgba(0,250,0,0.3)'
+                      color: `${lightGreen[300]}90`
                   }
               }
           }
@@ -55,11 +58,11 @@ const RadarChart = (props: RadarChartProps) => {
         tooltip: {
             formatter: formatTooltip,
             trigger: 'item' as const,
-            backgroundColor: '#00000099',
+            backgroundColor: `${neutral[200]}99`,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 13,
-                color: '#FFFFFF'
+                color: neutral[50]
             },
             extraCssText: 'border: none; padding: 6px;'
         },
@@ -69,7 +72,7 @@ const RadarChart = (props: RadarChartProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400 as const,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         radar: {

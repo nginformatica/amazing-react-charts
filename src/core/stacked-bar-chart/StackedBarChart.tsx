@@ -35,6 +35,9 @@ import {
     rotatedLabel
 } from '../vertical-bar-chart/VerticalBarChart'
 import { CHART_WIDTH, TOOLTIP_DEFAULT_PROPS } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { gray, neutral } = theme.colors
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: EntryDataNTuples
@@ -326,12 +329,11 @@ const StackedBarChart = (props: IProps) => {
                   textStyle: {
                       fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                       fontWeight: 400 as const,
-                      color: '#000000',
+                      color: neutral[200],
                       fontSize: 11.5
                   }
               }
             : {
-                  top: 30,
                   data: [
                       topResult,
                       bottomResult,
@@ -339,11 +341,12 @@ const StackedBarChart = (props: IProps) => {
                       lineResult,
                       ...additionalResultsMap
                   ],
+                  top: 30,
                   itemGap: 30,
                   textStyle: {
                       fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                       fontWeight: 400 as const,
-                      color: '#000000',
+                      color: neutral[200],
                       fontSize: 11.5
                   }
               }
@@ -373,7 +376,7 @@ const StackedBarChart = (props: IProps) => {
                     show: showBarLabel,
                     position: 'top',
                     fontSize: 12,
-                    color: '#000000',
+                    color: neutral[200],
                     distance: 2
                 }
             },
@@ -398,7 +401,7 @@ const StackedBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: xData.length > 14 ? 10 : 11.5,
                 fontWeight: 400 as const,
-                color: '#000000',
+                color: neutral[200],
                 interval: xData.length > 20 ? 'auto' : 0
             },
             splitLine: {
@@ -408,7 +411,7 @@ const StackedBarChart = (props: IProps) => {
                 show: true,
                 lineStyle: {
                     opacity: 0.3,
-                    color: 'gray'
+                    color: gray[800]
                 }
             },
             axisTick: {
@@ -429,7 +432,7 @@ const StackedBarChart = (props: IProps) => {
                         ).toString(),
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontWeight: 400 as const,
-                    color: '#000000',
+                    color: neutral[200],
                     fontSize: 11.5
                 },
                 axisTick: { show: true, alignWithLabel: true },
@@ -443,7 +446,7 @@ const StackedBarChart = (props: IProps) => {
                     show: true,
                     lineStyle: {
                         opacity: 0.3,
-                        color: 'gray'
+                        color: gray[800]
                     }
                 }
             },
@@ -463,17 +466,17 @@ const StackedBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         tooltip: tooltipProps && {
             formatter: formatTooltip,
             trigger: 'axis' as const,
-            backgroundColor: '#00000099',
+            backgroundColor: `${neutral[200]}99`,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: '#FFFFFF'
+                color: neutral[50]
             },
             extraCssText: 'border: none; padding: 6px;'
         },

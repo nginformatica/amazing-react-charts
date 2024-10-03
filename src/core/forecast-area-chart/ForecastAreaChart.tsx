@@ -28,6 +28,9 @@ import {
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { blue, gray, green, neutral, orange, red } = theme.colors
 
 export interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
     tooltip: {
@@ -95,7 +98,7 @@ const ForecastAreaChart = (props: IProps) => {
                             show: true,
                             position: 'top',
                             fontSize: yType === 'time' ? 10 : 11.5,
-                            color: '#000000',
+                            color: neutral[200],
                             distance: 1.1
                         }
                     }
@@ -181,18 +184,18 @@ const ForecastAreaChart = (props: IProps) => {
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontSize: yType === 'time' ? 10 : 11.5,
                     fontWeight: 400,
-                    color: '#000000',
+                    color: neutral[200],
                     distance: 1.1
                 },
                 lineStyle: {
-                    color: forecastColor || 'orange'
+                    color: forecastColor || orange[600]
                 },
                 areaStyle: {
-                    color: forecastColor || 'orange',
+                    color: forecastColor || orange[600],
                     opacity: 0
                 },
                 itemStyle: {
-                    color: forecastColor || 'orange'
+                    color: forecastColor || orange[600]
                 },
                 markLine: {
                     silent: true,
@@ -200,7 +203,7 @@ const ForecastAreaChart = (props: IProps) => {
                     label: {
                         formatter: forecastChartLegends?.lineMark,
                         show: true,
-                        color: lineMarkColor || '#000000'
+                        color: lineMarkColor || neutral[200]
                     },
                     animation: false,
                     data: [
@@ -214,13 +217,13 @@ const ForecastAreaChart = (props: IProps) => {
                     lineStyle: {
                         width: 1,
                         type: 'solid',
-                        color: lineMarkColor || 'red'
+                        color: lineMarkColor || red[500]
                     },
                     emphasis: {
                         lineStyle: {
                             type: 'solid',
                             width: 50,
-                            color: lineMarkColor || 'green'
+                            color: lineMarkColor || green[800]
                         }
                     }
                 }
@@ -239,18 +242,18 @@ const ForecastAreaChart = (props: IProps) => {
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontSize: yType === 'time' ? 10 : 11.5,
                     fontWeight: 400,
-                    color: '#000000',
+                    color: neutral[200],
                     distance: 1.1
                 },
                 lineStyle: {
-                    color: color || 'blue'
+                    color: color || blue[600]
                 },
                 areaStyle: {
-                    color: color || 'blue',
+                    color: color || blue[600],
                     opacity: 0.2
                 },
                 itemStyle: {
-                    color: color || 'blue'
+                    color: color || blue[600]
                 }
             }
         ],
@@ -263,7 +266,7 @@ const ForecastAreaChart = (props: IProps) => {
                 lineStyle: {
                     type: 'dashed',
                     opacity: 0.3,
-                    color: 'gray'
+                    color: gray[800]
                 }
             },
             axisLabel: {
@@ -272,7 +275,7 @@ const ForecastAreaChart = (props: IProps) => {
                 rotate: rotateLabel || 0,
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: fontLabelSize || 11.5,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         yAxis: {
@@ -283,7 +286,7 @@ const ForecastAreaChart = (props: IProps) => {
                 lineStyle: {
                     type: 'dashed',
                     opacity: 0.3,
-                    color: 'gray'
+                    color: gray[800]
                 }
             },
             axisLabel: {
@@ -297,7 +300,7 @@ const ForecastAreaChart = (props: IProps) => {
                           ).toString(),
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: fontLabelSize || 11.5,
-                color: '#000000'
+                color: neutral[200]
             },
             axisTick: {
                 // @ts-expect-error issue
@@ -309,7 +312,7 @@ const ForecastAreaChart = (props: IProps) => {
                 show: true,
                 onZero: true,
                 lineStyle: {
-                    color: '#000000'
+                    color: neutral[200]
                 }
             }
         },
@@ -325,7 +328,7 @@ const ForecastAreaChart = (props: IProps) => {
             itemGap: 30,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: '#000000'
+                color: neutral[200]
             }
         },
         dataZoom: scrollable,
@@ -338,17 +341,17 @@ const ForecastAreaChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         tooltip: {
             formatter: formatSingleTooltip,
             trigger: 'axis',
-            backgroundColor: '#00000099',
+            backgroundColor: `${neutral[200]}99`,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: '#FFFFFF'
+                color: neutral[50]
             },
             extraCssText: 'border: none; padding: 6px;'
         },

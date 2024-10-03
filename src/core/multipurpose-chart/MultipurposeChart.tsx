@@ -15,6 +15,9 @@ import {
     timeConvert
 } from '../../lib/auxiliarFunctions'
 import { CHART_WIDTH } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { gray, neutral } = theme.colors
 
 export interface MultipurposeChartProps {
     series: Array<{
@@ -68,11 +71,11 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             verticalAlign: 'middle',
             rotate: 90,
             formatter: yComplement && yComplement('{c}') + '  {name|{a}}',
-            color: isDarkBarColor ? '#FFFFFF' : '#000000',
+            color: isDarkBarColor ? neutral[50] : neutral[200],
             fontSize: 16,
             rich: {
                 name: {
-                    color: isDarkBarColor ? '#FFFFFF' : '#000000'
+                    color: isDarkBarColor ? neutral[50] : neutral[200]
                 }
             }
         }
@@ -124,11 +127,11 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             axisPointer: {
                 type: 'shadow'
             },
-            backgroundColor: '#00000099',
+            backgroundColor: `${neutral[200]}99`,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 13,
-                color: '#FFFFFF'
+                color: neutral[50]
             },
             extraCssText: 'border: none; padding: 6px;'
         },
@@ -137,7 +140,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         toolbox: {
@@ -177,7 +180,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             axisLabel: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         yAxis: {
@@ -186,12 +189,12 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             axisLabel: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             },
             axisLine: {
                 show: true,
                 lineStyle: {
-                    color: '#000000'
+                    color: neutral[200]
                 }
             },
             splitLine: {
@@ -199,7 +202,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
                 lineStyle: {
                     type: 'solid',
                     opacity: 0.3,
-                    color: 'gray'
+                    color: gray[800]
                 }
             }
         },
@@ -241,10 +244,10 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
                 it.label.align = isVertical ? 'left' : 'center'
                 it.type = actualGraph.current
                 it.label.rich.name.color = isLine
-                    ? '#000000'
+                    ? neutral[200]
                     : originalSeries[i].label.rich.name.color
                 it.label.color = isLine
-                    ? '#000000'
+                    ? neutral[200]
                     : originalSeries[i].label.color
             })
 
@@ -263,8 +266,8 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
             actualOptions.series.forEach((it, i) => {
                 if (i === e.componentIndex) return
 
-                it.label.rich.name.color = '#00000000'
-                it.label.color = '#00000000'
+                it.label.rich.name.color = neutral[200]
+                it.label.color = neutral[200]
             })
 
             echartsInstance?.setOption({ ...actualOptions })
@@ -280,10 +283,10 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
 
             actualOptions.series.forEach((it, i) => {
                 it.label.rich.name.color = isLine
-                    ? '#000000'
+                    ? neutral[200]
                     : originalSeries[i].label.rich.name.color
                 it.label.color = isLine
-                    ? '#000000'
+                    ? neutral[200]
                     : originalSeries[i].label.color
             })
 

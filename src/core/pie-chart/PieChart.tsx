@@ -21,6 +21,9 @@ import {
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { neutral } = theme.colors
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: PieChartData[]
@@ -129,11 +132,11 @@ const PieChart = (props: IProps) => {
         tooltip: {
             trigger: 'item',
             formatter: formatTooltip,
-            backgroundColor: '#2B2B2B99',
+            backgroundColor: `${neutral[200]}99`,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: '#FFFFFF'
+                color: neutral[50]
             },
             extraCssText: 'border: none; padding: 6px;'
         },
@@ -147,14 +150,14 @@ const PieChart = (props: IProps) => {
                     position: legendPosition || 'outside',
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontWeight: 400,
-                    color: labelFontColor || '#FFFFFF'
+                    color: labelFontColor || neutral[50]
                 },
                 type: 'pie',
                 data: data,
                 radius: radius || '50%',
                 center: center || ['50%', '50%'],
                 itemStyle: {
-                    borderColor: pieceBorderColor || '#FFFFFF',
+                    borderColor: pieceBorderColor || neutral[50],
                     borderWidth: 1
                 },
                 emphasis: {
@@ -172,7 +175,7 @@ const PieChart = (props: IProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         title: {
@@ -183,7 +186,7 @@ const PieChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         toolbox: {

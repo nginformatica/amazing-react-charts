@@ -28,6 +28,9 @@ import {
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { blue, gray, neutral } = theme.colors
 
 const AreaChart = (props: IDefaultChartProps) => {
     const {
@@ -86,13 +89,14 @@ const AreaChart = (props: IDefaultChartProps) => {
                             show: true,
                             position: 'top',
                             fontSize: yType === 'time' ? 10 : 11.5,
-                            color: '#000000',
+                            color: neutral[200],
                             distance: 1.1
                         }
                     }
                 ]
             })
         }
+
         charts.setOption({ series: [{ label: { show: false } }] })
     }
 
@@ -190,14 +194,14 @@ const AreaChart = (props: IDefaultChartProps) => {
                     position: 'top',
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontSize: yType === 'time' ? 10 : 11.5,
-                    color: '#000000',
+                    color: neutral[200],
                     distance: 1.1
                 },
                 lineStyle: {
-                    color: color || 'blue'
+                    color: color || blue[800]
                 },
                 areaStyle: {
-                    color: color || 'blue',
+                    color: color || blue[800],
                     opacity: 0.2
                 },
                 itemStyle: {
@@ -227,7 +231,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 lineStyle: {
                     type: 'dashed',
                     opacity: 0.2,
-                    color: 'gray'
+                    color: gray[800]
                 }
             },
             axisLabel: {
@@ -241,7 +245,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 rotate: rotateLabel || 0,
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: fontLabelSize || 11.5,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         yAxis: {
@@ -252,7 +256,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                 lineStyle: {
                     type: 'dashed',
                     opacity: 0.2,
-                    color: 'gray'
+                    color: gray[800]
                 }
             },
             axisLabel: {
@@ -266,7 +270,7 @@ const AreaChart = (props: IDefaultChartProps) => {
                           ).toString(),
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: fontLabelSize || 11.5,
-                color: '#000000'
+                color: neutral[200]
             },
             axisLine: {
                 show: true
@@ -287,7 +291,7 @@ const AreaChart = (props: IDefaultChartProps) => {
             itemGap: 30,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: '#000000'
+                color: neutral[200]
             }
         },
         title: {
@@ -299,17 +303,17 @@ const AreaChart = (props: IDefaultChartProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 16,
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         tooltip: tooltipProps && {
             formatter: formatSingleTooltip,
             trigger: 'axis',
-            backgroundColor: '#00000099',
+            backgroundColor: `${neutral[200]}99`,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: '#FFFFFF'
+                color: neutral[50]
             },
             extraCssText: 'border: none; padding: 6px;'
         },

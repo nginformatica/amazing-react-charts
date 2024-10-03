@@ -3,6 +3,9 @@ import type { IProps } from './DivergingStackedBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesCommon } from '../disableControls'
 import DivergingStackedBarChart from './DivergingStackedBarChart'
+import { theme } from 'flipper-ui/theme'
+
+const { indigo } = theme.colors
 
 const meta: Meta = {
     title: 'Charts/Diverging Stacked Bar Chart',
@@ -82,24 +85,24 @@ export const divergingBarChart: Story = {
                     name: '25%',
                     data: [-74, -39, -45, -45, -35, -34, -20],
                     labelPosition: 'left',
-                    itemStyle: { color: 'lightBlue' }
+                    itemStyle: { color: indigo[100] }
                 },
                 {
                     name: '50%',
                     data: [50, 62, 35, 68, 52, 62, 30],
-                    itemStyle: { color: 'blue' },
+                    itemStyle: { color: indigo[400] },
                     labelPosition: 'inside'
                 },
                 {
                     name: '75%',
                     data: [60, 40, 78, 75, 59, 38, 20],
-                    itemStyle: { color: 'violet' },
+                    itemStyle: { color: indigo[700] },
                     labelPosition: 'inside'
                 },
                 {
                     name: '100%',
                     data: [150, 110, 110, 85, 70, 58, 25],
-                    itemStyle: { color: 'purple' },
+                    itemStyle: { color: indigo[900] },
                     labelPosition: 'right'
                 }
             ],

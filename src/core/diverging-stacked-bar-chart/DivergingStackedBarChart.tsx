@@ -20,6 +20,9 @@ import {
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { gray, neutral } = theme.colors
 
 export interface SeriesData {
     data: number[]
@@ -246,7 +249,7 @@ const DivergingStackedBarChart = (props: IProps) => {
             focus: 'series'
         },
         itemStyle: seriesItem.itemStyle || {
-            color: seriesItem.color || props.color || '#ececec'
+            color: seriesItem.color || props.color || gray[200]
         },
         data: seriesItem.data
     }))
@@ -258,11 +261,11 @@ const DivergingStackedBarChart = (props: IProps) => {
             axisPointer: {
                 type: 'shadow'
             },
-            backgroundColor: '#00000099',
+            backgroundColor: `${neutral[200]}99`,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: '#FFFFFF'
+                color: neutral[50]
             },
             extraCssText: 'border: none; padding: 6px;',
             formatter: formatTooltip
@@ -280,7 +283,7 @@ const DivergingStackedBarChart = (props: IProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: titleFontSize || 16,
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         grid: {
@@ -294,7 +297,7 @@ const DivergingStackedBarChart = (props: IProps) => {
             lineStyle: {
                 type: 'dashed' as const,
                 opacity: 0.2,
-                color: 'gray'
+                color: gray[800]
             }
         },
         xAxis: [

@@ -20,6 +20,9 @@ import {
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
+import { theme } from 'flipper-ui/theme'
+
+const { neutral } = theme.colors
 
 export interface IDonutProps extends IProps {
     donutCenterValue?: string
@@ -129,7 +132,7 @@ const DonutChart = (props: IDonutProps) => {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: centerPieValueFontSize || 24,
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         toolbox: {
@@ -145,11 +148,11 @@ const DonutChart = (props: IDonutProps) => {
         tooltip: {
             trigger: 'item',
             formatter: formatTooltip,
-            backgroundColor: '#00000099',
+            backgroundColor: `${neutral[200]}99`,
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontSize: 11.5,
-                color: '#FFFFFF'
+                color: neutral[50]
             },
             extraCssText: 'border: none; padding: 6px;'
         },
@@ -164,7 +167,7 @@ const DonutChart = (props: IDonutProps) => {
             textStyle: {
                 fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                 fontWeight: 400,
-                color: '#000000'
+                color: neutral[200]
             }
         },
         series: [
@@ -182,7 +185,7 @@ const DonutChart = (props: IDonutProps) => {
                             ? formatDonutLabel(item.data.value).toString()
                             : String(item.data.value),
                     distanceToLabelLine: 0,
-                    color: labelFontColor || '#000000',
+                    color: labelFontColor || neutral[200],
                     fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
                     fontWeight: 400
                 },
@@ -191,7 +194,7 @@ const DonutChart = (props: IDonutProps) => {
                     length2: 5
                 },
                 itemStyle: {
-                    borderColor: '#FFFFFF'
+                    borderColor: neutral[50]
                 },
                 emphasis: {
                     scale: true,
@@ -200,7 +203,7 @@ const DonutChart = (props: IDonutProps) => {
             }
         ],
         itemStyle: {
-            borderColor: pieceBorderColor || '#FFFFFF'
+            borderColor: pieceBorderColor || neutral[50]
         }
     }
 
