@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { filter, map, zipWith } from 'ramda'
+import { zipWith } from 'ramda'
 import type {
     IDefaultChartProps,
     TAudiometryDataEntry,
@@ -84,11 +84,11 @@ const AudiometryChart = (props: IProps) => {
 
     const defaultTooltip = (items: AudiometryDataTooltip[]) => {
         if (legends) {
-            const generateTooltip = map(item => {
+            const generateTooltip = items.map(item => {
                 const marker = tooltipMarker ? item.marker : ''
 
                 return `${marker} ${item.seriesName}: ${item.data.value} dB <br>`
-            }, items)
+            })
 
             return generateTooltip.join(' ')
         }
@@ -110,16 +110,13 @@ const AudiometryChart = (props: IProps) => {
     }
 
     const takeYData = (item: TAudiometryDataEntry[]) =>
-        map(
-            item => ({
-                value: item.result,
-                symbol: item.symbol,
-                symbolSize: symbolsSize || 12,
-                name: item.result,
-                boneValue: item.boneResult
-            }),
-            item
-        )
+        item.map(item => ({
+            value: item.result,
+            symbol: item.symbol,
+            symbolSize: symbolsSize || 12,
+            name: item.result,
+            boneValue: item.boneResult
+        }))
 
     const takeMarks = (item: TAudiometryDataEntry[]) =>
         zipWith(
@@ -174,19 +171,17 @@ const AudiometryChart = (props: IProps) => {
         data: takeMarks(item)
     }))
 
-    const removedUndefinedMarks = map(
-        item => filter(serie => serie.value !== undefined, item.data),
-        seriesMarks
+    const removedUndefinedMarks = seriesMarks.map(item =>
+        item.data.filter(serie => serie.value !== undefined)
     )
 
-    const marksWithTypes = map(
-        item => ({
+    const marksWithTypes = removedUndefinedMarks
+        .filter(item => item.length > 0)
+        .map(item => ({
             name: 'marks',
             type: 'scatter',
             data: item
-        }),
-        removedUndefinedMarks.filter(item => item.length > 0)
-    )
+        }))
 
     const seriesData = data.map(item => ({
         type: 'line',

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { map } from 'ramda'
 import type { IDefaultChartProps, Coordinates, WidthProps } from '../types'
 import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
@@ -37,7 +36,7 @@ const getWidthStyle = (width: WidthProps, height: number | undefined) => ({
     height: height
 })
 
-const toTuples = (args: Coordinates[]) => map(item => [item.x, item.y], args)
+const toTuples = (args: Coordinates[]) => args.map(item => [item.x, item.y])
 
 const CoordinateLineChart = (props: IProps) => {
     const {
