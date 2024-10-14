@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { map, sum } from 'ramda'
 import type {
     IDefaultChartProps,
     PieChartData,
@@ -60,9 +59,9 @@ const PieChart = (props: IProps) => {
 
     const [title, setTitle] = useState(false)
 
-    const names = map(item => item.name, data)
+    const names = data.map(item => item.name)
 
-    const totalValues = sum(map(item => item.value, data))
+    const totalValues = data.reduce((acc, item) => acc + item.value, 0)
 
     useEffect(() => {
         if (toolboxTooltip?.saveAsImageWithTitle) {

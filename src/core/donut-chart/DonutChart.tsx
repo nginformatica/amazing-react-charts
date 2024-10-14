@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import ReactEcharts from 'echarts-for-react'
-import { map, sum } from 'ramda'
 import type { IProps } from '../pie-chart/PieChart'
 import type { PieChartFormatter, PieDataLabel } from '../types'
 import type { EChartsOption } from 'echarts/types/dist/echarts'
@@ -90,9 +89,9 @@ const DonutChart = (props: IDonutProps) => {
         }
     }
 
-    const xData = map(item => item.name, data)
+    const xData = data.map(item => item.name)
 
-    const totalValues = sum(map(item => item.value, data))
+    const totalValues = data.reduce((acc, item) => acc + item.value, 0)
 
     const formatTooltip = ({ name, value, marker }: PieChartFormatter) => {
         const percent = getPercentage(value, totalValues)
