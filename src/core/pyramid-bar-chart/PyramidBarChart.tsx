@@ -125,8 +125,6 @@ const PyramidBarChart = (props: IProps) => {
                 setRichDate(state => [...state, rich])
             }
         })
-        // it doesn't need the missing dependency
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [richData])
 
     const handleShowTitle = (show: boolean) => {
