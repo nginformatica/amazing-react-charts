@@ -1,6 +1,6 @@
 {
     "name": "amazing-react-charts",
-    "version": "1.1.6",
+    "version": "1.1.7",
     "description": "An amazing react charts package based in echarts",
     "main": "dist/index.js",
     "license": "MIT",
@@ -82,7 +82,7 @@
         "webpack": "5.96.1"
     },
     "peerDependencies": {
-        "flipper-ui": "^0.34.9",
+        "flipper-ui": "^0.35.0",
         "react": "^17.0.0 || ^18.0.0",
         "react-dom": "^17.0.0 || ^18.0.0",
         "styled-components": "^5.0.0 || ^6.0.0"
