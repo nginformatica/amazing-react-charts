@@ -1,25 +1,5 @@
 module.exports = {
-    plugins: [
-        '@babel/plugin-transform-runtime',
-        [
-            'import',
-            {
-                libraryName: 'ramda',
-                libraryDirectory: 'es',
-                camel2DashComponentName: false
-            },
-            'ramda'
-        ],
-        [
-            'import',
-            {
-                libraryName: 'date-fns',
-                libraryDirectory: '',
-                camel2DashComponentName: false
-            },
-            'date-fns'
-        ]
-    ],
+    plugins: ['@babel/plugin-transform-runtime'],
     presets: [
         '@babel/preset-env',
         '@babel/preset-react',
