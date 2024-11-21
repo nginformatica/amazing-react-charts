@@ -1,4 +1,4 @@
-import { format, parse } from 'date-fns'
+import { format, parse, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import type {
     Complement,
@@ -164,12 +164,15 @@ export const getDateFormatType = (dateFormat: string, baseFormat?: string) => {
     return dateFormat
 }
 
+export const toArgDateFns = (date: Date | number | string) =>
+    typeof date === 'string' ? parseISO(date) : date
+
 export const formatTime = (text: string, dateFormat = 'dd MMM') => {
     const hasTime = text.includes(':')
 
     const date = hasTime ? new Date(text) : new Date(text + 'T00:00:00')
 
-    return format(date, dateFormat, { locale: ptBR })
+    return format(toArgDateFns(date), dateFormat, { locale: ptBR })
 }
 
 export const toDate = (text: string, format?: string) =>
@@ -180,13 +183,13 @@ export const formatTooltip = (text: string, dateFormat = 'dd MMM') => {
 
     const date = hasTime ? new Date(text) : new Date(text + 'T00:00:00')
 
-    return format(date, getDateFormatType(dateFormat), {
+    return format(toArgDateFns(date), getDateFormatType(dateFormat), {
         locale: ptBR
     })
 }
 
 export const formatTooltipWithHours = (text: string) =>
-    format(new Date(text), 'dd/MM/yyyy HH:mm', { locale: ptBR })
+    format(toArgDateFns(new Date(text)), 'dd/MM/yyyy HH:mm', { locale: ptBR })
 
 export const truncateLabel = (text: string, labelWordSize?: number) => {
     const numberOfLetters = labelWordSize ? labelWordSize : 12
