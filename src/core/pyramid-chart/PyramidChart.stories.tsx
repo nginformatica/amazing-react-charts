@@ -1,15 +1,16 @@
 import React from 'react'
-import type { IProps } from './PyramidBarChart'
+import type { IProps } from './PyramidChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesCommon } from '../disableControls'
-import PyramidBarChart from './PyramidBarChart'
+import PyramidChart from './PyramidChart'
+import { ChartStorieWrapper } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 
-const { pink } = theme.colors
+const { orange, primary, red, secondary } = theme.colors
 
 const meta: Meta = {
-    title: 'Charts/Pyramid Bar Chart',
-    component: PyramidBarChart,
+    title: 'Charts/Pyramid Chart',
+    component: PyramidChart,
     argTypes: {
         ...argTypesCommon,
         title: {
@@ -69,32 +70,44 @@ const meta: Meta = {
 
 export default meta
 
-type Story = StoryObj<typeof PyramidBarChart>
+type Story = StoryObj<typeof PyramidChart>
 
-export const pyramidBarChart: Story = {
+export const pyramidChart: Story = {
     render: (args: IProps) => {
-        return <PyramidBarChart {...args} />
+        return (
+            <ChartStorieWrapper>
+                <PyramidChart {...args} />
+            </ChartStorieWrapper>
+        )
     },
     args: {
-        showCSVDownload: true,
-        title: 'Pyramid Bar Chart',
+        title: 'Pyramid Chart',
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
-        data: {
-            seriesData: [
-                {
-                    name: 'Income',
-                    data: [103, 72, 58, 27, 19, 10, 5],
-                    itemStyle: { color: pink[800] },
-                    labelPosition: 'right'
-                },
-                {
-                    name: 'Expenses',
-                    data: [-103, -72, -58, -27, -19, -10, -5],
-                    itemStyle: { color: pink[400] },
-                    labelPosition: 'left'
-                }
-            ],
-            categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        }
+        data: [
+            {
+                value: 5,
+                name: 'Óleos e Gorduras',
+                itemStyle: { color: red[300] },
+                tooltipText: 'Óleos e Gorduras'
+            },
+            {
+                value: 10,
+                name: 'Carnes, ovos, leites',
+                itemStyle: { color: orange[500] },
+                tooltipText: 'Carnes, ovos, leites'
+            },
+            {
+                value: 15,
+                name: 'Hortaliças',
+                itemStyle: { color: secondary.light },
+                tooltipText: 'Hortaliças'
+            },
+            {
+                value: 20,
+                name: 'Pães, raízes, cereais',
+                itemStyle: { color: primary.light },
+                tooltipText: 'Pães, raízes, cereais'
+            }
+        ]
     }
 }
