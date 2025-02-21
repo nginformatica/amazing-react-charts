@@ -96,8 +96,7 @@ const StackedBarChart = (props: IProps) => {
 
     const yTopData = topData.map(verifyStyleProps)
 
-    const yExtraData =
-        data.length >= 4 && extraData.map((item: EntryData) => item.result)
+    const yExtraData = data.length >= 4 && extraData.map(verifyStyleProps)
 
     const yBottomValue = yBottomData.map(item =>
         typeof item === 'object' ? item.value : item

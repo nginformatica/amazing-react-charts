@@ -61,10 +61,16 @@ const formatValueAxis = (
         : getTime
 }
 
-const takeComplement = (data: string | number, complement: Complement) =>
-    typeof complement === 'function'
-        ? ': ' + complement(data) + '<br>'
-        : ': ' + data + complement + '<br>'
+const takeComplement = (
+    data: string | number | { value: string | number },
+    complement: Complement
+) => {
+    const value = typeof data === 'object' ? data.value : data
+
+    return typeof complement === 'function'
+        ? ': ' + complement(value) + '<br>'
+        : ': ' + value + complement + '<br>'
+}
 
 const moneyWithPercentage = (
     moneyValue: number | { value: number | string } | string,
