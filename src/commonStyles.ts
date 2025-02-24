@@ -62,6 +62,33 @@ export const ChartTitle = styled.h1`
     position: absolute;
 `
 
+export const GaugeLegendContainer = styled.div`
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+`
+
+export const GaugeLegendContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+`
+
+export const GaugeCircle = styled.div<{ color?: string }>`
+    width: 20px;
+    height: 20px;
+    margin-bottom: 4px;
+    border-radius: 100%;
+    background-color: ${props => props.color};
+`
+
+export const GaugeLegend = styled.div`
+    font-size: 14px;
+`
+
 export const CsvDownloadButtonStyle = styled.button`
     font-weight: bold;
     background: ${neutral[50]};
