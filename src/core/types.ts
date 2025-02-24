@@ -145,6 +145,11 @@ export type PictorialEntryData = {
     symbol: string
 }
 
+export type GaugeData = {
+    value: number
+    name: string
+}
+
 export type EntryDataNTuples = Array<EntryData[]>
 
 export type DomainValues = {
