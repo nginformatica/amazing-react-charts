@@ -98,12 +98,10 @@ export const lineChart: Story = {
         data: [
             {
                 name: 'top line',
-                type: 'line',
                 data: [10, 40, 30, 20, 40, 50, 15, 70, 80, 90, 70, 80, 90]
             },
             {
                 name: 'bottom line',
-                type: 'line',
                 data: [1, 4, 3, 2, 4, 5, 1, 7, 8, 9, 70, 80, 90]
             }
         ],
@@ -132,17 +130,14 @@ export const lineChartWithDateAndTime: Story = {
         data: [
             {
                 name: 'top line',
-                type: 'line',
                 data: [10, 40, 30, 20, 40, 50]
             },
             {
                 name: 'medium line',
-                type: 'line',
                 data: [5, 15, 11, 9, 17, 19]
             },
             {
                 name: 'bottom line',
-                type: 'line',
                 data: [1, 4, 3, 2, 4, 5]
             }
         ],
