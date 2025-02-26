@@ -1,7 +1,7 @@
 import { default as styled } from 'styled-components'
 import { theme } from 'flipper-ui/theme'
 
-const { neutral } = theme.colors
+const { gray, neutral } = theme.colors
 
 export const STRAIGHT_LINE_ICON = 'path://M0 0H25H50V2H25H0V0Z'
 
@@ -24,12 +24,29 @@ export const TOOLBOX_DEFAULT_PROPS = {
 export const TOOLTIP_DEFAULT_PROPS = {
     show: true,
     backgroundColor: `${neutral[200]}90`,
-    extraCssText: 'border: none; padding: 5px;',
+    extraCssText: 'border: none; padding: 6px;',
     textStyle: {
-        fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-        fontSize: 12,
-        color: neutral[50]
+        fontSize: 11.5,
+        color: neutral[50],
+        fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
     }
+}
+
+export const COMMON_STYLE = {
+    fontWeight: 400,
+    color: neutral[200],
+    fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
+}
+
+export const TITLE_STYLE = {
+    fontSize: 16,
+    ...COMMON_STYLE
+}
+
+export const AXIS_SPLIT_LINE = {
+    type: 'dashed',
+    opacity: 0.2,
+    color: gray[800]
 }
 
 export const PictorialWrapper = styled.div`
