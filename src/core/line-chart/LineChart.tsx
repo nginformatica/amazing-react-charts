@@ -1,148 +1,106 @@
 import React from 'react'
-import ReactCharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts-for-react'
+import { LineChart as LineChartEcharts } from 'echarts/charts'
+import {
+    GridComponent,
+    TitleComponent,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    DataZoomInsideComponent,
+    DataZoomSliderComponent
+} from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
 import type {
     IDefaultChartProps,
-    EntryData,
-    EntryDataLine,
-    ZoomProps,
-    LinesFormatterTooltip
+    LinesFormatterTooltip,
+    ZoomProps
 } from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
     formatTime,
     getDataView,
     getDateFormatType,
     getInitialValues,
     getSaveAsImage,
-    getWidthOpts,
     takeLabelComplement,
     timeConvert
 } from '../../lib/auxiliarFunctions'
 import {
-    CHART_WIDTH,
+    TITLE_STYLE,
+    COMMON_STYLE,
+    AXIS_SPLIT_LINE,
     STRAIGHT_LINE_ICON,
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 
-const { gray, neutral } = theme.colors
+const { neutral } = theme.colors
+
+echarts.use([
+    GridComponent,
+    TitleComponent,
+    CanvasRenderer,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    LineChartEcharts,
+    DataZoomInsideComponent,
+    DataZoomSliderComponent
+])
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
-    data: EntryDataLine[]
-    colors?: string[]
-    showLabel?: boolean
+    data: {
+        name: string
+        type?: string
+        data: number[]
+    }[]
     smooth?: boolean
+    colors?: string[]
+    xAxisData: string[]
+    showLabel?: boolean
     disableMarks?: boolean
     axisNames?: { x: string; y: string }
 }
 
-const takeYdata = (entryData: EntryData[]) => entryData.map(item => item.result)
-
-const LineChart = (props: IProps) => {
+export const LineChart = (props: IProps) => {
     const {
         data,
+        grid,
+        title,
         width,
-        grid: gridProps,
-        colors,
         xType,
+        yType,
+        colors,
+        smooth,
+        xAxisData,
+        showLabel,
         dateFormat,
         rotateLabel,
-        fontLabelSize,
-        yType,
+        scrollStart,
         yComplement,
-        title: titleProps,
-        toolboxTooltip,
-        showLabel,
-        smooth,
         disableMarks,
-        scrollStart
+        fontLabelSize,
+        toolboxTooltip
     } = props
 
-    const yData = data[0].values.map(item => item.result)
+    const formatLabel = (item: { data: number }) => {
+        const { data } = item
 
-    const xData = data[0].values.map(item => item.label)
+        if (typeof yComplement === 'function' && typeof item === 'object') {
+            return yComplement(item.data)
+        }
 
-    const names = data.map(item => item.name)
-
-    const formatLabel = (chartValues: { data: number }) => {
-        const { data } = chartValues
+        if (typeof yComplement === 'function') {
+            return yComplement
+        }
 
         return yType === 'time'
-            ? timeConvert(Number(data as number)) + 'h'
+            ? timeConvert(Number(data)) + 'h'
             : takeLabelComplement(Number(data), yComplement ?? '')
     }
-
-    const series: object = data.map(item => ({
-        type: 'line',
-        name: item.name,
-        data: takeYdata(item.values),
-        showSymbol: !disableMarks,
-        lineStyle: {
-            width: 1.5,
-            type: item.name === 'ref' ? 'dashed' : undefined
-        },
-        smooth: smooth,
-        label: {
-            show: showLabel,
-            position: 'top',
-            fontSize: yType === 'time' ? 10 : 11.5,
-            color: neutral[200],
-            distance: 1.1,
-            formatter: (item: number | string | { data: number }) => {
-                if (
-                    typeof yComplement === 'function' &&
-                    typeof item === 'object'
-                ) {
-                    return yComplement(item.data)
-                }
-
-                if (typeof yComplement === 'function') {
-                    return yComplement
-                }
-
-                // this can't be returned
-                // it breaks the labels
-                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                formatLabel
-            }
-        }
-    }))
-
-    const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
-
-    const tooltipLabelFormat =
-        dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
-
-    const scrollable: ZoomProps[] =
-        xData.length > arrayInitialSize
-            ? [
-                  {
-                      type: 'inside',
-                      start: getInitialValues(
-                          xData.length,
-                          dateFormat,
-                          scrollStart
-                      ),
-                      end: 100,
-                      zoomLock: true,
-                      zoomOnMouseWheel: 'shift'
-                  },
-                  {
-                      bottom: 10,
-                      show: true,
-                      type: 'slider',
-                      start: getInitialValues(
-                          xData.length,
-                          dateFormat,
-                          scrollStart
-                      ),
-                      end: 100,
-                      labelFormatter: (_: string, item2: string) =>
-                          formatTime(item2, tooltipLabelFormat)
-                  }
-              ]
-            : []
 
     const formatTooltip = (lines: LinesFormatterTooltip[]) => {
         const takeComplement = (value: number) =>
@@ -171,10 +129,43 @@ const LineChart = (props: IProps) => {
         return `${tooltipTitle} <br> ${linesTooltips.join(' ')}`
     }
 
-    const toolbox: object | undefined = toolboxTooltip && {
+    const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
+
+    const tooltipLabelFormat =
+        dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
+
+    const scrollable: ZoomProps[] =
+        xAxisData.length > arrayInitialSize
+            ? [
+                  {
+                      type: 'inside',
+                      start: getInitialValues(
+                          xAxisData.length,
+                          dateFormat,
+                          scrollStart
+                      ),
+                      end: 100,
+                      zoomLock: true,
+                      zoomOnMouseWheel: 'shift'
+                  },
+                  {
+                      show: true,
+                      bottom: 10,
+                      type: 'slider',
+                      start: getInitialValues(
+                          xAxisData.length,
+                          dateFormat,
+                          scrollStart
+                      ),
+                      end: 100,
+                      labelFormatter: (_: string, item2: string) =>
+                          formatTime(item2, tooltipLabelFormat)
+                  }
+              ]
+            : []
+
+    const toolbox = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
-        showTitle: false,
-        right: '9.52%',
         feature: {
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
@@ -185,127 +176,104 @@ const LineChart = (props: IProps) => {
         }
     }
 
-    const options: EChartsOption = {
+    const series = data.map(item => ({
+        ...item,
+        smooth: smooth,
+        showSymbol: !disableMarks,
+        type: item.type ?? 'line',
+        label: {
+            distance: 1.1,
+            show: showLabel,
+            color: neutral[200],
+            formatter: formatLabel,
+            fontSize: yType === 'time' ? 10 : 11.5
+        },
+        lineStyle: {
+            width: 1.5,
+            type: item.name === 'ref' ? 'dashed' : undefined
+        }
+    }))
+
+    const getOption: EChartsOption = () => ({
         color: colors,
         series: series,
+        dataZoom: scrollable,
+        grid: { ...(grid || { bottom: 75 }), show: true },
+        title: {
+            text: title,
+            left: '6.2%',
+            textStyle: { ...TITLE_STYLE }
+        },
         xAxis: {
             type: 'category',
-            data: xData,
+            data: xAxisData,
             boundaryGap: false,
             splitLine: {
                 show: true,
-                lineStyle: {
-                    type: 'dashed',
-                    opacity: 0.2,
-                    color: gray[800]
-                }
+                lineStyle: { ...AXIS_SPLIT_LINE }
             },
             axisLabel: {
+                ...COMMON_STYLE,
+                rotate: rotateLabel || 0,
+                fontSize: fontLabelSize || 11.5,
                 formatter: (item: string) =>
                     xType === 'time'
                         ? formatTime(
                               dateFormat === 'yyyy-MM' ? item + '-02' : item,
                               getDateFormatType(dateFormat ?? 'yyyy-MM')
                           )
-                        : item,
-                rotate: rotateLabel || 0,
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: 400,
-                fontSize: fontLabelSize || 11.5,
-                color: neutral[200]
+                        : item
             }
         },
         yAxis: {
             type: 'value',
-            data: yData,
             splitLine: {
                 show: true,
-                lineStyle: {
-                    type: 'dashed',
-                    opacity: 0.2,
-                    color: gray[800]
-                }
+                lineStyle: { ...AXIS_SPLIT_LINE }
+            },
+            axisTick: { show: true },
+            axisLine: {
+                show: true,
+                type: 'solid',
+                lineStyle: { color: neutral[200] }
             },
             axisLabel: {
+                ...COMMON_STYLE,
+                fontSize: fontLabelSize || 11.5,
                 margin: yType === 'time' ? 16 : 14,
                 formatter: (item: number) =>
                     yType === 'time'
                         ? timeConvert(item).toString() + 'h'
-                        : takeLabelComplement(
-                              item,
-                              yComplement ?? ''
-                          ).toString(),
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: 400,
-                fontSize: fontLabelSize || 11.5,
-                color: neutral[200]
-            },
-            axisTick: {
-                // @ts-expect-error issue
-                // https://github.com/apache/incubator-echarts/issues/13618
-                alignWithLabel: true,
-                show: true
-            },
-            axisLine: {
-                show: true,
-                lineStyle: {
-                    color: neutral[200]
-                }
+                        : takeLabelComplement(item, yComplement ?? '')
             }
         },
-        grid: { ...(gridProps || { bottom: 75 }), show: true },
-        // @ts-expect-error issue
         legend: {
-            data: names,
             icon: STRAIGHT_LINE_ICON,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: 400,
-                color: neutral[200]
-            }
+            textStyle: { ...COMMON_STYLE }
         },
         tooltip: {
-            formatter: formatTooltip,
             trigger: 'axis',
-            backgroundColor: `${neutral[200]}99`,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 11.5,
-                color: neutral[50]
-            },
-            extraCssText: 'border: none; padding: 6px;'
+            formatter: formatTooltip,
+            ...TOOLTIP_DEFAULT_PROPS
         },
-        title: {
-            left: '6.2%',
-            show: titleProps !== undefined,
-            text: titleProps,
-            textAlign: 'left',
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 16,
-                fontWeight: 400,
-                color: neutral[200]
-            }
-        },
-        dataZoom: scrollable,
         toolbox: {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
-                formatter: param => `<div>${param.title}</div>`
+                formatter: (param: { title: string }) =>
+                    `<div>${param.title}</div>`
             }
         }
-    }
+    })
 
     return (
-        <ReactCharts
-            lazyUpdate
+        <ReactEChartsCore
             notMerge
-            style={CHART_WIDTH}
-            opts={getWidthOpts(width || 'auto')}
-            option={options}
+            lazyUpdate
+            echarts={echarts}
+            option={getOption()}
+            style={{ width: width ?? '99.9%' }}
+            opts={{ renderer: 'canvas', width: 'auto' }}
         />
     )
 }
-
-export default LineChart

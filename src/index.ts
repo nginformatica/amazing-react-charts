@@ -4,7 +4,6 @@ export { default as CoordinateLineChart } from './core/coordinate-line-chart/Coo
 export { default as DonutChart } from './core/donut-chart/DonutChart'
 export { default as ForecastAreaChart } from './core/forecast-area-chart/ForecastAreaChart'
 export { default as HorizontalBarChart } from './core/horizontal-bar-chart/HorizontalBarChart'
-export { default as LineChart } from './core/line-chart/LineChart'
 export { default as MultipurposeChart } from './core/multipurpose-chart/MultipurposeChart'
 export { default as PictorialChart } from './core/pictorial-chart/PictorialChart'
 export { default as PieChart } from './core/pie-chart/PieChart'
