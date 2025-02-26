@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.4
+
+- feat: improve LineChart to be able to apply tree-shaking on echarts imports
+
 ## 1.2.3
 
 - feat: implement Gauge Chart
