@@ -14,6 +14,7 @@ import * as echarts from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import ReactEChartsCore from 'echarts-for-react/lib/core'
 import type {
+    EntryDataLine,
     IDefaultChartProps,
     LinesFormatterTooltip,
     ZoomProps
@@ -52,14 +53,9 @@ echarts.use([
 ])
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
-    data: {
-        name: string
-        type?: string
-        data: number[]
-    }[]
+    data: EntryDataLine[]
     smooth?: boolean
     colors?: string[]
-    xAxisData: string[]
     showLabel?: boolean
     disableMarks?: boolean
     axisNames?: { x: string; y: string }
@@ -75,7 +71,6 @@ export const LineChart = (props: IProps) => {
         yType,
         colors,
         smooth,
-        xAxisData,
         showLabel,
         dateFormat,
         rotateLabel,
@@ -85,6 +80,8 @@ export const LineChart = (props: IProps) => {
         fontLabelSize,
         toolboxTooltip
     } = props
+
+    const xData = data[0].values.map(item => item.label)
 
     const formatLabel = (item: { data: number }) => {
         const { data } = item
@@ -129,18 +126,37 @@ export const LineChart = (props: IProps) => {
         return `${tooltipTitle} <br> ${linesTooltips.join(' ')}`
     }
 
+    const series = data.map(item => ({
+        type: 'line',
+        smooth: smooth,
+        name: item.name,
+        showSymbol: !disableMarks,
+        data: item.values.map(item => item.result),
+        label: {
+            distance: 1.1,
+            show: showLabel,
+            color: neutral[200],
+            formatter: formatLabel,
+            fontSize: yType === 'time' ? 10 : 11.5
+        },
+        lineStyle: {
+            width: 1.5,
+            type: item.name === 'ref' ? 'dashed' : undefined
+        }
+    }))
+
     const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
 
     const tooltipLabelFormat =
         dateFormat === 'yyyy-MM' ? 'MMM/yy' : 'dd/MM/yyyy'
 
     const scrollable: ZoomProps[] =
-        xAxisData.length > arrayInitialSize
+        xData.length > arrayInitialSize
             ? [
                   {
                       type: 'inside',
                       start: getInitialValues(
-                          xAxisData.length,
+                          xData.length,
                           dateFormat,
                           scrollStart
                       ),
@@ -153,7 +169,7 @@ export const LineChart = (props: IProps) => {
                       bottom: 10,
                       type: 'slider',
                       start: getInitialValues(
-                          xAxisData.length,
+                          xData.length,
                           dateFormat,
                           scrollStart
                       ),
@@ -176,24 +192,6 @@ export const LineChart = (props: IProps) => {
         }
     }
 
-    const series = data.map(item => ({
-        ...item,
-        smooth: smooth,
-        showSymbol: !disableMarks,
-        type: item.type ?? 'line',
-        label: {
-            distance: 1.1,
-            show: showLabel,
-            color: neutral[200],
-            formatter: formatLabel,
-            fontSize: yType === 'time' ? 10 : 11.5
-        },
-        lineStyle: {
-            width: 1.5,
-            type: item.name === 'ref' ? 'dashed' : undefined
-        }
-    }))
-
     const getOption: EChartsOption = () => ({
         color: colors,
         series: series,
@@ -206,7 +204,7 @@ export const LineChart = (props: IProps) => {
         },
         xAxis: {
             type: 'category',
-            data: xAxisData,
+            data: xData,
             boundaryGap: false,
             splitLine: {
                 show: true,

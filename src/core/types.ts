@@ -127,6 +127,11 @@ export type TooltipEntryProps = {
     resultComplement?: string | number
 }
 
+export type EntryDataLine = {
+    name?: string
+    values: EntryData[]
+}
+
 export type EntryData = {
     label: string
     result: number

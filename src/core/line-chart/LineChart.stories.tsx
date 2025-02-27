@@ -34,18 +34,9 @@ const meta: Meta<typeof LineChart> = {
         data: {
             data: {
                 name: { type: 'text' },
-                type: { type: 'text' },
-                odd: {
-                    control: { type: 'number' }
-                }
+                result: { type: 'number' }
             },
             description: `The chart data.`
-        },
-        xAxisData: {
-            odd: {
-                control: { type: 'text' }
-            },
-            description: `The xAxis data. It's an array of strings.`
         },
         smooth: {
             control: 'boolean',
@@ -80,29 +71,42 @@ export const lineChart: Story = {
         title: 'Line Chart',
         dateFormat: 'yyyy-MM',
         colors: [red[500], green[400]],
-        xAxisData: [
-            '2019-01',
-            '2019-02',
-            '2019-03',
-            '2019-04',
-            '2019-05',
-            '2019-06',
-            '2019-07',
-            '2019-08',
-            '2019-09',
-            '2019-10',
-            '2019-11',
-            '2019-12',
-            '2020-01'
-        ],
         data: [
             {
                 name: 'top line',
-                data: [10, 40, 30, 20, 40, 50, 15, 70, 80, 90, 70, 80, 90]
+                values: [
+                    { label: '2019-01', result: 10 },
+                    { label: '2019-02', result: 40 },
+                    { label: '2019-03', result: 30 },
+                    { label: '2019-04', result: 20 },
+                    { label: '2019-05', result: 40 },
+                    { label: '2019-06', result: 50 },
+                    { label: '2019-07', result: 15 },
+                    { label: '2019-08', result: 70 },
+                    { label: '2019-09', result: 80 },
+                    { label: '2019-10', result: 90 },
+                    { label: '2019-11', result: 70 },
+                    { label: '2019-12', result: 80 },
+                    { label: '2019-01', result: 90 }
+                ]
             },
             {
                 name: 'bottom line',
-                data: [1, 4, 3, 2, 4, 5, 1, 7, 8, 9, 70, 80, 90]
+                values: [
+                    { label: '2019-01', result: 1 },
+                    { label: '2019-02', result: 4 },
+                    { label: '2019-03', result: 3 },
+                    { label: '2019-04', result: 2 },
+                    { label: '2019-05', result: 4 },
+                    { label: '2019-06', result: 5 },
+                    { label: '2019-07', result: 1 },
+                    { label: '2019-08', result: 7 },
+                    { label: '2019-09', result: 8 },
+                    { label: '2019-10', result: 9 },
+                    { label: '2019-11', result: 70 },
+                    { label: '2019-12', result: 80 },
+                    { label: '2019-01', result: 90 }
+                ]
             }
         ],
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } }
@@ -119,26 +123,39 @@ export const lineChartWithDateAndTime: Story = {
         dateFormat: 'MMM/dd HH:mm',
         title: 'Line Chart With Date and Time',
         colors: [red[500], green[400], blue[600]],
-        xAxisData: [
-            '2019-01 08:40',
-            '2019-02 09:12',
-            '2019-03 10:25',
-            '2019-04 12:30',
-            '2019-05 14:30',
-            '2019-06 18:45'
-        ],
         data: [
             {
                 name: 'top line',
-                data: [10, 40, 30, 20, 40, 50]
+                values: [
+                    { label: '2019-01 08:40', result: 10 },
+                    { label: '2019-02 09:12', result: 40 },
+                    { label: '2019-03 10:25', result: 30 },
+                    { label: '2019-04 12:30', result: 20 },
+                    { label: '2019-05 14:30', result: 40 },
+                    { label: '2019-06 18:45', result: 50 }
+                ]
             },
             {
                 name: 'medium line',
-                data: [5, 15, 11, 9, 17, 19]
+                values: [
+                    { label: '2019-01 08:40', result: 5 },
+                    { label: '2019-02 09:12', result: 15 },
+                    { label: '2019-03 10:25', result: 11 },
+                    { label: '2019-04 12:30', result: 9 },
+                    { label: '2019-05 14:30', result: 17 },
+                    { label: '2019-06 18:45', result: 19 }
+                ]
             },
             {
                 name: 'bottom line',
-                data: [1, 4, 3, 2, 4, 5]
+                values: [
+                    { label: '2019-01 08:40', result: 1 },
+                    { label: '2019-02 09:12', result: 4 },
+                    { label: '2019-03 10:25', result: 3 },
+                    { label: '2019-04 12:30', result: 2 },
+                    { label: '2019-05 14:30', result: 4 },
+                    { label: '2019-06 18:45', result: 5 }
+                ]
             }
         ],
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } }
