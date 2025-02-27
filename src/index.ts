@@ -1,4 +1,3 @@
-export { default as ForecastAreaChart } from './core/forecast-area-chart/ForecastAreaChart'
 export { default as HorizontalBarChart } from './core/horizontal-bar-chart/HorizontalBarChart'
 export { default as MultipurposeChart } from './core/multipurpose-chart/MultipurposeChart'
 export { default as PictorialChart } from './core/pictorial-chart/PictorialChart'
