@@ -50,19 +50,19 @@ echarts.use([
 ])
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
-    data: TAudiometryDataEntry[][]
     height?: number
-    lineType?: LineStyleType
-    symbolsSize?: number
     colors?: string[]
-    legendsPosition?: 'top' | 'bottom'
     legendGap?: number
-    legendType?: 'scroll' | 'plain'
-    legends?: TSimpleLegend[]
+    symbolsSize?: number
     legendPadding?: number
+    tooltipMarker?: boolean
     legendItemWidth?: number
     legendItemHeight?: number
-    tooltipMarker?: boolean
+    lineType?: LineStyleType
+    legends?: TSimpleLegend[]
+    data: TAudiometryDataEntry[][]
+    legendType?: 'scroll' | 'plain'
+    legendsPosition?: 'top' | 'bottom'
     formatTooltip?(items: AudiometryDataTooltip[]): string
 }
 
@@ -207,18 +207,20 @@ export const AudiometryChart = (props: IProps) => {
                   textStyle: { ...LEGEND_STYLE }
               }
 
+    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
+        myTool: getSaveAsImageWithTitle(
+            toolboxTooltip.saveAsImageWithTitle.title ?? '',
+            handleShowTitle
+        )
+    }
+
     const toolbox = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         feature: {
+            ...myTool,
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
                 getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
-            saveAsImageWithTitle:
-                toolboxTooltip.saveAsImageWithTitle &&
-                getSaveAsImageWithTitle(
-                    toolboxTooltip.saveAsImageWithTitle.title ?? '',
-                    handleShowTitle
-                ),
             dataView:
                 toolboxTooltip.dataView &&
                 getDataView(toolboxTooltip.dataView.title ?? '')
