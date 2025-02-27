@@ -8,7 +8,7 @@ import {
 } from 'flipper-ui/icons/mui'
 import type { IProps } from './GaugeChart'
 import type { Meta, StoryObj } from '@storybook/react'
-import GaugeChart from './GaugeChart'
+import { GaugeChart } from './GaugeChart'
 import { theme } from 'flipper-ui/theme'
 
 const { amber, green, red, orange } = theme.colors

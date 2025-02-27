@@ -194,8 +194,8 @@ export const DonutChart = (props: IDonutProps) => {
         toolbox: {
             ...toolbox,
             tooltip: {
-                ...TOOLTIP_DEFAULT_PROPS,
                 trigger: 'none',
+                ...TOOLTIP_DEFAULT_PROPS,
                 formatter: (param: { title: string }) =>
                     `<div>${param.title}</div>`
             }
