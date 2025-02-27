@@ -74,7 +74,7 @@ export interface IDefaultChartProps {
     data: EntryData[]
     lineMarkValue?: number
     lineMarkColor?: string
-    lineMakeName?: string
+    lineMarkName?: string
     yComplement?: Complement
     tooltipComplement?: string
     tooltip?: TooltipEntryProps

@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import AreaChart from '../core/area-chart/AreaChart'
+import { AreaChart } from '../core/area-chart/AreaChart'
 import '@testing-library/jest-dom'
 
 describe('AreaChart', () => {
@@ -12,7 +12,7 @@ describe('AreaChart', () => {
                 title='Area Chart'
                 color='#3E2723'
                 lineMarkColor='#E65100'
-                lineMakeName='mark'
+                lineMarkName='mark'
                 lineMarkValue={3}
                 yComplement='%'
                 tooltipComplement='goals'

@@ -2,7 +2,7 @@ import React from 'react'
 import type { IDefaultChartProps } from '../types'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableArea } from '../disableControls'
-import AreaChart from './AreaChart'
+import { AreaChart } from './AreaChart'
 import { theme } from 'flipper-ui/theme'
 
 const { deepOrange, gray, orange } = theme.colors
@@ -16,6 +16,13 @@ const meta: Meta<typeof AreaChart> = {
             control: 'color',
             description: 'The chart line and area color.'
         },
+        data: {
+            label: { control: 'date' },
+            result: { control: 'number' },
+            description: `The chart x axis labels and data results.
+                The label object only accepts dates and
+                the result object only accepts numbers.`
+        },
         lineMarkValue: {
             control: { type: 'number', min: 0, max: 100 },
             description: 'The value of the mark line.'
@@ -24,7 +31,7 @@ const meta: Meta<typeof AreaChart> = {
             control: 'color',
             description: 'The color of the mark line.'
         },
-        lineMakeName: {
+        lineMarkName: {
             control: 'text',
             description: 'The label of the mark line.'
         },
@@ -53,13 +60,6 @@ const meta: Meta<typeof AreaChart> = {
             label: { control: 'text' },
             result: { control: 'text' },
             description: 'The tooltip results label.'
-        },
-        data: {
-            label: { control: 'date' },
-            result: { control: 'number' },
-            description: `The chart x axis labels and data results.
-                The label object only accepts dates and
-                the result object only accepts numbers.`
         }
     }
 }
@@ -74,16 +74,9 @@ export const areaChart: Story = {
     },
     args: {
         xType: 'time',
-        dateFormat: 'yyyy-MM',
         title: 'Area Chart',
+        dateFormat: 'yyyy-MM',
         color: gray[800],
-        lineMarkColor: orange[800],
-        lineMakeName: 'mark',
-        lineMarkValue: 10,
-        yComplement: '%',
-        tooltipComplement: 'goals',
-        tooltip: { label: 'Data', result: 'RAV' },
-        toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
         data: [
             { label: '2019-01', result: 0.7514285714285713 },
             { label: '2019-02', result: 1 },
@@ -98,7 +91,14 @@ export const areaChart: Story = {
             { label: '2019-11', result: 1 },
             { label: '2019-12', result: 1 },
             { label: '2020-01', result: 1 }
-        ]
+        ],
+        yComplement: '%',
+        lineMarkValue: 10,
+        lineMarkName: 'mark',
+        lineMarkColor: orange[800],
+        tooltipComplement: 'goals',
+        tooltip: { label: 'Data', result: 'RAV' },
+        toolboxTooltip: { saveAsImage: { title: 'Save as Image' } }
     }
 }
 
@@ -109,9 +109,6 @@ export const areaChartWithTime: Story = {
     args: {
         title: 'Area Chart With Time',
         color: deepOrange[800],
-        xType: 'time',
-        yType: 'time',
-        tooltip: { label: 'Data', result: 'MTBF' },
         data: [
             { label: '2019-01-01', result: 1.8 },
             { label: '2019-02-01', result: 4.5 },
@@ -123,7 +120,10 @@ export const areaChartWithTime: Story = {
             { label: '2019-08-01', result: 4 },
             { label: '2019-09-01', result: 2 },
             { label: '2019-10-01', result: 6 }
-        ]
+        ],
+        xType: 'time',
+        yType: 'time',
+        tooltip: { label: 'Data', result: 'MTBF' }
     },
     argTypes: {
         lineMarkValue: {
@@ -136,7 +136,7 @@ export const areaChartWithTime: Story = {
                 disable: true
             }
         },
-        lineMakeName: {
+        lineMarkName: {
             table: {
                 disable: true
             }
@@ -167,8 +167,6 @@ export const areaChartWithDate: Story = {
         xType: 'time',
         title: 'Area Chart With Date',
         color: deepOrange[600],
-        tooltip: { label: 'Data', result: 'O.S. em aberto' },
-        toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
         data: [
             { label: '2019-09-01', result: 1 },
             { label: '2019-09-02', result: 4 },
@@ -225,7 +223,9 @@ export const areaChartWithDate: Story = {
             { label: '2019-10-23', result: 30 },
             { label: '2019-10-24', result: 17 },
             { label: '2019-10-25', result: 18 }
-        ]
+        ],
+        tooltip: { label: 'Data', result: 'O.S. em aberto' },
+        toolboxTooltip: { saveAsImage: { title: 'Save as Image' } }
     },
     argTypes: {
         lineMarkValue: {
@@ -238,7 +238,7 @@ export const areaChartWithDate: Story = {
                 disable: true
             }
         },
-        lineMakeName: {
+        lineMarkName: {
             table: {
                 disable: true
             }
@@ -257,17 +257,17 @@ export const areaChartWithDateAndTime: Story = {
     },
     args: {
         xType: 'time',
-        dateFormat: 'MMM/dd HH:mm',
         title: 'Area Chart With Date And Time',
         color: deepOrange[400],
-        tooltip: { label: 'Data', result: 'O.S. em aberto' },
-        toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
         data: [
             { label: '2019-09-01 08:40', result: 1 },
             { label: '2019-09-02 12:32', result: 4 },
             { label: '2019-09-03 14:20', result: 3 },
             { label: '2019-09-04 19:25', result: 2 }
-        ]
+        ],
+        dateFormat: 'MMM/dd HH:mm',
+        tooltip: { label: 'Data', result: 'O.S. em aberto' },
+        toolboxTooltip: { saveAsImage: { title: 'Save as Image' } }
     },
     argTypes: {
         lineMarkValue: {
@@ -280,7 +280,7 @@ export const areaChartWithDateAndTime: Story = {
                 disable: true
             }
         },
-        lineMakeName: {
+        lineMarkName: {
             table: {
                 disable: true
             }
