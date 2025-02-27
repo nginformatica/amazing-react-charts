@@ -1,4 +1,3 @@
-export { default as AudiometryChart } from './core/audiometry-chart/AudiometryChart'
 export { default as CoordinateLineChart } from './core/coordinate-line-chart/CoordinateLineChart'
 export { default as DonutChart } from './core/donut-chart/DonutChart'
 export { default as ForecastAreaChart } from './core/forecast-area-chart/ForecastAreaChart'

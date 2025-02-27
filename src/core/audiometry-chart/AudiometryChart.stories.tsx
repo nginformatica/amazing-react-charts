@@ -2,7 +2,7 @@ import React from 'react'
 import type { IProps } from './AudiometryChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableAudiometry } from '../disableControls'
-import AudiometryChart from './AudiometryChart'
+import { AudiometryChart } from './AudiometryChart'
 import { theme } from 'flipper-ui/theme'
 
 const { amber, blue, green, neutral, purple, red } = theme.colors

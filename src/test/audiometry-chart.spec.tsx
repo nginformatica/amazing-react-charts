@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import AudiometryChart from '../core/audiometry-chart/AudiometryChart'
+import { AudiometryChart } from '../core/audiometry-chart/AudiometryChart'
 import '@testing-library/jest-dom'
 
 describe('AudiometryChart', () => {

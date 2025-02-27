@@ -16,6 +16,8 @@ export const CHART_WIDTH = { width: '99.9%' }
 
 export const CHART_HEIGHT = { width: '99.9%', height: 300 }
 
+export const fontFamily = 'Roboto, Helvetica, Arial, sans-serif'
+
 export const TOOLBOX_DEFAULT_PROPS = {
     showTitle: false,
     right: '9.52%'
@@ -28,14 +30,19 @@ export const TOOLTIP_DEFAULT_PROPS = {
     textStyle: {
         fontSize: 11.5,
         color: neutral[50],
-        fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
+        fontFamily: fontFamily
     }
 }
 
 export const COMMON_STYLE = {
     fontWeight: 400,
     color: neutral[200],
-    fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
+    fontFamily: fontFamily
+}
+
+export const LEGEND_STYLE = {
+    fontSize: 11.5,
+    ...COMMON_STYLE
 }
 
 export const TITLE_STYLE = {
