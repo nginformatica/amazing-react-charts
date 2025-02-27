@@ -2,7 +2,7 @@ import React from 'react'
 import type { IProps } from './CoordinateLineChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableCoordinate } from '../disableControls'
-import CoordinateLineChart from './CoordinateLineChart'
+import { CoordinateLineChart } from './CoordinateLineChart'
 import { theme } from 'flipper-ui/theme'
 
 const { amber, gray, green } = theme.colors

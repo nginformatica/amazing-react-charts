@@ -1,4 +1,3 @@
-export { default as CoordinateLineChart } from './core/coordinate-line-chart/CoordinateLineChart'
 export { default as DonutChart } from './core/donut-chart/DonutChart'
 export { default as ForecastAreaChart } from './core/forecast-area-chart/ForecastAreaChart'
 export { default as HorizontalBarChart } from './core/horizontal-bar-chart/HorizontalBarChart'

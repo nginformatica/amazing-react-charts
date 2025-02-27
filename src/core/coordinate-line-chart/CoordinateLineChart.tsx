@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from 'react'
-import ReactEcharts from 'echarts-for-react'
-import type { IDefaultChartProps, Coordinates, WidthProps } from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
+import type { EChartsOption } from 'echarts-for-react'
+import { LineChart as LineChartEcharts } from 'echarts/charts'
+import {
+    GridComponent,
+    TitleComponent,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent
+} from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
+import type { IDefaultChartProps, Coordinates } from '../types'
 import {
     getSaveAsImageWithTitle,
     getSaveAsImage,
     getDataView
 } from '../../lib/auxiliarFunctions'
 import {
+    TITLE_STYLE,
+    COMMON_STYLE,
     DASHED_LINE_ICON,
     STRAIGHT_LINE_ICON,
     TOOLBOX_DEFAULT_PROPS,
@@ -17,60 +29,92 @@ import { theme } from 'flipper-ui/theme'
 
 const { gray, neutral } = theme.colors
 
+echarts.use([
+    GridComponent,
+    TitleComponent,
+    CanvasRenderer,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    LineChartEcharts
+])
+
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
-    coordinates: [Coordinates[], Coordinates[], Coordinates[]]
-    colors?: string[]
     height?: number
+    colors?: string[]
+    xMaxValue?: number
+    yRangeValues?: number
+    legendPosition?: number
     legendNames?: [string, string, string]
     coordinateNames?: { x: string; y: string }
-    yRangeValues?: number
-    xMaxValue?: number
-    legendPosition?: number
+    coordinates: [Coordinates[], Coordinates[], Coordinates[]]
 }
 
-const getPadding = (rangeValues?: number) =>
-    rangeValues ? [150, 0, 0, 0] : [20, 0, 0, 0]
-
-const getWidthStyle = (width: WidthProps, height: number | undefined) => ({
-    width: width || 'auto',
-    height: height
-})
-
-const toTuples = (args: Coordinates[]) => args.map(item => [item.x, item.y])
-
-const CoordinateLineChart = (props: IProps) => {
+export const CoordinateLineChart = (props: IProps) => {
     const {
-        coordinates,
-        colors,
-        height,
-        title: titleProps,
-        coordinateNames,
-        legendNames,
-        yRangeValues,
-        xMaxValue,
         grid,
-        legendPosition,
+        title,
         width,
-        toolboxTooltip
+        height,
+        colors,
+        xMaxValue,
+        legendNames,
+        coordinates,
+        yRangeValues,
+        legendPosition,
+        toolboxTooltip,
+        coordinateNames
     } = props
-
-    const [title, setTitle] = useState(false)
 
     const [ref, pre, pos] = coordinates
 
-    const WIDTH_STYLE = getWidthStyle(width, height)
+    const [showTitle, setShowTitle] = useState(false)
 
     useEffect(() => {
         if (toolboxTooltip?.saveAsImageWithTitle) {
-            setTitle(false)
+            setShowTitle(false)
         } else {
-            setTitle(true)
+            setShowTitle(true)
         }
     }, [toolboxTooltip])
 
     const handleShowTitle = (show: boolean) => {
-        setTitle(show)
+        setShowTitle(show)
     }
+
+    const toTuples = (args: Coordinates[]) => args.map(item => [item.x, item.y])
+
+    const reference = toTuples(ref)
+    const preRespiratory = toTuples(pre)
+    const posResporatory = toTuples(pos)
+
+    const series = [
+        {
+            type: 'line',
+            smooth: true,
+            data: reference,
+            showSymbol: false,
+            name: legendNames?.[0] ?? '',
+            lineStyle: {
+                width: 1.5,
+                type: 'dashed'
+            }
+        },
+        {
+            type: 'line',
+            smooth: true,
+            showSymbol: false,
+            data: preRespiratory,
+            name: legendNames?.[1] ?? ''
+        },
+        {
+            type: 'line',
+            smooth: true,
+            showSymbol: false,
+            data: posResporatory,
+            name: legendNames?.[2] ?? ''
+        }
+    ]
 
     const myTool = toolboxTooltip?.saveAsImageWithTitle && {
         myTool: getSaveAsImageWithTitle(
@@ -79,69 +123,40 @@ const CoordinateLineChart = (props: IProps) => {
         )
     }
 
-    const saveAsImage = toolboxTooltip?.saveAsImage && {
-        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
-    }
-
-    const toolbox: object | undefined = toolboxTooltip && {
+    const toolbox = toolboxTooltip && {
         ...TOOLBOX_DEFAULT_PROPS,
         feature: {
             ...myTool,
-            ...saveAsImage,
+            saveAsImage:
+                toolboxTooltip.saveAsImage &&
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
             dataView:
                 toolboxTooltip.dataView &&
                 getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
-    const reference = toTuples(ref)
-    const preRespiratory = toTuples(pre)
-    const posResporatory = toTuples(pos)
-
-    // The legendNames prop is a 3-tuple typed correctly, so we can use
-    // index access with safety here.
-    const options: EChartsOption = {
+    const options: EChartsOption = () => ({
         color: colors,
-        series: [
-            {
-                name: legendNames?.[0] ?? '',
-                showSymbol: false,
-                type: 'line',
-                data: reference,
-                smooth: true,
-                lineStyle: {
-                    width: 1.5,
-                    type: 'dashed'
-                }
-            },
-            {
-                name: legendNames?.[1] ?? '',
-                showSymbol: false,
-                type: 'line',
-                data: preRespiratory,
-                smooth: true
-            },
-            {
-                name: legendNames?.[2] ?? '',
-                showSymbol: false,
-                type: 'line',
-                data: posResporatory,
-                smooth: true
-            }
-        ],
-        yAxis: {
+        series: series,
+        grid: { ...grid, containLabel: true },
+        title: {
+            text: title,
+            left: '6.2%',
+            show: showTitle,
+            textStyle: { ...TITLE_STYLE }
+        },
+        xAxis: {
             type: 'value',
-            name: coordinateNames?.y,
-            nameTextStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: neutral[200]
-            },
-            nameGap: 10,
-            min: yRangeValues ? -yRangeValues : 0,
-            max: yRangeValues || 8,
+            name: coordinateNames?.x,
+            min: 0,
+            max: xMaxValue || 8,
             interval: 2,
-            axisTick: {
-                show: true
+            nameGap: -56,
+            nameTextStyle: {
+                ...COMMON_STYLE,
+                verticalAlign: 'top',
+                padding: yRangeValues ? [150, 0, 0, 0] : [20, 0, 0, 0]
             },
             splitLine: {
                 show: true,
@@ -151,32 +166,22 @@ const CoordinateLineChart = (props: IProps) => {
                     color: gray[800]
                 }
             },
-            axisLabel: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: neutral[200]
-            },
+            axisTick: { show: false },
+            axisLabel: { ...COMMON_STYLE },
             axisLine: {
                 lineStyle: {
                     color: neutral[200]
                 }
             }
         },
-        xAxis: {
+        yAxis: {
             type: 'value',
-            name: coordinateNames?.x,
-            nameTextStyle: {
-                verticalAlign: 'top',
-                padding: getPadding(yRangeValues),
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: neutral[200]
-            },
-            nameGap: -56,
-            min: 0,
-            max: xMaxValue || 8,
+            name: coordinateNames?.y,
+            min: yRangeValues ? -yRangeValues : 0,
+            max: yRangeValues || 8,
             interval: 2,
-            axisTick: {
-                show: false
-            },
+            nameGap: 10,
+            nameTextStyle: { ...COMMON_STYLE },
             splitLine: {
                 show: true,
                 lineStyle: {
@@ -185,10 +190,8 @@ const CoordinateLineChart = (props: IProps) => {
                     color: gray[800]
                 }
             },
-            axisLabel: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: neutral[200]
-            },
+            axisTick: { show: true },
+            axisLabel: { ...COMMON_STYLE },
             axisLine: {
                 lineStyle: {
                     color: neutral[200]
@@ -196,47 +199,37 @@ const CoordinateLineChart = (props: IProps) => {
             }
         },
         legend: {
+            itemGap: 30,
             top: legendPosition ?? 26,
+            textStyle: { ...COMMON_STYLE },
             data: [
-                {
-                    name: legendNames?.[0] ?? '',
-                    icon: DASHED_LINE_ICON
-                },
+                { name: legendNames?.[0] ?? '', icon: DASHED_LINE_ICON },
                 { name: legendNames?.[1] ?? '', icon: STRAIGHT_LINE_ICON },
                 { name: legendNames?.[2] ?? '', icon: STRAIGHT_LINE_ICON }
-            ],
-            itemGap: 30,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                color: neutral[200]
-            }
+            ]
         },
-        title: {
-            left: '6.2%',
-            show: title,
-            text: titleProps,
-            textAlign: 'left',
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 16,
-                fontWeight: 400,
-                color: neutral[200]
-            }
-        },
-        grid: {
-            containLabel: true,
-            ...grid
+        tooltip: {
+            trigger: 'none',
+            ...TOOLTIP_DEFAULT_PROPS
         },
         toolbox: {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
-                formatter: param => `<div>${param.title}</div>`
+                formatter: (param: { title: string }) =>
+                    `<div>${param.title}</div>`
             }
         }
-    }
+    })
 
-    return <ReactEcharts style={WIDTH_STYLE} option={options} />
+    return (
+        <ReactEChartsCore
+            notMerge
+            lazyUpdate
+            echarts={echarts}
+            option={options()}
+            opts={{ renderer: 'canvas', width: 'auto' }}
+            style={{ width: width ?? 'auto', height: height }}
+        />
+    )
 }
-
-export default CoordinateLineChart
