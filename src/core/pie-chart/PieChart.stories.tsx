@@ -1,5 +1,5 @@
 import React from 'react'
-import type { IProps } from './PieChart'
+import type { IPieProps } from './PieChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisablePie } from '../disableControls'
 import PieChart from './PieChart'
@@ -94,7 +94,7 @@ export default meta
 type Story = StoryObj<typeof PieChart>
 
 export const pieChart: Story = {
-    render: (args: IProps) => {
+    render: (args: IPieProps) => {
         return (
             <ChartStorieWrapper>
                 <PieChart {...args} />
@@ -129,7 +129,7 @@ export const pieChart: Story = {
 }
 
 export const pieChartWithScrollableLegend: Story = {
-    render: (args: IProps) => {
+    render: (args: IPieProps) => {
         return (
             <ChartStorieWrapper>
                 <PieChart {...args} />

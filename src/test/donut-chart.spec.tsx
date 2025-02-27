@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import DonutChart from '../core/donut-chart/DonutChart'
+import { DonutChart } from '../core/donut-chart/DonutChart'
 import '@testing-library/jest-dom'
 
 describe('DonutChart', () => {

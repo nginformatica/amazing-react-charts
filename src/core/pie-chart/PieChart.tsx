@@ -24,7 +24,7 @@ import { theme } from 'flipper-ui/theme'
 
 const { neutral } = theme.colors
 
-export interface IProps extends Omit<IDefaultChartProps, 'data'> {
+export interface IPieProps extends Omit<IDefaultChartProps, 'data'> {
     data: PieChartData[]
     colors?: string[]
     legendPosition?: 'inside' | 'outside'
@@ -38,7 +38,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     tooltipTitle?: string
 }
 
-const PieChart = (props: IProps) => {
+const PieChart = (props: IPieProps) => {
     const {
         data,
         grid: gridProps,

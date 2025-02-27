@@ -2,7 +2,7 @@ import React from 'react'
 import type { IDonutProps } from './DonutChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableDonut } from '../disableControls'
-import DonutChart from './DonutChart'
+import { DonutChart } from './DonutChart'
 import { DonutWrapper } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 
