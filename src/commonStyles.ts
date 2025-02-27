@@ -113,7 +113,7 @@ export const GaugeLegend = styled.div`
     font-size: 14px;
 `
 
-export const CsvDownloadButtonStyle = styled.button`
+export const CsvDownloadButton = styled.button`
     font-weight: bold;
     background: ${neutral[50]};
     text-transform: uppercase;

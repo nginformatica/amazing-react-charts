@@ -16,7 +16,7 @@ import {
 } from '../../lib/auxiliarFunctions'
 import {
     CHART_WIDTH,
-    CsvDownloadButtonStyle,
+    CsvDownloadButton,
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
@@ -302,9 +302,9 @@ const PyramidBarChart = (props: IProps) => {
                 onEvents={clickEvent}
             />
             {props.showCSVDownload && (
-                <CsvDownloadButtonStyle onClick={exportToCSV}>
+                <CsvDownloadButton onClick={exportToCSV}>
                     csv
-                </CsvDownloadButtonStyle>
+                </CsvDownloadButton>
             )}
         </>
     )
