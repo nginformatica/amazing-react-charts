@@ -1,6 +1,9 @@
 import React from 'react'
 import type { EChartsOption } from 'echarts-for-react'
-import { BarChart as BarChartEcharts } from 'echarts/charts'
+import {
+    BarChart as BarChartEcharts,
+    LineChart as LineChartEcharts
+} from 'echarts/charts'
 import {
     GridComponent,
     TitleComponent,
@@ -61,6 +64,7 @@ echarts.use([
     TooltipComponent,
     ToolboxComponent,
     BarChartEcharts,
+    LineChartEcharts,
     DataZoomInsideComponent,
     DataZoomSliderComponent
 ])
