@@ -68,7 +68,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'tooltip'> {
     }
 }
 
-export const ForecastAreaChart = (props: IProps) => {
+const ForecastAreaChart = (props: IProps) => {
     const {
         data,
         grid,
@@ -346,3 +346,5 @@ export const ForecastAreaChart = (props: IProps) => {
         />
     )
 }
+
+export default ForecastAreaChart

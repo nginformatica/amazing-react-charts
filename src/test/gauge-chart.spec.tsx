@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import { GaugeChart } from '../core/gauge-chart/GaugeChart'
+import GaugeChart from '../core/gauge-chart/GaugeChart'
 import '@testing-library/jest-dom'
 
 describe('GaugeChart', () => {

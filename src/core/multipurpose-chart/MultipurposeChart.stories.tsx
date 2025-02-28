@@ -2,7 +2,7 @@ import React from 'react'
 import type { MultipurposeChartProps } from './MultipurposeChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableMultipurpose } from '../disableControls'
-import { MultipurposeChart } from './MultipurposeChart'
+import MultipurposeChart from './MultipurposeChart'
 import { theme } from 'flipper-ui/theme'
 
 const { indigo } = theme.colors

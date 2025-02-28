@@ -103,7 +103,7 @@ interface TooltipParams {
     axisValueLabel: string
 }
 
-export const DivergingStackedBarChart = (props: IProps) => {
+const DivergingStackedBarChart = (props: IProps) => {
     const {
         grid,
         data,
@@ -327,3 +327,5 @@ export const DivergingStackedBarChart = (props: IProps) => {
         </>
     )
 }
+
+export default DivergingStackedBarChart

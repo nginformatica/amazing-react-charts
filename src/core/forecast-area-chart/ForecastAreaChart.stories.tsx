@@ -2,7 +2,7 @@ import React from 'react'
 import type { IProps } from './ForecastAreaChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableForecast } from '../disableControls'
-import { ForecastAreaChart } from './ForecastAreaChart'
+import ForecastAreaChart from './ForecastAreaChart'
 import { theme } from 'flipper-ui/theme'
 
 const { blue, orange, red } = theme.colors

@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import { ForecastAreaChart } from '../core/forecast-area-chart/ForecastAreaChart'
+import ForecastAreaChart from '../core/forecast-area-chart/ForecastAreaChart'
 import '@testing-library/jest-dom'
 
 describe('ForecastAreaChart', () => {

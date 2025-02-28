@@ -61,7 +61,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     axisNames?: { x: string; y: string }
 }
 
-export const LineChart = (props: IProps) => {
+const LineChart = (props: IProps) => {
     const {
         data,
         grid,
@@ -275,3 +275,5 @@ export const LineChart = (props: IProps) => {
         />
     )
 }
+
+export default LineChart

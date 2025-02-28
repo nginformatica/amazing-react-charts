@@ -2,7 +2,7 @@ import React from 'react'
 import type { IProps } from './LineChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableLine } from '../disableControls'
-import { LineChart } from './LineChart'
+import LineChart from './LineChart'
 import { theme } from 'flipper-ui/theme'
 
 const { blue, green, red } = theme.colors

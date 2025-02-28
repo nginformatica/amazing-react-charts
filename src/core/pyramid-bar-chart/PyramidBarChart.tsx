@@ -96,7 +96,7 @@ interface RichDataItem {
     }
 }
 
-export const PyramidBarChart = (props: IProps) => {
+const PyramidBarChart = (props: IProps) => {
     const {
         grid,
         data,
@@ -300,3 +300,5 @@ export const PyramidBarChart = (props: IProps) => {
         </>
     )
 }
+
+export default PyramidBarChart

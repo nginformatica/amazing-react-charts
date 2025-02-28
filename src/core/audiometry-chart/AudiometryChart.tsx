@@ -66,7 +66,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     formatTooltip?(items: AudiometryDataTooltip[]): string
 }
 
-export const AudiometryChart = (props: IProps) => {
+const AudiometryChart = (props: IProps) => {
     const {
         data,
         grid,
@@ -310,3 +310,5 @@ export const AudiometryChart = (props: IProps) => {
         />
     )
 }
+
+export default AudiometryChart

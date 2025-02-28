@@ -2,7 +2,7 @@ import React from 'react'
 import type { IProps } from './DivergingStackedBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesCommon } from '../disableControls'
-import { DivergingStackedBarChart } from './DivergingStackedBarChart'
+import DivergingStackedBarChart from './DivergingStackedBarChart'
 import { theme } from 'flipper-ui/theme'
 
 const { indigo } = theme.colors

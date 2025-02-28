@@ -59,7 +59,7 @@ export interface MultipurposeChartProps {
     yComplement?: (input: string) => string
 }
 
-export const MultipurposeChart = (props: MultipurposeChartProps) => {
+const MultipurposeChart = (props: MultipurposeChartProps) => {
     const {
         xData,
         xType,
@@ -280,3 +280,5 @@ export const MultipurposeChart = (props: MultipurposeChartProps) => {
         />
     )
 }
+
+export default MultipurposeChart

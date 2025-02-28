@@ -2,7 +2,7 @@ import React from 'react'
 import type { IProps } from './HorizontalBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableHorizontal } from '../disableControls'
-import { HorizontalBarChart } from './HorizontalBarChart'
+import HorizontalBarChart from './HorizontalBarChart'
 import { theme } from 'flipper-ui/theme'
 
 const { amber, green, indigo, lightGreen, orange, red } = theme.colors

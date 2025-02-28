@@ -2,7 +2,7 @@ import React from 'react'
 import type { IProps } from './VerticalBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableVertical } from '../disableControls'
-import { VerticalBarChart } from './VerticalBarChart'
+import VerticalBarChart from './VerticalBarChart'
 import { theme } from 'flipper-ui/theme'
 
 const { amber, blue, green, orange, red } = theme.colors

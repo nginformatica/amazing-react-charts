@@ -49,7 +49,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     }[]
 }
 
-export const GaugeChart = (props: IProps) => {
+const GaugeChart = (props: IProps) => {
     const {
         data,
         height,
@@ -184,3 +184,5 @@ export const GaugeChart = (props: IProps) => {
         </div>
     )
 }
+
+export default GaugeChart

@@ -50,7 +50,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     coordinates: [Coordinates[], Coordinates[], Coordinates[]]
 }
 
-export const CoordinateLineChart = (props: IProps) => {
+const CoordinateLineChart = (props: IProps) => {
     const {
         grid,
         title,
@@ -233,3 +233,5 @@ export const CoordinateLineChart = (props: IProps) => {
         />
     )
 }
+
+export default CoordinateLineChart

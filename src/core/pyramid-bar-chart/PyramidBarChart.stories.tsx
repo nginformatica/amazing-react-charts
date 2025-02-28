@@ -2,7 +2,7 @@ import React from 'react'
 import type { IProps } from './PyramidBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesCommon } from '../disableControls'
-import { PyramidBarChart } from './PyramidBarChart'
+import PyramidBarChart from './PyramidBarChart'
 import { theme } from 'flipper-ui/theme'
 
 const { pink } = theme.colors

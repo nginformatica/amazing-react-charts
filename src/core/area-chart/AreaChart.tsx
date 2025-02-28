@@ -57,7 +57,7 @@ echarts.use([
     DataZoomSliderComponent
 ])
 
-export const AreaChart = (props: IDefaultChartProps) => {
+const AreaChart = (props: IDefaultChartProps) => {
     const {
         data,
         grid,
@@ -325,3 +325,5 @@ export const AreaChart = (props: IDefaultChartProps) => {
         />
     )
 }
+
+export default AreaChart

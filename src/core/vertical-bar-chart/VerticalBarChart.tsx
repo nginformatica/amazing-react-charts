@@ -63,7 +63,7 @@ export interface IProps extends IDefaultChartProps {
     customMaxDomain?: number
 }
 
-export const VerticalBarChart = (props: IProps) => {
+const VerticalBarChart = (props: IProps) => {
     const {
         grid,
         data,
@@ -352,3 +352,5 @@ export const VerticalBarChart = (props: IProps) => {
         />
     )
 }
+
+export default VerticalBarChart

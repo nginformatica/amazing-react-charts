@@ -51,7 +51,7 @@ export interface IDonutProps extends IPieProps {
     legendType?: 'scroll' | 'plain'
 }
 
-export const DonutChart = (props: IDonutProps) => {
+const DonutChart = (props: IDonutProps) => {
     const {
         data,
         grid,
@@ -210,3 +210,5 @@ export const DonutChart = (props: IDonutProps) => {
         </ChartWrapper>
     )
 }
+
+export default DonutChart

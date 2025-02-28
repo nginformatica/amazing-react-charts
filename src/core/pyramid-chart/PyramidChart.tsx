@@ -66,7 +66,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
         | 'insideBottomRight'
 }
 
-export const PyramidChart = (props: IProps) => {
+const PyramidChart = (props: IProps) => {
     const {
         data,
         style,
@@ -174,3 +174,5 @@ export const PyramidChart = (props: IProps) => {
         />
     )
 }
+
+export default PyramidChart

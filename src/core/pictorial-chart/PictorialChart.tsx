@@ -23,7 +23,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     height?: number | string
 }
 
-export const PictorialChart = (props: IProps) => {
+const PictorialChart = (props: IProps) => {
     const { data, color, grid } = props
 
     const formatTooltip = () =>
@@ -86,3 +86,5 @@ export const PictorialChart = (props: IProps) => {
         />
     )
 }
+
+export default PictorialChart

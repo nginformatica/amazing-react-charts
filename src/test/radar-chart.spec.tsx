@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import { RadarChart } from '../core/radar-chart/RadarChart'
+import RadarChart from '../core/radar-chart/RadarChart'
 import '@testing-library/jest-dom'
 
 describe('RadarChart', () => {

@@ -58,7 +58,7 @@ export interface IPieProps extends Omit<IDefaultChartProps, 'data'> {
     resultFormatType?: 'percent' | ((value: string | number) => string)
 }
 
-export const PieChart = (props: IPieProps) => {
+const PieChart = (props: IPieProps) => {
     const {
         data,
         grid,
@@ -207,3 +207,5 @@ export const PieChart = (props: IPieProps) => {
         />
     )
 }
+
+export default PieChart

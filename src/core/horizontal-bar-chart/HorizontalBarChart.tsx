@@ -66,7 +66,7 @@ interface RichDataItem {
     }
 }
 
-export const HorizontalBarChart = (props: IProps) => {
+const HorizontalBarChart = (props: IProps) => {
     const {
         data,
         grid,
@@ -339,3 +339,5 @@ export const HorizontalBarChart = (props: IProps) => {
         </ChartContainer>
     )
 }
+
+export default HorizontalBarChart

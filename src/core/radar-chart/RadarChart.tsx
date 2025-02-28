@@ -40,7 +40,7 @@ export interface RadarChartProps {
     yComplement?: (input: string) => string
 }
 
-export const RadarChart = (props: RadarChartProps) => {
+const RadarChart = (props: RadarChartProps) => {
     const { series, width, indicators, circular, highlight, yComplement } =
         props
 
@@ -106,3 +106,5 @@ export const RadarChart = (props: RadarChartProps) => {
         />
     )
 }
+
+export default RadarChart

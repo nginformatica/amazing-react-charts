@@ -2,7 +2,7 @@ import React from 'react'
 import type { IDefaultChartProps } from '../types'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableArea } from '../disableControls'
-import { AreaChart } from './AreaChart'
+import AreaChart from './AreaChart'
 import { theme } from 'flipper-ui/theme'
 
 const { deepOrange, gray, orange } = theme.colors

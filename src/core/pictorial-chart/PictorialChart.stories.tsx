@@ -2,7 +2,7 @@ import React from 'react'
 import type { IProps } from './PictorialChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisablePictorial } from '../disableControls'
-import { PictorialChart } from './PictorialChart'
+import PictorialChart from './PictorialChart'
 import { PictorialWrapper } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 

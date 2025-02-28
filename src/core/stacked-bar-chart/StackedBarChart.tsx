@@ -76,7 +76,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     secondYAxisType?: 'percent' | string
 }
 
-export const StackedBarChart = (props: IProps) => {
+const StackedBarChart = (props: IProps) => {
     const {
         data,
         grid,
@@ -468,3 +468,5 @@ export const StackedBarChart = (props: IProps) => {
         />
     )
 }
+
+export default StackedBarChart
