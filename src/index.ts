@@ -2,4 +2,3 @@ export { default as MultipurposeChart } from './core/multipurpose-chart/Multipur
 export { default as RadarChart } from './core/radar-chart/RadarChart'
 export { default as StackedBarChart } from './core/stacked-bar-chart/StackedBarChart'
 export { default as VerticalBarChart } from './core/vertical-bar-chart/VerticalBarChart'
-export { default as PyramidBarChart } from './core/pyramid-bar-chart/PyramidBarChart'

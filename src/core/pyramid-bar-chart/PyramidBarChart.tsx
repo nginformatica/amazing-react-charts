@@ -1,36 +1,60 @@
 import React, { useEffect, useState } from 'react'
-import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts-for-react'
+import { BarChart as BarChartEcharts } from 'echarts/charts'
+import {
+    GridComponent,
+    TitleComponent,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent
+} from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
 import type {
     IDefaultChartProps,
     ToolboxEntryProps,
     WidthProps
 } from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
-    changeSpaceForUnderline,
-    convertImageToBase64FromUrl,
     getDataView,
     getSaveAsImage,
+    changeSpaceForUnderline,
     getSaveAsImageWithTitle,
-    getWidthOpts
+    convertImageToBase64FromUrl
 } from '../../lib/auxiliarFunctions'
 import {
-    CHART_WIDTH,
+    TITLE_STYLE,
+    AXIS_SPLIT_LINE,
     CsvDownloadButton,
-    TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 
-const { gray, neutral } = theme.colors
+const { gray } = theme.colors
+
+echarts.use([
+    GridComponent,
+    TitleComponent,
+    CanvasRenderer,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    BarChartEcharts
+])
+
+export interface ChartData {
+    categories: string[]
+    seriesData: SeriesData[]
+}
 
 export interface SeriesData {
-    data: number[]
     name: string
-    image?: string
-    itemStyle?: object
+    data: number[]
     color?: string
     label?: string
+    image?: string
+    itemStyle?: object
     labelPosition?:
         | 'inside'
         | 'top'
@@ -45,20 +69,6 @@ export interface SeriesData {
         | 'insideBottomLeft'
         | 'insideTopRight'
         | 'insideBottomRight'
-}
-
-export interface ChartData {
-    seriesData: SeriesData[]
-    categories: string[]
-}
-
-interface RichDataItem {
-    [key: string]: {
-        height: number
-        backgroundColor: {
-            image: unknown
-        }
-    }
 }
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
@@ -77,29 +87,39 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     ): void
 }
 
-const PyramidBarChart = (props: IProps) => {
+interface RichDataItem {
+    [key: string]: {
+        height: number
+        backgroundColor: {
+            image: unknown
+        }
+    }
+}
+
+export const PyramidBarChart = (props: IProps) => {
     const {
+        grid,
         data,
+        title,
         width,
-        grid: gridProps,
         legendType,
-        showTickInfos,
         titleFontSize,
+        showTickInfos,
         toolboxTooltip,
-        title: titleProps,
         marginRightToolbox,
         onClickBar
     } = props
 
-    const [title, setTitle] = useState(false)
-    const [richData, setRichDate] = useState<RichDataItem[]>([])
-    const clickEvent = { click: onClickBar }
+    const [showTitle, setShowTitle] = useState(false)
+    const [richData, setRichData] = useState<RichDataItem[]>([])
+
+    const clickEvent = { click: onClickBar ?? (() => {}) }
 
     useEffect(() => {
         if (toolboxTooltip?.saveAsImageWithTitle) {
-            setTitle(false)
+            setShowTitle(false)
         } else {
-            setTitle(true)
+            setShowTitle(true)
         }
     }, [toolboxTooltip])
 
@@ -122,13 +142,13 @@ const PyramidBarChart = (props: IProps) => {
                         changeSpaceForUnderline(item.label ?? '') in itemRich
                 )
             ) {
-                setRichDate(state => [...state, rich])
+                setRichData(state => [...state, rich])
             }
         })
     }, [richData])
 
     const handleShowTitle = (show: boolean) => {
-        setTitle(show)
+        setShowTitle(show)
     }
 
     const myTool = toolboxTooltip?.saveAsImageWithTitle && {
@@ -138,16 +158,14 @@ const PyramidBarChart = (props: IProps) => {
         )
     }
 
-    const saveAsImage = toolboxTooltip?.saveAsImage && {
-        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
-    }
-
-    const toolbox: object | undefined = toolboxTooltip && {
-        ...TOOLBOX_DEFAULT_PROPS,
+    const toolbox = toolboxTooltip && {
+        showTitle: false,
         right: marginRightToolbox || '8.7%',
         feature: {
             ...myTool,
-            ...saveAsImage,
+            saveAsImage:
+                toolboxTooltip.saveAsImage &&
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
             dataView:
                 toolboxTooltip.dataView &&
                 getDataView(toolboxTooltip.dataView.title ?? '')
@@ -183,85 +201,43 @@ const PyramidBarChart = (props: IProps) => {
         document.body.removeChild(link)
     }
 
-    const series: object[] = data.seriesData.map(seriesItem => ({
-        grid: {
-            containLabel: true,
-            ...gridProps
-        },
-        name: seriesItem.name,
+    const series = data.seriesData.map(seriesItem => ({
         type: 'bar',
         stack: 'Total',
+        data: seriesItem.data,
+        name: seriesItem.name,
+        emphasis: { focus: 'series' },
+        grid: { containLabel: true, ...grid },
         label: {
             show: true,
-            position: seriesItem.labelPosition || 'inside'
-        },
-        emphasis: {
-            focus: 'series'
+            position: seriesItem.labelPosition || 'inside',
+            formatter: function (value: { data: number }) {
+                return Math.abs(value.data)
+            }
         },
         itemStyle: seriesItem.itemStyle || {
             color: seriesItem.color || props.color || gray[200]
-        },
-
-        data: seriesItem.data
+        }
     }))
 
-    const options: EChartsOption = {
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            },
-            backgroundColor: `${neutral[200]}99`,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 11.5,
-                color: neutral[50]
-            },
-            extraCssText: 'border: none; padding: 6px;',
-            formatter: function (params: unknown) {
-                if (params instanceof Array && params.length >= 2) {
-                    const seriesNameLeft = params[0].seriesName
-                    const value = Math.abs(params[0].value as number)
-                    const seriesNameRight = params[1].seriesName
-                    const value1 = Math.abs(params[1].value as number)
-
-                    return `<strong>${seriesNameLeft}</strong>:
-                    ${value}<br/><strong>${seriesNameRight}</strong>: ${value1}`
-                }
-
-                return ''
-            }
-        },
-        legend: {
-            data: data.seriesData.map(item => item.name)
-        },
-        // @ts-expect-error fix
-        title: {
-            left: legendType === 'scroll' ? '0.1%' : '4%',
-            top: legendType === 'scroll' && '5.7%',
-            show: title,
-            text: titleProps,
-            textAlign: 'left',
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: titleFontSize || 16,
-                fontWeight: 400,
-                color: neutral[200]
-            }
-        },
+    const options: EChartsOption = () => ({
+        series: series,
         grid: {
             left: '3%',
             right: '4%',
             bottom: '3%',
             containLabel: true
         },
+        title: {
+            text: title,
+            show: showTitle,
+            top: legendType === 'scroll' && '5.7%',
+            left: legendType === 'scroll' ? '0.1%' : '4%',
+            textStyle: { ...TITLE_STYLE, fontSize: titleFontSize || 16 }
+        },
         splitLine: {
             show: showTickInfos || false,
-            lineStyle: {
-                type: 'dashed' as const,
-                opacity: 0.2,
-                color: gray[800]
-            }
+            lineStyle: { ...AXIS_SPLIT_LINE }
         },
         xAxis: [
             {
@@ -276,38 +252,51 @@ const PyramidBarChart = (props: IProps) => {
         yAxis: [
             {
                 type: 'category',
-                axisTick: {
-                    show: false
-                },
-                data: data.categories
+                data: data.categories,
+                axisTick: { show: false }
             }
         ],
-        series: series,
+        legend: { data: data.seriesData.map(item => item.name) },
+        tooltip: {
+            trigger: 'axis',
+            ...TOOLTIP_DEFAULT_PROPS,
+            axisPointer: { type: 'shadow' },
+            formatter: function (params: unknown) {
+                if (params instanceof Array && params.length >= 2) {
+                    const seriesNameLeft = params[0].seriesName
+                    const value = Math.abs(params[0].value as number)
+                    const seriesNameRight = params[1].seriesName
+                    const value1 = Math.abs(params[1].value as number)
+
+                    return `<strong>${seriesNameLeft}</strong>:
+                    ${value}<br/><strong>${seriesNameRight}</strong>: ${value1}`
+                }
+
+                return ''
+            }
+        },
         toolbox: {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
-                formatter: param => `<div>${param.title}</div>`
+                formatter: (param: { title: string }) =>
+                    `<div>${param.title}</div>`
             }
         }
-    }
+    })
 
     return (
         <>
-            <ReactEcharts
-                style={CHART_WIDTH}
-                opts={getWidthOpts(width || 'auto')}
-                option={options}
-                // @ts-expect-error fix
+            <ReactEChartsCore
+                echarts={echarts}
+                option={options()}
+                style={{ width: width ?? '99.9%' }}
+                opts={{ renderer: 'canvas', width: 'auto' }}
                 onEvents={clickEvent}
             />
             {props.showCSVDownload && (
-                <CsvDownloadButton onClick={exportToCSV}>
-                    csv
-                </CsvDownloadButton>
+                <CsvDownloadButton onClick={exportToCSV}>csv</CsvDownloadButton>
             )}
         </>
     )
 }
-
-export default PyramidBarChart
