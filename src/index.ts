@@ -1,4 +1,3 @@
-export { default as HorizontalBarChart } from './core/horizontal-bar-chart/HorizontalBarChart'
 export { default as MultipurposeChart } from './core/multipurpose-chart/MultipurposeChart'
 export { default as PictorialChart } from './core/pictorial-chart/PictorialChart'
 export { default as PieChart } from './core/pie-chart/PieChart'

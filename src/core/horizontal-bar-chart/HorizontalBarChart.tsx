@@ -1,38 +1,59 @@
 import React, { useState, useEffect } from 'react'
-import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts-for-react'
+import { BarChart as BarChartEcharts } from 'echarts/charts'
+import {
+    GridComponent,
+    TitleComponent,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent
+} from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
 import { reverse } from 'ramda'
 import type {
-    IDefaultChartProps,
     EntryData,
     LabelProps,
-    ParamsTooltip
+    ParamsTooltip,
+    IDefaultChartProps
 } from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
-    getDataView,
     getDomain,
-    getSaveAsImage,
     timeConvert,
+    getDataView,
     truncateLabel,
+    getSaveAsImage,
     takeLabelComplement,
-    getSaveAsImageWithTitle,
-    getWidthOpts,
-    convertImageToBase64FromUrl,
+    formatLabelWithImage,
     changeSpaceForUnderline,
-    formatLabelWithImage
+    getSaveAsImageWithTitle,
+    convertImageToBase64FromUrl
 } from '../../lib/auxiliarFunctions'
 import {
-    CHART_WIDTH,
-    TOOLBOX_DEFAULT_PROPS,
+    TITLE_STYLE,
+    COMMON_STYLE,
+    ChartContainer,
+    AXIS_SPLIT_LINE,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 
-const { gray, neutral } = theme.colors
+const { gray } = theme.colors
+
+echarts.use([
+    GridComponent,
+    TitleComponent,
+    CanvasRenderer,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    BarChartEcharts
+])
 
 export interface IProps extends IDefaultChartProps {
-    showTickInfos?: boolean
     xComplement?: string
+    showTickInfos?: boolean
     boldTickLabel?: boolean
 }
 
@@ -45,44 +66,37 @@ interface RichDataItem {
     }
 }
 
-export const clickBar = (item: { data: { value: string } }) => {
-    if ('data' in item && 'value' in item.data) {
-        const value = item.data.value
-
-        window.alert(value)
-    }
-}
-
-const HorizontalBarChart = (props: IProps) => {
+export const HorizontalBarChart = (props: IProps) => {
     const {
         data,
-        color,
-        xComplement,
-        tooltip: tooltipProps,
-        grid: gridProps,
+        grid,
         width,
-        labelWordSize,
+        color,
+        xType,
+        title,
+        tooltip,
+        xComplement,
         rotateLabel,
+        labelWordSize,
         showTickInfos,
         boldTickLabel,
-        title: titleProps,
-        marginLeftTitle,
         titleFontSize,
-        onClickBar,
-        xType,
         toolboxTooltip,
-        marginRightToolbox
+        marginLeftTitle,
+        marginRightToolbox,
+        onClickBar
     } = props
 
-    const [title, setTitle] = useState(false)
-    const [richData, setRichDate] = useState<RichDataItem[]>([])
-    const clickEvent = { click: onClickBar }
+    const [showTitle, setShowTitle] = useState(false)
+    const [richData, setRichData] = useState<RichDataItem[]>([])
+
+    const clickEvent = { click: onClickBar ?? (() => {}) }
 
     useEffect(() => {
         if (toolboxTooltip?.saveAsImageWithTitle) {
-            setTitle(false)
+            setShowTitle(false)
         } else {
-            setTitle(true)
+            setShowTitle(true)
         }
     }, [toolboxTooltip])
 
@@ -104,12 +118,54 @@ const HorizontalBarChart = (props: IProps) => {
                     itemRich => changeSpaceForUnderline(item.label) in itemRich
                 )
             ) {
-                setRichDate(state => [...state, rich])
+                setRichData(state => [...state, rich])
             }
         })
     }, [richData])
 
-    const xData: object[] = reverse(
+    const formatTooltip = (chartValues: ParamsTooltip[]) => {
+        const label = tooltip?.label
+        const result = tooltip?.result
+        const { name, value } = chartValues[1]
+
+        const dataValue =
+            xType === 'time'
+                ? timeConvert(Number(value)).toString() + 'h'
+                : takeLabelComplement(
+                      Number(value),
+                      xComplement ?? ''
+                  ).toString()
+
+        return `${label}: ${name} <br>` + `${result}: ${dataValue} <br>`
+    }
+
+    const formatLabel = (chartValues: ParamsTooltip) => {
+        const { value } = chartValues
+
+        return xType === 'time'
+            ? timeConvert(Number(value)).toString() + 'h'
+            : takeLabelComplement(Number(value), xComplement ?? '').toString()
+    }
+
+    const formatterLabel = (item: string | number) => {
+        return xType === 'time'
+            ? timeConvert(Number(item)).toString() + 'h'
+            : ((xComplement && (item + xComplement).toString()) ?? '')
+    }
+
+    const handleShowTitle = (show: boolean) => {
+        setShowTitle(show)
+    }
+
+    const yData = reverse(data.map(item => item.label))
+
+    const domain = { min: 0, max: Math.max(...data.map(item => item.result)) }
+
+    const backgroundBar = data.map(() =>
+        xComplement === '%' ? 100 : getDomain(domain)
+    )
+
+    const xData = reverse(
         data.map((item: EntryData) => {
             const results = data.map(item => item.result)
             const maxValue = Math.max(...results)
@@ -117,17 +173,15 @@ const HorizontalBarChart = (props: IProps) => {
             let label: LabelProps = {}
 
             if (item.result <= (!showTickInfos ? 50 : 15)) {
-                label = {
-                    position: 'right',
-                    distance: 1
-                }
+                label = { position: 'right', distance: 1 }
             }
 
             if (maxValue !== item.result && xType === 'time') {
                 const mainPercentage = (item.result * 100) / maxValue
+
                 const label: LabelProps =
                     mainPercentage < 15
-                        ? { position: 'right' as const, distance: 1 }
+                        ? { position: 'right', distance: 1 }
                         : {}
 
                 return {
@@ -147,47 +201,42 @@ const HorizontalBarChart = (props: IProps) => {
         })
     )
 
-    const yData = reverse(data.map((item: EntryData) => item.label))
-
-    const domain = { min: 0, max: Math.max(...data.map(item => item.result)) }
-
-    const backgroundBar = data.map(() =>
-        xComplement === '%' ? 100 : getDomain(domain)
-    )
-
-    const formatTooltip = (chartValues: ParamsTooltip[]) => {
-        const label = tooltipProps?.label
-        const result = tooltipProps?.result
-        const { name, value } = chartValues[1]
-
-        const dataValue =
-            xType === 'time'
-                ? timeConvert(value as number).toString() + 'h'
-                : takeLabelComplement(
-                      Number(value),
-                      xComplement ?? ''
-                  ).toString()
-
-        return `${label}: ${name} <br>` + `${result}: ${dataValue} <br>`
-    }
-
-    const formatLabel = (chartValues: ParamsTooltip) => {
-        const { value } = chartValues
-
-        return xType === 'time'
-            ? timeConvert(Number(value as number)).toString() + 'h'
-            : takeLabelComplement(Number(value), xComplement ?? '').toString()
-    }
-
-    const formatterLabel = (item: string | number) => {
-        return xType === 'time'
-            ? timeConvert(Number(item)).toString() + 'h'
-            : ((xComplement && (item + xComplement).toString()) ?? '')
-    }
-
-    const handleShowTitle = (show: boolean) => {
-        setTitle(show)
-    }
+    const series = [
+        {
+            type: 'bar',
+            silent: true,
+            xAxisIndex: 0,
+            barGap: '-100%',
+            barWidth: '80%',
+            animation: false,
+            data: backgroundBar,
+            barMaxWidth: !showTickInfos && 20,
+            itemStyle: {
+                color: gray[200],
+                opacity: showTickInfos && 0.5,
+                borderRadius: showTickInfos ? 0 : 10,
+                borderColor: showTickInfos ? undefined : props.color
+            }
+        },
+        {
+            type: 'bar',
+            data: xData,
+            xAxisIndex: 0,
+            barWidth: '80%',
+            barMaxWidth: !showTickInfos && 20,
+            label: {
+                show: true,
+                formatter: formatLabel,
+                position: 'insideRight',
+                fontSize: showTickInfos ? 14 : 11,
+                ...COMMON_STYLE
+            },
+            itemStyle: {
+                color: color,
+                borderRadius: showTickInfos ? 0 : 10
+            }
+        }
+    ]
 
     const myTool = toolboxTooltip?.saveAsImageWithTitle && {
         myTool: getSaveAsImageWithTitle(
@@ -196,170 +245,97 @@ const HorizontalBarChart = (props: IProps) => {
         )
     }
 
-    const saveAsImage = toolboxTooltip?.saveAsImage && {
-        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
-    }
-
-    const toolbox: object | undefined = toolboxTooltip && {
-        ...TOOLBOX_DEFAULT_PROPS,
+    const toolbox = toolboxTooltip && {
+        showTitle: false,
         right: marginRightToolbox || '8.7%',
         feature: {
             ...myTool,
-            ...saveAsImage,
+            saveAsImage:
+                toolboxTooltip.saveAsImage &&
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
             dataView:
                 toolboxTooltip.dataView &&
                 getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
-    const options: EChartsOption = {
-        grid: {
-            containLabel: true,
-            ...gridProps
+    const options: EChartsOption = () => ({
+        series: series,
+        grid: { containLabel: true, ...grid },
+        title: {
+            text: title,
+            show: showTitle,
+            left: marginLeftTitle || '5.9%',
+            textStyle: { ...TITLE_STYLE, fontSize: titleFontSize || 16 }
         },
-        // @ts-expect-error fix
-        series: [
-            {
-                barGap: '-100%',
-                xAxisIndex: 0,
-                type: 'bar',
-                animation: false,
-                barWidth: '80%',
-                barMaxWidth: !showTickInfos && 20,
-                silent: true,
-                data: backgroundBar,
-                itemStyle: {
-                    color: gray[200],
-                    borderRadius: showTickInfos ? 0 : 10,
-                    opacity: showTickInfos && 0.5,
-                    borderColor: showTickInfos ? undefined : props.color
-                }
-            },
-            {
-                xAxisIndex: 0,
-                data: xData,
-                type: 'bar' as const,
-                barWidth: '80%',
-                barMaxWidth: !showTickInfos && 20,
-                itemStyle: {
-                    color: color,
-                    borderRadius: showTickInfos ? 0 : 10
-                },
-                label: {
-                    show: true,
-                    formatter: formatLabel,
-                    position: 'insideRight',
-                    fontSize: showTickInfos ? 14 : 11,
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    color: neutral[200]
-                }
-            }
-        ],
         xAxis: {
-            max: xComplement === '%' ? 100 : getDomain(domain),
-            type: 'value' as const,
-            axisTick: {
-                show: showTickInfos || false
-            },
-            axisLine: {
-                show: showTickInfos || false
-            },
+            type: 'value',
             axisLabel: {
+                ...COMMON_STYLE,
                 rotate: rotateLabel,
                 formatter: formatterLabel,
-                show: showTickInfos || false,
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: 400 as const,
-                color: neutral[200]
-            },
-            splitLine: {
-                show: showTickInfos || false,
-                lineStyle: {
-                    type: 'dashed' as const,
-                    opacity: 0.2,
-                    color: gray[800]
-                }
-            }
-        },
-        yAxis: {
-            data: yData,
-            type: 'category' as const,
-            inverse: true,
-            axisLine: {
                 show: showTickInfos || false
             },
+            axisTick: { show: showTickInfos || false },
+            axisLine: { show: showTickInfos || false },
+            splitLine: {
+                show: showTickInfos || false,
+                lineStyle: { ...AXIS_SPLIT_LINE }
+            },
+            max: xComplement === '%' ? 100 : getDomain(domain)
+        },
+        yAxis: {
+            type: 'category',
+            data: yData,
+            inverse: true,
             axisLabel: {
+                margin: 12,
+                ...COMMON_STYLE,
+                fontWeight: boldTickLabel ? 400 : '',
+                rich: Object.assign({}, ...richData),
                 formatter: (text: string) =>
                     data.find(item => item.image)
                         ? formatLabelWithImage(text)
-                        : truncateLabel(text, labelWordSize),
-                margin: 12,
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: boldTickLabel ? (400 as const) : undefined,
-                color: neutral[200],
-                rich: Object.assign({}, ...richData)
+                        : truncateLabel(text, labelWordSize)
             },
             axisTick: {
-                show: showTickInfos || false,
-                alignWithLabel: true
+                alignWithLabel: true,
+                show: showTickInfos || false
             },
+            axisLine: { show: showTickInfos || false },
             splitLine: {
                 show: showTickInfos || false,
-                lineStyle: {
-                    type: 'dashed' as const,
-                    opacity: 0.2,
-                    color: gray[800]
-                }
+                lineStyle: { ...AXIS_SPLIT_LINE }
             }
         },
-        title: {
-            left: marginLeftTitle || '5.9%',
-            show: title,
-            text: titleProps,
-            textAlign: 'left',
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: titleFontSize || 16,
-                fontWeight: 400 as const,
-                color: neutral[200]
-            }
-        },
-        tooltip: tooltipProps && {
-            trigger: 'axis' as const,
-            axisPointer: {
-                type: 'shadow' as const,
-                shadowStyle: {
-                    opacity: 0.5
-                }
-            },
+        tooltip: tooltip && {
+            trigger: 'axis',
             formatter: formatTooltip,
-            backgroundColor: `${neutral[200]}99`,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 11.5,
-                color: neutral[50]
+            axisPointer: {
+                type: 'shadow',
+                shadowStyle: { opacity: 0.5 }
             },
-            extraCssText: 'border: none; padding: 6px;'
+            ...TOOLTIP_DEFAULT_PROPS
         },
         toolbox: {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
-                formatter: param => `<div>${param.title}</div>`
+                formatter: (param: { title: string }) =>
+                    `<div>${param.title}</div>`
             }
         }
-    }
+    })
 
     return (
-        <ReactEcharts
-            style={CHART_WIDTH}
-            opts={getWidthOpts(width || 'auto')}
-            option={options}
-            // @ts-expect-error fix
-            onEvents={clickEvent}
-        />
+        <ChartContainer>
+            <ReactEChartsCore
+                echarts={echarts}
+                option={options()}
+                style={{ width: width ?? '99.9%' }}
+                opts={{ renderer: 'canvas', width: 'auto' }}
+                onEvents={clickEvent}
+            />
+        </ChartContainer>
     )
 }
-
-export default HorizontalBarChart

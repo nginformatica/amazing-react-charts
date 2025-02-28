@@ -71,6 +71,10 @@ export const ChartStorieWrapper = styled.div`
     margin: 0 auto;
 `
 
+export const ChartContainer = styled.div`
+    width: 100%;
+`
+
 export const ChartWrapper = styled.div`
     width: 100%;
     position: relative;
