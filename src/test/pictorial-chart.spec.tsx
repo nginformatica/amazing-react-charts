@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import PictorialChart from '../core/pictorial-chart/PictorialChart'
+import { PictorialChart } from '../core/pictorial-chart/PictorialChart'
 import '@testing-library/jest-dom'
 
 describe('PictorialChart', () => {

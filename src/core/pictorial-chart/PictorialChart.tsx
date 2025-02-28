@@ -1,45 +1,57 @@
 import React from 'react'
-import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts-for-react'
+import { PictorialBarChart as PictorialBarChartEcharts } from 'echarts/charts'
+import { GridComponent, TooltipComponent } from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
 import type { IDefaultChartProps, PictorialEntryData } from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
+import { TOOLTIP_DEFAULT_PROPS } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 
-const { gray, green, neutral } = theme.colors
+const { gray, green } = theme.colors
+
+echarts.use([
+    GridComponent,
+    CanvasRenderer,
+    TooltipComponent,
+    PictorialBarChartEcharts
+])
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: PictorialEntryData[]
     height?: number | string
 }
 
-const PictorialChart = (props: IProps) => {
+export const PictorialChart = (props: IProps) => {
+    const { data, color, grid } = props
+
     const formatTooltip = () =>
         `${props.tooltip?.label}: ${props.tooltip?.labelComplement} <br>` +
         (props.tooltip?.result
             ? `${props.tooltip.result}: ${props.tooltip.resultComplement}`
             : '')
 
-    const options: EChartsOption = {
+    const options: EChartsOption = () => ({
         series: [
             {
+                type: 'pictorialBar',
                 name: 'full',
                 silent: true,
-                type: 'pictorialBar',
                 symbolClip: true,
-                symbolBoundingData: 100,
                 animationDuration: 0,
+                symbolBoundingData: 100,
                 itemStyle: { color: gray[300] },
-                data: [{ value: 100, symbol: props.data[0].symbol }]
+                data: [{ value: 100, symbol: data[0].symbol }]
             },
             {
-                name: 'empty',
                 type: 'pictorialBar',
-                itemStyle: {
-                    color: props.color || green[500]
-                },
-                animationDuration: 100,
+                name: 'empty',
+                data: data,
                 symbolClip: true,
+                animationDuration: 100,
                 symbolBoundingData: 100,
-                data: props.data
+                itemStyle: { color: color || green[500] }
             }
         ],
         xAxis: {
@@ -56,27 +68,21 @@ const PictorialChart = (props: IProps) => {
             axisLabel: { show: false },
             splitLine: { show: false }
         },
-        grid: {
-            ...props.grid,
-            top: 'center',
-            show: false
-        },
+        grid: { ...grid, top: 'center', show: false },
         tooltip: {
+            trigger: 'item',
             formatter: formatTooltip,
-            trigger: 'item' as const,
-            backgroundColor: `${neutral[200]}99`,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 11.5,
-                color: neutral[50]
-            },
-            extraCssText: 'border: none; padding: 6px;'
+            ...TOOLTIP_DEFAULT_PROPS
         }
-    }
+    })
 
-    const CHART_STYLE = { width: '99.9%', height: props.height || 500 }
-
-    return <ReactEcharts lazyUpdate option={options} style={CHART_STYLE} />
+    return (
+        <ReactEChartsCore
+            lazyUpdate
+            echarts={echarts}
+            option={options()}
+            opts={{ renderer: 'canvas', width: 'auto' }}
+            style={{ width: '99.9%', height: props.height || 500 }}
+        />
+    )
 }
-
-export default PictorialChart
