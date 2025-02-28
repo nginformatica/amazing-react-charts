@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from 'react'
-import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts-for-react'
+import { PieChart as PieChartEcharts } from 'echarts/charts'
+import {
+    GridComponent,
+    TitleComponent,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent
+} from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
 import type {
-    IDefaultChartProps,
     PieChartData,
+    PieDataLabel,
     PieChartFormatter,
-    PieDataLabel
+    IDefaultChartProps
 } from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
     getDataView,
+    getPercentage,
     getSaveAsImage,
     takeLabelComplement,
-    getSaveAsImageWithTitle,
-    getPercentage,
-    getWidthOpts
+    getSaveAsImageWithTitle
 } from '../../lib/auxiliarFunctions'
 import {
-    CHART_WIDTH,
+    COMMON_STYLE,
+    TITLE_STYLE,
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
@@ -24,82 +34,70 @@ import { theme } from 'flipper-ui/theme'
 
 const { neutral } = theme.colors
 
+echarts.use([
+    GridComponent,
+    TitleComponent,
+    CanvasRenderer,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    PieChartEcharts
+])
+
 export interface IPieProps extends Omit<IDefaultChartProps, 'data'> {
-    data: PieChartData[]
-    colors?: string[]
-    legendPosition?: 'inside' | 'outside'
-    legendType?: 'scroll' | 'plain'
     radius?: string
-    resultFormatType?: 'percent' | ((value: string | number) => string)
-    labelFontColor?: string
+    colors?: string[]
+    data: PieChartData[]
     noAnimation?: boolean
-    pieceBorderColor?: string
-    center?: [number, string] | [string, string] | string | number
     tooltipTitle?: string
+    labelFontColor?: string
+    pieceBorderColor?: string
+    legendType?: 'scroll' | 'plain'
+    legendPosition?: 'inside' | 'outside'
+    center?: [number, string] | [string, string] | string | number
+    resultFormatType?: 'percent' | ((value: string | number) => string)
 }
 
-const PieChart = (props: IPieProps) => {
+export const PieChart = (props: IPieProps) => {
     const {
         data,
-        grid: gridProps,
+        grid,
         width,
-        colors,
-        legendPosition,
-        radius,
+        title,
         center,
-        title: titleProps,
-        toolboxTooltip,
+        radius,
+        colors,
         legendType,
-        resultFormatType,
-        labelFontColor,
         noAnimation,
-        pieceBorderColor,
-        tooltipTitle
+        tooltipTitle,
+        labelFontColor,
+        legendPosition,
+        toolboxTooltip,
+        resultFormatType,
+        pieceBorderColor
     } = props
 
-    const [title, setTitle] = useState(false)
-
-    const names = data.map(item => item.name)
-
+    const dataLegend = data.map(item => item.name)
     const totalValues = data.reduce((acc, item) => acc + item.value, 0)
+
+    const [showTitle, setShowTitle] = useState(false)
 
     useEffect(() => {
         if (toolboxTooltip?.saveAsImageWithTitle) {
-            setTitle(false)
+            setShowTitle(false)
         } else {
-            setTitle(true)
+            setShowTitle(true)
         }
     }, [toolboxTooltip])
 
     const handleShowTitle = (show: boolean) => {
-        setTitle(show)
-    }
-
-    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
-        myTool: getSaveAsImageWithTitle(
-            toolboxTooltip.saveAsImageWithTitle.title ?? '',
-            handleShowTitle
-        )
-    }
-
-    const saveAsImage = toolboxTooltip?.saveAsImage && {
-        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
-    }
-
-    const toolbox: object | undefined = toolboxTooltip && {
-        ...TOOLBOX_DEFAULT_PROPS,
-        feature: {
-            ...myTool,
-            ...saveAsImage,
-            dataView:
-                toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title ?? '')
-        }
+        setShowTitle(show)
     }
 
     const formatTooltip = ({ name, value, marker }: PieChartFormatter) => {
-        const title = tooltipTitle ? tooltipTitle + '<br>' : ''
         const percent = getPercentage(value, totalValues)
+        const title = tooltipTitle ? tooltipTitle + '<br>' : ''
+
         const valuePrint =
             typeof resultFormatType === 'function'
                 ? resultFormatType(value)
@@ -125,88 +123,87 @@ const PieChart = (props: IPieProps) => {
                   'pie'
               ).toString()
 
-    const options: EChartsOption = {
-        grid: gridProps,
+    const series = [
+        {
+            type: 'pie',
+            data: data,
+            animation: !noAnimation,
+            stillShowZeroSum: false,
+            radius: radius || '50%',
+            center: center || ['50%', '50%'],
+            label: {
+                show: true,
+                ...COMMON_STYLE,
+                formatter: formatPieLabel,
+                position: legendPosition || 'outside',
+                color: labelFontColor || neutral[50]
+            },
+            itemStyle: {
+                borderWidth: 1,
+                borderColor: pieceBorderColor || neutral[50]
+            },
+            emphasis: { scale: true, scaleSize: 3 }
+        }
+    ]
+
+    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
+        myTool: getSaveAsImageWithTitle(
+            toolboxTooltip.saveAsImageWithTitle.title ?? '',
+            handleShowTitle
+        )
+    }
+
+    const toolbox = toolboxTooltip && {
+        ...TOOLBOX_DEFAULT_PROPS,
+        feature: {
+            ...myTool,
+            saveAsImage:
+                toolboxTooltip.saveAsImage &&
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
+            dataView:
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title ?? '')
+        }
+    }
+
+    const options: EChartsOption = () => ({
+        grid: grid,
         color: colors,
+        series: series,
+        title: {
+            text: title,
+            show: showTitle,
+            textStyle: { ...TITLE_STYLE }
+        },
+        legend: {
+            top: 270,
+            data: dataLegend,
+            type: legendType || 'plain',
+            itemGap: legendType === 'scroll' ? 60 : 10,
+            textStyle: { ...COMMON_STYLE }
+        },
         tooltip: {
             trigger: 'item',
             formatter: formatTooltip,
-            backgroundColor: `${neutral[200]}99`,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 11.5,
-                color: neutral[50]
-            },
-            extraCssText: 'border: none; padding: 6px;'
-        },
-        series: [
-            {
-                stillShowZeroSum: false,
-                animation: !noAnimation,
-                label: {
-                    formatter: formatPieLabel,
-                    show: true,
-                    position: legendPosition || 'outside',
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400,
-                    color: labelFontColor || neutral[50]
-                },
-                type: 'pie',
-                data: data,
-                radius: radius || '50%',
-                center: center || ['50%', '50%'],
-                itemStyle: {
-                    borderColor: pieceBorderColor || neutral[50],
-                    borderWidth: 1
-                },
-                emphasis: {
-                    scale: true,
-                    scaleSize: 3
-                }
-            }
-        ],
-        legend: {
-            data: names,
-            icon: 'shape',
-            top: 270,
-            type: legendType || 'plain',
-            itemGap: legendType === 'scroll' ? 60 : 10,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: 400,
-                color: neutral[200]
-            }
-        },
-        title: {
-            show: title,
-            text: titleProps,
-            textAlign: 'left',
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 16,
-                fontWeight: 400,
-                color: neutral[200]
-            }
+            ...TOOLTIP_DEFAULT_PROPS
         },
         toolbox: {
             ...toolbox,
             tooltip: {
+                trigger: 'none',
                 ...TOOLTIP_DEFAULT_PROPS,
-                // @ts-expect-error fix
-                // if the trigger it's not set to none, the tooltip shows an arrow
-                trigger: 'none' as const,
-                formatter: param => `<div>${param.title}</div>`
+                formatter: (param: { title: string }) =>
+                    `<div>${param.title}</div>`
             }
         }
-    }
+    })
 
     return (
-        <ReactEcharts
-            style={CHART_WIDTH}
-            opts={getWidthOpts(width || 'auto')}
-            option={options}
+        <ReactEChartsCore
+            echarts={echarts}
+            option={options()}
+            style={{ width: width ?? '99.9%' }}
+            opts={{ renderer: 'canvas', width: 'auto' }}
         />
     )
 }
-
-export default PieChart

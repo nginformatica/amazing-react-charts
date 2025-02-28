@@ -2,7 +2,7 @@ import React from 'react'
 import type { IPieProps } from './PieChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisablePie } from '../disableControls'
-import PieChart from './PieChart'
+import { PieChart } from './PieChart'
 import { ChartStorieWrapper } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 

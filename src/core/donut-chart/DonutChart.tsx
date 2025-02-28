@@ -73,7 +73,7 @@ export const DonutChart = (props: IDonutProps) => {
         centerPieValueFontSize
     } = props
 
-    const xData = data.map(item => item.name)
+    const dataLegend = data.map(item => item.name)
     const totalValues = data.reduce((acc, item) => acc + item.value, 0)
 
     const [showTitle, setShowTitle] = useState(false)
@@ -173,14 +173,10 @@ export const DonutChart = (props: IDonutProps) => {
                 fontSize: centerPieValueFontSize || 24
             }
         },
-        itemStyle: {
-            borderColor: pieceBorderColor || neutral[50]
-        },
+        itemStyle: { borderColor: pieceBorderColor || neutral[50] },
         legend: {
             top: 280,
-            data: xData,
-            icon: 'shape',
-            orient: 'horizontal',
+            data: dataLegend,
             type: legendType || 'plain',
             selectedMode: selectedMode || false,
             itemGap: legendType === 'scroll' ? 40 : 10,

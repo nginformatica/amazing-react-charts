@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import PieChart from '../core/pie-chart/PieChart'
+import { PieChart } from '../core/pie-chart/PieChart'
 import '@testing-library/jest-dom'
 
 describe('PieChart', () => {
