@@ -2,7 +2,7 @@ import React from 'react'
 import type { IProps } from './PyramidChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesCommon } from '../disableControls'
-import PyramidChart from './PyramidChart'
+import { PyramidChart } from './PyramidChart'
 import { ChartStorieWrapper } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 

@@ -1,24 +1,33 @@
 import React, { useEffect, useState } from 'react'
-import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts-for-react'
+import { FunnelChart as FunnelChartEcharts } from 'echarts/charts'
+import {
+    TitleComponent,
+    TooltipComponent,
+    ToolboxComponent
+} from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
 import type {
     IDefaultChartProps,
     ToolboxEntryProps,
     WidthProps
 } from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
     getDataView,
     getSaveAsImage,
     getSaveAsImageWithTitle
 } from '../../lib/auxiliarFunctions'
-import {
-    CHART_WIDTH,
-    TOOLBOX_DEFAULT_PROPS,
-    TOOLTIP_DEFAULT_PROPS
-} from '../../commonStyles'
-import { theme } from 'flipper-ui/theme'
+import { TITLE_STYLE, TOOLTIP_DEFAULT_PROPS } from '../../commonStyles'
 
-const { neutral } = theme.colors
+echarts.use([
+    TitleComponent,
+    CanvasRenderer,
+    TooltipComponent,
+    ToolboxComponent,
+    FunnelChartEcharts
+])
 
 export interface SeriesData {
     value: number
@@ -28,25 +37,25 @@ export interface SeriesData {
 }
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
+    style?: object
     data: SeriesData[]
     width?: WidthProps
-    style?: object
     toolboxTooltip?: ToolboxEntryProps
     custom?: {
         gap?: string | number
         top?: string | number
-        bottom?: string | number
         left?: string | number
         width?: string | number
+        bottom?: string | number
         minSize?: string | number
         maxSize?: string | number
     }
     labelPosition?:
         | 'inside'
         | 'top'
-        | 'bottom'
         | 'left'
         | 'right'
+        | 'bottom'
         | 'insideLeft'
         | 'insideRight'
         | 'insideTop'
@@ -57,30 +66,30 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
         | 'insideBottomRight'
 }
 
-const PyramidChart = (props: IProps) => {
+export const PyramidChart = (props: IProps) => {
     const {
         data,
         style,
+        title,
         custom,
-        labelPosition,
         titleFontSize,
+        labelPosition,
         toolboxTooltip,
-        title: titleProps,
         marginRightToolbox
     } = props
 
-    const [title, setTitle] = useState(false)
+    const [showTitle, setShowTitle] = useState(false)
 
     useEffect(() => {
         if (toolboxTooltip?.saveAsImageWithTitle) {
-            setTitle(false)
+            setShowTitle(false)
         } else {
-            setTitle(true)
+            setShowTitle(true)
         }
     }, [toolboxTooltip])
 
     const handleShowTitle = (show: boolean) => {
-        setTitle(show)
+        setShowTitle(show)
     }
 
     const myTool = toolboxTooltip?.saveAsImageWithTitle && {
@@ -90,88 +99,78 @@ const PyramidChart = (props: IProps) => {
         )
     }
 
-    const saveAsImage = toolboxTooltip?.saveAsImage && {
-        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
-    }
-
-    const toolbox: object | undefined = toolboxTooltip && {
-        ...TOOLBOX_DEFAULT_PROPS,
+    const toolbox = toolboxTooltip && {
+        showTitle: false,
         right: marginRightToolbox || '2%',
         feature: {
             ...myTool,
-            ...saveAsImage,
+            saveAsImage:
+                toolboxTooltip.saveAsImage &&
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
             dataView:
                 toolboxTooltip.dataView &&
                 getDataView(toolboxTooltip.dataView.title ?? '')
         }
     }
 
-    const series: object[] = [
+    const series = [
         {
             type: 'funnel',
             sort: 'ascending',
             data: data.map(item => ({
-                value: item.value,
                 name: item.name,
+                value: item.value,
                 itemStyle: item.itemStyle
             })),
             label: {
                 show: true,
-                position: labelPosition || 'inside',
-                fontWeight: 600
+                fontWeight: 600,
+                position: labelPosition || 'inside'
             },
             gap: custom?.gap || 2,
             top: custom?.top || 20,
-            bottom: custom?.bottom || 20,
             left: custom?.left || '10%',
+            bottom: custom?.bottom || 20,
             width: custom?.width || '80%',
             minSize: custom?.minSize || '0',
             maxSize: custom?.maxSize || '80%'
         }
     ]
 
-    const options: EChartsOption = {
+    const options: EChartsOption = () => ({
         series: series,
-        // @ts-expect-error formatter params
+        title: {
+            left: '2%',
+            text: title,
+            show: showTitle,
+            textStyle: { ...TITLE_STYLE, fontSize: titleFontSize || 16 }
+        },
         tooltip: {
             trigger: 'item',
-            axisPointer: {
-                type: 'shadow'
-            },
-            backgroundColor: `${neutral[200]}99`,
-            textStyle: {
-                fontSize: 11.5,
-                color: neutral[50],
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
-            },
-            extraCssText: 'border: none; padding: 6px;',
+            ...TOOLTIP_DEFAULT_PROPS,
+            axisPointer: { type: 'shadow' },
             formatter: (params: { name: string }) => {
                 const dataItem = data.find(item => item.name === params.name)
 
                 return dataItem ? dataItem.tooltipText : params.name
             }
         },
-        title: {
-            left: '2%',
-            show: title,
-            text: titleProps,
-            textStyle: {
-                fontWeight: 400,
-                color: neutral[200],
-                fontSize: titleFontSize || 16,
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
-            }
-        },
         toolbox: {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
-                formatter: param => `<div>${param.title}</div>`
+                formatter: (param: { title: string }) =>
+                    `<div>${param.title}</div>`
             }
         }
-    }
+    })
 
-    return <ReactEcharts option={options} style={style ? style : CHART_WIDTH} />
+    return (
+        <ReactEChartsCore
+            echarts={echarts}
+            option={options()}
+            style={style ? style : { width: '99.9%' }}
+            opts={{ renderer: 'canvas', width: 'auto' }}
+        />
+    )
 }
-
-export default PyramidChart
