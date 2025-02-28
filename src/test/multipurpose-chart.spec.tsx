@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, waitFor } from '@testing-library/react'
-import MultipurposeChart from '../core/multipurpose-chart/MultipurposeChart'
+import { MultipurposeChart } from '../core/multipurpose-chart/MultipurposeChart'
 import '@testing-library/jest-dom'
 
 describe('MultipurposeChart', () => {
