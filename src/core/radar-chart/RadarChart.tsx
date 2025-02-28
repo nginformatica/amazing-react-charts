@@ -1,12 +1,28 @@
 import React from 'react'
-import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts-for-react'
+import { RadarChart as RadarChartEcharts } from 'echarts/charts'
+import {
+    TitleComponent,
+    LegendComponent,
+    TooltipComponent
+} from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
 import type { LinesFormatterTooltip, WidthProps } from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
-import { getWidthOpts, takeLabelComplement } from '../../lib/auxiliarFunctions'
-import { CHART_WIDTH } from '../../commonStyles'
+import { takeLabelComplement } from '../../lib/auxiliarFunctions'
+import { COMMON_STYLE, TOOLTIP_DEFAULT_PROPS } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 
-const { lightGreen, neutral } = theme.colors
+const { lightGreen } = theme.colors
+
+echarts.use([
+    TitleComponent,
+    CanvasRenderer,
+    LegendComponent,
+    TooltipComponent,
+    RadarChartEcharts
+])
 
 export interface RadarChartProps {
     series: Array<{
@@ -19,19 +35,19 @@ export interface RadarChartProps {
         max: number
     }>
     width?: WidthProps
-    yComplement?: (input: string) => string
     circular?: boolean
     highlight?: boolean
+    yComplement?: (input: string) => string
 }
 
-const RadarChart = (props: RadarChartProps) => {
-    const { width, series, indicators, yComplement, circular, highlight } =
+export const RadarChart = (props: RadarChartProps) => {
+    const { series, width, indicators, circular, highlight, yComplement } =
         props
 
-    const formatTooltip = (lines: LinesFormatterTooltip) => {
-        const takeComplement = (value: number) =>
-            takeLabelComplement(Number(value), yComplement ?? '')
+    const takeComplement = (value: number) =>
+        takeLabelComplement(Number(value), yComplement ?? '')
 
+    const formatTooltip = (lines: LinesFormatterTooltip) => {
         const linesTooltips = lines.data.value.map(
             (value: string | number, i: number) =>
                 indicators[i].name +
@@ -43,64 +59,50 @@ const RadarChart = (props: RadarChartProps) => {
         return `${lines.name} <br> ${linesTooltips.join(' ')}`
     }
 
-    const emphasis = highlight
-        ? {
-              emphasis: {
-                  areaStyle: {
-                      color: `${lightGreen[300]}90`
-                  }
-              }
-          }
-        : {}
+    const seriesData = [
+        {
+            type: 'radar',
+            data: series.map(it => ({
+                name: it.name,
+                value: it.data
+            })),
+            ...(highlight && {
+                emphasis: {
+                    areaStyle: { color: `${lightGreen[300]}90` }
+                }
+            })
+        }
+    ]
 
-    const options: EChartsOption = {
+    const options: EChartsOption = () => ({
+        series: seriesData,
         color: series.map(it => it.color),
-        tooltip: {
-            formatter: formatTooltip,
-            trigger: 'item' as const,
-            backgroundColor: `${neutral[200]}99`,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 13,
-                color: neutral[50]
-            },
-            extraCssText: 'border: none; padding: 6px;'
-        },
-        legend: {
-            data: series.map(it => it.name),
-            padding: 0,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: 400 as const,
-                color: neutral[200]
-            }
-        },
         radar: {
             shape: circular ? 'circle' : 'polygon',
             indicator: indicators.map(it => ({
-                name: it.name,
-                max: it.max
+                max: it.max,
+                name: it.name
             }))
         },
-        series: [
-            {
-                type: 'radar',
-                data: series.map(it => ({
-                    name: it.name,
-                    value: it.data
-                })),
-                ...emphasis
-            }
-        ]
-    }
+        legend: {
+            margin: 0,
+            padding: 0,
+            data: series.map(it => it.name),
+            textStyle: { ...COMMON_STYLE }
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: formatTooltip,
+            ...TOOLTIP_DEFAULT_PROPS
+        }
+    })
 
     return (
-        <ReactEcharts
-            style={CHART_WIDTH}
-            opts={getWidthOpts(width || 'auto')}
-            option={options}
+        <ReactEChartsCore
+            echarts={echarts}
+            option={options()}
+            style={{ width: width ?? '99.9%' }}
+            opts={{ renderer: 'canvas', width: 'auto' }}
         />
     )
 }
-
-export default RadarChart

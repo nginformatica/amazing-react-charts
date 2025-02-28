@@ -2,7 +2,7 @@ import React from 'react'
 import type { RadarChartProps } from './RadarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableRadar } from '../disableControls'
-import RadarChart from './RadarChart'
+import { RadarChart } from './RadarChart'
 import { theme } from 'flipper-ui/theme'
 
 const { darkBlue, indigo } = theme.colors
