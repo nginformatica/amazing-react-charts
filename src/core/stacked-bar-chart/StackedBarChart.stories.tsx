@@ -2,7 +2,7 @@ import React from 'react'
 import type { IProps } from './StackedBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableStacked } from '../disableControls'
-import StackedBarChart from './StackedBarChart'
+import { StackedBarChart } from './StackedBarChart'
 import { theme } from 'flipper-ui/theme'
 
 const { amber, darkBlue, gray, green, lightGreen, lightTeal, orange, red } =

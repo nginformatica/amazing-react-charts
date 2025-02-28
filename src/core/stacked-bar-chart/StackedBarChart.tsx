@@ -1,87 +1,115 @@
 import React from 'react'
-import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts-for-react'
+import { BarChart as BarChartEcharts } from 'echarts/charts'
+import {
+    GridComponent,
+    TitleComponent,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    DataZoomInsideComponent,
+    DataZoomSliderComponent
+} from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
 import { concat, move } from 'ramda'
 import type {
-    IDefaultChartProps,
-    DataTooltip,
-    TDataZoomChartProps,
-    DataZoomEventProps,
-    EntryData,
-    EntryDataNTuples,
-    ZoomProps,
-    ParamsTooltip,
-    Complement,
     Tooltip,
+    EntryData,
+    ZoomProps,
+    Complement,
+    DataTooltip,
+    ParamsTooltip,
+    EntryDataNTuples,
+    DataZoomEventProps,
+    IDefaultChartProps,
+    TDataZoomChartProps,
     SeriesLabelFormatter
 } from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
+    toDate,
     formatTime,
+    timeConvert,
     getDataView,
+    mountMessage,
+    truncateLabel,
     getSaveAsImage,
     monuntTimeMessage,
-    mountMessage,
-    timeConvert,
-    toDate,
-    truncateLabel,
-    takeLabelComplement,
     generateAuxMessage,
-    getWidthOpts
+    takeLabelComplement
 } from '../../lib/auxiliarFunctions'
 import {
-    dontShowLabel,
     fullText,
     normalLabel,
-    rotatedLabel
+    rotatedLabel,
+    dontShowLabel
 } from '../vertical-bar-chart/VerticalBarChart'
-import { CHART_WIDTH, TOOLTIP_DEFAULT_PROPS } from '../../commonStyles'
+import {
+    TITLE_STYLE,
+    COMMON_STYLE,
+    LEGEND_STYLE,
+    TOOLTIP_DEFAULT_PROPS
+} from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 
 const { gray, neutral } = theme.colors
 
+echarts.use([
+    GridComponent,
+    TitleComponent,
+    CanvasRenderer,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    BarChartEcharts,
+    DataZoomInsideComponent,
+    DataZoomSliderComponent
+])
+
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
-    data: EntryDataNTuples
-    tooltipExtra?: string
-    sumDataValues?: boolean
     colors?: string[]
-    legendType?: 'scroll' | 'none'
+    tooltipExtra?: string
+    data: EntryDataNTuples
+    sumDataValues?: boolean
     legendScrollGap?: number
-    secondYAxisType?: 'percent' | string
     additionalResults?: Tooltip[]
+    legendType?: 'scroll' | 'none'
+    secondYAxisType?: 'percent' | string
 }
 
 const verifyStyleProps = (data: EntryData) =>
     data.style ? { value: data.result, itemStyle: data.style } : data.result
 
-const StackedBarChart = (props: IProps) => {
+export const StackedBarChart = (props: IProps) => {
     const {
-        tooltip: tooltipProps,
         data,
-        colors,
+        grid,
         xType,
-        yComplement,
-        secondYAxisType,
-        sumDataValues,
-        dateFormat,
-        grid: gridProps,
         width,
+        title,
+        colors,
+        tooltip,
         barWidth,
-        title: titleProps,
-        toolboxTooltip,
-        tooltipExtra,
+        dateFormat,
         legendType,
-        legendScrollGap,
+        yComplement,
+        tooltipExtra,
         showBarLabel,
+        sumDataValues,
+        toolboxTooltip,
+        legendScrollGap,
+        secondYAxisType,
         additionalResults
     } = props
 
-    const label = tooltipProps?.label
-    const bottomResult = tooltipProps?.bottomResult
-    const topResult = tooltipProps?.topResult
-    const extraResult = tooltipProps?.extraResult ?? '0'
-    const lineResult = tooltipProps?.lineResult
-    const auxResult = tooltipProps?.auxResult
-    const complement = tooltipProps?.complement
+    const label = tooltip?.label
+    const topResult = tooltip?.topResult
+    const auxResult = tooltip?.auxResult
+    const lineResult = tooltip?.lineResult
+    const complement = tooltip?.complement
+    const bottomResult = tooltip?.bottomResult
+    const extraResult = tooltip?.extraResult ?? '0'
 
     const [
         bottomData,
@@ -89,24 +117,27 @@ const StackedBarChart = (props: IProps) => {
         lineData = [],
         extraData,
         auxData = [],
-        ...aditionalData
+        ...additionalData
     ] = data
 
-    const yBottomData = bottomData.map(verifyStyleProps)
-
     const yTopData = topData.map(verifyStyleProps)
-
+    const yLineData = lineData.map(item => item.result)
+    const yBottomData = bottomData.map(verifyStyleProps)
     const yExtraData = data.length >= 4 && extraData.map(verifyStyleProps)
-
-    const yBottomValue = yBottomData.map(item =>
-        typeof item === 'object' ? item.value : item
-    )
 
     const yTopValue = yTopData.map(item =>
         typeof item === 'object' ? item.value : item
     )
+    const yBottomValue = yBottomData.map(item =>
+        typeof item === 'object' ? item.value : item
+    )
 
     const topLabels = yBottomValue.map((item, index) => item + yTopValue[index])
+
+    const xData =
+        xType === 'time'
+            ? bottomData.map(item => toDate(item.label, dateFormat))
+            : bottomData.map(item => item.label)
 
     const formatLabel = (chartValues: SeriesLabelFormatter) => {
         const { dataIndex } = chartValues
@@ -114,15 +145,6 @@ const StackedBarChart = (props: IProps) => {
 
         return takeLabelComplement(Number(value), yComplement ?? '').toString()
     }
-
-    const yLineData = lineData.map((item: EntryData) => item.result)
-
-    const xData =
-        xType === 'time'
-            ? bottomData.map((item: EntryData) =>
-                  toDate(item.label, dateFormat)
-              )
-            : bottomData.map((item: EntryData) => item.label)
 
     const dynamicDataZoom = (
         item: DataZoomEventProps,
@@ -143,8 +165,6 @@ const StackedBarChart = (props: IProps) => {
         }
     }
 
-    const zoomEvent = { dataZoom: dynamicDataZoom }
-
     const formatTooltip = (values: ParamsTooltip[]): string => {
         const takeValue = (
             data: { value: number | string } | string | number
@@ -152,6 +172,7 @@ const StackedBarChart = (props: IProps) => {
 
         const valueBot = values[0] ? takeValue(values[0].data) : 0
         const valueTop = values[1] ? takeValue(values[1].data) : 0
+
         const stackedValues = valueBot + valueTop
 
         // This function is only used to show auxiliary values on tooltip.
@@ -159,7 +180,7 @@ const StackedBarChart = (props: IProps) => {
         const getAuxToolTip = (dataIndex: number) =>
             auxData.length && auxData[dataIndex].result >= 0
                 ? generateAuxMessage(
-                      auxResult as string,
+                      auxResult ?? '',
                       auxData[dataIndex].result,
                       yComplement ?? ''
                   )
@@ -221,45 +242,42 @@ const StackedBarChart = (props: IProps) => {
     const secondYAxis =
         secondYAxisType === 'percent'
             ? {
-                  type: 'value' as const,
+                  type: 'value',
+                  position: 'right',
                   min: 0,
                   max: 100,
-                  position: 'right' as const,
                   axisLine: {
                       show: true,
                       lineStyle: { color: colors?.[2] }
                   },
                   axisLabel: {
+                      ...COMMON_STYLE,
+                      color: colors?.[2],
                       formatter: (item: string) =>
-                          takeLabelComplement(Number(item), '%'),
-                      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                      fontWeight: 400 as const,
-                      color: colors?.[2]
+                          takeLabelComplement(Number(item), '%')
                   },
-                  axisTick: {
-                      show: true
-                  },
-                  splitLine: {
-                      show: false
-                  }
+                  axisTick: { show: true },
+                  splitLine: { show: false }
               }
             : {}
+
+    const zoomEvent = { dataZoom: dynamicDataZoom }
 
     const scrollable: ZoomProps[] =
         data[0].length > 12
             ? [
                   {
                       type: 'inside',
+                      zoomLock: true,
+                      zoomOnMouseWheel: 'shift',
                       endValue:
                           xData.length > 12
                               ? xData[11]
-                              : xData[xData.length - 1],
-                      zoomLock: true,
-                      zoomOnMouseWheel: 'shift'
+                              : xData[xData.length - 1]
                   },
                   {
-                      show: true,
                       type: 'slider',
+                      show: true,
                       endValue:
                           xData.length > 12
                               ? xData[11]
@@ -268,7 +286,101 @@ const StackedBarChart = (props: IProps) => {
               ]
             : []
 
-    const toolbox: object | undefined = toolboxTooltip && {
+    const extraStackedSerie = yExtraData && {
+        type: 'bar',
+        yAxisIndex: 0,
+        stack: 'stacked',
+        data: yExtraData,
+        name: extraResult,
+        barWidth: barWidth
+    }
+
+    const additionalResultsMap = additionalResults
+        ? additionalResults.map(it => it.name)
+        : []
+
+    const aditionalSeries = additionalData.map((it, i) =>
+        additionalResults?.[i].type === 'bar'
+            ? {
+                  type: 'bar',
+                  stack: 'stacked',
+                  yAxisIndex: 0,
+                  barWidth: barWidth,
+                  data: it.map(verifyStyleProps),
+                  name: additionalResults[i].name
+              }
+            : {
+                  type: 'line',
+                  data: it.map(verifyStyleProps),
+                  name: additionalResults?.[i].name,
+                  yAxisIndex: secondYAxisType === 'percent' ? 1 : 0
+              }
+    )
+
+    const series = [
+        {
+            type: 'bar',
+            stack: 'stacked',
+            yAxisIndex: 0,
+            data: yTopData,
+            name: topResult,
+            barWidth: barWidth
+        },
+        {
+            type: 'bar',
+            stack: 'stacked',
+            yAxisIndex: 0,
+            data: yBottomData,
+            barWidth: barWidth,
+            name: bottomResult,
+            label: {
+                distance: 2,
+                fontSize: 12,
+                position: 'top',
+                show: showBarLabel,
+                formatter: formatLabel,
+                color: neutral[200]
+            }
+        },
+        extraStackedSerie,
+        {
+            type: 'line',
+            data: yLineData,
+            name: lineResult,
+            yAxisIndex: secondYAxisType === 'percent' ? 1 : 0
+        },
+        ...aditionalSeries
+    ]
+
+    const legendProps =
+        legendType === 'scroll'
+            ? {
+                  top: 270,
+                  type: legendType,
+                  itemGap: legendScrollGap || 60,
+                  data: [
+                      topResult,
+                      bottomResult,
+                      extraResult,
+                      lineResult,
+                      ...additionalResultsMap
+                  ],
+                  textStyle: { ...LEGEND_STYLE }
+              }
+            : {
+                  top: 30,
+                  itemGap: 30,
+                  data: [
+                      topResult,
+                      bottomResult,
+                      extraResult,
+                      lineResult,
+                      ...additionalResultsMap
+                  ],
+                  textStyle: { ...LEGEND_STYLE }
+              }
+
+    const toolbox = toolboxTooltip && {
         showTitle: false,
         right: '8.7%',
         feature: {
@@ -281,222 +393,83 @@ const StackedBarChart = (props: IProps) => {
         }
     }
 
-    const extraStackedSerie: object | boolean = yExtraData && {
-        barWidth: barWidth,
-        yAxisIndex: 0,
-        name: extraResult,
-        type: 'bar',
-        data: yExtraData,
-        stack: 'stacked'
-    }
-
-    const additionalResultsMap = additionalResults
-        ? additionalResults.map(it => it.name)
-        : []
-
-    const aditionalSeries = aditionalData.map((it, i) =>
-        additionalResults?.[i].type === 'bar'
-            ? {
-                  barWidth,
-                  yAxisIndex: 0,
-                  name: additionalResults[i].name,
-                  type: 'bar',
-                  data: it.map(verifyStyleProps),
-                  stack: 'stacked'
-              }
-            : {
-                  yAxisIndex: secondYAxisType === 'percent' ? 1 : 0,
-                  name: additionalResults?.[i].name,
-                  type: 'line',
-                  data: it.map(verifyStyleProps)
-              }
-    )
-
-    const legendProps =
-        legendType === 'scroll'
-            ? {
-                  data: [
-                      topResult,
-                      bottomResult,
-                      extraResult,
-                      lineResult,
-                      ...additionalResultsMap
-                  ],
-                  top: 270,
-                  type: legendType,
-                  itemGap: legendScrollGap || 60,
-                  textStyle: {
-                      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                      fontWeight: 400 as const,
-                      color: neutral[200],
-                      fontSize: 11.5
-                  }
-              }
-            : {
-                  data: [
-                      topResult,
-                      bottomResult,
-                      extraResult,
-                      lineResult,
-                      ...additionalResultsMap
-                  ],
-                  top: 30,
-                  itemGap: 30,
-                  textStyle: {
-                      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                      fontWeight: 400 as const,
-                      color: neutral[200],
-                      fontSize: 11.5
-                  }
-              }
-
-    const options: EChartsOption = {
-        grid: gridProps,
+    const options: EChartsOption = () => ({
+        grid: grid,
         color: colors,
-        // @ts-expect-error fix
-        series: [
-            {
-                barWidth: barWidth,
-                yAxisIndex: 0,
-                name: topResult,
-                type: 'bar',
-                data: yTopData,
-                stack: 'stacked'
-            },
-            {
-                barWidth: barWidth,
-                yAxisIndex: 0,
-                name: bottomResult,
-                type: 'bar',
-                data: yBottomData,
-                stack: 'stacked',
-                label: {
-                    formatter: formatLabel,
-                    show: showBarLabel,
-                    position: 'top',
-                    fontSize: 12,
-                    color: neutral[200],
-                    distance: 2
-                }
-            },
-            extraStackedSerie,
-            {
-                yAxisIndex: secondYAxisType === 'percent' ? 1 : 0,
-                name: lineResult,
-                type: 'line',
-                data: yLineData
-            },
-            ...aditionalSeries
-        ],
+        series: series,
+        dataZoom: scrollable,
+        title: {
+            text: title,
+            top: legendType === 'scroll' && '5.7%',
+            left: legendType === 'scroll' ? '0.1%' : '4%',
+            textStyle: { ...TITLE_STYLE }
+        },
         xAxis: {
-            data: xData as string[],
-            type: 'category' as const,
+            data: xData,
+            type: 'category',
             boundaryGap: true,
+            splitLine: {
+                show: true,
+                alignWithLabel: true,
+                lineStyle: { opacity: 0.3, color: gray[800] }
+            },
             axisLabel: {
+                ...COMMON_STYLE,
+                fontSize: xData.length > 14 ? 10 : 11.5,
+                interval: xData.length > 20 ? 'auto' : 0,
                 formatter: (item: string) =>
                     xType === 'time'
                         ? formatTime(item, 'MMM/yy')
-                        : truncateLabel(item),
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: xData.length > 14 ? 10 : 11.5,
-                fontWeight: 400 as const,
-                color: neutral[200],
-                interval: xData.length > 20 ? 'auto' : 0
+                        : truncateLabel(item)
             },
-            splitLine: {
-                // @ts-expect-error issue
-                // https://github.com/apache/incubator-echarts/issues/13618
-                alignWithLabel: true,
-                show: true,
-                lineStyle: {
-                    opacity: 0.3,
-                    color: gray[800]
-                }
-            },
-            axisTick: {
-                show: true,
-                alignWithLabel: true
-            }
+            axisTick: { show: true, alignWithLabel: true }
         },
         yAxis: [
             {
+                type: 'value',
+                position: 'left',
                 min: 0,
-                type: 'value' as const,
-                position: 'left' as const,
+                splitLine: {
+                    show: true,
+                    lineStyle: { opacity: 0.3, color: gray[800] }
+                },
                 axisLabel: {
+                    ...LEGEND_STYLE,
                     formatter: (item: string) =>
                         takeLabelComplement(
                             Number(item),
                             yComplement ?? ''
-                        ).toString(),
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    color: neutral[200],
-                    fontSize: 11.5
+                        ).toString()
                 },
-                axisTick: { show: true, alignWithLabel: true },
-                axisLine: {
-                    show: true
-                },
-                splitLine: {
-                    // @ts-expect-error issue
-                    // https://github.com/apache/incubator-echarts/issues/13618
-                    alignWithLabel: true,
-                    show: true,
-                    lineStyle: {
-                        opacity: 0.3,
-                        color: gray[800]
-                    }
-                }
+                axisLine: { show: true },
+                axisTick: { show: true, alignWithLabel: true }
             },
             secondYAxis
         ],
-        // @ts-expect-error fix
-        legend: legendType === 'none' ? undefined : legendProps,
-        dataZoom: scrollable,
-        // @ts-expect-error fix
-        title: {
-            left: legendType === 'scroll' ? '0.1%' : '4%',
-            top: legendType === 'scroll' && '5.7%',
-            show: titleProps !== undefined,
-            text: titleProps,
-            textAlign: 'left',
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 16,
-                fontWeight: 400,
-                color: neutral[200]
-            }
-        },
-        tooltip: tooltipProps && {
+        legend: legendType === 'none' ? { show: false } : legendProps,
+        tooltip: tooltip && {
+            trigger: 'axis',
             formatter: formatTooltip,
-            trigger: 'axis' as const,
-            backgroundColor: `${neutral[200]}99`,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 11.5,
-                color: neutral[50]
-            },
-            extraCssText: 'border: none; padding: 6px;'
+            ...TOOLTIP_DEFAULT_PROPS
         },
         toolbox: {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
-                formatter: param => `<div>${param.title}</div>`
+                formatter: (param: { title: string }) =>
+                    `<div>${param.title}</div>`
             }
         }
-    }
+    })
 
     return (
-        <ReactEcharts
+        <ReactEChartsCore
             notMerge
-            style={CHART_WIDTH}
-            opts={getWidthOpts(width || 'auto')}
-            option={options}
+            echarts={echarts}
+            option={options()}
+            style={{ width: '99.9%' }}
+            opts={{ renderer: 'canvas', width: width ?? 'auto' }}
             onEvents={zoomEvent}
         />
     )
 }
-
-export default StackedBarChart
