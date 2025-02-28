@@ -1,132 +1,100 @@
 import React from 'react'
-import ReactEcharts from 'echarts-for-react'
-import type {
-    IDefaultChartProps,
-    TDataZoomChartProps,
-    DataZoomEventProps,
-    EntryData,
-    LabelProps,
-    ZoomProps,
-    VerticalBarLabelFormatter,
-    EChartSeries,
-    TooltipFormatter
-} from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
+import type { EChartsOption } from 'echarts-for-react'
+import { BarChart as BarChartEcharts } from 'echarts/charts'
 import {
-    formatTime,
-    formatTooltip,
-    getDataView,
+    GridComponent,
+    TitleComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    DataZoomInsideComponent,
+    DataZoomSliderComponent
+} from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
+import type {
+    ZoomProps,
+    LabelProps,
+    EChartSeries,
+    TooltipFormatter,
+    IDefaultChartProps,
+    DataZoomEventProps,
+    TDataZoomChartProps,
+    VerticalBarLabelFormatter
+} from '../types'
+import {
+    fullText,
     getDomain,
-    getSaveAsImage,
+    formatTime,
+    getDataView,
     timeConvert,
+    normalLabel,
+    rotatedLabel,
+    formatTooltip,
+    dontShowLabel,
+    getSaveAsImage,
+    getInitialValues,
+    getDateFormatType,
     fixedTruncateLabel,
     takeLabelComplement,
-    getWidthOpts,
-    getDateFormatType,
-    getInitialValues
+    rotatedLabelSpecial
 } from '../../lib/auxiliarFunctions'
-import { CHART_WIDTH, TOOLTIP_DEFAULT_PROPS } from '../../commonStyles'
-import { theme } from 'flipper-ui/theme'
+import {
+    TITLE_STYLE,
+    LEGEND_STYLE,
+    AXIS_SPLIT_LINE,
+    TOOLTIP_DEFAULT_PROPS
+} from '../../commonStyles'
 
-const { gray, neutral } = theme.colors
+echarts.use([
+    GridComponent,
+    TitleComponent,
+    CanvasRenderer,
+    TooltipComponent,
+    ToolboxComponent,
+    BarChartEcharts,
+    DataZoomInsideComponent,
+    DataZoomSliderComponent
+])
 
 export interface IProps extends IDefaultChartProps {
+    interval?: number
     rotateTickLabel?: number
     customMaxDomain?: number
-    interval?: number
 }
 
-export const fullText = {
-    xAxis: {
-        axisLabel: {
-            rotate: 0,
-            show: true,
-            interval: 0,
-            formatter: (item: string) => fixedTruncateLabel(item, 16)
-        }
-    },
-    grid: { bottom: 75 }
-}
-
-export const rotatedLabel = {
-    xAxis: {
-        axisLabel: {
-            rotate: 315,
-            show: true,
-            interval: 0,
-            formatter: (item: string) => fixedTruncateLabel(item, 9)
-        }
-    },
-    grid: { bottom: 98 }
-}
-
-const rotatedLabelSpecial = (rotate: number) => ({
-    xAxis: {
-        axisLabel: {
-            rotate: rotate,
-            show: true,
-            interval: 0,
-            formatter: (item: string) => fixedTruncateLabel(item, 9),
-            textStyle: {
-                fontSize: 11
-            }
-        }
-    },
-    grid: { bottom: 98 }
-})
-
-export const normalLabel = {
-    xAxis: {
-        axisLabel: {
-            rotate: 0,
-            show: true,
-            interval: 0,
-            formatter: (item: string) => fixedTruncateLabel(item, 9)
-        }
-    },
-    grid: { bottom: 75 }
-}
-
-export const dontShowLabel = {
-    xAxis: {
-        axisLabel: {
-            interval: 1,
-            rotate: 0
-        }
-    },
-    grid: { bottom: 75 }
-}
-
-const VerticalBarChart = (props: IProps) => {
+export const VerticalBarChart = (props: IProps) => {
     const {
+        grid,
         data,
         color,
         xType,
-        yComplement,
         yType,
-        tooltip: tooltipProps,
-        tooltipComplement,
-        barWidth,
-        dateFormat,
-        grid: gridProps,
         width,
-        showBarLabel,
-        title: titleProps,
-        toolboxTooltip,
-        isMoreThanHundredPercent,
-        marginLeftTitle,
-        titleFontSize,
-        rotateLabel,
-        onClickBar,
-        marginRightToolbox,
-        customMaxDomain,
+        title,
+        tooltip,
+        barWidth,
         interval,
-        scrollStart
+        dateFormat,
+        rotateLabel,
+        yComplement,
+        scrollStart,
+        showBarLabel,
+        titleFontSize,
+        toolboxTooltip,
+        customMaxDomain,
+        marginLeftTitle,
+        tooltipComplement,
+        marginRightToolbox,
+        isMoreThanHundredPercent,
+        onClickBar
     } = props
 
     const isCustomDomain = customMaxDomain ? customMaxDomain : getDomain
 
-    const yData: EChartSeries = data.map((item: EntryData) => {
+    const xData = data.map(item => item.label)
+
+    const yData: EChartSeries = data.map(item => {
         const results = data.map(item => item.result)
         const maxValue = Math.max(...results)
 
@@ -159,8 +127,6 @@ const VerticalBarChart = (props: IProps) => {
             itemId: item.itemId && item.itemId
         }
     })
-
-    const xData = data.map((item: EntryData) => item.label)
 
     const specialLabel = (item: string) =>
         fixedTruncateLabel(item, xData.length <= 5 ? 16 : 9)
@@ -207,24 +173,13 @@ const VerticalBarChart = (props: IProps) => {
             : String(takeLabelComplement(Number(value), yComplement ?? ''))
     }
 
-    const toolbox: object | undefined = toolboxTooltip && {
-        showTitle: false,
-        right: marginRightToolbox || '8.7%',
-        feature: {
-            saveAsImage:
-                toolboxTooltip.saveAsImage &&
-                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
-            dataView:
-                toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title ?? '')
-        }
-    }
-
     const formatSingleTooltip = (chartValues: TooltipFormatter[]) => {
-        const label = tooltipProps?.label
-        const result = tooltipProps?.result
         const { axisValueLabel, value } = chartValues[0]
+
+        const label = tooltip?.label
+        const result = tooltip?.result
         const complement = tooltipComplement ? tooltipComplement : ''
+
         const values =
             yType === 'time'
                 ? timeConvert(Number(value)) + 'h'
@@ -241,6 +196,27 @@ const VerticalBarChart = (props: IProps) => {
             complement
         )
     }
+
+    const events = {
+        dataZoom: dynamicDataZoom,
+        click: onClickBar ?? (() => {})
+    }
+
+    const series = [
+        {
+            type: 'bar',
+            data: yData,
+            barWidth: barWidth || 'auto',
+            label: {
+                ...LEGEND_STYLE,
+                distance: 6,
+                fontSize: 12,
+                show: showBarLabel,
+                position: 'insideTop',
+                formatter: formatLabel
+            }
+        }
+    ]
 
     const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
 
@@ -276,44 +252,44 @@ const VerticalBarChart = (props: IProps) => {
               ]
             : []
 
-    const options: EChartsOption = {
-        grid: { ...gridProps },
-        color: color && [color],
+    const toolbox = toolboxTooltip && {
+        showTitle: false,
+        right: marginRightToolbox || '8.7%',
+        feature: {
+            saveAsImage:
+                toolboxTooltip.saveAsImage &&
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
+            dataView:
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title ?? '')
+        }
+    }
+
+    const options: EChartsOption = () => ({
         interval,
-        series: [
-            {
-                barWidth: barWidth || 'auto',
-                type: 'bar',
-                data: yData,
-                label: {
-                    formatter: formatLabel,
-                    show: showBarLabel,
-                    position: 'insideTop',
-                    distance: 6,
-                    fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                    fontWeight: 400 as const,
-                    fontSize: 12,
-                    color: neutral[200]
-                }
-            }
-        ],
+        series: series,
+        grid: { ...grid },
+        dataZoom: scrollable,
+        color: color && [color],
+        title: {
+            text: title,
+            left: marginLeftTitle || '5.9%',
+            textStyle: { ...TITLE_STYLE, fontSize: titleFontSize || 16 }
+        },
         xAxis: {
             type: 'category',
-            boundaryGap: true,
+            data: xData,
             showGrid: true,
-            data: xData as string[],
+            boundaryGap: true,
             splitLine: {
                 show: true,
-                // @ts-expect-error issue
-                // https://github.com/apache/incubator-echarts/issues/13618
                 alignWithLabel: true,
-                lineStyle: {
-                    type: 'dashed' as const,
-                    opacity: 0.2,
-                    color: gray[800]
-                }
+                lineStyle: { ...AXIS_SPLIT_LINE }
             },
             axisLabel: {
+                ...LEGEND_STYLE,
+                interval: 0,
+                fontSize: 11,
                 rotate: rotateLabel && rotateLabel,
                 formatter: (item: string) =>
                     xType === 'time'
@@ -324,98 +300,55 @@ const VerticalBarChart = (props: IProps) => {
                                   'dd/MM/yyyy'
                               )
                           )
-                        : specialLabel(item),
-                interval: 0,
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: 400 as const,
-                fontSize: 11,
-                color: neutral[200]
+                        : specialLabel(item)
             },
-            axisTick: {
-                show: true,
-                alignWithLabel: true
-            }
+            axisTick: { show: true, alignWithLabel: true }
         },
         yAxis: {
-            max:
-                !isMoreThanHundredPercent && yComplement === '%'
-                    ? 100
-                    : isCustomDomain,
             type: 'value',
             splitLine: {
                 show: true,
-                lineStyle: {
-                    type: 'dashed' as const,
-                    opacity: 0.2,
-                    color: gray[800]
-                }
+                lineStyle: { ...AXIS_SPLIT_LINE }
             },
             axisLabel: {
+                ...LEGEND_STYLE,
+                fontSize: 11,
                 formatter: (item: number) =>
                     yType === 'time'
                         ? timeConvert(item) + 'h'
-                        : String(takeLabelComplement(item, yComplement ?? '')),
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontWeight: 400 as const,
-                fontSize: 11,
-                color: neutral[200]
+                        : String(takeLabelComplement(item, yComplement ?? ''))
             },
-            axisLine: {
-                show: true
-            },
-            axisTick: {
-                show: true,
-                // @ts-expect-error issue
-                // https://github.com/apache/incubator-echarts/issues/13618
-                alignWithLabel: true
-            }
+            axisLine: { show: true },
+            axisTick: { show: true, alignWithLabel: true },
+            max:
+                !isMoreThanHundredPercent && yComplement === '%'
+                    ? 100
+                    : isCustomDomain
         },
-        title: {
-            left: marginLeftTitle || '5.9%',
-            show: titleProps !== undefined,
-            text: titleProps,
-            textAlign: 'left',
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: titleFontSize || 16,
-                fontWeight: 400 as const,
-                color: neutral[200]
-            }
-        },
-        tooltip: tooltipProps && {
-            formatter: formatSingleTooltip,
+        tooltip: tooltip && {
             trigger: 'axis',
-            backgroundColor: `${neutral[200]}99`,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 11.5,
-                color: neutral[50]
-            },
-            extraCssText: 'border: none; padding: 6px;'
+            formatter: formatSingleTooltip,
+            ...TOOLTIP_DEFAULT_PROPS
         },
-        dataZoom: scrollable,
         toolbox: {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
-                formatter: param => `<div>${param.title}</div>`
+                formatter: (param: { title: string }) =>
+                    `<div>${param.title}</div>`
             }
         }
-    }
-
-    const events = { dataZoom: dynamicDataZoom, click: onClickBar }
+    })
 
     return (
-        <ReactEcharts
-            lazyUpdate
+        <ReactEChartsCore
             notMerge
-            style={CHART_WIDTH}
-            opts={getWidthOpts(width || 'auto')}
-            option={options}
-            // @ts-expect-error fix
+            lazyUpdate
+            echarts={echarts}
+            option={options()}
+            style={{ width: '99.9%' }}
+            opts={{ renderer: 'canvas', width: width ?? 'auto' }}
             onEvents={events}
         />
     )
 }
-
-export default VerticalBarChart

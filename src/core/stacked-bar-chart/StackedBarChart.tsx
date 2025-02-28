@@ -16,7 +16,6 @@ import ReactEChartsCore from 'echarts-for-react/lib/core'
 import { concat, move } from 'ramda'
 import type {
     Tooltip,
-    EntryData,
     ZoomProps,
     Complement,
     DataTooltip,
@@ -29,22 +28,21 @@ import type {
 } from '../types'
 import {
     toDate,
+    fullText,
     formatTime,
     timeConvert,
+    normalLabel,
     getDataView,
     mountMessage,
+    rotatedLabel,
     truncateLabel,
+    dontShowLabel,
     getSaveAsImage,
     monuntTimeMessage,
     generateAuxMessage,
-    takeLabelComplement
+    takeLabelComplement,
+    verifyStyleProps
 } from '../../lib/auxiliarFunctions'
-import {
-    fullText,
-    normalLabel,
-    rotatedLabel,
-    dontShowLabel
-} from '../vertical-bar-chart/VerticalBarChart'
 import {
     TITLE_STYLE,
     COMMON_STYLE,
@@ -77,9 +75,6 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     legendType?: 'scroll' | 'none'
     secondYAxisType?: 'percent' | string
 }
-
-const verifyStyleProps = (data: EntryData) =>
-    data.style ? { value: data.result, itemStyle: data.style } : data.result
 
 export const StackedBarChart = (props: IProps) => {
     const {
