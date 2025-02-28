@@ -340,8 +340,8 @@ const ForecastAreaChart = (props: IProps) => {
             lazyUpdate
             echarts={echarts}
             option={options()}
-            style={{ width: width ?? '99.9%', height: 300 }}
-            opts={{ renderer: 'canvas', width: 'auto' }}
+            style={{ width: '99.9%', height: 300 }}
+            opts={{ renderer: 'canvas', width: width ?? 'auto' }}
             onEvents={zoomEvent}
         />
     )

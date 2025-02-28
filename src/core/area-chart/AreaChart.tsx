@@ -319,8 +319,8 @@ const AreaChart = (props: IDefaultChartProps) => {
             lazyUpdate
             echarts={echarts}
             option={options()}
-            opts={{ renderer: 'canvas', width: 'auto' }}
-            style={{ width: width ?? '99.9%', height: 300 }}
+            style={{ width: '99.9%', height: 300 }}
+            opts={{ renderer: 'canvas', width: width ?? 'auto' }}
             onEvents={zoomEvent}
         />
     )

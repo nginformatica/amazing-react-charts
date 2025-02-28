@@ -332,8 +332,8 @@ const HorizontalBarChart = (props: IProps) => {
             <ReactEChartsCore
                 echarts={echarts}
                 option={options()}
-                style={{ width: width ?? '99.9%' }}
-                opts={{ renderer: 'canvas', width: 'auto' }}
+                style={{ width: '99.9%' }}
+                opts={{ renderer: 'canvas', width: width ?? 'auto' }}
                 onEvents={clickEvent}
             />
         </ChartContainer>

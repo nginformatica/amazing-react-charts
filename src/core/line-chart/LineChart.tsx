@@ -270,8 +270,8 @@ const LineChart = (props: IProps) => {
             lazyUpdate
             echarts={echarts}
             option={getOption()}
-            style={{ width: width ?? '99.9%' }}
-            opts={{ renderer: 'canvas', width: 'auto' }}
+            style={{ width: '99.9%' }}
+            opts={{ renderer: 'canvas', width: width ?? 'auto' }}
         />
     )
 }

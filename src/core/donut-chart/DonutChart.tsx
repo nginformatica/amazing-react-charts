@@ -204,8 +204,8 @@ const DonutChart = (props: IDonutProps) => {
             <ReactEChartsCore
                 echarts={echarts}
                 option={options()}
-                opts={{ renderer: 'canvas', width: 'auto' }}
-                style={{ width: width ?? 'auto', minWidth: '100%' }}
+                style={{ width: 'auto', minWidth: '100%' }}
+                opts={{ renderer: 'canvas', width: width ?? 'auto' }}
             />
         </ChartWrapper>
     )

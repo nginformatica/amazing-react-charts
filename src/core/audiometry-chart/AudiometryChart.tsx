@@ -305,8 +305,8 @@ const AudiometryChart = (props: IProps) => {
             lazyUpdate
             echarts={echarts}
             option={options()}
-            opts={{ renderer: 'canvas', width: 'auto' }}
-            style={{ width: width ?? '99.9%', height: height || 400 }}
+            style={{ width: '99.9%', height: height || 400 }}
+            opts={{ renderer: 'canvas', width: width ?? 'auto' }}
         />
     )
 }

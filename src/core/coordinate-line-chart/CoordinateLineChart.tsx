@@ -228,8 +228,8 @@ const CoordinateLineChart = (props: IProps) => {
             lazyUpdate
             echarts={echarts}
             option={options()}
-            opts={{ renderer: 'canvas', width: 'auto' }}
-            style={{ width: width ?? 'auto', height: height }}
+            style={{ width: 'auto', height: height }}
+            opts={{ renderer: 'canvas', width: width ?? 'auto' }}
         />
     )
 }
