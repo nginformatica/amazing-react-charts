@@ -7,6 +7,7 @@ import {
     LegendComponent,
     TooltipComponent,
     ToolboxComponent,
+    MarkLineComponent,
     DataZoomInsideComponent,
     DataZoomSliderComponent
 } from 'echarts/components'
@@ -52,6 +53,7 @@ echarts.use([
     TooltipComponent,
     ToolboxComponent,
     LineChartEcharts,
+    MarkLineComponent,
     DataZoomInsideComponent,
     DataZoomSliderComponent
 ])
@@ -117,12 +119,12 @@ const ForecastAreaChart = (props: IProps) => {
                 series: [
                     {
                         label: {
-                            formatter: formatLabel,
                             show: true,
+                            distance: 1.1,
                             position: 'top',
-                            fontSize: yType === 'time' ? 10 : 11.5,
                             color: neutral[200],
-                            distance: 1.1
+                            formatter: formatLabel,
+                            fontSize: yType === 'time' ? 10 : 11.5
                         }
                     }
                 ]
@@ -196,8 +198,8 @@ const ForecastAreaChart = (props: IProps) => {
                 },
                 emphasis: {
                     lineStyle: {
-                        type: 'solid',
                         width: 50,
+                        type: 'solid',
                         color: lineMarkColor || green[800]
                     }
                 }
@@ -229,15 +231,15 @@ const ForecastAreaChart = (props: IProps) => {
             ? [
                   {
                       type: 'inside',
-                      startValue: lineMarkValue && lineMarkValue - 2,
-                      endValue: lineMarkValue,
                       zoomLock: true,
-                      zoomOnMouseWheel: 'shift'
+                      endValue: lineMarkValue,
+                      zoomOnMouseWheel: 'shift',
+                      startValue: lineMarkValue && lineMarkValue - 2
                   },
                   {
+                      type: 'slider',
                       bottom: 10,
                       show: true,
-                      type: 'slider',
                       startValue: lineMarkValue && lineMarkValue - 1,
                       endValue: lineMarkValue && lineMarkValue + 3,
                       labelFormatter: (_: string, item: string) =>
