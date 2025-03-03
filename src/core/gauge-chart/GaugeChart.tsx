@@ -1,7 +1,17 @@
 import React from 'react'
-import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts-for-react'
+import { GaugeChart as GaugeChartEcharts } from 'echarts/charts'
+import {
+    GridComponent,
+    TitleComponent,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent
+} from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
 import type { IDefaultChartProps, GaugeData } from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
 import { getSaveAsImage } from '../../lib/auxiliarFunctions'
 import {
     GaugeCircle,
@@ -12,7 +22,17 @@ import {
 } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 
-const { amber, green, red, orange, gray, neutral } = theme.colors
+const { amber, green, red, orange, gray } = theme.colors
+
+echarts.use([
+    GridComponent,
+    TitleComponent,
+    CanvasRenderer,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    GaugeChartEcharts
+])
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     data: GaugeData[]
@@ -44,11 +64,6 @@ const GaugeChart = (props: IProps) => {
         detailFontSize
     } = props
 
-    const CHART_STYLE = {
-        width: '99.9%',
-        height: height || 400
-    }
-
     const getColor = (value: number) =>
         value <= (legendValue ?? 75) ? red[500] : green[300]
 
@@ -63,10 +78,65 @@ const GaugeChart = (props: IProps) => {
         return match ? match.label : ''
     }
 
-    const toolbox: object | undefined = toolboxTooltip && {
-        showTitle: false,
+    const series = [
+        {
+            type: 'gauge',
+            data: data,
+            min: 0,
+            max: 1,
+            endAngle: 0,
+            startAngle: 180,
+            splitNumber: 8,
+            radius: '90%',
+            center: ['50%', '70%'],
+            title: {
+                fontSize: titleFontSize ?? 30,
+                color: gray[800],
+                offsetCenter: [0, '20%']
+            },
+            detail: {
+                fontSize: detailFontSize ?? 24,
+                color: gray[900],
+                valueAnimation: true,
+                offsetCenter: [0, '40%'],
+                formatter: function (value: number) {
+                    return Math.round(value * 100) + ' %'
+                }
+            },
+            splitLine: { length: 0 },
+            axisTick: { length: 0 },
+            axisLabel: {
+                fontSize: 16,
+                distance: -40,
+                color: gray[800],
+                rotate: 'tangential',
+                formatter: formatAxisLabel
+            },
+            axisLine: {
+                lineStyle: {
+                    width: axisLineWidth ?? 75,
+                    color: colorLine ?? [
+                        [0.25, red[500]],
+                        [0.5, orange[600]],
+                        [0.75, amber[500]],
+                        [1, green[300]]
+                    ]
+                }
+            },
+            pointer: {
+                width: 20,
+                length: '95%',
+                offsetCenter: [0, '-5%'],
+                icon: 'path://M12.8,-0.7l12,-40.1H0.7L12.8,-0.7z',
+                itemStyle: { color: gray[900] }
+            }
+        }
+    ]
+
+    const toolbox = toolboxTooltip && {
         top: '10%',
         right: '15%',
+        showTitle: false,
         feature: {
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
@@ -74,89 +144,32 @@ const GaugeChart = (props: IProps) => {
         }
     }
 
-    const options: EChartsOption = {
-        series: [
-            {
-                type: 'gauge',
-                startAngle: 180,
-                endAngle: 0,
-                center: ['50%', '70%'],
-                radius: '90%',
-                min: 0,
-                max: 1,
-                splitNumber: 8,
-                data: data,
-                axisLine: {
-                    lineStyle: {
-                        width: axisLineWidth ?? 75,
-                        color: colorLine ?? [
-                            [0.25, red[500]],
-                            [0.5, orange[600]],
-                            [0.75, amber[500]],
-                            [1, green[300]]
-                        ]
-                    }
-                },
-                pointer: {
-                    width: 20,
-                    length: '95%',
-                    offsetCenter: [0, '-5%'],
-                    icon: 'path://M12.8,-0.7l12,-40.1H0.7L12.8,-0.7z',
-                    itemStyle: {
-                        color: gray[900]
-                    }
-                },
-                axisTick: { length: 0 },
-                splitLine: { length: 0 },
-                axisLabel: {
-                    color: gray[800],
-                    fontSize: 16,
-                    distance: -40,
-                    rotate: 'tangential',
-                    formatter: formatAxisLabel
-                },
-                title: {
-                    fontSize: titleFontSize ?? 30,
-                    color: gray[800],
-                    offsetCenter: [0, '20%']
-                },
-                detail: {
-                    fontSize: detailFontSize ?? 24,
-                    color: gray[900],
-                    valueAnimation: true,
-                    offsetCenter: [0, '40%'],
-                    formatter: function (value) {
-                        return Math.round(value * 100) + ' %'
-                    }
-                }
-            }
-        ],
+    const options: EChartsOption = () => ({
+        series: series,
         tooltip: {
             trigger: 'item',
             formatter: formatTooltip,
-            backgroundColor: `${neutral[200]}99`,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 11.5,
-                color: neutral[50]
-            },
-            extraCssText: 'border: none; padding: 6px;'
+            ...TOOLTIP_DEFAULT_PROPS
         },
         toolbox: {
             ...toolbox,
             tooltip: {
-                ...TOOLTIP_DEFAULT_PROPS,
-                // @ts-expect-error issue
-                // if the trigger it's not set to none, the tooltip shows an arrow
                 trigger: 'none',
-                formatter: param => `<div>${param.title}</div>`
+                ...TOOLTIP_DEFAULT_PROPS,
+                formatter: (param: { title: string }) =>
+                    `<div>${param.title}</div>`
             }
         }
-    }
+    })
 
     return (
         <div>
-            <ReactEcharts option={options} style={CHART_STYLE} />
+            <ReactEChartsCore
+                echarts={echarts}
+                option={options()}
+                opts={{ renderer: 'canvas', width: 'auto' }}
+                style={{ width: '99.9%', height: height || 400 }}
+            />
             <GaugeLegendContainer>
                 {legendData?.map((it, i) => {
                     return (

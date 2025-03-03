@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.2.5
+
+- feat: improve charts to be able to apply tree-shaking on echarts imports
+- charts improved: AreaChart, AudiometryChart, CoordinateLineChart, DivergingStackedBarChart, DonutChart, ForecastAreaChart, GaugeChart, HorizontalBarChart, MultipurposeChart, PictorialChart, PieChart, PyramidBarChart, PyramidChart, RadarChart, StackedBarChart and VerticalBarChart
+
 ## 1.2.4
 
 - feat: improve LineChart to be able to apply tree-shaking on echarts imports

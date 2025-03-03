@@ -2,10 +2,18 @@ import React from 'react'
 import type { IProps } from './HorizontalBarChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import { argTypesDisableHorizontal } from '../disableControls'
-import HorizontalBarChart, { clickBar } from './HorizontalBarChart'
+import HorizontalBarChart from './HorizontalBarChart'
 import { theme } from 'flipper-ui/theme'
 
 const { amber, green, indigo, lightGreen, orange, red } = theme.colors
+
+const clickBar = (item: { data: { value: string } }) => {
+    if ('data' in item && 'value' in item.data) {
+        const value = item.data.value
+
+        window.alert(value)
+    }
+}
 
 const meta: Meta<typeof HorizontalBarChart> = {
     title: 'Charts/Horizontal Bar Chart',

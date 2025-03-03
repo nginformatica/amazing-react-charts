@@ -1,28 +1,63 @@
 import React, { useEffect, useState } from 'react'
-import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts-for-react'
+import { BarChart as BarChartEcharts } from 'echarts/charts'
+import {
+    GridComponent,
+    TitleComponent,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent
+} from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
 import type {
     IDefaultChartProps,
     ToolboxEntryProps,
     WidthProps
 } from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
-    changeSpaceForUnderline,
-    convertImageToBase64FromUrl,
     getDataView,
     getSaveAsImage,
     getSaveAsImageWithTitle,
-    getWidthOpts
+    changeSpaceForUnderline,
+    convertImageToBase64FromUrl
 } from '../../lib/auxiliarFunctions'
 import {
-    CHART_WIDTH,
-    CsvDownloadButtonStyle,
-    TOOLBOX_DEFAULT_PROPS,
-    TOOLTIP_DEFAULT_PROPS
+    TITLE_STYLE,
+    AXIS_SPLIT_LINE,
+    TOOLTIP_DEFAULT_PROPS,
+    CsvDownloadButton
 } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 
-const { gray, neutral } = theme.colors
+const { gray } = theme.colors
+
+echarts.use([
+    GridComponent,
+    TitleComponent,
+    CanvasRenderer,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    BarChartEcharts
+])
+
+export interface IProps extends Omit<IDefaultChartProps, 'data'> {
+    color?: string
+    data: ChartData
+    width?: WidthProps
+    xComplement?: string
+    showTickInfos?: boolean
+    boldTickLabel?: boolean
+    showCSVDownload?: boolean
+    legendType?: 'scroll' | 'none'
+    toolboxTooltip?: ToolboxEntryProps
+    onClickBar?(
+        itemProps?: Record<string, unknown>,
+        itemFunctions?: Record<string, unknown>
+    ): void
+}
 
 export interface SeriesData {
     data: number[]
@@ -48,8 +83,8 @@ export interface SeriesData {
 }
 
 export interface ChartData {
-    seriesData: SeriesData[]
     categories: string[]
+    seriesData: SeriesData[]
 }
 
 interface RichDataItem {
@@ -61,60 +96,37 @@ interface RichDataItem {
     }
 }
 
-export interface IProps extends Omit<IDefaultChartProps, 'data'> {
-    showCSVDownload?: boolean
-    data: ChartData
-    width?: WidthProps
-    color?: string
-    toolboxTooltip?: ToolboxEntryProps
-    legendType?: 'scroll' | 'none'
-    showTickInfos?: boolean
-    xComplement?: string
-    boldTickLabel?: boolean
-    onClickBar?(
-        itemProps?: Record<string, unknown>,
-        itemFunctions?: Record<string, unknown>
-    ): void
-}
-
 interface TooltipParams {
-    axisValueLabel: string
+    value: number
     marker: string
     seriesName: string
-    value: number
-}
-
-export const clickBar = (item: { data: { value: string } }) => {
-    if ('data' in item && 'value' in item.data) {
-        const value = item.data.value
-
-        window.alert(value)
-    }
+    axisValueLabel: string
 }
 
 const DivergingStackedBarChart = (props: IProps) => {
     const {
+        grid,
         data,
         width,
+        title,
         legendType,
         showTickInfos,
         titleFontSize,
         toolboxTooltip,
-        grid: gridProps,
-        title: titleProps,
         marginRightToolbox,
         onClickBar
     } = props
 
-    const [title, setTitle] = useState(false)
-    const [richData, setRichDate] = useState<RichDataItem[]>([])
-    const clickEvent = { click: onClickBar }
+    const [showTitle, setShowTitle] = useState(false)
+    const [richData, setRichData] = useState<RichDataItem[]>([])
+
+    const clickEvent = { click: onClickBar ?? (() => {}) }
 
     useEffect(() => {
         if (toolboxTooltip?.saveAsImageWithTitle) {
-            setTitle(false)
+            setShowTitle(false)
         } else {
-            setTitle(true)
+            setShowTitle(true)
         }
     }, [toolboxTooltip])
 
@@ -137,36 +149,13 @@ const DivergingStackedBarChart = (props: IProps) => {
                         changeSpaceForUnderline(item.label ?? '') in itemRich
                 )
             ) {
-                setRichDate(state => [...state, rich])
+                setRichData(state => [...state, rich])
             }
         })
     }, [richData])
 
     const handleShowTitle = (show: boolean) => {
-        setTitle(show)
-    }
-
-    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
-        myTool: getSaveAsImageWithTitle(
-            toolboxTooltip.saveAsImageWithTitle.title ?? '',
-            handleShowTitle
-        )
-    }
-
-    const saveAsImage = toolboxTooltip?.saveAsImage && {
-        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
-    }
-
-    const toolbox: object | undefined = toolboxTooltip && {
-        ...TOOLBOX_DEFAULT_PROPS,
-        right: marginRightToolbox || '8.7%',
-        feature: {
-            ...myTool,
-            ...saveAsImage,
-            dataView:
-                toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title ?? '')
-        }
+        setShowTitle(show)
     }
 
     const formatTooltip = (params: TooltipParams[]) => {
@@ -228,14 +217,13 @@ const DivergingStackedBarChart = (props: IProps) => {
         document.body.removeChild(link)
     }
 
-    const series: object[] = data.seriesData.map(seriesItem => ({
-        grid: {
-            containLabel: true,
-            ...gridProps
-        },
-        name: seriesItem.name,
+    const series = data.seriesData.map(seriesItem => ({
         type: 'bar',
         stack: 'Total',
+        data: seriesItem.data,
+        name: seriesItem.name,
+        emphasis: { focus: 'series' },
+        grid: { containLabel: true, ...grid },
         label: {
             show: true,
             position: seriesItem.labelPosition || 'inside',
@@ -243,60 +231,50 @@ const DivergingStackedBarChart = (props: IProps) => {
                 return Math.abs(params.value)
             }
         },
-        emphasis: {
-            focus: 'series'
-        },
         itemStyle: seriesItem.itemStyle || {
             color: seriesItem.color || props.color || gray[200]
-        },
-        data: seriesItem.data
+        }
     }))
 
-    const options: EChartsOption = {
-        // @ts-expect-error The echarts type doesn't match with this
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            },
-            backgroundColor: `${neutral[200]}99`,
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 11.5,
-                color: neutral[50]
-            },
-            extraCssText: 'border: none; padding: 6px;',
-            formatter: formatTooltip
-        },
-        legend: {
-            data: data.seriesData.map(item => item.name)
-        },
-        title: {
-            left: legendType === 'scroll' ? '0.1%' : '4%',
-            top: legendType,
-            show: title,
-            text: titleProps,
-            textAlign: 'left',
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: titleFontSize || 16,
-                fontWeight: 400,
-                color: neutral[200]
-            }
-        },
+    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
+        myTool: getSaveAsImageWithTitle(
+            toolboxTooltip.saveAsImageWithTitle.title ?? '',
+            handleShowTitle
+        )
+    }
+
+    const toolbox = toolboxTooltip && {
+        showTitle: false,
+        right: marginRightToolbox || '8.7%',
+        feature: {
+            ...myTool,
+            saveAsImage:
+                toolboxTooltip.saveAsImage &&
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
+            dataView:
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title ?? '')
+        }
+    }
+
+    const options: EChartsOption = () => ({
+        series: series,
         grid: {
             left: '3%',
             right: '4%',
             bottom: '3%',
             containLabel: true
         },
+        title: {
+            text: title,
+            show: showTitle,
+            top: legendType,
+            left: legendType === 'scroll' ? '0.1%' : '4%',
+            textStyle: { ...TITLE_STYLE, fontSize: titleFontSize || 16 }
+        },
         splitLine: {
             show: showTickInfos || false,
-            lineStyle: {
-                type: 'dashed' as const,
-                opacity: 0.2,
-                color: gray[800]
-            }
+            lineStyle: { ...AXIS_SPLIT_LINE }
         },
         xAxis: [
             {
@@ -311,35 +289,40 @@ const DivergingStackedBarChart = (props: IProps) => {
         yAxis: [
             {
                 type: 'category',
-                axisTick: {
-                    show: false
-                },
-                data: data.categories
+                data: data.categories,
+                axisTick: { show: false }
             }
         ],
-        series: series,
+        legend: {
+            data: data.seriesData.map(item => item.name)
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'shadow' },
+            formatter: formatTooltip,
+            ...TOOLTIP_DEFAULT_PROPS
+        },
         toolbox: {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
-                formatter: param => `<div>${param.title}</div>`
+                formatter: (param: { title: string }) =>
+                    `<div>${param.title}</div>`
             }
         }
-    }
+    })
 
     return (
         <>
-            <ReactEcharts
-                style={CHART_WIDTH}
-                opts={getWidthOpts(width || 'auto')}
-                option={options}
-                // @ts-expect-error The echarts type doesn't match with this
+            <ReactEChartsCore
+                echarts={echarts}
+                option={options()}
+                style={{ width: '99.9%' }}
+                opts={{ renderer: 'canvas', width: width ?? 'auto' }}
                 onEvents={clickEvent}
             />
             {props.showCSVDownload && (
-                <CsvDownloadButtonStyle onClick={exportToCSV}>
-                    csv
-                </CsvDownloadButtonStyle>
+                <CsvDownloadButton onClick={exportToCSV}>csv</CsvDownloadButton>
             )}
         </>
     )

@@ -1,85 +1,108 @@
 import React, { useState, useEffect } from 'react'
-import ReactEcharts from 'echarts-for-react'
+import type { EChartsOption } from 'echarts-for-react'
+import {
+    LineChart as LineChartEcharts,
+    ScatterChart as ScatterChartEcharts
+} from 'echarts/charts'
+import {
+    GridComponent,
+    TitleComponent,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent
+} from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
 import { zipWith } from 'ramda'
 import type {
     IDefaultChartProps,
     TAudiometryDataEntry,
     AudiometryDataTooltip,
     LineStyleType,
-    TSimpleLegend,
-    EChartSeries
+    TSimpleLegend
 } from '../types'
-import type { EChartsOption } from 'echarts/types/dist/echarts'
 import {
     getDataView,
     getSaveAsImage,
-    getSaveAsImageWithTitle,
-    getWidthOpts
+    getSaveAsImageWithTitle
 } from '../../lib/auxiliarFunctions'
 import {
+    fontFamily,
+    TITLE_STYLE,
+    LEGEND_STYLE,
     TOOLBOX_DEFAULT_PROPS,
     TOOLTIP_DEFAULT_PROPS
 } from '../../commonStyles'
 import { theme } from 'flipper-ui/theme'
 
-const { neutral, red } = theme.colors
+const { red } = theme.colors
+
+echarts.use([
+    GridComponent,
+    TitleComponent,
+    CanvasRenderer,
+    LegendComponent,
+    TooltipComponent,
+    ToolboxComponent,
+    LineChartEcharts,
+    ScatterChartEcharts
+])
 
 export interface IProps extends Omit<IDefaultChartProps, 'data'> {
-    data: TAudiometryDataEntry[][]
     height?: number
-    lineType?: LineStyleType
-    symbolsSize?: number
     colors?: string[]
-    legendsPosition?: 'top' | 'bottom'
     legendGap?: number
-    legendType?: 'scroll' | 'plain'
-    legends?: TSimpleLegend[]
+    symbolsSize?: number
     legendPadding?: number
+    tooltipMarker?: boolean
     legendItemWidth?: number
     legendItemHeight?: number
-    tooltipMarker?: boolean
+    lineType?: LineStyleType
+    legends?: TSimpleLegend[]
+    data: TAudiometryDataEntry[][]
+    legendType?: 'scroll' | 'plain'
+    legendsPosition?: 'top' | 'bottom'
     formatTooltip?(items: AudiometryDataTooltip[]): string
 }
 
-const X_FIXED_DATA = ['.25', '.5', '1', '2', '3', '4', '6', '8']
-
 const AudiometryChart = (props: IProps) => {
-    const [title, setTitle] = useState(false)
-
     const {
-        title: titleProps,
-        symbolsSize,
         data,
-        toolboxTooltip,
-        lineType,
-        color,
         grid,
-        height,
+        color,
+        title,
         width,
+        height,
         colors,
         legends,
-        tooltipMarker,
-        legendType,
-        legendsPosition,
+        lineType,
         legendGap,
+        legendType,
+        symbolsSize,
+        tooltipMarker,
         legendPadding,
+        toolboxTooltip,
+        legendsPosition,
         legendItemWidth,
         legendItemHeight,
         formatTooltip
     } = props
 
-    const CHART_STYLE = { width: '99.9%', height: height || 400 }
+    const [showTitle, setShowTitle] = useState(false)
+
+    const xData = ['.25', '.5', '1', '2', '3', '4', '6', '8']
 
     useEffect(() => {
         if (toolboxTooltip?.saveAsImageWithTitle) {
-            setTitle(false)
+            setShowTitle(false)
         } else {
-            setTitle(true)
+            setShowTitle(true)
         }
     }, [toolboxTooltip])
 
     const handleShowTitle = (show: boolean) => {
-        setTitle(show)
+        setShowTitle(show)
     }
 
     const defaultTooltip = (items: AudiometryDataTooltip[]) => {
@@ -111,10 +134,10 @@ const AudiometryChart = (props: IProps) => {
 
     const takeYData = (item: TAudiometryDataEntry[]) =>
         item.map(item => ({
+            name: item.result,
             value: item.result,
             symbol: item.symbol,
             symbolSize: symbolsSize || 12,
-            name: item.result,
             boneValue: item.boneResult
         }))
 
@@ -128,45 +151,10 @@ const AudiometryChart = (props: IProps) => {
                           symbolSize: symbolsSize || 12
                       }
                     : {},
-            X_FIXED_DATA,
+            xData,
             item
         )
 
-    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
-        myTool: getSaveAsImageWithTitle(
-            toolboxTooltip.saveAsImageWithTitle.title ?? '',
-            handleShowTitle
-        )
-    }
-
-    const saveAsImage = toolboxTooltip?.saveAsImage && {
-        saveAsImage: getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '')
-    }
-
-    const toolbox: object | undefined = toolboxTooltip && {
-        ...TOOLBOX_DEFAULT_PROPS,
-        feature: {
-            ...myTool,
-            ...saveAsImage,
-            dataView:
-                toolboxTooltip.dataView &&
-                getDataView(toolboxTooltip.dataView.title ?? '')
-        }
-    }
-
-    const tooltip = {
-        formatter: formatTooltip ?? defaultTooltip,
-        trigger: 'axis' as const,
-        backgroundColor: `${neutral[200]}99`,
-        textStyle: {
-            fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-            fontSize: 11.5,
-            color: neutral[50]
-        },
-        extraCssText: 'border: none; padding: 6px;'
-    }
-
-    // The mark color is always be the fist value on array
     const seriesMarks = data.map(item => ({
         data: takeMarks(item)
     }))
@@ -192,59 +180,70 @@ const AudiometryChart = (props: IProps) => {
         }
     }))
 
+    const series = [...marksWithTypes, ...seriesData].map((item, index) => ({
+        ...item,
+        name:
+            legends && legends.length > 0
+                ? legends[index].name
+                : 'audiometry-' + index
+    }))
+
     const legendProps =
         legendsPosition === 'bottom'
             ? {
-                  data: legends,
                   top: 340,
+                  data: legends,
                   type: legendType,
                   itemGap: legendGap || 5,
                   padding: legendPadding || 4,
                   itemWidth: legendItemWidth || 25,
                   itemHeight: legendItemHeight || 14,
-                  textStyle: {
-                      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                      fontWeight: 400,
-                      color: neutral[200],
-                      fontSize: 11.5
-                  }
+                  textStyle: { ...LEGEND_STYLE }
               }
             : {
                   top: 30,
-                  data: legends,
                   itemGap: 30,
-                  textStyle: {
-                      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                      fontWeight: 400,
-                      color: neutral[200],
-                      fontSize: 11.5
-                  }
+                  data: legends,
+                  textStyle: { ...LEGEND_STYLE }
               }
 
-    const dataWithNames: EChartSeries = [...marksWithTypes, ...seriesData].map(
-        (item, index) => ({
-            ...item,
-            name:
-                legends && legends.length > 0
-                    ? legends[index].name
-                    : 'audiometry-' + index
-        })
-    )
+    const myTool = toolboxTooltip?.saveAsImageWithTitle && {
+        myTool: getSaveAsImageWithTitle(
+            toolboxTooltip.saveAsImageWithTitle.title ?? '',
+            handleShowTitle
+        )
+    }
 
-    const options: EChartsOption = {
-        series: dataWithNames,
+    const toolbox = toolboxTooltip && {
+        ...TOOLBOX_DEFAULT_PROPS,
+        feature: {
+            ...myTool,
+            saveAsImage:
+                toolboxTooltip.saveAsImage &&
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
+            dataView:
+                toolboxTooltip.dataView &&
+                getDataView(toolboxTooltip.dataView.title ?? '')
+        }
+    }
+
+    const options: EChartsOption = () => ({
+        color: colors,
+        series: series,
+        grid: { ...grid, show: false },
+        title: {
+            text: title,
+            left: '6.2%',
+            show: showTitle,
+            textStyle: { ...TITLE_STYLE, color: color || red[600] }
+        },
         xAxis: {
             type: 'category',
-            data: X_FIXED_DATA,
+            data: xData,
             boundaryGap: true,
-            axisLabel: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
-            },
             splitLine: {
-                // @ts-expect-error issue
-                // https://github.com/apache/incubator-echarts/issues/13618
-                alignWithLabel: true,
                 show: true,
+                alignWithLabel: true,
                 lineStyle: {
                     type: 'solid',
                     opacity: 0.2,
@@ -257,10 +256,8 @@ const AudiometryChart = (props: IProps) => {
                     color: color || red[600]
                 }
             },
-            axisTick: {
-                show: true,
-                alignWithLabel: true
-            }
+            axisLabel: { fontFamily: fontFamily },
+            axisTick: { show: true, alignWithLabel: true }
         },
         yAxis: {
             type: 'value',
@@ -268,9 +265,6 @@ const AudiometryChart = (props: IProps) => {
             max: 130,
             interval: 10,
             inverse: true,
-            axisLabel: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif'
-            },
             splitLine: {
                 show: true,
                 lineStyle: {
@@ -279,53 +273,40 @@ const AudiometryChart = (props: IProps) => {
                     color: color || red[600]
                 }
             },
-            axisTick: {
-                // @ts-expect-error issue
-                // https://github.com/apache/incubator-echarts/issues/13618
-                alignWithLabel: true,
-                show: true
-            },
             axisLine: {
                 show: true,
                 onZero: true,
                 lineStyle: {
                     color: color || red[600]
                 }
-            }
+            },
+            axisTick: { show: true },
+            axisLabel: { fontFamily: fontFamily }
         },
-        title: {
-            left: '6.2%',
-            show: title,
-            text: titleProps,
-            textAlign: 'left',
-            textStyle: {
-                fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
-                fontSize: 16,
-                fontWeight: 400,
-                color: color || red[600]
-            }
+        legend: legends?.length ? legendProps : { show: false },
+        tooltip: {
+            trigger: 'axis',
+            formatter: formatTooltip ?? defaultTooltip,
+            ...TOOLTIP_DEFAULT_PROPS
         },
-        color: colors,
-        grid: {
-            ...grid,
-            show: false
-        },
-        legend: legends?.length ? legendProps : undefined,
-        tooltip,
         toolbox: {
             ...toolbox,
             tooltip: {
                 ...TOOLTIP_DEFAULT_PROPS,
-                formatter: param => `<div>${param.title}</div>`
+                formatter: (param: { title: string }) =>
+                    `<div>${param.title}</div>`
             }
         }
-    }
+    })
 
     return (
-        <ReactEcharts
-            style={CHART_STYLE}
-            opts={getWidthOpts(width || 'auto')}
-            option={options}
+        <ReactEChartsCore
+            notMerge
+            lazyUpdate
+            echarts={echarts}
+            option={options()}
+            style={{ width: '99.9%', height: height || 400 }}
+            opts={{ renderer: 'canvas', width: width ?? 'auto' }}
         />
     )
 }

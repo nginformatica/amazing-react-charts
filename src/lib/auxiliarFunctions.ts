@@ -5,6 +5,7 @@ import type {
     ConnectedDataURL,
     DataTooltip,
     DomainValues,
+    EntryData,
     TypeChart,
     WidthProps
 } from '../core/types'
@@ -379,3 +380,60 @@ export const formatLabelWithImage = (text: string) => {
 
     return textFormatted
 }
+
+export const verifyStyleProps = (data: EntryData) =>
+    data.style ? { value: data.result, itemStyle: data.style } : data.result
+
+export const dontShowLabel = {
+    grid: { bottom: 75 },
+    xAxis: { axisLabel: { interval: 1, rotate: 0 } }
+}
+
+export const normalLabel = {
+    grid: { bottom: 75 },
+    xAxis: {
+        axisLabel: {
+            show: true,
+            rotate: 0,
+            interval: 0,
+            formatter: (item: string) => fixedTruncateLabel(item, 9)
+        }
+    }
+}
+
+export const fullText = {
+    grid: { bottom: 75 },
+    xAxis: {
+        axisLabel: {
+            show: true,
+            rotate: 0,
+            interval: 0,
+            formatter: (item: string) => fixedTruncateLabel(item, 16)
+        }
+    }
+}
+
+export const rotatedLabel = {
+    grid: { bottom: 98 },
+    xAxis: {
+        axisLabel: {
+            show: true,
+            rotate: 315,
+            interval: 0,
+            formatter: (item: string) => fixedTruncateLabel(item, 9)
+        }
+    }
+}
+
+export const rotatedLabelSpecial = (rotate: number) => ({
+    grid: { bottom: 98 },
+    xAxis: {
+        axisLabel: {
+            show: true,
+            interval: 0,
+            rotate: rotate,
+            textStyle: { fontSize: 11 },
+            formatter: (item: string) => fixedTruncateLabel(item, 9)
+        }
+    }
+})
