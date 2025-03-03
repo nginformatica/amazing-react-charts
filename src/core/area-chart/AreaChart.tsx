@@ -124,9 +124,11 @@ const AreaChart = (props: IDefaultChartProps) => {
             return yComplement
         }
 
-        return yType === 'time'
-            ? timeConvert(Number(data)).toString() + 'h'
-            : takeLabelComplement(Number(data), '').toString()
+        if (yType === 'time') {
+            return timeConvert(Number(data)).toString() + 'h'
+        }
+
+        return takeLabelComplement(Number(data), '').toString()
     }
 
     const dinamicData = (
