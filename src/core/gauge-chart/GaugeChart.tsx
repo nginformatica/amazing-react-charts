@@ -15,6 +15,7 @@ import type { IDefaultChartProps, GaugeData } from '../types'
 import { getSaveAsImage } from '../../lib/auxiliarFunctions'
 import {
     GaugeCircle,
+    GaugeIconContainer,
     GaugeLegend,
     GaugeLegendContainer,
     GaugeLegendContent,
@@ -174,7 +175,7 @@ const GaugeChart = (props: IProps) => {
                 {legendData?.map((it, i) => {
                     return (
                         <GaugeLegendContent key={i}>
-                            <div>{it.icon}</div>
+                            <GaugeIconContainer>{it.icon}</GaugeIconContainer>
                             <GaugeCircle color={getColor(it.legend)} />
                             <GaugeLegend>{it.legend + ' %'}</GaugeLegend>
                         </GaugeLegendContent>

@@ -1,11 +1,12 @@
 import React from 'react'
-import {
-    IconLocalHospital,
-    IconPerson,
-    IconRestore,
-    IconWaterDrop,
-    IconVisibility
-} from 'flipper-ui/icons/mui'
+import { IconBelt } from 'flipper-ui/icons/specific/IconBelt'
+import { IconBoot } from 'flipper-ui/icons/specific/IconBoot'
+import { IconCircle } from 'flipper-ui/icons/specific/IconCircle'
+import { IconCoverall } from 'flipper-ui/icons/specific/IconCoverall'
+import { IconIPE } from 'flipper-ui/icons/specific/IconIPE'
+import { IconMask } from 'flipper-ui/icons/specific/IconMask'
+import { IconSafetyGlasses } from 'flipper-ui/icons/specific/IconSafetyGlasses'
+import { IconVest } from 'flipper-ui/icons/specific/IconVest'
 import type { IProps } from './GaugeChart'
 import type { Meta, StoryObj } from '@storybook/react'
 import GaugeChart from './GaugeChart'
@@ -75,11 +76,14 @@ export const gaugeChart: Story = {
             }
         ],
         legendData: [
-            { icon: <IconLocalHospital />, legend: 42 },
-            { icon: <IconPerson />, legend: 71 },
-            { icon: <IconRestore />, legend: 77 },
-            { icon: <IconWaterDrop />, legend: 76 },
-            { icon: <IconVisibility />, legend: 79 }
+            { icon: <IconIPE />, legend: 0 },
+            { icon: <IconSafetyGlasses />, legend: 100 },
+            { icon: <IconVest />, legend: 0 },
+            { icon: <IconBoot />, legend: 0 },
+            { icon: <IconBelt />, legend: 0 },
+            { icon: <IconMask />, legend: 100 },
+            { icon: <IconCoverall />, legend: 0 },
+            { icon: <IconCircle width={20} height={20} />, legend: 0 }
         ],
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
         axisLineWidth: 75,
