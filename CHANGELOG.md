@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.6
+
+- fix: add a container to Gauge Chart icons to align the content
+
 ## 1.2.5
 
 - feat: improve charts to be able to apply tree-shaking on echarts imports

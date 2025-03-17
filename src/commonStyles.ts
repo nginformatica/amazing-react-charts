@@ -92,12 +92,14 @@ export const ChartTitle = styled.h1`
 
 export const GaugeLegendContainer = styled.div`
     display: flex;
-    gap: 16px;
+    gap: 12px;
     align-items: center;
     justify-content: center;
 `
 
 export const GaugeLegendContent = styled.div`
+    min-width: 44px;
+    min-height: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -105,10 +107,18 @@ export const GaugeLegendContent = styled.div`
     font-family: Roboto, Helvetica, Arial, sans-serif;
 `
 
+export const GaugeIconContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 44px;
+`
+
 export const GaugeCircle = styled.div<{ color?: string }>`
     width: 20px;
     height: 20px;
-    margin-bottom: 4px;
+    margin: 4px 0;
     border-radius: 100%;
     background-color: ${props => props.color};
 `
