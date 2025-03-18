@@ -1,11 +1,11 @@
-import react from 'eslint-plugin-react';
-import hooks from 'eslint-plugin-react-hooks';
-import parser from '@typescript-eslint/parser';
-import tseslint from 'typescript-eslint';
-import stylistic from '@stylistic/eslint-plugin';
-import importplugin from 'eslint-plugin-import';
-import eslintprettier from 'eslint-plugin-prettier';
-import tseslintplugin from '@typescript-eslint/eslint-plugin';
+import react from 'eslint-plugin-react'
+import hooks from 'eslint-plugin-react-hooks'
+import parser from '@typescript-eslint/parser'
+import tseslint from 'typescript-eslint'
+import stylistic from '@stylistic/eslint-plugin'
+import importplugin from 'eslint-plugin-import'
+import eslintprettier from 'eslint-plugin-prettier'
+import tseslintplugin from '@typescript-eslint/eslint-plugin'
 
 const rulesReact = {
     'react/prop-types': 'off',
@@ -159,6 +159,30 @@ const rulesTypescript = {
     '@typescript-eslint/consistent-type-imports': 'error'
 }
 
+const rulesDesignSystem = {
+    'no-restricted-syntax': [
+        'error',
+        {
+            selector:
+                ':matches(Literal[value=/(#([A-f0-9]{3,8})|rgba?\\()/], TemplateElement[value.raw=/(#([A-f0-9]{3,8})|rgba?\\()/])',
+            message:
+                'Do not define colors in hexadecimal, RGB, or RGBA format. To ensure consistency and ease of maintenance, use the colors from the "flipper-ui/theme" instead.'
+        }
+    ],
+    'no-restricted-imports': [
+        'error',
+        {
+            patterns: [
+                {
+                    regex: '@mui/icons-material(?:/[^/]+)?',
+                    message:
+                        'Do not import icons directly from @mui/icons-material. To ensure consistency and ease of maintenance, use the icons from the "flipper-ui/icons" instead.'
+                }
+            ]
+        }
+    ]
+}
+
 export default tseslint.config(
     ...tseslint.configs.recommended,
     {
@@ -208,7 +232,15 @@ export default tseslint.config(
             ...rulesReact,
             ...rulesEslint,
             ...rulesImport,
-            ...rulesTypescript
+            ...rulesTypescript,
+            ...rulesDesignSystem
+        }
+    },
+    {
+        files: ['**/*.spec.tsx'],
+        rules: {
+            'no-restricted-syntax': 'off',
+            'no-restricted-imports': 'off'
         }
     }
 )
