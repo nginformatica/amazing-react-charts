@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.7
+
+- feat: apply design system eslint rules, except for .spec files
+
 ## 1.2.6
 
 - fix: add a container to Gauge Chart icons to align the content
