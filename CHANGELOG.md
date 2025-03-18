@@ -2,7 +2,7 @@
 
 ## 1.2.7
 
-- feat: apply design system rules, except for .spec files
+- feat: apply design system eslint rules, except for .spec files
 
 ## 1.2.6
 
