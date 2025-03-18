@@ -164,7 +164,7 @@ const rulesDesignSystem = {
         'error',
         {
             selector:
-                ':matches(Literal[value=/(#([A-f0-9]{3,8})|rgba?\\()/], TemplateElement[value.raw=/(#([A-f0-9]{3,8})|rgba?\\()/])',
+                ':matches(Literal[value=/^(#([A-f0-9]{3,8})|rgba?\\()/], TemplateElement[value.raw=/(#([A-f0-9]{3,8})|rgba?\\()/])',
             message:
                 'Do not define colors in hexadecimal, RGB, or RGBA format. To ensure consistency and ease of maintenance, use the colors from the "flipper-ui/theme" instead.'
         }
