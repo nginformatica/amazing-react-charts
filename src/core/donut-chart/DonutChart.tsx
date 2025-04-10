@@ -143,7 +143,8 @@ const DonutChart = (props: IDonutProps) => {
     const myTool = toolboxTooltip?.saveAsImageWithTitle && {
         myTool: getSaveAsImageWithTitle(
             toolboxTooltip.saveAsImageWithTitle.title ?? '',
-            handleShowTitle
+            handleShowTitle,
+            title
         )
     }
 
@@ -153,7 +154,7 @@ const DonutChart = (props: IDonutProps) => {
             ...myTool,
             saveAsImage:
                 toolboxTooltip.saveAsImage &&
-                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? ''),
+                getSaveAsImage(toolboxTooltip.saveAsImage.title ?? '', title),
             dataView:
                 toolboxTooltip.dataView &&
                 getDataView(toolboxTooltip.dataView.title ?? '')
