@@ -247,8 +247,9 @@ export const getDomain = (item: DomainValues) => {
 export const fixedDomain = (item: DomainValues) =>
     item.max >= 90 ? 100 : getDomain(item)
 
-export const getSaveAsImage = (title: string) => ({
+export const getSaveAsImage = (title: string, name?: string) => ({
     title,
+    name,
     type: 'jpeg',
     show: true,
     icon: DOWNLOAD_ICON,
@@ -296,9 +297,11 @@ export const thousandSeparator = (values: string | number) =>
 // the chart's title is not rendered on the component.
 export const getSaveAsImageWithTitle = (
     title: string,
-    setTitle: (show: boolean) => void
+    setTitle: (show: boolean) => void,
+    name?: string
 ) => ({
     title,
+    name,
     show: true,
     icon: DOWNLOAD_ICON,
     iconStyle: ICON_STYLE,
