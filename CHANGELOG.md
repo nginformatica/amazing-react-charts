@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.8
+
+- fix: adjust save image file name for Donut Chart
+
 ## 1.2.7
 
 - feat: apply design system eslint rules, except for .spec files
