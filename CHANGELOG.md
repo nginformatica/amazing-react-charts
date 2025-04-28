@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.9
+
+- feat: apply eslint rule-of-hooks
+
 ## 1.2.8
 
 - fix: adjust save image file name for Donut Chart
