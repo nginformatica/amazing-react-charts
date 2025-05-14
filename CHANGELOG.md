@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3.0
+
+- feat: migrate styled-components to @emotion
+
 ## 1.2.9
 
 - feat: apply eslint rule-of-hooks
