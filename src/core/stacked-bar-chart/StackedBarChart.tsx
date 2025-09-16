@@ -368,7 +368,7 @@ const StackedBarChart = (props: IProps) => {
               }
             : {
                   top: 30,
-                  itemGap: 30,
+                  itemGap: 24,
                   data: [
                       topResult,
                       bottomResult,

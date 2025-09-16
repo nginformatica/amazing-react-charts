@@ -177,9 +177,9 @@ const PieChart = (props: IPieProps) => {
         },
         legend: {
             top: 270,
+            itemGap: 24,
             data: dataLegend,
             type: legendType || 'plain',
-            itemGap: legendType === 'scroll' ? 60 : 10,
             textStyle: { ...COMMON_STYLE }
         },
         tooltip: {

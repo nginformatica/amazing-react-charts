@@ -202,7 +202,7 @@ const AudiometryChart = (props: IProps) => {
               }
             : {
                   top: 30,
-                  itemGap: 30,
+                  itemGap: 24,
                   data: legends,
                   textStyle: { ...LEGEND_STYLE }
               }

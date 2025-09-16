@@ -177,10 +177,10 @@ const DonutChart = (props: IDonutProps) => {
         itemStyle: { borderColor: pieceBorderColor || neutral[50] },
         legend: {
             top: 280,
+            itemGap: 24,
             data: dataLegend,
             type: legendType || 'plain',
             selectedMode: selectedMode || false,
-            itemGap: legendType === 'scroll' ? 40 : 10,
             textStyle: { ...COMMON_STYLE }
         },
         tooltip: {

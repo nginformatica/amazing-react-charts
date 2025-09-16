@@ -199,7 +199,7 @@ const CoordinateLineChart = (props: IProps) => {
             }
         },
         legend: {
-            itemGap: 30,
+            itemGap: 24,
             top: legendPosition ?? 26,
             textStyle: { ...COMMON_STYLE },
             data: [

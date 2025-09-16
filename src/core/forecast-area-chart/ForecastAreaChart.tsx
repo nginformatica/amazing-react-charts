@@ -313,7 +313,7 @@ const ForecastAreaChart = (props: IProps) => {
         },
         legend: {
             top: 20,
-            itemGap: 30,
+            itemGap: 24,
             selectedMode: false,
             textStyle: { ...COMMON_STYLE },
             data: [
