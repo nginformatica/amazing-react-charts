@@ -130,6 +130,7 @@ export type TooltipEntryProps = {
 export type EntryDataLine = {
     name?: string
     values: EntryData[]
+    color?: string
 }
 
 export type EntryData = {

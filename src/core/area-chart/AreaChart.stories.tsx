@@ -5,7 +5,7 @@ import { argTypesDisableArea } from '../disableControls'
 import AreaChart from './AreaChart'
 import { theme } from 'flipper-ui/theme'
 
-const { deepOrange, gray, orange } = theme.colors
+const { deepOrange, gray, orange, teal, lightBlue } = theme.colors
 
 const meta: Meta<typeof AreaChart> = {
     title: 'Charts/Area Chart',
@@ -99,6 +99,58 @@ export const areaChart: Story = {
         tooltipComplement: 'goals',
         tooltip: { label: 'Data', result: 'RAV' },
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } }
+    }
+}
+
+export const areaChartStacked: Story = {
+    render: (args: IDefaultChartProps) => {
+        return <AreaChart {...args} />
+    },
+    args: {
+        xType: 'category',
+        title: 'Area Chart Stacked',
+        data: [
+            {
+                name: 'Category 1',
+                values: [
+                    { label: '2025-01', result: 20 },
+                    { label: '2025-02', result: 15 },
+                    { label: '2025-03', result: 20 }
+                ],
+                color: teal[500]
+            },
+            {
+                name: 'Category 2',
+                values: [
+                    { label: '2025-01', result: 5 },
+                    { label: '2025-02', result: 25 },
+                    { label: '2025-03', result: 10 }
+                ],
+                color: lightBlue[300]
+            }
+        ]
+    },
+    argTypes: {
+        lineMarkValue: {
+            table: {
+                disable: true
+            }
+        },
+        lineMarkColor: {
+            table: {
+                disable: true
+            }
+        },
+        lineMarkName: {
+            table: {
+                disable: true
+            }
+        },
+        tooltipComplement: {
+            table: {
+                disable: true
+            }
+        }
     }
 }
 
