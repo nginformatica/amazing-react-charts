@@ -187,7 +187,7 @@ const PieChart = (props: IPieProps) => {
             textStyle: { ...TITLE_STYLE }
         },
         legend: {
-            top: 270,
+            top: 280,
             itemGap: 24,
             data: dataLegend,
             type: legendType || 'plain',
