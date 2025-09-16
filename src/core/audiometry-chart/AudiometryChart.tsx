@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import {
     LineChart as LineChartEcharts,
@@ -89,7 +89,18 @@ const AudiometryChart = (props: IProps) => {
         formatTooltip
     } = props
 
+    const chartRef = useRef<ReactEChartsCore>(null)
     const [showTitle, setShowTitle] = useState(false)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const xData = ['.25', '.5', '1', '2', '3', '4', '6', '8']
 
@@ -303,6 +314,7 @@ const AudiometryChart = (props: IProps) => {
         <ReactEChartsCore
             notMerge
             lazyUpdate
+            ref={chartRef}
             echarts={echarts}
             option={options()}
             style={{ width: '99.9%', height: height || 400 }}

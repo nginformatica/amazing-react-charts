@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import { FunnelChart as FunnelChartEcharts } from 'echarts/charts'
 import {
@@ -78,7 +78,18 @@ const PyramidChart = (props: IProps) => {
         marginRightToolbox
     } = props
 
+    const chartRef = useRef<ReactEChartsCore>(null)
     const [showTitle, setShowTitle] = useState(false)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     useEffect(() => {
         if (toolboxTooltip?.saveAsImageWithTitle) {
@@ -167,6 +178,7 @@ const PyramidChart = (props: IProps) => {
 
     return (
         <ReactEChartsCore
+            ref={chartRef}
             echarts={echarts}
             option={options()}
             style={style ? style : { width: '99.9%' }}

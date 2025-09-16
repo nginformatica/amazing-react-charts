@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import { RadarChart as RadarChartEcharts } from 'echarts/charts'
 import {
@@ -43,6 +43,18 @@ export interface RadarChartProps {
 const RadarChart = (props: RadarChartProps) => {
     const { series, width, indicators, circular, highlight, yComplement } =
         props
+
+    const chartRef = useRef<ReactEChartsCore>(null)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const takeComplement = (value: number) =>
         takeLabelComplement(Number(value), yComplement ?? '')
@@ -99,6 +111,7 @@ const RadarChart = (props: RadarChartProps) => {
 
     return (
         <ReactEChartsCore
+            ref={chartRef}
             echarts={echarts}
             option={options()}
             style={{ width: '99.9%' }}

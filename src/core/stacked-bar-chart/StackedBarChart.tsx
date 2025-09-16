@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import {
     BarChart as BarChartEcharts,
@@ -101,6 +101,18 @@ const StackedBarChart = (props: IProps) => {
         secondYAxisType,
         additionalResults
     } = props
+
+    const chartRef = useRef<ReactEChartsCore>(null)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const label = tooltip?.label
     const topResult = tooltip?.topResult
@@ -464,6 +476,7 @@ const StackedBarChart = (props: IProps) => {
     return (
         <ReactEChartsCore
             notMerge
+            ref={chartRef}
             echarts={echarts}
             option={options()}
             style={{ width: '99.9%' }}

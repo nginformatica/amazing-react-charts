@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import { PieChart as PieChartEcharts } from 'echarts/charts'
 import {
@@ -80,7 +80,18 @@ const PieChart = (props: IPieProps) => {
     const dataLegend = data.map(item => item.name)
     const totalValues = data.reduce((acc, item) => acc + item.value, 0)
 
+    const chartRef = useRef<ReactEChartsCore>(null)
     const [showTitle, setShowTitle] = useState(false)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     useEffect(() => {
         if (toolboxTooltip?.saveAsImageWithTitle) {
@@ -200,6 +211,7 @@ const PieChart = (props: IPieProps) => {
 
     return (
         <ReactEChartsCore
+            ref={chartRef}
             echarts={echarts}
             option={options()}
             style={{ width: '99.9%' }}

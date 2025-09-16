@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import { LineChart as LineChartEcharts } from 'echarts/charts'
 import {
@@ -82,6 +82,18 @@ const LineChart = (props: IProps) => {
         fontLabelSize,
         toolboxTooltip
     } = props
+
+    const chartRef = useRef<ReactEChartsCore>(null)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const xData = data[0].values.map(item => item.label)
 
@@ -272,6 +284,7 @@ const LineChart = (props: IProps) => {
         <ReactEChartsCore
             notMerge
             lazyUpdate
+            ref={chartRef}
             echarts={echarts}
             option={getOption()}
             style={{ width: '99.9%' }}

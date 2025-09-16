@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import { GaugeChart as GaugeChartEcharts } from 'echarts/charts'
 import {
@@ -64,6 +64,18 @@ const GaugeChart = (props: IProps) => {
         toolboxTooltip,
         detailFontSize
     } = props
+
+    const chartRef = useRef<ReactEChartsCore>(null)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const getColor = (value: number) =>
         value <= (legendValue ?? 75) ? red[500] : green[300]
@@ -166,6 +178,7 @@ const GaugeChart = (props: IProps) => {
     return (
         <div>
             <ReactEChartsCore
+                ref={chartRef}
                 echarts={echarts}
                 option={options()}
                 opts={{ renderer: 'canvas', width: 'auto' }}

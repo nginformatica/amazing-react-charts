@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import { BarChart as BarChartEcharts } from 'echarts/charts'
 import {
@@ -117,8 +117,19 @@ const DivergingStackedBarChart = (props: IProps) => {
         onClickBar
     } = props
 
+    const chartRef = useRef<ReactEChartsCore>(null)
     const [showTitle, setShowTitle] = useState(false)
     const [richData, setRichData] = useState<RichDataItem[]>([])
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const clickEvent = { click: onClickBar ?? (() => {}) }
 
@@ -315,6 +326,7 @@ const DivergingStackedBarChart = (props: IProps) => {
     return (
         <>
             <ReactEChartsCore
+                ref={chartRef}
                 echarts={echarts}
                 option={options()}
                 style={{ width: '99.9%' }}
