@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import {
     BarChart as BarChartEcharts,
@@ -73,7 +73,17 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
 
     const isStacked = useRef(false)
     const actualGraph = useRef<string>('bar')
-    const ref = useRef<EChartsOption | null>(null)
+    const chartRef = useRef<EChartsOption | null>(null)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const isDarkColor = (color: string) => {
         const c = color.substring(1)
@@ -221,7 +231,7 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
 
     const onEvents = {
         magictypechanged: (e: { currentType: 'stack' | 'line' | 'bar' }) => {
-            const echartsInstance = ref.current?.getEchartsInstance()
+            const echartsInstance = chartRef.current?.getEchartsInstance()
             const actualOptions = echartsInstance?.getOption()
 
             if (e.currentType === 'stack') {
@@ -265,13 +275,13 @@ const MultipurposeChart = (props: MultipurposeChartProps) => {
                         : originalSeries[i].label.color
                 }
             )
-            ref.current?.getEchartsInstance().setOption(newOptions)
+            chartRef.current?.getEchartsInstance().setOption(newOptions)
         }
     }
 
     return (
         <ReactEChartsCore
-            ref={ref}
+            ref={chartRef}
             echarts={echarts}
             option={options}
             style={{ width: '99.9%' }}

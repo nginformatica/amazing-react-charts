@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import { LineChart as LineChartEcharts } from 'echarts/charts'
 import {
@@ -19,7 +19,9 @@ import type {
     DataZoomEventProps,
     IDefaultChartProps,
     TDataZoomChartProps,
-    SeriesLabelFormatter
+    SeriesLabelFormatter,
+    EntryDataLine,
+    EntryData
 } from '../types'
 import {
     fixedDomain,
@@ -57,7 +59,14 @@ echarts.use([
     DataZoomSliderComponent
 ])
 
-const AreaChart = (props: IDefaultChartProps) => {
+type AreaChartData = EntryData[] | EntryDataLine[]
+
+export interface IProps extends Omit<IDefaultChartProps, 'data'> {
+    data: AreaChartData
+    legendType?: 'scroll' | 'plain'
+}
+
+const AreaChart = (props: IProps) => {
     const {
         data,
         grid,
@@ -68,6 +77,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         xType,
         tooltip,
         dateFormat,
+        legendType,
         yComplement,
         rotateLabel,
         scrollStart,
@@ -79,8 +89,29 @@ const AreaChart = (props: IDefaultChartProps) => {
         lineMarkColor = ''
     } = props
 
-    const xData = data.map(item => item.label)
-    const chartData = data.map(item => item.result)
+    const chartRef = useRef<ReactEChartsCore>(null)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
+    const isMultiSeriesData = (
+        data: AreaChartData
+    ): data is EntryDataLine[] => {
+        return Array.isArray(data) && 'values' in data[0]
+    }
+
+    const isMultiSeries = isMultiSeriesData(data)
+
+    const xData = isMultiSeries
+        ? data[0].values.map(item => item.label)
+        : data.map(item => item.label)
 
     const markLineData = lineMarkValue && xData.map(() => lineMarkValue)
 
@@ -161,23 +192,38 @@ const AreaChart = (props: IDefaultChartProps) => {
         charts.setOption({ series: [{ label: { show: false } }] })
     }
 
-    const series = {
-        type: 'line',
-        data: chartData,
-        label: {
-            show: true,
-            distance: 1.1,
-            formatter: formatLabel,
-            fontSize: yType === 'time' ? 10 : 11.5,
-            ...COMMON_STYLE
-        },
-        itemStyle: { color: color },
-        lineStyle: { color: color || blue[800] },
-        areaStyle: {
-            opacity: 0.2,
-            color: color || blue[800]
-        }
-    }
+    const series = isMultiSeries
+        ? data.map(serie => ({
+              type: 'line',
+              name: serie.name || '',
+              data: serie.values.map(item => item.result),
+              label: {
+                  show: true,
+                  distance: 1.1,
+                  formatter: formatLabel,
+                  fontSize: yType === 'time' ? 10 : 11.5,
+                  ...COMMON_STYLE
+              },
+              itemStyle: { color: serie.color },
+              lineStyle: { color: serie.color || blue[700] },
+              areaStyle: { opacity: 0.2, color: serie.color || blue[700] }
+          }))
+        : [
+              {
+                  type: 'line',
+                  data: data.map(item => item.result),
+                  label: {
+                      show: true,
+                      distance: 1.1,
+                      formatter: formatLabel,
+                      fontSize: yType === 'time' ? 10 : 11.5,
+                      ...COMMON_STYLE
+                  },
+                  itemStyle: { color },
+                  lineStyle: { color: color || blue[700] },
+                  areaStyle: { opacity: 0.2, color: color || blue[700] }
+              }
+          ]
 
     const seriesMarkLine = {
         type: 'line',
@@ -188,6 +234,8 @@ const AreaChart = (props: IDefaultChartProps) => {
         emphasis: { scale: false },
         lineStyle: { width: 2, color: lineMarkColor }
     }
+
+    const allSeries = lineMarkValue ? [...series, seriesMarkLine] : series
 
     const zoomEvent = { dataZoom: dinamicData }
 
@@ -241,7 +289,7 @@ const AreaChart = (props: IDefaultChartProps) => {
     const options: EChartsOption = () => ({
         dataZoom: scrollable,
         color: [lineMarkColor],
-        series: [series, seriesMarkLine],
+        series: allSeries,
         grid: { ...(grid || { bottom: 75 }), show: true },
         title: {
             text: title,
@@ -296,8 +344,10 @@ const AreaChart = (props: IDefaultChartProps) => {
             max: lineMarkValue ? fixedDomain : getDomain
         },
         legend: {
-            top: 30,
+            top: 20,
+            itemGap: 24,
             icon: STRAIGHT_LINE_ICON,
+            type: legendType || 'plain',
             textStyle: { ...COMMON_STYLE }
         },
         tooltip: tooltip && {
@@ -319,6 +369,7 @@ const AreaChart = (props: IDefaultChartProps) => {
         <ReactEChartsCore
             notMerge
             lazyUpdate
+            ref={chartRef}
             echarts={echarts}
             option={options()}
             style={{ width: '99.9%', height: 300 }}

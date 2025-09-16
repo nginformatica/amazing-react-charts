@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## 1.4.0
+
+- feat: improve charts to use on the interactive dashboards
+- feat: apply `resize` to all charts through ref to improve user experience when resizing the screen width
+- chore: set all charts legends with the same gap
+- chore: update general dependencies
+
+Charts improved:
+
+- Area Chart and Vertical Bar Chart: now allows to stack multiple series
+
 ## 1.3.0
 
 - feat: migrate styled-components to @emotion

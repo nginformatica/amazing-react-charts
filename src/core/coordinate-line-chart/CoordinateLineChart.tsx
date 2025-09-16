@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import { LineChart as LineChartEcharts } from 'echarts/charts'
 import {
@@ -68,7 +68,18 @@ const CoordinateLineChart = (props: IProps) => {
 
     const [ref, pre, pos] = coordinates
 
+    const chartRef = useRef<ReactEChartsCore>(null)
     const [showTitle, setShowTitle] = useState(false)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     useEffect(() => {
         if (toolboxTooltip?.saveAsImageWithTitle) {
@@ -199,7 +210,7 @@ const CoordinateLineChart = (props: IProps) => {
             }
         },
         legend: {
-            itemGap: 30,
+            itemGap: 24,
             top: legendPosition ?? 26,
             textStyle: { ...COMMON_STYLE },
             data: [
@@ -226,6 +237,7 @@ const CoordinateLineChart = (props: IProps) => {
         <ReactEChartsCore
             notMerge
             lazyUpdate
+            ref={chartRef}
             echarts={echarts}
             option={options()}
             style={{ width: 'auto', height: height }}

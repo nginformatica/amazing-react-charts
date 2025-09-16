@@ -71,7 +71,7 @@ export const verticalBarChart: Story = {
         xType: 'category',
         yType: 'value',
         title: 'Vertical Bar Chart',
-        color: green[500],
+        color: green[400],
         yComplement: '%',
         tooltip: { label: 'Equipamento', result: 'Disponibilidade' },
         toolboxTooltip: { saveAsImage: { title: 'Save as Image' } },
@@ -274,6 +274,70 @@ export const verticalBarChart: Story = {
                 disable: true
             }
         },
+        interval: {
+            table: {
+                disable: true
+            }
+        }
+    }
+}
+
+export const verticalBarChartStacked: Story = {
+    render: (args: IProps) => {
+        return <VerticalBarChart {...args} />
+    },
+    args: {
+        showBarLabel: false,
+        xType: 'category',
+        yType: 'value',
+        yComplement: '%',
+        title: 'Vertical Bar Chart Stacked',
+        data: [
+            [
+                {
+                    name: 'Equipment Count',
+                    label: 'A',
+                    result: 10,
+                    style: { color: red[400] }
+                },
+                {
+                    name: 'Equipment Count',
+                    label: 'B',
+                    result: 20,
+                    style: { color: red[400] }
+                }
+            ],
+            [
+                {
+                    name: 'Service Order Count',
+                    label: 'A',
+                    result: 5,
+                    style: { color: blue[300] }
+                },
+                {
+                    name: 'Service Order Count',
+                    label: 'B',
+                    result: 15,
+                    style: { color: blue[300] }
+                }
+            ],
+            [
+                {
+                    name: 'Group Count',
+                    label: 'A',
+                    result: 5,
+                    style: { color: green[300] }
+                },
+                {
+                    name: 'Group Count',
+                    label: 'B',
+                    result: 15,
+                    style: { color: green[300] }
+                }
+            ]
+        ]
+    },
+    argTypes: {
         interval: {
             table: {
                 disable: true

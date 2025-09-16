@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import { LineChart as LineChartEcharts } from 'echarts/charts'
 import {
@@ -90,6 +90,18 @@ const ForecastAreaChart = (props: IProps) => {
         tooltipComplement,
         forecastChartLegends
     } = props
+
+    const chartRef = useRef<ReactEChartsCore>(null)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const yData = data.map(item => item.result)
     const xData = data.map(item =>
@@ -313,7 +325,7 @@ const ForecastAreaChart = (props: IProps) => {
         },
         legend: {
             top: 20,
-            itemGap: 30,
+            itemGap: 24,
             selectedMode: false,
             textStyle: { ...COMMON_STYLE },
             data: [
@@ -340,6 +352,7 @@ const ForecastAreaChart = (props: IProps) => {
         <ReactEChartsCore
             notMerge
             lazyUpdate
+            ref={chartRef}
             echarts={echarts}
             option={options()}
             style={{ width: '99.9%', height: 300 }}

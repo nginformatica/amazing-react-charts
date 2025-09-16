@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import { PictorialBarChart as PictorialBarChartEcharts } from 'echarts/charts'
 import { GridComponent, TooltipComponent } from 'echarts/components'
@@ -25,6 +25,18 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
 
 const PictorialChart = (props: IProps) => {
     const { data, color, grid } = props
+
+    const chartRef = useRef<ReactEChartsCore>(null)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const formatTooltip = () =>
         `${props.tooltip?.label}: ${props.tooltip?.labelComplement} <br>` +
@@ -79,6 +91,7 @@ const PictorialChart = (props: IProps) => {
     return (
         <ReactEChartsCore
             lazyUpdate
+            ref={chartRef}
             echarts={echarts}
             option={options()}
             opts={{ renderer: 'canvas', width: 'auto' }}

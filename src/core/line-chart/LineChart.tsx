@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import { LineChart as LineChartEcharts } from 'echarts/charts'
 import {
@@ -58,6 +58,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     colors?: string[]
     showLabel?: boolean
     disableMarks?: boolean
+    legendType?: 'scroll' | 'plain'
     axisNames?: { x: string; y: string }
 }
 
@@ -75,11 +76,24 @@ const LineChart = (props: IProps) => {
         dateFormat,
         rotateLabel,
         scrollStart,
+        legendType,
         yComplement,
         disableMarks,
         fontLabelSize,
         toolboxTooltip
     } = props
+
+    const chartRef = useRef<ReactEChartsCore>(null)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     const xData = data[0].values.map(item => item.label)
 
@@ -246,7 +260,9 @@ const LineChart = (props: IProps) => {
             }
         },
         legend: {
+            itemGap: 24,
             icon: STRAIGHT_LINE_ICON,
+            type: legendType || 'plain',
             textStyle: { ...COMMON_STYLE }
         },
         tooltip: {
@@ -268,6 +284,7 @@ const LineChart = (props: IProps) => {
         <ReactEChartsCore
             notMerge
             lazyUpdate
+            ref={chartRef}
             echarts={echarts}
             option={getOption()}
             style={{ width: '99.9%' }}
