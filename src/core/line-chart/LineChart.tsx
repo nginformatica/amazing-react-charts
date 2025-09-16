@@ -58,6 +58,7 @@ export interface IProps extends Omit<IDefaultChartProps, 'data'> {
     colors?: string[]
     showLabel?: boolean
     disableMarks?: boolean
+    legendType?: 'scroll' | 'plain'
     axisNames?: { x: string; y: string }
 }
 
@@ -75,6 +76,7 @@ const LineChart = (props: IProps) => {
         dateFormat,
         rotateLabel,
         scrollStart,
+        legendType,
         yComplement,
         disableMarks,
         fontLabelSize,
@@ -246,7 +248,9 @@ const LineChart = (props: IProps) => {
             }
         },
         legend: {
+            itemGap: 24,
             icon: STRAIGHT_LINE_ICON,
+            type: legendType || 'plain',
             textStyle: { ...COMMON_STYLE }
         },
         tooltip: {
