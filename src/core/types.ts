@@ -136,6 +136,7 @@ export type EntryDataLine = {
 export type EntryData = {
     label: string
     result: number
+    name?: string
     itemId?: string
     style?: LabelProps
     image?: string

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import type { EChartsOption } from 'echarts-for-react'
 import { BarChart as BarChartEcharts } from 'echarts/charts'
 import {
     GridComponent,
     TitleComponent,
+    LegendComponent,
     TooltipComponent,
     ToolboxComponent,
     DataZoomInsideComponent,
@@ -20,7 +21,8 @@ import type {
     IDefaultChartProps,
     DataZoomEventProps,
     TDataZoomChartProps,
-    VerticalBarLabelFormatter
+    VerticalBarLabelFormatter,
+    EntryData
 } from '../types'
 import {
     fullText,
@@ -43,12 +45,14 @@ import {
     TITLE_STYLE,
     LEGEND_STYLE,
     AXIS_SPLIT_LINE,
-    TOOLTIP_DEFAULT_PROPS
+    TOOLTIP_DEFAULT_PROPS,
+    COMMON_STYLE
 } from '../../commonStyles'
 
 echarts.use([
     GridComponent,
     TitleComponent,
+    LegendComponent,
     CanvasRenderer,
     TooltipComponent,
     ToolboxComponent,
@@ -57,10 +61,14 @@ echarts.use([
     DataZoomSliderComponent
 ])
 
-export interface IProps extends IDefaultChartProps {
+type BarChartData = EntryData[] | EntryData[][]
+
+export interface IProps extends Omit<IDefaultChartProps, 'data'> {
+    data: BarChartData
     interval?: number
     rotateTickLabel?: number
     customMaxDomain?: number
+    legendType?: 'scroll' | 'plain'
 }
 
 const VerticalBarChart = (props: IProps) => {
@@ -76,6 +84,7 @@ const VerticalBarChart = (props: IProps) => {
         barWidth,
         interval,
         dateFormat,
+        legendType,
         rotateLabel,
         yComplement,
         scrollStart,
@@ -90,12 +99,32 @@ const VerticalBarChart = (props: IProps) => {
         onClickBar
     } = props
 
+    const chartRef = useRef<ReactEChartsCore>(null)
+
+    useEffect(() => {
+        const handleResize = () => {
+            chartRef.current?.getEchartsInstance().resize()
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
     const isCustomDomain = customMaxDomain ? customMaxDomain : getDomain
 
-    const xData = data.map(item => item.label)
+    const isStackedData = (data: BarChartData): data is EntryData[][] => {
+        return Array.isArray(data[0])
+    }
 
-    const yData: EChartSeries = data.map(item => {
-        const results = data.map(item => item.result)
+    const isStacked = isStackedData(data)
+
+    const xData = isStacked
+        ? data[0].map(item => item.label)
+        : data.map(item => item.label)
+
+    const yData: EChartSeries = (data as EntryData[]).map(item => {
+        const results = (data as EntryData[]).map(item => item.result)
         const maxValue = Math.max(...results)
 
         const label: LabelProps | false | undefined =
@@ -202,21 +231,41 @@ const VerticalBarChart = (props: IProps) => {
         click: onClickBar ?? (() => {})
     }
 
-    const series = [
-        {
-            type: 'bar',
-            data: yData,
-            barWidth: barWidth || 'auto',
-            label: {
-                ...LEGEND_STYLE,
-                distance: 6,
-                fontSize: 12,
-                show: showBarLabel,
-                position: 'insideTop',
-                formatter: formatLabel
-            }
-        }
-    ]
+    const series = isStacked
+        ? data.map(serie => ({
+              type: 'bar',
+              stack: 'stacked',
+              barWidth: barWidth || 'auto',
+              name: serie[0]?.name || '',
+              data: serie.map(item => ({
+                  value: item.result,
+                  itemStyle: item.style
+              })),
+              itemStyle: { color: serie[0]?.style?.color || undefined },
+              label: {
+                  ...LEGEND_STYLE,
+                  distance: 6,
+                  fontSize: 12,
+                  show: showBarLabel,
+                  position: 'insideTop',
+                  formatter: formatLabel
+              }
+          }))
+        : [
+              {
+                  type: 'bar',
+                  data: yData,
+                  barWidth: barWidth || 'auto',
+                  label: {
+                      ...LEGEND_STYLE,
+                      distance: 6,
+                      fontSize: 12,
+                      show: showBarLabel,
+                      position: 'insideTop',
+                      formatter: formatLabel
+                  }
+              }
+          ]
 
     const arrayInitialSize = scrollStart || (dateFormat === 'yyyy-MM' ? 12 : 30)
 
@@ -325,6 +374,12 @@ const VerticalBarChart = (props: IProps) => {
                     ? 100
                     : isCustomDomain
         },
+        legend: {
+            top: '90%',
+            itemGap: 24,
+            type: legendType || 'plain',
+            textStyle: { ...COMMON_STYLE }
+        },
         tooltip: tooltip && {
             trigger: 'axis',
             formatter: formatSingleTooltip,
@@ -344,6 +399,7 @@ const VerticalBarChart = (props: IProps) => {
         <ReactEChartsCore
             notMerge
             lazyUpdate
+            ref={chartRef}
             echarts={echarts}
             option={options()}
             style={{ width: '99.9%' }}
