@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.5.0
+
+- chore: update Node to 24.11.0 (LTS)
+
 ## 1.4.0
 
 - feat: improve charts to use on the interactive dashboards

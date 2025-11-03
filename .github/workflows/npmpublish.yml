@@ -13,8 +13,8 @@ jobs:
       - name: Setup node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.15.0'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: 24.11.0
+          registry-url: https://registry.npmjs.org
           always-auth: true
 
       - name: Install dependencies
@@ -32,7 +32,7 @@ jobs:
       - name: Publish new version to NPM
         uses: actions/setup-node@v4
         with:
-          node-version: '20.15.0'
+          node-version: 24.11.0
           registry-url: https://registry.npmjs.org/
           always-auth: true
 
