@@ -90,7 +90,7 @@ const AudiometryChart = (props: IProps) => {
     } = props
 
     const chartRef = useRef<ReactEChartsCore>(null)
-    const [showTitle, setShowTitle] = useState(false)
+    const [showTitle, setShowTitle] = useState<boolean>(false)
 
     useEffect(() => {
         const handleResize = () => {
