@@ -49,6 +49,10 @@ export interface IDonutProps extends IPieProps {
     donutRadius: [string, string]
     centerPieValueFontSize?: number
     legendType?: 'scroll' | 'plain'
+    labelLine?: {
+        length: number
+        length2: number
+    }
 }
 
 const DonutChart = (props: IDonutProps) => {
@@ -60,6 +64,7 @@ const DonutChart = (props: IDonutProps) => {
         colors,
         center,
         tooltip,
+        labelLine,
         legendType,
         donutRadius,
         yComplement,
@@ -77,7 +82,7 @@ const DonutChart = (props: IDonutProps) => {
     const totalValues = data.reduce((acc, item) => acc + item.value, 0)
 
     const chartRef = useRef<ReactEChartsCore>(null)
-    const [showTitle, setShowTitle] = useState(false)
+    const [showTitle, setShowTitle] = useState<boolean>(false)
 
     useEffect(() => {
         const handleResize = () => {
@@ -145,7 +150,7 @@ const DonutChart = (props: IDonutProps) => {
                         ? formatDonutLabel(item.data.value).toString()
                         : String(item.data.value)
             },
-            labelLine: { length: 5, length2: 5 },
+            labelLine: labelLine || { length: 5, length2: 5 },
             itemStyle: { borderColor: neutral[50] },
             emphasis: { scale: true, scaleSize: 2 }
         }

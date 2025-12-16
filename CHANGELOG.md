@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.5.1
+
+- chore: add `labelLine` prop to `<DonutChart>`
+
 ## 1.5.0
 
 - chore: update Node to 24.11.0 (LTS)
