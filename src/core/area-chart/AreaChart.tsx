@@ -24,7 +24,6 @@ import type {
     EntryData
 } from '../types'
 import {
-    fixedDomain,
     formatTime,
     formatTooltip,
     getDataView,
@@ -341,7 +340,7 @@ const AreaChart = (props: IProps) => {
                               yComplement ?? ''
                           ).toString()
             },
-            max: lineMarkValue ? fixedDomain : getDomain
+            max: getDomain
         },
         legend: {
             top: 20,

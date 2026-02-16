@@ -244,9 +244,6 @@ export const getDomain = (item: DomainValues) => {
     }
 }
 
-export const fixedDomain = (item: DomainValues) =>
-    item.max >= 90 ? 100 : getDomain(item)
-
 export const getSaveAsImage = (title: string, name?: string) => ({
     title,
     name,

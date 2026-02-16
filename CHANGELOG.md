@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.5.2
+
+- fix: removed `fixedDomain` function from `max` prop on `<AreaChart>` with `lineMarkValue`
+
 ## 1.5.1
 
 - chore: add `labelLine` prop to `<DonutChart>`
