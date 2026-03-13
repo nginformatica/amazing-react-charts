@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.5.3
+
+- update Node to 24.14.0 (LTS)
+
 ## 1.5.2
 
 - fix: removed `fixedDomain` function from `max` prop on `<AreaChart>` with `lineMarkValue`
