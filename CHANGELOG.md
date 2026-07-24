@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.5.4
+
+- chore: migrate npm publish workflow to OIDC trusted publishing (removes `NPM_TOKEN`, renames `npmpublish.yml` to `publish.yml`)
+
 ## 1.5.3
 
 - update Node to 24.14.0 (LTS)
