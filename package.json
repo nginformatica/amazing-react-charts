@@ -1,6 +1,6 @@
 {
     "name": "amazing-react-charts",
-    "version": "1.5.3",
+    "version": "1.5.4",
     "license": "MIT",
     "main": "dist/index.js",
     "description": "An amazing react charts package based in echarts",
